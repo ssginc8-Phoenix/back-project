@@ -1,0 +1,40 @@
+# 애플리케이션 기본 설정
+app:
+  name: docto
+  version: 1.0.0
+
+# 서버 설정
+server:
+  port: 8080
+
+# 데이터베이스 설정
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/doctodb
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: docto
+    password: docto1234
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 2000
+
+  #JPA Config
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: never
+
+# 로그 설정
+logging:
+  level:
+    com.ssginc8: INFO
+    org.springframework.security: TRACE
