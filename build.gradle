@@ -28,6 +28,8 @@ ext {
     set('snippetsDir', file("build/generated-snippets"))
 }
 
+def querydslVersion = "5.0.0"
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -47,9 +49,12 @@ dependencies {
     // 🔹 DB
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    // 🔹 QueryDSL (선택 - 복잡한 검색/조회 쿼리용)
-    implementation 'com.querydsl:querydsl-jpa:5.0.0'
-    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
+    // 🔹 QueryDSL (복잡한 검색/조회 쿼리용)
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 
     /* 추가 될 수 있는 의존성들 */
     // 🔹 이메일 인증 (JavaMailSender)
