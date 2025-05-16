@@ -10,7 +10,7 @@ server:
 # 데이터베이스 설정
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/docto
+    url: jdbc:postgresql://localhost:5432/doctodb
     username: doctouser
     password: doctouser1234
     driver-class-name: org.postgresql.Driver
