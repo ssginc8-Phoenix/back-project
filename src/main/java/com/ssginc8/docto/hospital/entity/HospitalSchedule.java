@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "tbl_hospital_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class HospitalSchedule {

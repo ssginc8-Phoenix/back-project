@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "tbl_doctor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Doctor extends BaseTimeEntity {

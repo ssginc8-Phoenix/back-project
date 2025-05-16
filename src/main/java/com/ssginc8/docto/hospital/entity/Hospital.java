@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "tbl_hospital")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Hospital extends BaseTimeEntity {
