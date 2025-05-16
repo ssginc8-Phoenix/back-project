@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // 🔹 Spring Security (로그인, 인증)
-    // implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     // 🔹 JWT (인증 토큰)
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -66,6 +66,9 @@ dependencies {
     // 🔹 Redis (세션 캐시 or 알림 큐로 활용)
 
     // 🔹 파일 업로드/다운로드 (보험 서류 등)
+    // AWS 의존성 추가
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.783")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
