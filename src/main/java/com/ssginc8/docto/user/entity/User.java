@@ -2,31 +2,33 @@ package com.ssginc8.docto.user.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@Entity
-@Table
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table
+@Entity
 public class User extends BaseTimeEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
@@ -63,4 +65,11 @@ public class User extends BaseTimeEntity {
 	private LocalDateTime suspendedAt;
 
 	private LocalDateTime suspensionExpiresAt;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "file_id")
+	private File ProfileImage;
 }
+
+
+
