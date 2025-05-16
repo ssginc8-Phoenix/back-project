@@ -6,16 +6,18 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.global.base.AppointmentStatus;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.hospital.entity.Hospital;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,16 +33,20 @@ public class Appointment extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long appointmentId;
 
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patientGuardianId", nullable = false)
 	private PatientGuardian patientGuardian;
 
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hospitalId", nullable = false)
+	private Hospital hospital;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctorId", nullable = false)
 	private Doctor doctor;
 
 	@Column(nullable = false)
-	private LocalDateTime appointmentDate;
+	private LocalDateTime appointmentTime;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -50,5 +56,44 @@ public class Appointment extends BaseTimeEntity {
 	@Column(nullable = false)
 	private AppointmentStatus status;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PaymentType paymentType;
+
 	private Long queueNumber;    // 대기 순번
+
+	public Appointment(
+		PatientGuardian patientGuardian,
+		Hospital hospital,
+		Doctor doctor,
+		LocalDateTime appointmentTime,
+		AppointmentType appointmentType,
+		AppointmentStatus status,
+		PaymentType paymentType,
+		Long queueNumber) {
+
+		this.patientGuardian = patientGuardian;
+		this.hospital = hospital;
+		this.doctor = doctor;
+		this.appointmentTime = appointmentTime;
+		this.appointmentType = appointmentType;
+		this.status = status;
+		this.paymentType = paymentType;
+		this.queueNumber = queueNumber;
+	}
+
+	public static Appointment create(
+		PatientGuardian patientGuardian,
+		Hospital hospital,
+		Doctor doctor,
+		LocalDateTime appointmentTime,
+		AppointmentType appointmentType,
+		AppointmentStatus status,
+		PaymentType paymentType,
+		Long queueNumber) {
+
+		return new Appointment(
+			patientGuardian, hospital, doctor, appointmentTime,
+			appointmentType, status, paymentType, queueNumber);
+	}
 }
