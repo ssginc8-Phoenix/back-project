@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table
 @Entity
 public class User extends BaseTimeEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
@@ -70,6 +71,3 @@ public class User extends BaseTimeEntity {
 	@JoinColumn(name = "file_id")
 	private File ProfileImage;
 }
-
-
-
