@@ -11,7 +11,17 @@ public enum ErrorCode {
 	// Global 에러 (G_) - 공통적으로 발생할 수 있는 예외
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "G_001", "잘못된 HTTP 메서드를 호출했습니다."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "G_002", "서버 에러가 발생했습니다."),
-	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "G_003", "입력값이 유효하지 않습니다.");
+	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "G_003", "입력값이 유효하지 않습니다."),
+
+	// User 관련 에러(U_)
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U_001", "유저를 찾을 수 없습니다."),
+	DUPLICATE_EMAIL(HttpStatus.CONFLICT, "U_002", "이미 사용 중인 이메일입니다."),
+	PASSWORD_TOO_SHORT(HttpStatus.BAD_REQUEST, "U_003", "비밀번호는 최소 8자 이상이어야 합니다."),
+	PASSWORD_TOO_SIMPLE(HttpStatus.BAD_REQUEST, "U_004", "비밀번호는 대문자, 소문자, 숫자, 특수문자 중 2가지 이상을 조합해야 합니다."),
+	PASSWORD_HAS_SEQUENCE(HttpStatus.BAD_REQUEST, "U_005", "비밀번호에 연속된 문자를 사용할 수 없습니다."),
+
+	// File 관련 에러(F_)
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다.");
 
 	private final HttpStatus status;
 	private final String code;
