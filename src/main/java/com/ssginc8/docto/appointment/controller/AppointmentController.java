@@ -1,49 +1,46 @@
 package com.ssginc8.docto.appointment.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssginc8.docto.appointment.dto.AppointmentResponseDto;
+import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
+import com.ssginc8.docto.appointment.dto.AppointmentRequest;
+import com.ssginc8.docto.appointment.dto.AppointmentResponse;
+import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.service.AppointmentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/appointment")
+@RequestMapping("/api/v1/appointments")
 @RequiredArgsConstructor
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
 
-	/* 진료 스케쥴 예약 (미리)
-		URL: /api/v1/appointment/scheduled
-		Method: POST
-			BODY:
+	/* 진료 스케쥴 예약
+	*	URL: /api/v1/appointments
+	*	Method: POST
+	*	BODY:
 	*/
-	@PostMapping("/scheduled")
-	public ResponseEntity<?> scheduledAppointment() {
+	@PostMapping()
+	public ResponseEntity<?> requestAppointment(@RequestBody AppointmentRequest request) {
 
-		return null;
+		return ResponseEntity.ok(appointmentService.requestAppointment(request));
 	}
 
-	/* 진료 당일 접수
-		URL: /api/v1/appointment/walkin
-		Method: POST
-			BODY:
-	*/
-	@PostMapping("/walkin")
-	public ResponseEntity<?> walkInAppointment() {
-
-		return null;
-	}
 
 	/* 진료 예약 취소
-		URL: /api/v1/appointment/{appointmentId}
+		URL: /api/v1/appointments/{appointmentId}
 		Method: DELETE
 	*/
 	@DeleteMapping("/{appointmentId}")
@@ -51,17 +48,26 @@ public class AppointmentController {
 		return null;
 	}
 
-	/* 본인의 예약 리스트 조회
-		URL: /api/v1/users/me/appointments
+	/* 예약 리스트 조회
+		URL: /api/v1/appointments (ex: /api/v1/appointments?userId=1&page=0&size=10)
 		Method: GET
 	*/
+	@GetMapping
+	public ResponseEntity<Page<AppointmentListResponse>> getAppointmentList(
+		Pageable pageable,
+		@ModelAttribute AppointmentSearchCondition condition
+	) {
+		Page<AppointmentListResponse> response = appointmentService.getAppointmentList(pageable, condition);
 
-	/* 본인의 예약 상세 내역 조회
-		URL: /api/v1/users/me/appointment/{appointmentId}
+		return ResponseEntity.ok(response);
+	}
+
+	/* 예약 상세 내역 조회
+		URL: /api/v1/appointments/{appointmentId}
 		Method: GET
 	*/
 	@GetMapping("/{appointmentId}")
-	public ResponseEntity<AppointmentResponseDto> getAppointmentDetail(@PathVariable Long appointmentId) {
+	public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable Long appointmentId) {
 		return ResponseEntity.ok(appointmentService.getAppointmentDetail(appointmentId));
 	}
 
