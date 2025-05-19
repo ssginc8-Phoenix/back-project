@@ -26,12 +26,8 @@ public class ReviewResponse {
 	private String userName;
 
 
-	@NotBlank(message = "contents는 빈 값일 수 없습니다.")
-	@Size(max = 1000, message = "contents는 최대 1000자까지 입력 가능합니다.")
-	private String contents;
-
-
-	private List<String> keywords;
+	private String content;
+	private List<String> keyword;
 
 	//신고횟수
 	private Long reportCount;

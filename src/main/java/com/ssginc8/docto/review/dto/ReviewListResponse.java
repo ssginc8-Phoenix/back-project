@@ -21,8 +21,8 @@ public class ReviewListResponse {
 	private Long userId;
 	private String userName;
 
-	private String contents;
-	private List<String> keywords;
+	private String content;
+	private List<String> keyword;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
