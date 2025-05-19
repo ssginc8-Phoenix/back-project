@@ -2,58 +2,32 @@ package com.ssginc8.docto.patient.service;
 
 import com.ssginc8.docto.patient.dto.PatientRequest;
 import com.ssginc8.docto.patient.dto.PatientResponse;
-import com.ssginc8.docto.patient.entity.Patient;
-import com.ssginc8.docto.patient.provider.PatientProvider;
-import com.ssginc8.docto.patient.repo.PatientRepo;
-import com.ssginc8.docto.user.entity.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * 환자 관련 비즈니스 로직 처리
+ * 환자 서비스 인터페이스
+ * - 환자 관련 비즈니스 기능 정의
+ * - 구현체는 PatientServiceImpl
  */
-@Service
-@RequiredArgsConstructor
-public class PatientService {
-
-	private final PatientRepo patientRepo;
-	private final PatientProvider patientProvider;
-
-	@PersistenceContext
-	private final EntityManager em;
+public interface PatientService {
 
 	/**
 	 * 환자 등록
+	 * @param dto 환자 등록 요청 데이터
+	 * @return 생성된 환자 응답
 	 */
-	@Transactional
-	public PatientResponse createPatient(PatientRequest dto) {
-		User user = em.getReference(User.class, dto.getUserId());
-		Patient patient = Patient.create(user, dto.getResidentRegistrationNumber());
-		return PatientResponse.from(patientRepo.save(patient));
-	}
+	PatientResponse createPatient(PatientRequest dto);
 
 	/**
-	 * 모든 환자 목록 조회
+	 * 전체 환자 목록 조회
+	 * @return 환자 응답 리스트
 	 */
-	@Transactional
-	public List<PatientResponse> getAllPatients() {
-		return patientRepo.findAll().stream()
-			.map(PatientResponse::from)
-			.collect(Collectors.toList());
-	}
+	List<PatientResponse> getAllPatients();
 
 	/**
-	 * 환자 삭제 (소프트 삭제)
+	 * 환자 삭제 처리 (soft delete)
+	 * @param patientId 삭제할 환자 ID
 	 */
-	@Transactional
-	public void deletePatient(Long patientId) {
-		Patient patient = patientProvider.getActivePatient(patientId);
-		patient.softDelete();
-	}
+	void deletePatient(Long patientId);
 }
