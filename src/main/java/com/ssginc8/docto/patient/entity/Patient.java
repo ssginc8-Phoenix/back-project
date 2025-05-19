@@ -19,6 +19,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 환자 정보를 나타내는 JPA 엔티티
+ * - User 엔티티와 1:1 관계를 가짐
+ * - 주민등록번호 및 삭제 시간 저장
+ */
 @Entity
 @Table(name = "tbl_patient")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,16 +44,29 @@ public class Patient extends BaseTimeEntity {
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
-	@Builder // 정적 팩토리 메서드를 사용 수정
-	public Patient(User user, String residentRegistrationNumber) {
+	// 생성자 대신 사용하는 정적 팩토리 메서드용 private 생성자
+	private Patient(User user, String residentRegistrationNumber) {
 		this.user = user;
 		this.residentRegistrationNumber = residentRegistrationNumber;
 	}
 
+	/**
+	 * 정적 팩토리 메서드 - 환자 엔티티 생성
+	 */
+	public static Patient create(User user, String residentRegistrationNumber) {
+		return new Patient(user, residentRegistrationNumber);
+	}
+
+	/**
+	 * 주민등록번호 수정
+	 */
 	public void update(String newRRN) {
 		this.residentRegistrationNumber = newRRN;
 	}
 
+	/**
+	 * 환자 정보 소프트 삭제 처리
+	 */
 	public void softDelete() {
 		this.deletedAt = LocalDateTime.now();
 	}
