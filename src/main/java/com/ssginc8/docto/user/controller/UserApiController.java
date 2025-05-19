@@ -19,7 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @RestController
-public class UserController {
+public class UserApiController {
 	private final UserService userService;
 
 	@PostMapping("/users/register/user")

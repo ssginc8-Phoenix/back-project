@@ -1,13 +1,13 @@
 package com.ssginc8.docto.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table
+@Table(name = "tbl_user")
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -63,11 +63,37 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Boolean suspended;
 
+	@Column(nullable = false)
 	private LocalDateTime suspendedAt;
 
+	@Column(nullable = false)
 	private LocalDateTime suspensionExpiresAt;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "file_id")
-	private File ProfileImage;
+	private File profileImage;
+
+	private User(String uuid, String email, String password, String name, String phone, String address,
+		LoginType loginType, Role role, File profileImage) {
+		this.uuid = uuid;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.loginType = loginType;
+		this.role = role;
+		this.profileImage = profileImage;
+	}
+
+	public static User createUser(String email, String password, String name, String phone, String address,
+		LoginType loginType, Role role, File profileImage) {
+		String uuid = UUID.randomUUID().toString();
+
+		return new User(uuid, email, password, name, phone, address, loginType, role, profileImage);
+	}
+
+	public void updateProfileImage(File profileImage) {
+		this.profileImage = profileImage;
+	}
 }
