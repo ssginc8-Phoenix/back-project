@@ -39,7 +39,7 @@ public class Patient extends BaseTimeEntity {
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
-	@Builder
+	@Builder // 정적 팩토리 메서드를 사용 수정
 	public Patient(User user, String residentRegistrationNumber) {
 		this.user = user;
 		this.residentRegistrationNumber = residentRegistrationNumber;

@@ -1,9 +1,9 @@
 package com.ssginc8.docto.patient.service;
 
-import com.ssginc8.docto.patient.dto.PatientRequestDTO;
-import com.ssginc8.docto.patient.dto.PatientResponseDTO;
+import com.ssginc8.docto.patient.dto.PatientRequest;
+import com.ssginc8.docto.patient.dto.PatientResponse;
 import com.ssginc8.docto.patient.entity.Patient;
-import com.ssginc8.docto.patient.repository.PatientRepository;
+import com.ssginc8.docto.patient.repo.PatientRepo;
 import com.ssginc8.docto.user.entity.User;
 
 import jakarta.persistence.EntityManager;
@@ -12,7 +12,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +21,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PatientService {
 
-	private final PatientRepository patientRepository;
+	private final PatientRepo patientRepository;
 
 	@PersistenceContext
 	private EntityManager em; // UserRepository 안 쓰고 EntityManager 사용
 
 	@Transactional
-	public PatientResponseDTO createPatient(PatientRequestDTO dto) {
+	public PatientResponse createPatient(PatientRequest dto) {
 		// 영속 상태 프록시 객체 생성
 		User user = em.getReference(User.class, dto.getUserId());
 
@@ -39,7 +38,7 @@ public class PatientService {
 
 		Patient saved = patientRepository.save(patient);
 
-		return new PatientResponseDTO(
+		return new PatientResponse(
 			saved.getPatientId(),
 			saved.getUser().getUserId(),
 			saved.getResidentRegistrationNumber()
@@ -47,9 +46,9 @@ public class PatientService {
 	}
 
 	@Transactional
-	public List<PatientResponseDTO> getAllPatients() {
+	public List<PatientResponse> getAllPatients() {
 		return patientRepository.findAll().stream()
-			.map(patient -> new PatientResponseDTO(
+			.map(patient -> new PatientResponse(
 				patient.getPatientId(),
 				patient.getUser().getUserId(),
 				patient.getResidentRegistrationNumber()

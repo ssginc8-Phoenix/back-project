@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PatientRequestDTO {
+public class PatientRequest {
 	private Long userId;
 	private String residentRegistrationNumber;
 }

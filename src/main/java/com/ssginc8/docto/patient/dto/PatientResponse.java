@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PatientResponseDTO {
+public class PatientResponse {
 	private final Long patientId;
 	private final Long userId;
 	private final String residentRegistrationNumber;
 
 	@Builder
-	public PatientResponseDTO(Long patientId, Long userId, String residentRegistrationNumber) {
+	public PatientResponse(Long patientId, Long userId, String residentRegistrationNumber) {
 		this.patientId = patientId;
 		this.userId = userId;
 		this.residentRegistrationNumber = residentRegistrationNumber;
