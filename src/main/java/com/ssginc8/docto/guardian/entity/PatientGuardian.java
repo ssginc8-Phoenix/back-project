@@ -46,4 +46,6 @@ public class PatientGuardian {
 	private LocalDateTime invitedAt;
 
 	private LocalDateTime respondedAt;
+
+	private String inviteCode;
 }
