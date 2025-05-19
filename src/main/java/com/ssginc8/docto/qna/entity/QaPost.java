@@ -32,4 +32,11 @@ public class QaPost extends BaseTimeEntity {
 
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
+
+	public static QaPost create(Appointment appointment, String content) {
+		QaPost qaPost = new QaPost();
+		qaPost.appointment = appointment;
+		qaPost.content = content;
+		return qaPost;
+	}
 }
