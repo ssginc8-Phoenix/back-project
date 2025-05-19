@@ -130,7 +130,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			request.getAppointmentTime(),
 			appointmentType,
 			request.getSymptom(),
-			AppointmentStatus.Requested,
+			AppointmentStatus.REQUESTED,
 			paymentType
 		);
 
