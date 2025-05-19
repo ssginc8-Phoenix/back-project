@@ -23,14 +23,14 @@ public class ReviewKeyword {
 
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "keyword", nullable = false, length = 50)
-	private KeywordType keyword;
+	@Column(name = "keywords", nullable = false, length = 50)
+	private KeywordType keywords;
 
 
 	@Builder
 	private ReviewKeyword(Review review, KeywordType keyword) {
 		this.review = review;
-		this.keyword = keyword;
+		this.keywords = keyword;
 
 
 	}

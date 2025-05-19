@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 //“조회(Read)” 기능만 모아둔 곳
+
 @Component
 @RequiredArgsConstructor
 public class ReviewProvider {
@@ -42,6 +43,7 @@ public class ReviewProvider {
 	public List<Review> getByHospital(Long hospitalId) {
 		return reviewRepo.findByHospitalHospitalId(hospitalId);
 	}
+
 
 
 	//마이페이지에서 본인이 작성한 리뷰 조회(내림차순)

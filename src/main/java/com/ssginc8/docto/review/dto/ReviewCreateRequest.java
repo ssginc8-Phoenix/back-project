@@ -20,12 +20,12 @@ public class ReviewCreateRequest {
 	private Long userId;
 
 
-	@NotBlank(message = "content는 빈 값일 수 없습니다.")
-	@Size(max = 1000, message = "content는 최대 1000자까지 입력 가능합니다.")
-	private String content;
+	@NotBlank(message = "contents는 빈 값일 수 없습니다.")
+	@Size(max = 1000, message = "contents는 최대 1000자까지 입력 가능합니다.")
+	private String contents;
 
 	@NotNull(message = "키워드를 최소 3개 선택해주세요.")
 	@Size(min = 3, max = 8, message = "키워드는 3~8개 사이로 선택 가능합니다.")
-	private List<KeywordType> keyword;
+	private List<KeywordType> keywords;
 
 }

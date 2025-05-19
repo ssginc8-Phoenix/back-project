@@ -1,4 +1,4 @@
-package com.ssginc8.docto.review.entities;
+package com.ssginc8.docto.review.entity;
 
 import lombok.Getter;
 

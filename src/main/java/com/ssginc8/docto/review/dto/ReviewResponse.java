@@ -26,8 +26,8 @@ public class ReviewResponse {
 	private String userName;
 
 
-	private String content;
-	private List<String> keyword;
+	private String contents;
+	private List<String> keywords;
 
 	//신고횟수
 	private Long reportCount;

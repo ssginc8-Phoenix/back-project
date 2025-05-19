@@ -17,8 +17,8 @@ public class ReviewMyListResponse {
 	private String hospitalName;
 	private String doctorName;
 
-	private String content;
-	private List<String> keyword;
+	private String contents;
+	private List<String> keywords;
 
 	private Long reportCount;
 
