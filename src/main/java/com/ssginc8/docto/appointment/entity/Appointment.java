@@ -3,7 +3,6 @@ package com.ssginc8.docto.appointment.entity;
 import java.time.LocalDateTime;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
-import com.ssginc8.docto.global.base.AppointmentStatus;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -52,6 +51,9 @@ public class Appointment extends BaseTimeEntity {
 	@Column(nullable = false)
 	private AppointmentType appointmentType;
 
+	@Column(nullable = false)
+	private String symptom;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private AppointmentStatus status;
@@ -68,6 +70,7 @@ public class Appointment extends BaseTimeEntity {
 		Doctor doctor,
 		LocalDateTime appointmentTime,
 		AppointmentType appointmentType,
+		String symptom,
 		AppointmentStatus status,
 		PaymentType paymentType,
 		Long queueNumber) {
@@ -77,6 +80,7 @@ public class Appointment extends BaseTimeEntity {
 		this.doctor = doctor;
 		this.appointmentTime = appointmentTime;
 		this.appointmentType = appointmentType;
+		this.symptom = symptom;
 		this.status = status;
 		this.paymentType = paymentType;
 		this.queueNumber = queueNumber;
@@ -88,12 +92,12 @@ public class Appointment extends BaseTimeEntity {
 		Doctor doctor,
 		LocalDateTime appointmentTime,
 		AppointmentType appointmentType,
+		String symptom,
 		AppointmentStatus status,
-		PaymentType paymentType,
-		Long queueNumber) {
+		PaymentType paymentType) {
 
 		return new Appointment(
 			patientGuardian, hospital, doctor, appointmentTime,
-			appointmentType, status, paymentType, queueNumber);
+			appointmentType, symptom, status, paymentType, null);
 	}
 }
