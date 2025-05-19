@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table
+@Table(name = "tbl_file")
 @Entity
 public class File extends BaseTimeEntity {
 	@Id
@@ -38,9 +38,6 @@ public class File extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String url;
 
-	@Column(length = 500, nullable = false)
-	private String filePath;
-
 	@Column(nullable = false)
 	private String bucketName;
 
@@ -49,4 +46,21 @@ public class File extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private String fileType;
+
+	private File(Category category, String fileName, String originalName, String url, String bucketName,
+		Long fileSize, String fileType) {
+		this.category = category;
+		this.fileName = fileName;
+		this.originalName = originalName;
+		this.url = url;
+		this.bucketName = bucketName;
+		this.fileSize = fileSize;
+		this.fileType = fileType;
+	}
+
+	public static File createFile(Category category, String fileName, String originalName, String url,
+		String bucketName,
+		Long fileSize, String fileType) {
+		return new File(category, fileName, originalName, url, bucketName, fileSize, fileType);
+	}
 }
