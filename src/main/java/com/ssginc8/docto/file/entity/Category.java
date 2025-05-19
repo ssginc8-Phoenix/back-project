@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Category {
-	USER("사용자관련"),
-	HOSPITAL("병원관련"),
-	MEDICAL("진료관련");
+	USER("user", "사용자관련"),
+	HOSPITAL("hospital", "병원관련"),
+	MEDICAL("medical", "진료관련");
 
 	private final String categoryName;
+	private final String categoryDescription;
 }
