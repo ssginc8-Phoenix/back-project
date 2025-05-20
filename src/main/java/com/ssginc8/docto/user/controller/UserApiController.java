@@ -1,7 +1,5 @@
 package com.ssginc8.docto.user.controller;
 
-import java.io.IOException;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +20,20 @@ import lombok.extern.log4j.Log4j2;
 public class UserApiController {
 	private final UserService userService;
 
+	@GetMapping("/users/check-email")
+	public void checkEmail(@RequestParam(value = "email") String email) {
+		userService.checkEmail(email);
+	}
+
 	@PostMapping("/users/register/user")
-	public AddUser.Response signup(@Valid AddUser.Request request) throws IOException {
+	public AddUser.Response signupUser(@Valid AddUser.Request request) {
 		return AddUser.Response.builder()
 			.userId(userService.createUser(request).getUserId())
 			.build();
 	}
 
-	@GetMapping("/users/check-email")
-	public void checkEmail(@RequestParam(value = "email") String email) {
-		userService.checkEmail(email);
+	@PostMapping("/users/register/admin-hospital")
+	public void signupHospital() {
+
 	}
 }
