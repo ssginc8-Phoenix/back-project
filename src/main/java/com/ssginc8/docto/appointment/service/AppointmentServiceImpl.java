@@ -77,7 +77,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	 */
 	@Transactional
 	@Override
-	public Appointment requestAppointment(AppointmentRequest request) {
+	public AppointmentResponse requestAppointment(AppointmentRequest request) {
 		// 1. 보호자 (user)와 환자 (patient) 조회
 		User guardian = userProvider.getUserById(request.getUserId());
 		Patient patient = patientProvider.getPatientById(request.getPatientId());
@@ -138,6 +138,26 @@ public class AppointmentServiceImpl implements AppointmentService {
 			qaPostService.createQaPost(appointment, request.getQuestion());
 		}
 
-		return appointment;
+		String qaContent = qaPostProvider.getQaPostByAppointment(appointment);
+
+		return AppointmentResponse.fromEntity(appointment, qaContent);
+	}
+
+
+	/*
+	 * 진료 상태 업데이트
+	 */
+	@Transactional
+	@Override
+	public AppointmentResponse updateAppointmentStatus(Long appointmentId, String statusStr) {
+		Appointment appointment = appointmentProvider.getAppointmentById(appointmentId);
+		String qaContent = qaPostProvider.getQaPostByAppointment(appointment);
+
+		AppointmentStatus newStatus = AppointmentStatus.from(statusStr);
+		appointment.changeStatus(newStatus);
+
+		appointmentProvider.save(appointment);
+
+		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
 }

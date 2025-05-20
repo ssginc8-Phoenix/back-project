@@ -36,7 +36,7 @@ public class AppointmentResponse {
 
 	private LocalDateTime createdAt;
 
-	public static AppointmentResponse fromEntity(Appointment appointment, String qaPost) {
+	public static AppointmentResponse fromEntity(Appointment appointment, String qaContent) {
 
 		return AppointmentResponse.builder()
 			.appointmentId(appointment.getAppointmentId())
@@ -47,7 +47,7 @@ public class AppointmentResponse {
 			.doctorName(appointment.getDoctor().getUser().getName())
 			.patientName(appointment.getPatientGuardian().getPatient().getUser().getName())
 			.symptom(appointment.getSymptom())
-			.question(qaPost)
+			.question(qaContent)
 			.appointmentTime(appointment.getAppointmentTime())
 			.appointmentType(appointment.getAppointmentType())
 			.paymentType(appointment.getPaymentType())
