@@ -30,9 +30,6 @@ public class AddUser {
 
 		private String role;
 
-		// 환자만 주민번호 필요
-		private String residentRegistrationNumber;
-
 		private String phone;
 
 		private String address;
