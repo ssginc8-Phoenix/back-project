@@ -3,12 +3,13 @@ package com.ssginc8.docto.review.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ssginc8.docto.review.dto.ReviewCreateRequest;
 import com.ssginc8.docto.review.dto.ReviewUpdateRequest;
-import com.ssginc8.docto.review.entity.KeywordType;
 import com.ssginc8.docto.review.entity.Review;
 
-//쓰기(생성·수정·삭제)” 기능을 처리
+//쓰기(생성·수정·삭제) 기능을 처리
 
 public interface ReviewService {
 
@@ -19,7 +20,12 @@ public interface ReviewService {
 	void updateReview(Long reviewId, ReviewUpdateRequest request);
 
 	//리뷰 삭제
+	@Transactional
 	void deleteReview(Long reviewId);
 
+	// 내 리뷰 목록 조회
 	List<Review> getMyReviews(Long userId);
+
+	// (관리자용) 전체 리뷰 목록 조회
+	List<Review> getAllReviews();
 }

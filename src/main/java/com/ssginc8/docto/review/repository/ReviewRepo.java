@@ -22,8 +22,7 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 		"appointment",
 		"hospital",
 		"doctor",
-		"author",
-		"keywords"
+		"author"
 	})
 	Optional<Review> findById(Long reviewId);
 
@@ -41,6 +40,6 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 	List<Review> findByAuthorUserIdOrderByCreatedAtDesc(Long userId);
 
 
-    //병원관리자가 자기 병원 리뷰만 조회할 때
-	List<Review> findByHospitalHospitalId(Long hospitalId);
+    // //병원관리자가 자기 병원 리뷰만 조회할 때
+	// List<Review> findByHospitalHospitalId(Long hospitalId);
 }

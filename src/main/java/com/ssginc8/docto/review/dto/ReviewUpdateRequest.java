@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 
-//수정 가능한 것은 내용이랑 키워드, 수정 가능한 필드만 Body로 받고, ID는 URL PathVariable
+//수정 가능한 것은 내용이랑 키워드
 @Data
 public class ReviewUpdateRequest{
 

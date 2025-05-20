@@ -1,7 +1,5 @@
 package com.ssginc8.docto.review.entity;
 
-
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +15,7 @@ public class ReviewKeyword {
 	private Long reviewKeywordId;
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "reviewId", nullable = false)
 	private Review review;
 
@@ -27,12 +25,10 @@ public class ReviewKeyword {
 	private KeywordType keywords;
 
 
+
 	@Builder
-	private ReviewKeyword(Review review, KeywordType keyword) {
-		this.review = review;
-		this.keywords = keyword;
-
-
+	private ReviewKeyword(Review review, KeywordType keywords) {
+		this.review  = review;
+		this.keywords = keywords;
 	}
-
 }
