@@ -41,34 +41,32 @@ public class Review extends BaseTimeEntity {
 	@Column(name = "reportCount", nullable = false)
 	private Long reportCount = 0L;
 
+	//유효성 검증
+	private static void validateContents(String contents) {
+		if (contents == null || contents.isBlank()) {
+			throw new IllegalArgumentException("contents는 빈 값일 수 없습니다.");
+		}
+	}
+
 
 	public static Review create(
 		Appointment appointment,
 		Doctor doctor,
 		Hospital hospital,
 		User author,
-		String contents) {
-		if (contents == null || contents.isBlank()) {
-			throw new IllegalArgumentException("contents는 빈 값일 수 없습니다.");
-		}
-		return new Review(appointment, doctor, hospital, author, contents);
+		String contents
+	) {
+		validateContents(contents);
+		Review review = new Review();
+		review.appointment = appointment;
+		review.doctor = doctor;
+		review.hospital = hospital;
+		review.author = author;
+		review.contents = contents;
+		review.reportCount = 0L;
+		return review;
 	}
 
-
-	@Builder
-	protected Review(
-		Appointment appointment,
-		Doctor doctor,
-		Hospital hospital,
-		User author,
-		String content) {
-		this.appointment = appointment;
-		this.doctor      = doctor;
-		this.hospital    = hospital;
-		this.author      = author;
-		this.contents     = content;
-		this.reportCount = 0L;
-	}
 
 	//신고수 증가
 	public void incrementReportCount() {
