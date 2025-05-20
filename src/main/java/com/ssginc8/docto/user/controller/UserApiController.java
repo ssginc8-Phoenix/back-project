@@ -25,15 +25,10 @@ public class UserApiController {
 		userService.checkEmail(email);
 	}
 
-	@PostMapping("/users/register/user")
+	@PostMapping("/users/register")
 	public AddUser.Response signupUser(@Valid AddUser.Request request) {
 		return AddUser.Response.builder()
 			.userId(userService.createUser(request).getUserId())
 			.build();
-	}
-
-	@PostMapping("/users/register/admin-hospital")
-	public void signupHospital() {
-
 	}
 }
