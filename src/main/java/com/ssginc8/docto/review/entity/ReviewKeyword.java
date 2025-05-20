@@ -25,10 +25,27 @@ public class ReviewKeyword {
 	private KeywordType keywords;
 
 
-
-	@Builder
 	private ReviewKeyword(Review review, KeywordType keywords) {
-		this.review  = review;
+		validate(review, keywords);
+		this.review = review;
 		this.keywords = keywords;
 	}
+
+	public static ReviewKeyword of(Review review, KeywordType keywords) {
+		return new ReviewKeyword(review, keywords);
+	}
+
+	//유효성 검사
+	private static void validate(Review review, KeywordType keywords) {
+		if (review == null) {
+			throw new IllegalArgumentException("review는 null일 수 없습니다.");
+		}
+		if (keywords == null) {
+			throw new IllegalArgumentException("keywords는 null일 수 없습니다.");
+		}
+	}
+
+
+
+
 }
