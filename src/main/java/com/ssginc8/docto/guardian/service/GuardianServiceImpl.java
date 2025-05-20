@@ -53,7 +53,7 @@ public class GuardianServiceImpl implements GuardianService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<PatientSummaryResponse> getAllAcceptedMappings() {
-		return repository.findAllByStatus(Status.Accepted).stream()
+		return repository.findAllByStatus(Status.ACCEPTED).stream()
 			.map(pg -> PatientSummaryResponse.of(
 				pg.getPatient().getPatientId(),
 				pg.getPatient().getUser().getName(),

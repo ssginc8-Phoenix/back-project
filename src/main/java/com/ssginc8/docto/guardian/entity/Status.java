@@ -4,9 +4,9 @@ public enum Status {
 
 	/**
 	 * 보호자 권한 상태 Enum
-	 * - Pending: 요청 대기 중
-	 * - Accepted: 수락됨
-	 * - Rejected: 거절됨
+	 * - PENDING: 요청 대기 중
+	 * - ACCEPTED: 수락됨
+	 * - REJECTED: 거절됨
 	 */
-	Pending, Accepted, Rejected;
+	PENDING, ACCEPTED, REJECTED;
 }

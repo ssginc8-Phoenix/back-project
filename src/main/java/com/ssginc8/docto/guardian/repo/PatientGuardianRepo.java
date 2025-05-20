@@ -20,6 +20,6 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	List<PatientGuardian> findAllByStatus(Status status);
 
-	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.status = 'Accepted'")
+	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.status = 'ACCEPTED'")
 	List<PatientGuardian> findAcceptedPatientsByUserId(Long userId);
 }

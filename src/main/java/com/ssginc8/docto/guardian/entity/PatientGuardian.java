@@ -85,7 +85,7 @@ public class PatientGuardian {
 		pg.user = user;
 		pg.patient = patient;
 		pg.invitedAt = invitedAt;
-		pg.status = Status.Pending;
+		pg.status = Status.PENDING;
 		return pg;
 	}
 
