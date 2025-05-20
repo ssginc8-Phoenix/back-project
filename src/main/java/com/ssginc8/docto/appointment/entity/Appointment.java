@@ -50,5 +50,5 @@ public class Appointment extends BaseTimeEntity {
 	@Column(nullable = false)
 	private AppointmentStatus status;
 
-	private Long queueNumber;	// 대기 순번
+	private Long queueNumber;    // 대기 순번
 }
