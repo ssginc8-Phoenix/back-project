@@ -160,4 +160,30 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
+
+	/*
+	 * 재예약: 기존 예약에서 예약 시간 변경
+	 */
+	@Transactional
+	@Override
+	public AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime) {
+		Appointment original = appointmentProvider.getAppointmentById(appointmentId);
+
+		original.changeStatus(AppointmentStatus.CANCELLED);
+		String qaContent = qaPostProvider.getQaPostByAppointment(original);
+
+		Appointment newAppointment = Appointment.create(
+			original.getPatientGuardian(),
+			original.getHospital(),
+			original.getDoctor(),
+			newTime,
+			original.getAppointmentType(),
+			original.getSymptom(),
+			AppointmentStatus.REQUESTED,
+			original.getPaymentType()
+		);
+
+		appointmentProvider.save(newAppointment);
+		return AppointmentResponse.fromEntity(newAppointment, qaContent);
+	}
 }

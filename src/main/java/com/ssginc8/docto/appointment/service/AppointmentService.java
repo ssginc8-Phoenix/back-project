@@ -1,5 +1,7 @@
 package com.ssginc8.docto.appointment.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,5 +24,6 @@ public interface AppointmentService {
 	// 예약 상태 업데이트
 	AppointmentResponse updateAppointmentStatus(Long appointmentId, String statusStr);
 
-	// 진료 삭제
+	// 재예약 (예약 시간만 변경)
+	AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime);
 }

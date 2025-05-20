@@ -3,7 +3,6 @@ package com.ssginc8.docto.appointment.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +16,9 @@ import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
+import com.ssginc8.docto.appointment.dto.RescheduleRequest;
+import com.ssginc8.docto.appointment.dto.UpdateRequest;
+import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.appointment.service.AppointmentService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
+	private final AppointmentProvider appointmentProvider;
 
 	/* ✅ 진료 예약 접수
 	*	URL: /api/v1/appointments
@@ -46,20 +49,23 @@ public class AppointmentController {
 	 *	BODY: 변화시킬려는 상태 str
 	 */
 	@PatchMapping("/{appointmentId}/status")
-	public ResponseEntity<AppointmentResponse> updateAppointmentStatus(@PathVariable Long appointmentId, @RequestBody String statusStr) {
+	public ResponseEntity<AppointmentResponse> updateAppointmentStatus(
+		@PathVariable Long appointmentId,
+		@RequestBody UpdateRequest request) {
 
-		return ResponseEntity.ok(appointmentService.updateAppointmentStatus(appointmentId, statusStr));
+		return ResponseEntity.ok(appointmentService.updateAppointmentStatus(appointmentId, request.getStatus()));
 	}
 
+	/* ✅ 재예약
+	 *	URL: /api/v1/appointments/{appointmentId}/reschedule
+	 *	Method: POST
+	 */
+	@PostMapping("/{appointmentId}/reschedule")
+	public ResponseEntity<AppointmentResponse> rescheduleAppointment(
+		@PathVariable Long appointmentId,
+		@RequestBody RescheduleRequest request) {
 
-	/* 진료 예약 취소
-		URL: /api/v1/appointments/{appointmentId}
-		Method: DELETE
-	*/
-	@DeleteMapping("/{appointmentId}")
-	public ResponseEntity<?> cancelAppointment(@PathVariable Long appointmentId) {
-
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(appointmentService.rescheduleAppointment(appointmentId, request.getNewTime()));
 	}
 
 
@@ -88,11 +94,6 @@ public class AppointmentController {
 
 	/* 특정 예약의 대기순번 확인
 		URL: /api/vi/appointment/{appointmentId}/waiting
-		Method: GET
-	*/
-
-	/* 특정 병원의 대기 인원 확인
-		URL: /api/v1/hospitals/{hospitalId}/waiting
 		Method: GET
 	*/
 }
