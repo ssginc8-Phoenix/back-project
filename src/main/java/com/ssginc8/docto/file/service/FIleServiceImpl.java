@@ -10,7 +10,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssginc8.docto.file.dto.UploadFile;
-import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.global.error.exception.fileException.FileUploadFailedException;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class FIleServiceImpl implements FileService {
 	private final AmazonS3 amazonS3;
-	private final FileProvider fileProvider;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;

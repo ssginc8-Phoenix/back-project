@@ -1,7 +1,5 @@
 package com.ssginc8.docto.user.service;
 
-import java.io.IOException;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +8,6 @@ import com.ssginc8.docto.file.dto.UploadFile;
 import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
-import com.ssginc8.docto.global.error.exception.fileException.FileUploadFailedException;
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
 import com.ssginc8.docto.user.dto.AddUser;
 import com.ssginc8.docto.user.entity.LoginType;
@@ -46,22 +43,18 @@ public class UserServiceImpl implements UserService {
 
 		// 3. 프로필 사진이 있는 경우 -> s3에 저장
 		if (!request.getProfileImage().isEmpty()) {
-			UploadFile.Request uploadFile = UploadFile.Request.builder()
+			UploadFile.Request fileRequest = UploadFile.Request.builder()
 				.file(request.getProfileImage())
 				.category(Category.USER)
 				.build();
 
-			try {
+			UploadFile.Response fileResponse = fileService.uploadImage(fileRequest);
 
-				UploadFile.Response uploadImage = fileService.uploadImage(uploadFile);
-				profileImage = File.createFile(uploadImage.getCategory(), uploadImage.getFileName(),
-					uploadImage.getOriginalFileName(),
-					uploadImage.getUrl(), uploadImage.getBucket(), uploadImage.getFileSize(),
-					uploadImage.getFileType());
+			profileImage = File.createFile(fileResponse.getCategory(), fileResponse.getFileName(),
+				fileResponse.getOriginalFileName(),
+				fileResponse.getUrl(), fileResponse.getBucket(), fileResponse.getFileSize(),
+				fileResponse.getFileType());
 
-			} catch (IOException e) {
-				throw new FileUploadFailedException();
-			}
 		}
 
 		// 4. User 엔티티 생성
