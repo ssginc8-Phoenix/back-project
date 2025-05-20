@@ -67,6 +67,8 @@ public class User extends BaseTimeEntity {
 
 	private LocalDateTime suspensionExpiresAt;
 
+	private Long panalty;
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "file_id")
 	private File profileImage;
