@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -60,16 +61,13 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Role role;
 
-	@Column(nullable = false)
 	private Boolean suspended;
 
-	@Column(nullable = false)
 	private LocalDateTime suspendedAt;
 
-	@Column(nullable = false)
 	private LocalDateTime suspensionExpiresAt;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "file_id")
 	private File profileImage;
 

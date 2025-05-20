@@ -19,6 +19,7 @@ import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.validator.CreateUserValidator;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,6 +27,8 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+	private final EntityManager em;
+
 	private final FileService fileService;
 	private final UserProvider userProvider;
 	private final CreateUserValidator createUserValidator;
@@ -49,9 +52,13 @@ public class UserServiceImpl implements UserService {
 				.build();
 
 			try {
-				profileImage = fileService.uploadImage(uploadFile);
-				log.info("--------------------file id-----------------");
-				log.info(profileImage.getFileId());
+
+				UploadFile.Response uploadImage = fileService.uploadImage(uploadFile);
+				profileImage = File.createFile(uploadImage.getCategory(), uploadImage.getFileName(),
+					uploadImage.getOriginalFileName(),
+					uploadImage.getUrl(), uploadImage.getBucket(), uploadImage.getFileSize(),
+					uploadImage.getFileType());
+
 			} catch (IOException e) {
 				throw new FileUploadFailedException();
 			}
@@ -62,9 +69,11 @@ public class UserServiceImpl implements UserService {
 			request.getPhone(), request.getAddress(), LoginType.EMAIL, Role.valueOf(request.getRole()),
 			profileImage);
 
+		user = userProvider.createUser(user);
+
 		// 5. user 저장 후 만들어진 user id 반환
 		return AddUser.Response.builder()
-			.userId(userProvider.createUser(user).getUserId())
+			.userId(user.getUserId())
 			.build();
 	}
 

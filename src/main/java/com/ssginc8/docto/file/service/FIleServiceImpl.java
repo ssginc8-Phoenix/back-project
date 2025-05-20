@@ -10,7 +10,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssginc8.docto.file.dto.UploadFile;
-import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.global.error.exception.fileException.FileUploadFailedException;
 
@@ -26,7 +25,7 @@ public class FIleServiceImpl implements FileService {
 	private String bucket;
 
 	// S3에 파일 업로드
-	public File uploadImage(UploadFile.Request request) {
+	public UploadFile.Response uploadImage(UploadFile.Request request) {
 		String folderPath = request.getCategory().getCategoryName() + "/";
 		String fileName =
 			folderPath + UUID.randomUUID() + "_" + request.getFile().getOriginalFilename(); // 고유한 파일 이름 생성
@@ -35,6 +34,7 @@ public class FIleServiceImpl implements FileService {
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentType(request.getFile().getContentType());
 		metadata.setContentLength(request.getFile().getSize());
+
 		try {
 			// S3에 파일 업로드 요청 생성
 			PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName,
@@ -49,14 +49,15 @@ public class FIleServiceImpl implements FileService {
 
 		getPublicUrl(fileName);
 
-		return File.createFile(request.getCategory(), fileName, request.getFile().getOriginalFilename(),
-			getPublicUrl(fileName), bucket,
-			request.getFile().getSize(), request.getFile().getContentType());
-
-		// return fileProvider.saveFile(
-		// 	File.createFile(request.getCategory(), fileName, request.getFile().getOriginalFilename(),
-		// 		getPublicUrl(fileName), bucket,
-		// 		request.getFile().getSize(), request.getFile().getContentType()));
+		return UploadFile.Response.builder()
+			.category(request.getCategory())
+			.fileName(fileName)
+			.originalFileName(request.getFile().getOriginalFilename())
+			.url(getPublicUrl(fileName))
+			.bucket(bucket)
+			.fileSize(request.getFile().getSize())
+			.fileType(request.getFile().getContentType())
+			.build();
 	}
 
 	private String getPublicUrl(String fileName) {

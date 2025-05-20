@@ -10,8 +10,8 @@ import lombok.Getter;
 public class UploadFile {
 	@Getter
 	public static class Request {
-		private MultipartFile file;
-		private Category category;
+		private MultipartFile file; // 업로드 할 파일
+		private Category category; // 어떤 카테고리에 속하는지
 
 		@Builder
 		public Request(MultipartFile file, Category category) {
