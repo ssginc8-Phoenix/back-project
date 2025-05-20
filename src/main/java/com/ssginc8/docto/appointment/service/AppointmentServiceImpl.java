@@ -16,7 +16,6 @@ import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.entity.AppointmentType;
 import com.ssginc8.docto.appointment.entity.PaymentType;
 import com.ssginc8.docto.appointment.provider.AppointmentProvider;
-import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
@@ -36,8 +35,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
-
-	private final AppointmentRepo appointmentRepo;
 
 	private final AppointmentProvider appointmentProvider;
 
@@ -134,7 +131,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			paymentType
 		);
 
-		appointmentRepo.save(appointment);
+		appointmentProvider.save(appointment);
 
 		// 6. 질문(QaPost) 저장
 		if (request.getQuestion() != null && !request.getQuestion().isBlank()) {

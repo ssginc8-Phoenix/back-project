@@ -59,5 +59,10 @@ public class AppointmentProvider {
 			patientGuardian, doctor, appointmentTime);
 	}
 
+	@Transactional
+	public Appointment save(Appointment appointment) {
+		return appointmentRepo.save(appointment);
+	}
+
 
 }

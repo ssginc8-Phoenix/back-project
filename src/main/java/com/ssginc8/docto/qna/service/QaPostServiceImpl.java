@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.qna.entity.QaPost;
-import com.ssginc8.docto.qna.repo.QaPostRepo;
+import com.ssginc8.docto.qna.provider.QaPostProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QaPostServiceImpl implements QaPostService{
 
-	private final QaPostRepo qaPostRepo;
+	private final QaPostProvider qaPostProvider;
 
 	@Transactional
 	@Override
 	public QaPost createQaPost(Appointment appointment, String content) {
 		QaPost post = QaPost.create(appointment, content);
-		return qaPostRepo.save(post);
+		return qaPostProvider.save(post);
 	}
 }

@@ -22,4 +22,8 @@ public class QaPostProvider {
 			.orElse(null);
 	}
 
+	@Transactional
+	public QaPost save(QaPost qaPost) {
+		return qaPostRepo.save(qaPost);
+	}
 }
