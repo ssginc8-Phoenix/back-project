@@ -2,6 +2,7 @@ package com.ssginc8.docto.appointment.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class AppointmentRequest {
 	private Long userId;	// 보호자
 	private Long patientId;	// 환자
 
+	@NotBlank(message = "증상은 필수 입력 항목입니다.")
 	private String symptom;
 	private String question;
 

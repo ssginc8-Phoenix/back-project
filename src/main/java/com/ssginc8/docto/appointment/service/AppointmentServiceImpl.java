@@ -90,28 +90,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 		Doctor doctor = doctorProvider.getDoctorById(request.getDoctorId());
 		
 		// 4. request 데이터 검증
+		// 1) validate appointmentTime
+		validateAppointmentTime(doctor, patientGuardian, request.getAppointmentTime());
 
-		// 1) 예약 시간 과거 시간 입력 불가
-		if(request.getAppointmentTime().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("과거 시간으로 예약할 수 없습니다.");
-		}
-
-		// 2) 예약 시간과 의사 스케쥴 비교
-		doctorScheduleProvider.validateDoctorSchedule(doctor, request.getAppointmentTime());
-
-		// 3) 증상 필수값 검사
-		if (request.getSymptom() == null || request.getSymptom().trim().isEmpty()) {
-			throw new IllegalArgumentException("증상은 필수 입력 항목입니다.");
-		}
-
-		// 4) 수납 방식과 예약 타입 enum 값들 유효성 검사
+		// 2) 수납 방식과 예약 타입 enum 값들 유효성 검사
 		AppointmentType appointmentType = AppointmentType.from(request.getAppointmentType());
 		PaymentType paymentType = PaymentType.from(request.getPaymentType());
-
-		// 5) 중복 예약 방지
-		if (appointmentProvider.existsDuplicateAppointment(patientGuardian, doctor, request.getAppointmentTime())) {
-			throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
-		}
 
 			// 동일 환자 예약 제한 (30분) : 다른 병원, 다른 의사라도
 
@@ -168,9 +152,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime) {
 		Appointment original = appointmentProvider.getAppointmentById(appointmentId);
-
 		original.changeStatus(AppointmentStatus.CANCELLED);
 		String qaContent = qaPostProvider.getQaPostByAppointment(original);
+
+		validateAppointmentTime(original.getDoctor(), original.getPatientGuardian(), newTime);
 
 		Appointment newAppointment = Appointment.create(
 			original.getPatientGuardian(),
@@ -185,5 +170,26 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(newAppointment);
 		return AppointmentResponse.fromEntity(newAppointment, qaContent);
+	}
+
+	// 예약시간 Validate
+	private void validateAppointmentTime(
+		Doctor doctor,
+		PatientGuardian patientGuardian,
+		LocalDateTime appointmentTime
+	) {
+
+		// 1) 과거 시간 불가
+		if (appointmentTime.isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("과거 시간으로 예약할 수 없습니다.");
+		}
+
+		// 2) 예약 시간과 의사 스케쥴 비교
+		doctorScheduleProvider.validateDoctorSchedule(doctor, appointmentTime);
+
+		// 3)중복 예약 체크
+		if (appointmentProvider.existsDuplicateAppointment(patientGuardian, doctor, appointmentTime)) {
+			throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
+		}
 	}
 }
