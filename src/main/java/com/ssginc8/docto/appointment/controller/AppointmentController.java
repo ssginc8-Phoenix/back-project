@@ -18,7 +18,6 @@ import com.ssginc8.docto.appointment.dto.AppointmentResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
-import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.appointment.service.AppointmentService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
-	private final AppointmentProvider appointmentProvider;
 
 	/* ✅ 진료 예약 접수
 	*	URL: /api/v1/appointments
@@ -92,8 +90,4 @@ public class AppointmentController {
 		return ResponseEntity.ok(appointmentService.getAppointmentDetail(appointmentId));
 	}
 
-	/* 특정 예약의 대기순번 확인
-		URL: /api/vi/appointment/{appointmentId}/waiting
-		Method: GET
-	*/
 }

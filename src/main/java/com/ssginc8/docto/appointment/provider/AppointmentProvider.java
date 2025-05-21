@@ -1,7 +1,5 @@
 package com.ssginc8.docto.appointment.provider;
 
-import static com.ssginc8.docto.appointment.entity.QAppointment.*;
-
 import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
@@ -9,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.querydsl.core.BooleanBuilder;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.repo.AppointmentRepo;
@@ -27,21 +24,7 @@ public class AppointmentProvider {
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentListByCondition(Pageable pageable, AppointmentSearchCondition condition) {
 
-		BooleanBuilder builder = new BooleanBuilder();
-
-		if (condition.getUserId() != null) {
-			builder.and(appointment.patientGuardian.patient.user.userId.eq(condition.getUserId()));
-		}
-
-		if (condition.getHospitalId() != null) {
-			builder.and(appointment.hospital.hospitalId.eq(condition.getHospitalId()));
-		}
-
-		if (condition.getDoctorId() != null) {
-			builder.and(appointment.doctor.user.userId.eq(condition.getDoctorId()));
-		}
-
-		return appointmentRepo.findAll(builder, pageable);
+		return appointmentRepo.findAllByCondition(condition, pageable);
 	}
 
 

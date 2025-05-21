@@ -11,7 +11,8 @@ import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 
-public interface AppointmentRepo extends JpaRepository<Appointment, Long>, QuerydslPredicateExecutor<Appointment> {
+public interface AppointmentRepo
+	extends JpaRepository<Appointment, Long>, QuerydslPredicateExecutor<Appointment>, QAppointmentRepo {
 
 	@EntityGraph(attributePaths = {
 		"hospital",
