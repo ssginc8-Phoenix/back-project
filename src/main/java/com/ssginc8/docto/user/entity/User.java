@@ -61,7 +61,8 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Role role;
 
-	private Boolean suspended;
+	@Column(nullable = false)
+	private Boolean isSuspended;
 
 	private LocalDateTime suspendedAt;
 
@@ -70,27 +71,26 @@ public class User extends BaseTimeEntity {
 	private Long panalty;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "file_id")
+	@JoinColumn(name = "fileId")
 	private File profileImage;
 
-	private User(String uuid, String email, String password, String name, String phone, String address,
-		LoginType loginType, Role role, File profileImage) {
+	private User(String uuid, String email, String password, String name,
+		LoginType loginType, Role role, File profileImage, Boolean isSuspended) {
 		this.uuid = uuid;
 		this.email = email;
 		this.password = password;
 		this.name = name;
-		this.phone = phone;
-		this.address = address;
 		this.loginType = loginType;
 		this.role = role;
 		this.profileImage = profileImage;
+		this.isSuspended = isSuspended;
 	}
 
-	public static User createUser(String email, String password, String name, String phone, String address,
+	public static User createUser(String email, String password, String name,
 		LoginType loginType, Role role, File profileImage) {
 		String uuid = UUID.randomUUID().toString();
 
-		return new User(uuid, email, password, name, phone, address, loginType, role, profileImage);
+		return new User(uuid, email, password, name, loginType, role, profileImage, false);
 	}
 
 	public void updateProfileImage(File profileImage) {
