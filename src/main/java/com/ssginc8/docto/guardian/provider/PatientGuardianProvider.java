@@ -32,9 +32,9 @@ public class PatientGuardianProvider {
 		PatientGuardian relation = optionalRelation.get();
 
 		switch (relation.getStatus()) {
-			case Pending -> throw new IllegalArgumentException("보호자가 환자 요청을 아직 수락하지 않았습니다.");
-			case Rejected -> throw new IllegalArgumentException("해당 보호자-환자 관계는 거절되었습니다.");
-			case Accepted -> {
+			case PENDING -> throw new IllegalArgumentException("보호자가 환자 요청을 아직 수락하지 않았습니다.");
+			case REJECTED -> throw new IllegalArgumentException("해당 보호자-환자 관계는 거절되었습니다.");
+			case ACCEPTED -> {
 				return relation;
 			}
 			default -> throw new IllegalArgumentException("알 수 없는 보호자-환자 관계 상태입니다.");
