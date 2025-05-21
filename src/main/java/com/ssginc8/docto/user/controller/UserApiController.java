@@ -26,7 +26,7 @@ public class UserApiController {
 	}
 
 	@PostMapping("/users/register")
-	public AddUser.Response signupUser(@Valid AddUser.Request request) {
+	public AddUser.Response signup(@Valid AddUser.Request request) {
 		return AddUser.Response.builder()
 			.userId(userService.createUser(request).getUserId())
 			.build();
