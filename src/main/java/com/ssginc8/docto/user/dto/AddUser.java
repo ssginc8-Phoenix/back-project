@@ -29,19 +29,18 @@ public class AddUser {
 		private MultipartFile profileImage;
 
 		private String role;
-
-		private String phone;
-
-		private String address;
 	}
 
 	@Getter
 	public static class Response {
 		private Long userId;
 
+		private String role;
+
 		@Builder
-		public Response(Long userId) {
+		public Response(Long userId, String role) {
 			this.userId = userId;
+			this.role = role;
 		}
 	}
 }
