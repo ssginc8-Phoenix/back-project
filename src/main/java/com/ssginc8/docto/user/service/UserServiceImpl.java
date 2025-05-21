@@ -16,7 +16,6 @@ import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.validator.CreateUserValidator;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -24,8 +23,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-	private final EntityManager em;
-
 	private final FileService fileService;
 	private final UserProvider userProvider;
 	private final CreateUserValidator createUserValidator;
@@ -54,19 +51,18 @@ public class UserServiceImpl implements UserService {
 				fileResponse.getOriginalFileName(),
 				fileResponse.getUrl(), fileResponse.getBucket(), fileResponse.getFileSize(),
 				fileResponse.getFileType());
-
 		}
 
 		// 4. User 엔티티 생성
 		User user = User.createUser(request.getEmail(), encryptedPassword, request.getName(),
-			request.getPhone(), request.getAddress(), LoginType.EMAIL, Role.valueOf(request.getRole()),
-			profileImage);
+			LoginType.EMAIL, Role.valueOf(request.getRole()), profileImage);
 
 		user = userProvider.createUser(user);
 
 		// 5. user 저장 후 만들어진 user id 반환
 		return AddUser.Response.builder()
 			.userId(user.getUserId())
+			.role(user.getRole().getKey())
 			.build();
 	}
 
