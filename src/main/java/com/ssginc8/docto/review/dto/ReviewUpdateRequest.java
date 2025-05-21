@@ -1,5 +1,6 @@
 package com.ssginc8.docto.review.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssginc8.docto.review.entity.KeywordType;
@@ -9,9 +10,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 
-//수정 가능한 것은 내용이랑 키워드
+
 @Data
 public class ReviewUpdateRequest{
+
+
+	private LocalDateTime updatedAt;
 
 	@NotBlank(message = "contents는 빈 값일 수 없습니다.")
 	@Size(max = 1000, message = "contents는 최대 1000자까지 입력 가능합니다.")
