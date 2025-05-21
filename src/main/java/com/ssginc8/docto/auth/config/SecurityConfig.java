@@ -10,8 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ssginc8.docto.auth.jwt.filter.TokenAuthenticationFilter;
+import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
+import com.ssginc8.docto.auth.jwt.service.RefreshTokenService;
 import com.ssginc8.docto.auth.service.UserDetailService;
+import com.ssginc8.docto.util.CookieUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +24,10 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+	private final TokenProvider tokenProvider;
+	private final RefreshTokenService refreshTokenService;
 	private final UserDetailService userDetailService;
+	private final CookieUtil cookieUtil;
 
 	// 특정 http 요청에 대해 웹 기반 보안 구성
 	@Bean
@@ -54,6 +62,8 @@ public class SecurityConfig {
 
 				.anyRequest().authenticated()) // 그외 모든 요청 인증 필요
 			.csrf(AbstractHttpConfigurer::disable)
+			.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, refreshTokenService, cookieUtil),
+				UsernamePasswordAuthenticationFilter.class)
 			.build();
 	}
 

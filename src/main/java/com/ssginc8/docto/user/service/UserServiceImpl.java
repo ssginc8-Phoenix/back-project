@@ -4,12 +4,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.auth.jwt.dto.Token;
+import com.ssginc8.docto.auth.jwt.entity.RefreshToken;
+import com.ssginc8.docto.auth.jwt.provider.RefreshTokenProvider;
+import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.file.dto.UploadFile;
 import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
+import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.user.dto.AddUser;
+import com.ssginc8.docto.user.dto.Login;
 import com.ssginc8.docto.user.entity.LoginType;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
@@ -27,8 +33,11 @@ public class UserServiceImpl implements UserService {
 	private final UserProvider userProvider;
 	private final CreateUserValidator createUserValidator;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final TokenProvider tokenProvider;
+	private final RefreshTokenProvider refreshTokenProvider;
 
 	@Transactional
+	@Override
 	public AddUser.Response createUser(AddUser.Request request) {
 		// 1. 이메일 중복 검사, 패스워드 검증
 		createUserValidator.validate(request);
@@ -59,6 +68,10 @@ public class UserServiceImpl implements UserService {
 
 		user = userProvider.createUser(user);
 
+		log.info(user.getRole().getKey());
+
+		log.info(Role.valueOf(request.getRole()).getKey());
+
 		// 5. user 저장 후 만들어진 user id 반환
 		return AddUser.Response.builder()
 			.userId(user.getUserId())
@@ -71,5 +84,36 @@ public class UserServiceImpl implements UserService {
 		if (userProvider.checkEmail(email).isPresent()) {
 			throw new DuplicateEmailException();
 		}
+	}
+
+	@Transactional
+	@Override
+	public Login.Response login(Login.Request request) {
+		User user = userProvider.loadUserByEmail(request.getEmail());
+
+		if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new InvalidPasswordException();
+		}
+
+		Token tokens = tokenProvider.generateTokens(
+			user.getUuid(),
+			user.getRole().getKey()
+		);
+
+		RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
+
+		if (refreshToken != null) {
+			refreshToken.update(tokens.getRefreshToken());
+		} else {
+			refreshToken = RefreshToken.createRefreshToken(user.getUuid(), tokens.getRefreshToken());
+			refreshTokenProvider.saveRefreshToken(refreshToken);
+		}
+
+		return Login.Response.builder()
+			.accessToken(tokens.getAccessToken())
+			.refreshToken(tokens.getRefreshToken())
+			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
+			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
+			.build();
 	}
 }

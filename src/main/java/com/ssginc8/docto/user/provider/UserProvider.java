@@ -24,6 +24,10 @@ public class UserProvider {
 		return userRepo.findByEmail(email).orElseThrow(UserNotFoundException::new);
 	}
 
+	public User loadUserByUuid(String uuid) {
+		return userRepo.findByUuid(uuid).orElseThrow(UserNotFoundException::new);
+	}
+
 	public User createUser(User user) {
 		return userRepo.save(user);
 	}

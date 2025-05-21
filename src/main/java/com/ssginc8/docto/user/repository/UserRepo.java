@@ -8,4 +8,6 @@ import com.ssginc8.docto.user.entity.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
 	Optional<User> findByEmail(String email);
+
+	Optional<User> findByUuid(String uuid);
 }

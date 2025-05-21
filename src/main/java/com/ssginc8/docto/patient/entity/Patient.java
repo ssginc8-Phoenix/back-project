@@ -29,6 +29,6 @@ public class Patient extends BaseTimeEntity {
 	@JoinColumn(name = "userId", nullable = false)
 	private User user;
 
-	@Column(nullable = false, length = 10)
+	@Column(nullable = false)
 	String residentRegistrationNumber;
 }
