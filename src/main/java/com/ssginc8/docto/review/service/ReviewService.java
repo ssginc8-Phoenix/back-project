@@ -15,17 +15,17 @@ public interface ReviewService {
 	Long createReview(ReviewCreateRequest request, Long userId);
 
 	//리뷰 수정
-	ReviewResponse updateReview( ReviewUpdateRequest request, Long ReviewId);
+	ReviewResponse updateReview( ReviewUpdateRequest request, Long reviewId);
 
 	//리뷰 삭제
 	void deleteReview(Long reviewId);
 
 	// 내 리뷰 목록 조회
-	Page<ReviewMyListResponse> getMyReviews(Pageable pageable);
+	Page<ReviewMyListResponse> getMyReviews(Long userId, Pageable pageable);
 
 
 	// (관리자용) 전체 리뷰 목록 조회
-	Page<ReviewAllListResponse> getAllReviews(Long HospitalId, Pageable pageable);
+	Page<ReviewAllListResponse> getAllReviews(Long hospitalId, Pageable pageable);
 
 
 }

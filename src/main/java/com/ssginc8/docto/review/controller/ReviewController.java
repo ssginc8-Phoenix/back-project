@@ -28,7 +28,6 @@ public class ReviewController {
 	public ResponseEntity<Long> create(@RequestBody ReviewCreateRequest dto) {
 		Long id = reviewService.createReview(dto, dto.getUserId());
 		//리뷰 아이디 반환
-
 		return ResponseEntity.ok(id);
 	}
 
@@ -49,12 +48,15 @@ public class ReviewController {
 		return ResponseEntity.noContent().build();
 	}
 
-	//나의 예약 조회 (/api/v1/users/me/reviews?userId=7&page=0&size)
+
+
+	//나의 예약 조회
 	@GetMapping("/users/me/reviews")
-	public ResponseEntity<Page<ReviewMyListResponse>> getMyReviews(Pageable pageable
-	) {Page<ReviewMyListResponse> page = reviewService.getMyReviews(pageable);
+	public ResponseEntity<Page<ReviewMyListResponse>> getMyReviews(@RequestParam("userId") Long userId, Pageable pageable
+	) {Page<ReviewMyListResponse> page = reviewService.getMyReviews(userId, pageable);
 		return ResponseEntity.ok(page);
 	}
+
 
 	//병원 리스트 에서 전체 리뷰 조회
 	@GetMapping("/hospitals/{hospitalId}/reviews")

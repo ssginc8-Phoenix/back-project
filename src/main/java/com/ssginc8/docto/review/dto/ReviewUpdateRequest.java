@@ -22,7 +22,7 @@ public class ReviewUpdateRequest{
 	private String contents;
 
 	@Size(min = 3, max = 8, message = "키워드는 3~8개 사이로 선택 가능합니다.")
-	private List<KeywordType> keywords;
+	private List<String> keywords;
 
 
 }

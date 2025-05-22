@@ -1,10 +1,15 @@
 package com.ssginc8.docto.review.entity;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.user.entity.User;
-import com.ssginc8.docto.global.base.BaseTimeEntity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,66 +17,76 @@ import lombok.*;
 @Table(name = "tbl_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Review extends BaseTimeEntity {
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "reviewId")
 	private Long reviewId;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "appointmentId", nullable = false)
-	private Appointment appointment;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "doctorId", nullable = false)
-	private Doctor doctor;
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "hospitalId", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "hospital_id")
 	private Hospital hospital;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", nullable = false)
-	private User author;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "doctor_id", nullable = false)
+	private Doctor doctor;
 
-	@Column(name = "contents", columnDefinition = "TEXT", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "appointment_id")
+	private Appointment appointment;
+
+	@Column(nullable = false, length = 1000)
 	private String contents;
 
-	@Column(name = "reportCount", nullable = false)
-	private Long reportCount = 0L;
 
-	//유효성 검증
-	private static void validateContents(String contents) {
-		if (contents == null || contents.isBlank()) {
-			throw new IllegalArgumentException("contents는 빈 값일 수 없습니다.");
-		}
-	}
+	@Column(nullable = false)
+	private Long reportCount;
+
+	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "tbl_review_keyword",
+		joinColumns = @JoinColumn(name = "review_id"))
+	@Enumerated(EnumType.STRING)
+	@Column(name = "keyword", nullable = false)
+	private Set<KeywordType> keywords = new HashSet<>();
 
 
+	//리뷰 생성 팩토리 메서드 (user, contents, keywords 모두 필수)
 	public static Review create(
-		Appointment appointment,
-		Doctor doctor,
+		User user,
 		Hospital hospital,
-		User author,
-		String contents
+		Doctor doctor,
+		Appointment appointment,
+		String contents,
+		Collection<KeywordType> keywordTypes
 	) {
-		validateContents(contents);
 		Review review = new Review();
-		review.appointment = appointment;
-		review.doctor = doctor;
+		review.user = user;
 		review.hospital = hospital;
-		review.author = author;
+		review.doctor = doctor;
+		review.appointment = appointment;
 		review.contents = contents;
 		review.reportCount = 0L;
+		review.keywords.addAll(keywordTypes);
 		return review;
 	}
 
 
-	//신고수 증가
-	public void incrementReportCount() {
-		this.reportCount++;
+	//내용 수정
+	public void updateContents(String newContents) {
+		this.contents = newContents;
 	}
 
 
+	// 신고 횟수 증가
+	public void incrementReportCount() {
+		this.reportCount++;
+	}
 }

@@ -2,16 +2,15 @@ package com.ssginc8.docto.review.provider;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.review.entity.Review;
 import com.ssginc8.docto.review.repository.ReviewRepo;
 
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-
-//“조회(Read)” 기능만 모아둔 곳
 
 @Component
 @RequiredArgsConstructor
@@ -21,29 +20,52 @@ public class ReviewProvider {
 
 
 
+	//내가 쓴 리뷰 조회
+	@Transactional(readOnly = true)
+	public Page<Review> getMyReviews(Long userId, Pageable pageable) {
+		return reviewRepo.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
+	}
 
-	//단건 조회
+
+	//병원에서 전체 리뷰 조회
+	@Transactional(readOnly = true)
+	public Page<Review> getHospitalReviews(Long hospitalId, Pageable pageable) {
+		return reviewRepo.findByHospitalHospitalId(hospitalId, pageable);
+	}
+
+
+
+	//리뷰 단건 조회
 	@Transactional(readOnly = true)
 	public Review getById(Long reviewId) {
-		return reviewRepo.findById(reviewId)
-			.orElseThrow(() -> new IllegalArgumentException(
-				"리뷰가 존재하지 않습니다. id=" + reviewId));
+		return reviewRepo.findWithGraphByReviewId(reviewId)
+			.orElseThrow(() -> new IllegalArgumentException("리뷰가 없습니다. id=" + reviewId));
+	}
 
+
+	//리뷰 저장
+	@Transactional
+	public Review save(Review review) {
+		return reviewRepo.save(review);
 	}
 
 
 
-
-	//마이페이지에서 본인이 작성한 리뷰 조회(내림차순)
-	@Transactional(readOnly = true)
-	public List<Review> getMyReviewsOrdered(Long userId) {
-		return reviewRepo.findByAuthorUserIdOrderByCreatedAtDesc(userId);
+	//키워드 삭제
+	@Transactional
+	public void deleteByReviewId(Long reviewId) {
+		Review review = reviewRepo.findById(reviewId)
+			.orElseThrow(() -> new IllegalArgumentException("리뷰가 없습니다. id=" + reviewId));
+		review.getKeywords().clear();
 	}
 
-	@Transactional(readOnly = true)
-	public List<Review> getAllReviews() {
-		return reviewRepo.findAll();
+	//리뷰 삭제
+	@Transactional
+	public void deleteById(Long reviewId) {
+		reviewRepo.deleteById(reviewId);
 	}
+
+
 
 
 

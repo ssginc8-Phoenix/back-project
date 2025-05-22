@@ -7,39 +7,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.review.entity.Review;
-import com.ssginc8.docto.user.entity.User;
+
+
 
 @Repository
 public interface ReviewRepo extends JpaRepository<Review, Long> {
 
-	//연관 엔티티 한 번에 패치해서 단건 조회
-	@Override
+
+	Page<Review> findByUserUserIdOrderByCreatedAtDesc(Long UserId, Pageable pageable);
+
+	Page<Review> findByHospitalHospitalId(Long hospitalId, Pageable pageable);
+
 	@EntityGraph(attributePaths = {
-		"appointment",
-		"hospital",
-		"doctor",
-		"author"
+		"user",
+		"appointment.hospital",
+		"appointment.doctor.user"
 	})
-	Optional<Review> findById(Long reviewId);
+	Optional<Review> findWithGraphByReviewId(Long reviewId);
 
 
-	//기본 전체 페이징 조회
-	@Override
-	Page<Review> findAll(Pageable pageable);
 
 
-	// 특정 예약 엔티티에 달린 리뷰 조회
-	List<Review> findByAppointment(Appointment appointment);
 
-
-	//마이페이지에서 본인이 작성한 리뷰 조회(내림차순)
-	List<Review> findByAuthorUserIdOrderByCreatedAtDesc(Long userId);
-
-
-    // //병원관리자가 자기 병원 리뷰만 조회할 때
-	// List<Review> findByHospitalHospitalId(Long hospitalId);
 }
+
