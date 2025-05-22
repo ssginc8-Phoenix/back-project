@@ -1,0 +1,14 @@
+= DOCTO API 문서
+Author: Your Name
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 예약 요청
+
+include::{snippets}/appointment-controller-test/request-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/request-appointment/request-fields.adoc[]
+include::{snippets}/appointment-controller-test/request-appointment/http-response.adoc[]
+

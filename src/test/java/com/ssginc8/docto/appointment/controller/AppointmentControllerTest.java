@@ -1,5 +1,8 @@
 package com.ssginc8.docto.appointment.controller;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -8,10 +11,17 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -20,9 +30,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
+import com.ssginc8.docto.restdocs.RestDocsConfig;
 
+@ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
+@Import(RestDocsConfig.class)
 public class AppointmentControllerTest {
+
+	@Autowired
+	protected RestDocumentationResultHandler restDocs;
 
 	private MockMvc mockMvc;
 
@@ -33,8 +49,11 @@ public class AppointmentControllerTest {
 	private ObjectMapper objectMapper;
 
 	@BeforeEach
-	public void setUp() {
+	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
+			.apply(documentationConfiguration(restDocumentation))
+			.alwaysDo(MockMvcResultHandlers.print())
+			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 방지
 			.build();
 	}
@@ -57,25 +76,65 @@ public class AppointmentControllerTest {
 		mockMvc.perform(post("/api/v1/appointments")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
-			.andExpect(status().isOk());
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				requestFields(
+					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("보호자 ID"),
+					fieldWithPath("patientId").type(JsonFieldType.NUMBER).description("환자 ID"),
+					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
+					fieldWithPath("doctorId").type(JsonFieldType.NUMBER).description("의사 ID"),
+					fieldWithPath("symptom").type(JsonFieldType.STRING).description("증상"),
+					fieldWithPath("question").type(JsonFieldType.STRING).description("추가 질문").optional(),
+					fieldWithPath("appointmentType").type(JsonFieldType.STRING).description("예약 타입"),
+					fieldWithPath("paymentType").type(JsonFieldType.STRING).description("결제 방식"),
+					fieldWithPath("appointmentTime").type(JsonFieldType.STRING).description("예약 시간 (ISO-8601)")
+				)
+			));
 	}
 
 	@Test
 	@DisplayName("예약 상세 조회")
 	void getAppointmentDetail() throws Exception {
-		mockMvc.perform(get("/api/v1/appointments/{id}", 1L))
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/api/v1/appointments/{appointmentId}", 1L))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				pathParameters(
+					parameterWithName("appointmentId").description("예약 ID")
+				),
+				responseFields(
+					fieldWithPath("appointmentId").type(JsonFieldType.NUMBER).description("예약 ID"),
+					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
+					fieldWithPath("doctorId").type(JsonFieldType.NUMBER).description("의사 ID"),
+					fieldWithPath("patientGuardianId").type(JsonFieldType.NUMBER).description("보호자 ID"),
+
+					fieldWithPath("hospitalName").type(JsonFieldType.STRING).description("병원명"),
+					fieldWithPath("doctorName").type(JsonFieldType.STRING).description("의사 이름"),
+					fieldWithPath("patientName").type(JsonFieldType.STRING).description("환자 이름"),
+
+					fieldWithPath("symptom").type(JsonFieldType.STRING).description("증상"),
+					fieldWithPath("question").type(JsonFieldType.STRING).description("추가 질문"),
+
+					fieldWithPath("appointmentTime").type(JsonFieldType.STRING).description("예약 시간 (ISO-8601 형식)"),
+					fieldWithPath("appointmentType").type(JsonFieldType.STRING).description("예약 유형 (SCHEDULED, IMMEDIATE, TELEMEDICINE)"),
+					fieldWithPath("paymentType").type(JsonFieldType.STRING).description("결제 방식 (예: ONSITE, ONLINE 등)"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("예약 상태 (REQUESTED, CONFIRMED, COMPLETED, CANCELLED)"),
+
+					fieldWithPath("createdAt").type(JsonFieldType.STRING).description("예약 생성 시간 (ISO-8601 형식)")
+				)
+			))
+		;
 	}
 
 	@Test
 	@DisplayName("예약 리스트 조회")
 	void getAppointmentList() throws Exception {
 		mockMvc.perform(get("/api/v1/appointments")
-			.param("userId", "1")
-			.param("page", "0")
-			.param("size", "5"))
+				.param("userId", "1")
+				.param("page", "0")
+				.param("size", "5"))
 			.andExpect(status().isOk());
 	}
+
 
 	@Test
 	@DisplayName("예약 상태 변경")
@@ -83,7 +142,7 @@ public class AppointmentControllerTest {
 		UpdateRequest request = new UpdateRequest();
 		request.setStatus("CONFIRMED");
 
-		mockMvc.perform(patch("/api/v1/appointments/{id}/status", 1L)
+		mockMvc.perform(patch("/api/v1/appointments/{id}/status", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk());
@@ -95,7 +154,7 @@ public class AppointmentControllerTest {
 		RescheduleRequest request = new RescheduleRequest();
 		request.setNewTime(LocalDateTime.now().plusDays(2));
 
-		mockMvc.perform(post("/api/v1/appointments/{id}/reschedule", 1L)
+		mockMvc.perform(post("/api/v1/appointments/{id}/reschedule", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk());
