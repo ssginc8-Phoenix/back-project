@@ -26,6 +26,9 @@ public class AddUser {
 		@NotBlank(message = "이름은 비어있을 수 없습니다.")
 		private String name;
 
+		// 이메일 찾을 때 필요하기 때문
+		private String phone;
+
 		private MultipartFile profileImage;
 
 		private String role;
