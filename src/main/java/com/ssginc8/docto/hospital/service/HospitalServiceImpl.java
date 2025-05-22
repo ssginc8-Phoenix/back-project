@@ -1,26 +1,35 @@
 package com.ssginc8.docto.hospital.service;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssginc8.docto.hospital.dto.HospitalListDTO;
-import com.ssginc8.docto.hospital.dto.HospitalNameDTO;
-import com.ssginc8.docto.hospital.dto.HospitalRequestDTO;
-import com.ssginc8.docto.hospital.dto.HospitalScheduleDTO;
-import com.ssginc8.docto.hospital.dto.HospitalWaitingDTO;
+import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.doctor.repo.DoctorRepository;
+import com.ssginc8.docto.doctor.repo.DoctorScheduleRepository;
+import com.ssginc8.docto.hospital.dto.HospitalRequest;
+import com.ssginc8.docto.hospital.dto.HospitalResponse;
+import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
+import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
+import com.ssginc8.docto.hospital.dto.HospitalUpdate;
+import com.ssginc8.docto.hospital.dto.HospitalWaiting;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
-import com.ssginc8.docto.hospital.repository.HospitalRepository;
-import com.ssginc8.docto.hospital.repository.HospitalScheduleRepository;
-import com.ssginc8.docto.hospital.repository.UserRepository;
+import com.ssginc8.docto.hospital.entity.ProvidedService;
+import com.ssginc8.docto.hospital.provider.HospitalProvider;
+import com.ssginc8.docto.hospital.repository.HospitalRepo;
+import com.ssginc8.docto.hospital.repository.HospitalScheduleRepo;
+import com.ssginc8.docto.hospital.repository.ProvidedServiceRepo;
 import com.ssginc8.docto.user.entity.User;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,219 +37,309 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HospitalServiceImpl implements HospitalService {
 
+	private final HospitalProvider hospitalProvider;
 
-	private final UserRepository userRepository;
-	private final HospitalRepository hospitalRepository;
+	private final HospitalRepo hospitalRepo;
 
-	private final HospitalScheduleRepository scheduleRepository;
-	private final HospitalScheduleRepository hospitalScheduleRepository;
+	private final ProvidedServiceRepo providedServiceRepo;
+	private final HospitalScheduleRepo hospitalScheduleRepo;
+	private final DoctorRepository doctorRepository;
+	private final DoctorScheduleRepository doctorScheduleRepository;
 
-	public List<HospitalListDTO> getHospitalId(Long hospitalId) {
-		Optional<Hospital> hospitals = hospitalRepository.findById(hospitalId);
+	/**
+	 *  위치기반 병원 리스트 조회
+	 */
+	// @Override
+	// public Page<HospitalNameDTO> getHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable) {
+	// 	//로직추가하자
+	// 	Page<Hospital> hospitals = hospitalRepository.findWithinRadius(lat, lng, radius, pageable);
+	// 	return hospitals.map(hospital -> new HospitalNameDTO(hospital.getId(), hospital.getName()));
+	//
+	// 	return hospitalRepository.findHospitalsWithinRadius(lat, lng, radius)
+	// 		.stream()
+	// 		.map(HospitalNameDTO::new)
+	// 		.collect(Collectors.toList());
+	// }
 
-		return hospitals.stream()
-			.map(h -> new HospitalListDTO(
-				h.getHospitalId(),
-				h.getUser().getUserId(),
-				h.getName(),
-				h.getAddress(),
-				h.getNotice(),
-				h.getPhone(),
-				h.getIntroduction(),
-				h.getWaiting(),
-				h.getLongitude(),
-				h.getLatitude(),
-				h.getBusinessRegistrationNumber()
-
-
-
-
-			))
-			.collect(Collectors.toList());
-	}
-
+	/**
+	 * 병원아이디에 대한 상세 조회
+	 *
+	 */
 	@Override
-	public List<HospitalListDTO> getHospitalsWithinRadius(double lat, double lng, double radius) {
+	public HospitalResponse getHospitalId(Long hospitalId) {
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
+		// 병원 ID로 서비스 목록 조회 (단방향으로 수정된 구조)
+		List<ProvidedService> services = providedServiceRepo.findByHospitalHospitalId(hospitalId);
 
-		return hospitalRepository.findHospitalsWithinRadius(lat, lng, radius)
-			.stream()
-			.map(HospitalListDTO::new)
-			.collect(Collectors.toList());
+		String serviceNames = services == null || services.isEmpty()
+			? null
+			: services.stream()
+			.map(ProvidedService::getServiceName)
+			.collect(Collectors.joining(", "));
+
+		return HospitalResponse.builder()
+			.hospitalId(hospital.getHospitalId())
+			.userId(hospital.getUser() != null ? hospital.getUser().getUserId() : null)
+			.name(hospital.getName())
+			.address(hospital.getAddress())
+			.latitude(hospital.getLatitude())
+			.longitude(hospital.getLongitude())
+			.phone(hospital.getPhone())
+			.introduction(hospital.getIntroduction())
+			.notice(hospital.getNotice())
+			.waiting(hospital.getWaiting())
+			.businessRegistrationNumber(hospital.getBusinessRegistrationNumber())
+			.serviceNames(Collections.singletonList(serviceNames))
+			.build();
 	}
 
-	@Override //병원 정보 수정
-	public HospitalRequestDTO updateHospital(Long hospitalId, HospitalRequestDTO hospitalRequestDTO) {
-		Hospital hospital = hospitalRepository.findById(hospitalId)
-			.orElseThrow(() -> new EntityNotFoundException("Hospital not found with id: " + hospitalId));
+
+	/**
+	 * 병원 정보 등록
+	 *
+	 */
+	@Override
+	public Long saveHospital(HospitalRequest hospitalRequest) {
+		// 유저 조회 (null 검사 포함된 내부 구현을 권장)
+		User user = hospitalProvider.getUserById(hospitalRequest.getUserId());
+
+		// 병원 엔티티 생성
+		Hospital hospital = Hospital.create(
+			user,
+			hospitalRequest.getName(),
+			hospitalRequest.getAddress(),
+			hospitalRequest.getPhone(),
+			hospitalRequest.getIntroduction(),
+			hospitalRequest.getLongitude(),
+			hospitalRequest.getLatitude(),
+			hospitalRequest.getWaiting(),
+			hospitalRequest.getNotice(),
+			hospitalRequest.getBusinessRegistrationNumber()
+		);
+
+		// 먼저 병원 저장 → ID 생성됨
+		hospitalProvider.saveHospital(hospital);
 
 
-		hospital.setName(hospitalRequestDTO.getName());
-		hospital.setAddress(hospitalRequestDTO.getAddress());
-		hospital.setPhone(hospitalRequestDTO.getPhone());
-		hospital.setIntroduction(hospitalRequestDTO.getIntroduction());
-		hospital.setBusinessRegistrationNumber(hospitalRequestDTO.getBusinessRegistrationNumber());
-		hospital.setNotice(hospitalRequestDTO.getNotice());
+		// 서비스 엔티티 생성 및 저장
+		ProvidedService service = ProvidedService.create(
+			hospitalRequest.getServiceName().toString(),
+			hospital
 
+		);
 
-		Hospital updatedHospital = hospitalRepository.save(hospital);
+		hospitalProvider.saveServices(service);
 
-		return new HospitalRequestDTO(updatedHospital);
+		return hospital.getHospitalId();
 	}
 
+	/**
+	 * 병원 정보 수정
+	 *
+	 * @return
+	 */
+
+	@Transactional
+	@Override
+	public Long updateHospital(Long hospitalId, HospitalUpdate dto) {
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
+
+		// 병원 기본 정보 업데이트
+		hospital.updateFromDTO(dto);
+
+		// 기존 서비스 모두 삭제
+		providedServiceRepo.deleteByHospitalHospitalId(hospitalId);
+
+		// 새 서비스 등록
+		if (dto.getServiceNames() != null && !dto.getServiceNames().isEmpty()) {
+			List<ProvidedService> newServices = dto.getServiceNames().stream()
+				.filter(name -> name != null && !name.trim().isEmpty())
+				.map(name -> ProvidedService.create(name.trim(), hospital))
+				.collect(Collectors.toList());
+
+			providedServiceRepo.saveAll(newServices);
+
+		}
+
+		return hospitalId;
+	}
+	/**
+	 * 병원 삭제
+	 *
+	 */
 	@Override
 	public void deleteHospital(Long hospitalId) {
-		hospitalRepository.deleteById(hospitalId);
+		// 병원 조회
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
+
+		// 1. 병원이 가진 모든 의사를 조회
+		List<Doctor> doctors = doctorRepository.findByHospital(hospital);
+
+		// 2. 각 의사의 스케줄 먼저 삭제
+		for (Doctor doctor : doctors) {
+			doctorScheduleRepository.deleteByDoctor(doctor);
+		}
+
+		// 3. 의사 삭제
+		doctorRepository.deleteAll(doctors);
+
+		// 4. 병원의 서비스 삭제
+		providedServiceRepo.deleteByHospital(hospital);
+
+		// 5. 병원의 스케줄 삭제
+		hospitalScheduleRepo.deleteByHospitalHospitalId(hospitalId);
+
+		// 6. 병원 삭제
+		hospitalRepo.delete(hospital);
 	}
 
-	@Override//어드민용 병원 이름,주소
-	public List<HospitalNameDTO> getHospitals() {
-		return hospitalRepository.findAll().stream()
-			.map(hospital -> new HospitalNameDTO(hospital.getHospitalId(),hospital.getName(),hospital.getAddress()))
-			.collect(Collectors.toList());
-	}
 
+
+
+
+	/**
+	 * 병원 전체 리스트(어드민)
+	 *
+	 */
 	@Override
-	public List<HospitalScheduleDTO> saveSchedules(Long hospitalId, List<HospitalScheduleDTO> schedules) {
-		Hospital hospital = hospitalRepository.findById(hospitalId)
-			.orElseThrow(() -> new IllegalArgumentException("병원을 찾을 수 없습니다."));
+	public Page<HospitalResponse> getHospitals(Pageable pageable) {
+		return hospitalRepo.findAll(pageable)
+			.map(hospital -> HospitalResponse.builder()
+				.hospitalId(hospital.getHospitalId())
+				.userId(hospital.getUser() != null ? hospital.getUser().getUserId() : null)
+				.name(hospital.getName())
+				.address(hospital.getAddress())
+				.notice(hospital.getNotice())
+				.introduction(hospital.getIntroduction())
+				.latitude(hospital.getLatitude())
+				.longitude(hospital.getLongitude())
+				.phone(hospital.getPhone())
+				.waiting(hospital.getWaiting())
+				.businessRegistrationNumber(hospital.getBusinessRegistrationNumber())
+				.build());
+	}
 
-		for (HospitalScheduleDTO scheduleDTO : schedules) {
+	/**
+	 * 병원 영업시간 등록
+	 *
+	 */
+	@Override
+	public List<HospitalScheduleRequest> saveSchedules(Long hospitalId, List<HospitalScheduleRequest> schedules) {
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
+
+		List<HospitalScheduleRequest> savedDto = new ArrayList<>();
+
+		for (HospitalScheduleRequest scheduleDTO : schedules) {
 			HospitalSchedule schedule = HospitalSchedule.create(
 				hospital,
-				DayOfWeek.valueOf(scheduleDTO.getDayOfWeek().toUpperCase()),
+				null, // ID는 생성 시 null로 넘기고, JPA가 자동 생성
+				DayOfWeek.valueOf(String.valueOf(scheduleDTO.getDayOfWeek())),
 				scheduleDTO.getOpenTime(),
 				scheduleDTO.getCloseTime(),
 				scheduleDTO.getLunchStart(),
 				scheduleDTO.getLunchEnd()
 			);
 
-			scheduleRepository.save(schedule);
+			HospitalSchedule saved = hospitalProvider.saveHospitalSchedule(schedule);
+
+			// 저장된 엔티티로부터 DTO 재생성
+			savedDto.add(new HospitalScheduleRequest(saved));
 		}
-		return schedules;
+
+		return savedDto;
 	}
 
+	/**
+	 * 병원 영업시간 조회
+	 *
+	 */
 
 	@Override
-	public List<HospitalScheduleDTO> getSchedules(Long hospitalId) {
-		return hospitalScheduleRepository.findByHospital_HospitalId(hospitalId).stream()
-			.map(hospital -> new HospitalScheduleDTO(
-				hospital.getHospitalScheduleId(),
-				hospital.getDayOfWeek(),
-				hospital.getOpenTime(),
-				hospital.getCloseTime(),
-				hospital.getLunchStart(),
-				hospital.getLunchEnd()
+	public List<HospitalScheduleResponse> getSchedules(Long hospitalId) {
+		return hospitalScheduleRepo.findByHospitalHospitalId(hospitalId).stream()
+			.map(schedule -> new HospitalScheduleResponse( //언더바없애기
+				schedule.getHospitalScheduleId(),
+				schedule.getDayOfWeek(),
+				schedule.getOpenTime(),
+				schedule.getCloseTime(),
+				schedule.getLunchStart(),
+				schedule.getLunchEnd()
 			))
 			.collect(Collectors.toList());
 	}
 
 
+	/**
+	 * 병원 영업시간 수정
+	 *
+	 */
 	@Override
-	public void updateHospitalSchedules(Long hospitalId, List<HospitalScheduleDTO> schedules) {
-		Hospital hospital = hospitalRepository.findById(hospitalId)
-			.orElseThrow(() -> new EntityNotFoundException("Hospital not found with id: " + hospitalId));
+	@Transactional
+	public void updateHospitalSchedule(Long hospitalId, Long scheduleId, HospitalScheduleRequest scheduleDto) {
 
-		// 기존 스케줄 삭제
-		scheduleRepository.deleteByHospitalId(hospitalId);
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
-		// 새 스케줄 저장
-		for (HospitalScheduleDTO dto : schedules) {
-			HospitalSchedule schedule = HospitalSchedule.create(
-				hospital,
-				DayOfWeek.valueOf(dto.getDayOfWeek().toUpperCase()),
-				dto.getOpenTime(),
-				dto.getCloseTime(),
-				dto.getLunchStart(),
-				dto.getLunchEnd()
-			);
+		HospitalSchedule schedule = hospitalProvider.getScheduleByIdOrThrow(scheduleId);
 
-			scheduleRepository.save(schedule);
-		}
+		hospitalProvider.validateScheduleBelongsToHospital(schedule, hospital);
+
+		schedule.updateSchedule(scheduleDto);
+
+
 	}
 
+	/**
+	 * 병원 영업시간 삭제
+	 *
+	 */
 	@Override
-	public void deleteHospitalSchedules(Long hospitalId) {
-		scheduleRepository.deleteByHospitalId(hospitalId);
+	public void deleteHospitalSchedules(Long hospitalScheduleId) {
+
+		hospitalScheduleRepo.deleteByHospitalScheduleId(hospitalScheduleId);
 	}
 
+	/**
+	 * 병원 웨이팅 등록
+	 *
+	 */
 	@Override
-	public Long saveHospitalWaiting(Long hospitalId, HospitalWaitingDTO hospitalWaitingDTO) {
+	public Long saveHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting) {
 
-		Hospital hospital = hospitalRepository.findById(hospitalId)
-			.orElseThrow(() -> new EntityNotFoundException("Hospital not found with id: " + hospitalId));
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
-		hospital.setWaiting(hospitalWaitingDTO.getWaiting());
+		hospital.updateWaiting(hospitalWaiting.getWaiting());
 
-		hospitalRepository.save(hospital);
+		hospitalProvider.saveHospital(hospital);
+
 
 		return hospital.getHospitalId();
 	}
+	/**
+	 * 병원 웨이팅 조회
+	 *
+	 */
+	@Override
+	public Long getHospitalWaiting(Long hospitalId) {
 
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
-	@Override // 병원 정보 등록
-	public Long saveHospital(HospitalListDTO hospitalListDTO) {
-
-		User user = userRepository.findById(hospitalListDTO.getUserId())
-			.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-		// 정적 팩토리 메서드로 병원 생성
-		Hospital hospital = Hospital.create(
-			user,
-			hospitalListDTO.getName(),
-			hospitalListDTO.getAddress(),
-			null, // 위도
-			null, // 경도
-			hospitalListDTO.getPhone(),
-			hospitalListDTO.getIntroduction(),
-			hospitalListDTO.getNotice(),
-			hospitalListDTO.getWaiting(),
-			hospitalListDTO.getBusinessRegistrationNumber()
-		);
-
-		hospitalRepository.save(hospital);
-		return hospital.getHospitalId();
+		return hospital.getWaiting();
 	}
 
+	/**
+	 * 병원 웨이팅 수정
+	 *
+	 */
+	@Override
+	public Long updateHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting) {
 
-	// @Override //병원 정보 등록(병원+스케쥴)
-	// public Long saveHospitalWithSchedules(HospitalListDTO hospitalListDTO) {
-	//
-	// 	User user = userRepository.findById(hospitalListDTO.getUserId())
-	// 		.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-	// 	// 병원 정보 저장
-	// 	Hospital hospital = Hospital.builder()
-	// 		.user(user)
-	// 		.name(hospitalListDTO.getName())
-	// 		.address(hospitalListDTO.getAddress())
-	// 		.phone(hospitalListDTO.getPhone())
-	// 		.introduction(hospitalListDTO.getIntroduction())
-	// 		.notice(hospitalListDTO.getNotice())
-	// 		.businessRegistrationNumber(hospitalListDTO.getBusinessRegistrationNumber())
-	// 		.waiting(hospitalListDTO.getWaiting())
-	// 		.build();
-	//
-	// 	hospitalRepository.save(hospital);
-	//
-	// 	// 병원 스케줄 저장
-	// 	for (HospitalScheduleDTO scheduleDTO : hospitalListDTO.getSchedules()) {
-	// 		HospitalSchedule schedule = HospitalSchedule.builder()
-	// 			.hospital(hospital)
-	// 			.dayOfWeek(DayOfWeek.valueOf(scheduleDTO.getDayOfWeek().toUpperCase()))
-	// 			.openTime(scheduleDTO.getOpenTime())
-	// 			.closeTime(scheduleDTO.getCloseTime())
-	// 			.lunchStart(scheduleDTO.getLunchStart())
-	// 			.lunchEnd(scheduleDTO.getLunchEnd())
-	// 			.build();
-	//
-	// 		scheduleRepository.save(schedule);
-	// 	}
-	//
-	// 	// 병원 ID를 포함한 성공 응답 반환
-	// 	return hospital.getHospitalId();
-	// }
+		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
+		hospital.updateWaiting(hospitalWaiting.getWaiting());
 
+		return hospital.getHospitalId();
+	}
 
 }
 

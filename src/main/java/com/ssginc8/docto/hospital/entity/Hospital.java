@@ -1,30 +1,28 @@
 package com.ssginc8.docto.hospital.entity;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.user.entity.User;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @Entity
 
@@ -32,7 +30,7 @@ import lombok.Setter;
 @Table(name = "tbl_hospital")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@DynamicUpdate
 
 public class Hospital extends BaseTimeEntity {
 
@@ -70,30 +68,51 @@ public class Hospital extends BaseTimeEntity {
 	@Column(nullable = false, length = 200)
 	private String businessRegistrationNumber;
 
-	public static Hospital create(User user,
-		String name,
-		String address,
-		BigDecimal latitude,
-		BigDecimal longitude,
-		String phone,
-		String introduction,
-		String notice,
-		Long waiting,
-		String businessRegistrationNumber) {
-		Hospital hospital = new Hospital();
-		hospital.setUser(user);
-		hospital.setName(name);
-		hospital.setAddress(address);
-		hospital.setLatitude(latitude);
-		hospital.setLongitude(longitude);
-		hospital.setPhone(phone);
-		hospital.setIntroduction(introduction);
-		hospital.setNotice(notice);
-		hospital.setWaiting(waiting);
-		hospital.setBusinessRegistrationNumber(businessRegistrationNumber);
-		return hospital;
+
+
+	public Hospital(User user, String name, String address, String phone, String introduction, String notice, String businessRegistrationNumber, BigDecimal latitude, BigDecimal longitude, Long waiting) {
+		this.user = user;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.introduction = introduction;
+		this.notice = notice;
+		this.businessRegistrationNumber = businessRegistrationNumber;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.waiting = waiting;
+
 	}
 
 
 
+	public static Hospital create(User user,
+		String name,
+		String address,
+		String phone,
+		String introduction,
+		BigDecimal latitude,
+		BigDecimal longitude,
+		Long waiting,
+		String notice,
+		String businessRegistrationNumber) {
+		return new Hospital(user,name,address,phone,introduction,notice,businessRegistrationNumber,latitude,longitude,waiting);
+	}
+
+	public void updateFromDTO(HospitalUpdate dto) {
+		if (dto.getName() != null) this.name = dto.getName();
+		if (dto.getAddress() != null) this.address = dto.getAddress();
+		if (dto.getPhone() != null) this.phone = dto.getPhone();
+		if (dto.getIntroduction() != null) this.introduction = dto.getIntroduction();
+		if (dto.getBusinessRegistrationNumber() != null) this.businessRegistrationNumber = dto.getBusinessRegistrationNumber();
+		if (dto.getNotice() != null) this.notice = dto.getNotice();
+
+
+	}
+
+	public void updateWaiting(Long waiting) {
+		this.waiting = waiting;
+	}
+
 }
+
