@@ -44,12 +44,12 @@ public class GuardianController {
 	/**
 	 * 보호자-환자 매핑 삭제 API
 	 */
-	@DeleteMapping("/{guardianId}/patients/{patientId}")
-	public ResponseEntity<Void> deleteMapping(@PathVariable Long guardianId,
-		@PathVariable Long patientId) {
-		guardianService.deleteMapping(guardianId, patientId);
+	@DeleteMapping("/{userId}/patients/{patientId}")
+	public ResponseEntity<Void> deleteMapping(@PathVariable Long userId, @PathVariable Long patientId) {
+		guardianService.deleteMapping(userId, patientId);
 		return ResponseEntity.noContent().build();
 	}
+
 
 	/**
 	 * 보호자가 가진 환자 목록 조회 API

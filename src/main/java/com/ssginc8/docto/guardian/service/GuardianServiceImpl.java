@@ -40,12 +40,31 @@ public class GuardianServiceImpl implements GuardianService {
 	}
 
 	/**
-	 * 보호자-환자 권한 매핑을 해제합니다.
+	 * 보호자-환자 권한 매핑을 해제하는 메서드 (Soft Delete 방식)
+	 *
+	 * ✅ 주요 기능
+	 * - guardianId(보호자)와 patientId(환자)를 기반으로
+	 *   매핑(PatientGuardian)을 조회
+	 * - 실제 DB에서 삭제하지 않고 `deletedAt` 필드를 현재 시간으로 설정하여
+	 *   논리적으로 삭제된 것으로 처리 (Soft Delete)
+	 *
+	 * ✅ 예외 처리
+	 * - 해당 guardianId/patientId 조합의 매핑이 존재하지 않거나
+	 *   이미 Soft Delete된 경우 IllegalArgumentException 발생
+	 *
+	 * @param guardianId 보호자(User) 식별자
+	 * @param patientId  환자(Patient) 식별자
 	 */
 	@Override
 	public void deleteMapping(Long guardianId, Long patientId) {
-		repository.deleteByUser_UserIdAndPatient_PatientId(guardianId, patientId);
+		// 보호자-환자 매핑 엔티티 조회 (Soft Delete 제외 조건 포함)
+		PatientGuardian pg = repository.findByUserIdAndPatientId(guardianId, patientId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 매핑입니다."));
+
+		// 실제 삭제하지 않고 deletedAt 필드에 시간 설정 (논리적 삭제 처리)
+		pg.softDelete();
 	}
+
 
 	/**
 	 * 현재 로그인한 보호자가 수락한 환자 목록을 조회합니다.

@@ -2,6 +2,7 @@ package com.ssginc8.docto.guardian.entity;
 
 import java.time.LocalDateTime;
 
+import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.user.entity.User;
 
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_patient_guardian")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PatientGuardian {
+public class PatientGuardian extends BaseTimeEntity {
 
 	/**
 	 * 보호자 관계 식별자 (PK)
@@ -100,5 +101,12 @@ public class PatientGuardian {
 	public void updateStatus(Status newStatus) {
 		this.status = newStatus;
 		this.respondedAt = LocalDateTime.now();
+	}
+
+	/**
+	 * Soft Delete - 상속받은 deletedAt 필드를 현재 시간으로 설정
+	 */
+	public void softDelete() {
+		super.delete();
 	}
 }
