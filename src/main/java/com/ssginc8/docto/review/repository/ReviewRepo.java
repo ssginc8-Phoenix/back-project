@@ -26,13 +26,12 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 
 	@EntityGraph(attributePaths = {
 		"user",
-		"appointment.hospital",
-		"appointment.doctor.user"
+		"hospital",
+		"doctor",
+		"appointment",
+		"keywords"
 	})
 	Optional<Review> findWithGraphByReviewId(Long reviewId);
-
-
-
 
 
 }

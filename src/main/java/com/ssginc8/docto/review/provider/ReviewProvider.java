@@ -43,6 +43,7 @@ public class ReviewProvider {
 	}
 
 
+
 	//리뷰 저장
 	@Transactional
 	public Review save(Review review) {
@@ -54,7 +55,7 @@ public class ReviewProvider {
 	//키워드 삭제
 	@Transactional
 	public void deleteByReviewId(Long reviewId) {
-		Review review = reviewRepo.findById(reviewId)
+		Review review = reviewRepo.findWithGraphByReviewId(reviewId)
 			.orElseThrow(() -> new IllegalArgumentException("리뷰가 없습니다. id=" + reviewId));
 		review.getKeywords().clear();
 	}
