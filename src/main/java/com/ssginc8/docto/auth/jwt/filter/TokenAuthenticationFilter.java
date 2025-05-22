@@ -9,7 +9,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ssginc8.docto.auth.jwt.dto.CreateAccessToken;
 import com.ssginc8.docto.auth.jwt.dto.TokenType;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
-import com.ssginc8.docto.auth.jwt.service.RefreshTokenService;
+import com.ssginc8.docto.auth.jwt.service.RefreshTokenServiceImpl;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.FilterChain;
@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	private final TokenProvider tokenProvider;
-	private final RefreshTokenService refreshTokenService;
+	private final RefreshTokenServiceImpl refreshTokenServiceImpl;
 	private final CookieUtil cookieUtil;
 
 	@Override
@@ -34,14 +34,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		log.info("----------------------필터 동작-----------------------");
 		String accessToken = getToken(request, TokenType.ACCESS_TOKEN.getTokenType());
 
-		if (tokenProvider.validToken(accessToken)) { // 토큰 검증 -> 유효하다면
+		if (tokenProvider.validToken(accessToken)) { // 토큰 검증 -> 토큰이 유효하다면
 			// 토큰 기반으로 인증 정보 가져오기
 			Authentication authentication = tokenProvider.getAuthentication(accessToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} else { // 유효하지 않다면
 			String refreshToken = getToken(request, TokenType.REFRESH_TOKEN.getTokenType());
 			if (tokenProvider.validToken(refreshToken)) {
-				CreateAccessToken.Response createAccessToken = refreshTokenService.createNewAccessToken(refreshToken);
+				CreateAccessToken.Response createAccessToken = refreshTokenServiceImpl.createNewAccessToken(
+					refreshToken);
 				accessToken = createAccessToken.getAccessToken();
 
 				response.addCookie(
