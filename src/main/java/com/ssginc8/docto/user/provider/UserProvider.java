@@ -28,6 +28,11 @@ public class UserProvider {
 		return userRepo.findByUuid(uuid).orElseThrow(UserNotFoundException::new);
 	}
 
+	public User loadUserByProviderId(String providerId) {
+		return userRepo.findByProviderId(providerId)
+			.orElseThrow(UserNotFoundException::new);
+	}
+
 	public User createUser(User user) {
 		return userRepo.save(user);
 	}

@@ -41,7 +41,9 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(unique = true)
+	private String providerId;
+
 	private String password;
 
 	@Column(length = 100)
@@ -58,7 +60,6 @@ public class User extends BaseTimeEntity {
 	private LoginType loginType;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private Role role;
 
 	@Column(nullable = false)
@@ -86,11 +87,35 @@ public class User extends BaseTimeEntity {
 		this.isSuspended = isSuspended;
 	}
 
-	public static User createUser(String email, String password, String name,
+	public User(String uuid, String email, String providerId, String name, LoginType loginType, Boolean isSuspended) {
+		this.uuid = uuid;
+		this.email = email;
+		this.providerId = providerId;
+		this.name = name;
+		this.loginType = loginType;
+		this.isSuspended = isSuspended;
+	}
+
+	public static User createUserByEmail(String email, String password, String name,
 		LoginType loginType, Role role, File profileImage) {
 		String uuid = UUID.randomUUID().toString();
 
 		return new User(uuid, email, password, name, loginType, role, profileImage, false);
+	}
+
+	public static User createUserBySocial(String providerId, String name, String email, LoginType loginType) {
+		String uuid = UUID.randomUUID().toString();
+
+		return new User(uuid, email, providerId, name, loginType, false);
+	}
+
+	public User updateOauthInfo(String providerId, String name, String email, LoginType loginType) {
+		this.providerId = providerId;
+		this.name = name;
+		this.email = email;
+		this.loginType = loginType;
+
+		return this;
 	}
 
 	public void updateProfileImage(File profileImage) {

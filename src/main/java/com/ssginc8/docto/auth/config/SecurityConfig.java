@@ -9,12 +9,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ssginc8.docto.auth.handler.OAuth2SuccessHandler;
 import com.ssginc8.docto.auth.jwt.filter.TokenAuthenticationFilter;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
-import com.ssginc8.docto.auth.jwt.service.RefreshTokenService;
+import com.ssginc8.docto.auth.jwt.service.RefreshTokenServiceImpl;
 import com.ssginc8.docto.auth.service.UserDetailService;
 import com.ssginc8.docto.util.CookieUtil;
 
@@ -25,9 +27,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final TokenProvider tokenProvider;
-	private final RefreshTokenService refreshTokenService;
+	private final RefreshTokenServiceImpl refreshTokenServiceImpl;
 	private final UserDetailService userDetailService;
 	private final CookieUtil cookieUtil;
+	private final DefaultOAuth2UserService oAuth2UserService;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
 	// 특정 http 요청에 대해 웹 기반 보안 구성
 	@Bean
@@ -62,7 +66,14 @@ public class SecurityConfig {
 
 				.anyRequest().authenticated()) // 그외 모든 요청 인증 필요
 			.csrf(AbstractHttpConfigurer::disable)
-			.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, refreshTokenService, cookieUtil),
+			.oauth2Login(oauth2 -> oauth2
+				// "api/v1/auth/login" 뒤에 /kakao or /naver 붙여서 로그인 요청
+				.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/login"))
+				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/callback/*"))
+				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+				.successHandler(oAuth2SuccessHandler) // 로그인 성공시 OAuth2SuccessHandler 동작
+			)
+			.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, refreshTokenServiceImpl, cookieUtil),
 				UsernamePasswordAuthenticationFilter.class)
 			.build();
 	}
