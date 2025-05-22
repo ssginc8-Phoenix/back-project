@@ -20,8 +20,23 @@ public class UserProvider {
 		return userRepo.findByEmail(email);
 	}
 
-	public User loadUserByEmail(String email) {
-		return userRepo.findByEmail(email).orElseThrow(UserNotFoundException::new);
+	public User loadUserByEmailOrException(String email) {
+		return userRepo.findByEmail(email)
+			.orElseThrow(UserNotFoundException::new);
+	}
+
+	public Optional<User> loadUserByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+
+	public User loadUserByUuid(String uuid) {
+		return userRepo.findByUuid(uuid)
+			.orElseThrow(UserNotFoundException::new);
+	}
+
+	public User loadUserByProviderId(String providerId) {
+		return userRepo.findByProviderId(providerId)
+			.orElseThrow(UserNotFoundException::new);
 	}
 
 	public User loadUserByUuid(String uuid) {
