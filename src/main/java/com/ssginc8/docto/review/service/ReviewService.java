@@ -27,6 +27,9 @@ public interface ReviewService {
 	// (관리자용) 전체 리뷰 목록 조회
 	Page<ReviewAllListResponse> getAllReviews(Long hospitalId, Pageable pageable);
 
+	//리뷰 신고
+	void reportReview(Long reviewId);
+
 
 }
 

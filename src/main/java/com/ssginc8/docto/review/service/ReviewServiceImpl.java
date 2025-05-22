@@ -43,8 +43,9 @@ public class ReviewServiceImpl implements ReviewService {
 		//1. 필요한 프록시를 가져온다
 		User user = em.getReference(User.class, userId);
 		Appointment appointment = em.getReference(Appointment.class, request.getAppointmentId());
-		Hospital hospital = appointment.getHospital();
-		Doctor   doctor   = appointment.getDoctor();
+		Hospital    hospital    = em.getReference(Hospital.class,    request.getHospitalId());
+		Doctor      doctor      = em.getReference(Doctor.class,      request.getDoctorId());
+
 
 		//2. 클라이언트가 보낸 키워드 문자열 목록을 처리한다
 		Set<KeywordType> keywordTypes = request.getKeywords().stream()
@@ -68,32 +69,53 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
-	//리뷰 수정
+	// //리뷰 수정
+	// @Override
+	// @Transactional
+	// public ReviewResponse updateReview(ReviewUpdateRequest request, Long reviewId) {
+	// 	//1. 리뷰를 불러온다
+	// 	Review review = reviewProvider.getById(reviewId);
+	//
+	// 	//2. 본문 내용을 변경한다
+	// 	review.updateContents(request.getContents());
+	//
+	// 	//3. 키워드를 변경한다
+	// 	Set<KeywordType> keywordTypes = request.getKeywords().stream()
+	// 		.map(KeywordType::valueOf)
+	// 		.collect(Collectors.toSet());
+	// 	review.getKeywords().clear();
+	// 	review.getKeywords().addAll(keywordTypes);
+	//
+	// 	//4. 변경된 값들을 저장한다
+	// 	Review saved = reviewProvider.save(review);
+	//
+	// 	//5. 응답DTO를 만들어준다
+	// 	List<String> keywords = saved.getKeywords().stream()
+	// 		.map(Enum::name)
+	// 		.toList();
+	//
+	// 	return ReviewResponse.fromEntity(saved, keywords);
+	//
+	// }
+
 	@Override
 	@Transactional
-	public ReviewResponse updateReview(ReviewUpdateRequest request, Long reviewId) {
-		//1. 리뷰를 불러온다
+	public ReviewResponse updateReview(ReviewUpdateRequest req, Long reviewId) {
 		Review review = reviewProvider.getById(reviewId);
+		review.updateContents(req.getContents());
 
-		//2. 본문 내용을 변경한다
-		review.updateContents(request.getContents());
-
-		//3. 키워드를 변경한다
-		Set<KeywordType> keywordTypes = request.getKeywords().stream()
+		Set<KeywordType> kws = req.getKeywords().stream()
 			.map(KeywordType::valueOf)
 			.collect(Collectors.toSet());
+		review.getKeywords().clear();
+		review.getKeywords().addAll(kws);
 
-		//4. 변경된 값들을 저장한다
-		Review saved = reviewProvider.save(review);
-
-		//5. 응답DTO를 만들어준다
-		List<String> keywords = saved.getKeywords().stream()
-			.map(Enum::name)
-			.toList();
-
-		return ReviewResponse.fromEntity(saved, keywords);
-
+		// ★ 이미 영속 상태이므로 save() 생략해도 됩니다.
+		List<String> keywords = review.getKeywords().stream()
+			.map(Enum::name).toList();
+		return ReviewResponse.fromEntity(review, keywords);
 	}
+
 
 	// 리뷰 삭제
 	@Override
@@ -123,7 +145,19 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
+	//리뷰 신고 횟수 추가 기능
+	@Override
+	@Transactional
+	public void reportReview(Long reviewId) {
+		Review review = reviewProvider.getById(reviewId);
+		review.incrementReportCount();
+		reviewProvider.save(review);
+	}
 }
+
+
+
+
 
 
 
