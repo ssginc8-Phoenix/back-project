@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum AppointmentType {
 
-	SCHEDULED, WALKIN, TELEMEDICINE;
+	SCHEDULED, IMMEDIATE, TELEMEDICINE;
 
 	public static AppointmentType from(String input) {
 		return Arrays.stream(values())
