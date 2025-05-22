@@ -1,0 +1,40 @@
+= Medication API 문서
+Author: 불4조
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 복약 스케줄 등록
+
+include::{snippets}/medication-controller-test/register-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/register-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/register-medication/http-response.adoc[]
+
+== 복약 로그 조회
+
+include::{snippets}/medication-controller-test/get-medication-logs/http-request.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/http-response.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/response-fields.adoc[]
+
+== 복약 완료 처리
+
+include::{snippets}/medication-controller-test/complete-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/http-response.adoc[]
+
+== 복약 시간 수정
+
+include::{snippets}/medication-controller-test/update-medication-time/http-request.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/request-fields.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/http-response.adoc[]
+
+== 복약 스케줄 삭제
+
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-request.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-response.adoc[]
