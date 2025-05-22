@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ssginc8.docto.hospital.entity.Hospital;
 
-public interface HospitalRepository extends JpaRepository<Hospital, Long >{
+public interface HospitalRepo extends JpaRepository<Hospital, Long >{
 
 	@Query(value = """
         SELECT *,

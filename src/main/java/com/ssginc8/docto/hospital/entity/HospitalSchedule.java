@@ -3,6 +3,12 @@ package com.ssginc8.docto.hospital.entity;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+
+import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,14 +21,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 
-
+@DynamicUpdate
 
 @Table(name = "tbl_hospital_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,7 +37,6 @@ public class HospitalSchedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long hospitalScheduleId;
-
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hospital_id", nullable = false)
@@ -54,19 +58,36 @@ public class HospitalSchedule {
 	@Column(nullable = false, name = "lunch_end")
 	private LocalTime lunchEnd;
 
-	public static HospitalSchedule create(Hospital hospital,
+	private HospitalSchedule(Hospital hospital, Long hospitalScheduleId, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime lunchStart, LocalTime lunchEnd ) {
+
+		this.hospitalScheduleId = hospitalScheduleId;
+		this.hospital = hospital;
+		this.dayOfWeek = dayOfWeek;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+		this.lunchStart = lunchStart;
+		this.lunchEnd = lunchEnd;
+
+	}
+
+	public static HospitalSchedule create(
+
+		Hospital hospital,
+		Long hospitalScheduleId,
 		DayOfWeek dayOfWeek,
 		LocalTime openTime,
 		LocalTime closeTime,
 		LocalTime lunchStart,
 		LocalTime lunchEnd) {
-		HospitalSchedule schedule = new HospitalSchedule();
-		schedule.hospital = hospital;
-		schedule.dayOfWeek = dayOfWeek;
-		schedule.openTime = openTime;
-		schedule.closeTime = closeTime;
-		schedule.lunchStart = lunchStart;
-		schedule.lunchEnd = lunchEnd;
-		return schedule;
+		return new HospitalSchedule(hospital, hospitalScheduleId, dayOfWeek, openTime, closeTime, lunchStart, lunchEnd);
 	}
+	public void updateSchedule(HospitalScheduleRequest dto) {
+
+		this.dayOfWeek = dto.getDayOfWeek();
+		this.openTime = dto.getOpenTime();
+		this.closeTime = dto.getCloseTime();
+		this.lunchStart = dto.getLunchStart();
+		this.lunchEnd = dto.getLunchEnd();
+	}
+
 }
