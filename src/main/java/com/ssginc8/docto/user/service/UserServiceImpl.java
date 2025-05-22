@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// 4. User 엔티티 생성
-		User user = User.createUser(request.getEmail(), encryptedPassword, request.getName(),
+		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(),
 			LoginType.EMAIL, Role.valueOf(request.getRole()), profileImage);
 
 		user = userProvider.createUser(user);
