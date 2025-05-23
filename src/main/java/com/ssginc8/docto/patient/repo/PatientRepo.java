@@ -1,8 +1,7 @@
 package com.ssginc8.docto.patient.repo;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 import com.ssginc8.docto.patient.entity.Patient;
 

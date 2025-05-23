@@ -1,9 +1,9 @@
 package com.ssginc8.docto.doctor.entity;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import com.ssginc8.docto.global.base.BaseTimeEntity;
-import com.ssginc8.docto.global.base.DayOfWeek;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
