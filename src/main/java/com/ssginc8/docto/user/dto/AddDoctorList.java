@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 public class AddDoctorList {
 	@Getter
-	public static class CreateDoctor {
+	public static class DoctorInfo {
 		@Email(message = "이메일 형식에 맞지 않습니다.")
 		@NotBlank(message = "이메일은 비어있을 수 없습니다.")
 		private String email;
@@ -30,7 +30,7 @@ public class AddDoctorList {
 	@NoArgsConstructor
 	public static class Request {
 		@Valid
-		List<CreateDoctor> createDoctors;
+		List<DoctorInfo> doctorInfos;
 	}
 
 	@Getter

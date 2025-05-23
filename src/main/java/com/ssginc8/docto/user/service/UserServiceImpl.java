@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
 		List<Long> ids = new ArrayList<>();
 
-		for (AddDoctorList.CreateDoctor doctor : request.getCreateDoctors()) {
+		for (AddDoctorList.DoctorInfo doctor : request.getDoctorInfos()) {
 			createUserValidator.validateEmail(doctor.getEmail());
 			String encryptedPassword = bCryptPasswordEncoder.encode(doctor.getPassword());
 
@@ -138,6 +138,7 @@ public class UserServiceImpl implements UserService {
 
 		RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
 
+		// 다중 디바이스에서 로그인 한 경우 한 쪽에서 로그인하면 다른 쪽은 끊기게 될 것 같은데 로그인 할 때 새로 발급하는게 나을까?
 		if (refreshToken != null) {
 			refreshToken.update(tokens.getRefreshToken());
 		} else {
