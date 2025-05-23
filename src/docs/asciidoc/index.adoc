@@ -1,0 +1,35 @@
+= DOCTO API 문서
+Author: Your Name
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 예약 요청
+
+include::{snippets}/appointment-controller-test/request-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/request-appointment/request-fields.adoc[]
+include::{snippets}/appointment-controller-test/request-appointment/http-response.adoc[]
+
+== 예약 단건 조회
+include::{snippets}/appointment-controller-test/get-appointment-detail/http-request.adoc[]
+include::{snippets}/appointment-controller-test/get-appointment-detail/path-parameters.adoc[]
+include::{snippets}/appointment-controller-test/get-appointment-detail/http-response.adoc[]
+
+== 예약 리스트 조회
+include::{snippets}/appointment-controller-test/get-appointment-list/http-request.adoc[]
+include::{snippets}/appointment-controller-test/get-appointment-list/query-parameters.adoc[]
+include::{snippets}/appointment-controller-test/get-appointment-list/http-response.adoc[]
+
+== 예약 상태 업데이트
+include::{snippets}/appointment-controller-test/update-appointment-status/http-request.adoc[]
+include::{snippets}/appointment-controller-test/update-appointment-status/path-parameters.adoc[]
+include::{snippets}/appointment-controller-test/update-appointment-status/request-fields.adoc[]
+include::{snippets}/appointment-controller-test/update-appointment-status/http-response.adoc[]
+
+== 재예약
+include::{snippets}/appointment-controller-test/reschedule-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/reschedule-appointment/path-parameters.adoc[]
+include::{snippets}/appointment-controller-test/reschedule-appointment/request-fields.adoc[]
+include::{snippets}/appointment-controller-test/reschedule-appointment/http-response.adoc[]
