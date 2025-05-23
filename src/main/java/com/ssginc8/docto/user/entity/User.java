@@ -98,10 +98,10 @@ public class User extends BaseTimeEntity {
 	}
 
 	public static User createUserByEmail(String email, String password, String name, String phone,
-		LoginType loginType, Role role, File profileImage) {
+		Role role, File profileImage) {
 		String uuid = UUID.randomUUID().toString();
 
-		return new User(uuid, email, password, name, phone, loginType, role, profileImage, false);
+		return new User(uuid, email, password, name, phone, LoginType.EMAIL, role, profileImage, false);
 	}
 
 	public static User createUserBySocial(String providerId, String name, String email, LoginType loginType) {

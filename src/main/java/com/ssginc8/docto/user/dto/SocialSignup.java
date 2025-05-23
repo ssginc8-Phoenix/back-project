@@ -2,6 +2,7 @@ package com.ssginc8.docto.user.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,13 @@ public class SocialSignup {
 	@NoArgsConstructor
 	public static class Request {
 		private String providerId;
+
+		@NotBlank(message = "휴대폰 번호는 비어있을 수 없습니다.")
 		private String phone;
+
 		private MultipartFile profileImage;
+
+		@NotBlank(message = "역할은 비어있을 수 없습니다.")
 		private String role;
 
 		@Builder

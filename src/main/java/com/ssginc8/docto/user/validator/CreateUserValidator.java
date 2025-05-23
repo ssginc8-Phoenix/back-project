@@ -22,6 +22,10 @@ public class CreateUserValidator {
 		checkPassword(request.getPassword());
 	}
 
+	public void validateEmail(String email) {
+		checkEmail(email);
+	}
+
 	// 이메일 중복 검증 메서드
 	private void checkEmail(String email) {
 		if (userProvider.checkEmail(email).isPresent()) {

@@ -1,5 +1,7 @@
 package com.ssginc8.docto.user.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +19,10 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
+import com.ssginc8.docto.user.dto.AddDoctorList;
 import com.ssginc8.docto.user.dto.AddUser;
 import com.ssginc8.docto.user.dto.Login;
 import com.ssginc8.docto.user.dto.SocialSignup;
-import com.ssginc8.docto.user.entity.LoginType;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
@@ -34,6 +36,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class UserServiceImpl implements UserService {
 	private final FileService fileService;
+
 	private final UserProvider userProvider;
 	private final CreateUserValidator createUserValidator;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -45,6 +48,35 @@ public class UserServiceImpl implements UserService {
 		if (userProvider.checkEmail(email).isPresent()) {
 			throw new DuplicateEmailException();
 		}
+	}
+
+	@Transactional
+	@Override
+	public AddUser.Response createUser(AddUser.Request request) {
+		// 1. 이메일 중복 검사, 패스워드 검증
+		createUserValidator.validate(request);
+
+		// 2. 패스워드 암호화, 주민번호 암호화
+		String encryptedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+
+		// 프로필 이미지 있는 경우 S3에 업로드
+		File profileImage = uploadProfileImage(request.getProfileImage());
+
+		// 4. User 엔티티 생성
+		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(), request.getPhone(),
+			Role.valueOf(request.getRole()), profileImage);
+
+		user = userProvider.createUser(user);
+
+		log.info(user.getRole().getKey());
+
+		log.info(Role.valueOf(request.getRole()).getKey());
+
+		// 5. user 저장 후 만들어진 user id 반환
+		return AddUser.Response.builder()
+			.userId(user.getUserId())
+			.role(user.getRole().getKey())
+			.build();
 	}
 
 	@Transactional
@@ -68,30 +100,22 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public AddUser.Response createUser(AddUser.Request request) {
-		// 1. 이메일 중복 검사, 패스워드 검증
-		createUserValidator.validate(request);
+	public AddDoctorList.Response registerDoctor(AddDoctorList.Request request) {
 
-		// 2. 패스워드 암호화, 주민번호 암호화
-		String encryptedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+		List<Long> ids = new ArrayList<>();
 
-		// 프로필 이미지 있는 경우 S3에 업로드
-		File profileImage = uploadProfileImage(request.getProfileImage());
+		for (AddDoctorList.CreateDoctor doctor : request.getCreateDoctors()) {
+			createUserValidator.validateEmail(doctor.getEmail());
+			String encryptedPassword = bCryptPasswordEncoder.encode(doctor.getPassword());
 
-		// 4. User 엔티티 생성
-		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(), request.getPhone(),
-			LoginType.EMAIL, Role.valueOf(request.getRole()), profileImage);
+			User user = User.createUserByEmail(doctor.getEmail(), encryptedPassword,
+				doctor.getName(), doctor.getPhone(), Role.DOCTOR, null);
 
-		user = userProvider.createUser(user);
+			ids.add(userProvider.createUser(user).getUserId());
+		}
 
-		log.info(user.getRole().getKey());
-
-		log.info(Role.valueOf(request.getRole()).getKey());
-
-		// 5. user 저장 후 만들어진 user id 반환
-		return AddUser.Response.builder()
-			.userId(user.getUserId())
-			.role(user.getRole().getKey())
+		return AddDoctorList.Response.builder()
+			.ids(ids)
 			.build();
 	}
 

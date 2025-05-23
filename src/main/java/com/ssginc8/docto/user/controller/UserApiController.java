@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.auth.jwt.dto.TokenType;
+import com.ssginc8.docto.user.dto.AddDoctorList;
 import com.ssginc8.docto.user.dto.AddUser;
 import com.ssginc8.docto.user.dto.Login;
 import com.ssginc8.docto.user.dto.SocialSignup;
@@ -40,8 +41,12 @@ public class UserApiController {
 
 	@PostMapping("/users/social")
 	public SocialSignup.Response signup(SocialSignup.Request request) {
-		log.info(request.toString());
 		return userService.updateSocialInfo(request);
+	}
+
+	@PostMapping("/users/doctors")
+	public AddDoctorList.Response registerDoctor(@RequestBody @Valid AddDoctorList.Request request) {
+		return userService.registerDoctor(request);
 	}
 
 	@PostMapping("/auth/login")
