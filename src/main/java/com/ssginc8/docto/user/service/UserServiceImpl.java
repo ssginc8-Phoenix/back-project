@@ -1,8 +1,11 @@
 package com.ssginc8.docto.user.service;
 
+import java.util.Objects;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssginc8.docto.auth.jwt.dto.Token;
 import com.ssginc8.docto.auth.jwt.entity.RefreshToken;
@@ -16,6 +19,7 @@ import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailExce
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.user.dto.AddUser;
 import com.ssginc8.docto.user.dto.Login;
+import com.ssginc8.docto.user.dto.SocialSignup;
 import com.ssginc8.docto.user.entity.LoginType;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
@@ -36,6 +40,32 @@ public class UserServiceImpl implements UserService {
 	private final TokenProvider tokenProvider;
 	private final RefreshTokenProvider refreshTokenProvider;
 
+	@Override
+	public void checkEmail(String email) {
+		if (userProvider.checkEmail(email).isPresent()) {
+			throw new DuplicateEmailException();
+		}
+	}
+
+	@Transactional
+	@Override
+	public SocialSignup.Response updateSocialInfo(SocialSignup.Request request) {
+		// 프로필 사진 있는 경우 s3에 저장
+		File profileImage = uploadProfileImage(request.getProfileImage());
+
+		// userId로 사용자 찾이오기 -> provider
+		User user = userProvider.loadUserByProviderId(request.getProviderId());
+
+		// user 정보 업데이트
+		user.updateSocialInfo(request.getPhone(), profileImage, Role.valueOf(request.getRole()));
+
+		// response 만들어서 반환
+		return SocialSignup.Response.builder()
+			.userId(user.getUserId())
+			.role(user.getRole().getKey())
+			.build();
+	}
+
 	@Transactional
 	@Override
 	public AddUser.Response createUser(AddUser.Request request) {
@@ -45,25 +75,11 @@ public class UserServiceImpl implements UserService {
 		// 2. 패스워드 암호화, 주민번호 암호화
 		String encryptedPassword = bCryptPasswordEncoder.encode(request.getPassword());
 
-		File profileImage = null;
-
-		// 3. 프로필 사진이 있는 경우 -> s3에 저장
-		if (!request.getProfileImage().isEmpty()) {
-			UploadFile.Request fileRequest = UploadFile.Request.builder()
-				.file(request.getProfileImage())
-				.category(Category.USER)
-				.build();
-
-			UploadFile.Response fileResponse = fileService.uploadImage(fileRequest);
-
-			profileImage = File.createFile(fileResponse.getCategory(), fileResponse.getFileName(),
-				fileResponse.getOriginalFileName(),
-				fileResponse.getUrl(), fileResponse.getBucket(), fileResponse.getFileSize(),
-				fileResponse.getFileType());
-		}
+		// 프로필 이미지 있는 경우 S3에 업로드
+		File profileImage = uploadProfileImage(request.getProfileImage());
 
 		// 4. User 엔티티 생성
-		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(),
+		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(), request.getPhone(),
 			LoginType.EMAIL, Role.valueOf(request.getRole()), profileImage);
 
 		user = userProvider.createUser(user);
@@ -79,17 +95,11 @@ public class UserServiceImpl implements UserService {
 			.build();
 	}
 
-	@Override
-	public void checkEmail(String email) {
-		if (userProvider.checkEmail(email).isPresent()) {
-			throw new DuplicateEmailException();
-		}
-	}
-
 	@Transactional
 	@Override
 	public Login.Response login(Login.Request request) {
-		User user = userProvider.loadUserByEmail(request.getEmail());
+		User user = userProvider.loadUserByEmail(request.getEmail())
+			.orElseThrow(DuplicateEmailException::new);
 
 		if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new InvalidPasswordException();
@@ -115,5 +125,27 @@ public class UserServiceImpl implements UserService {
 			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
 			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
 			.build();
+	}
+
+	// 프로필 사진이 있는 경우 -> s3에 저장
+	private File uploadProfileImage(MultipartFile profileImage) {
+
+		File savedProfileImage = null;
+
+		if (Objects.nonNull(profileImage)) {
+			UploadFile.Request fileRequest = UploadFile.Request.builder()
+				.file(profileImage)
+				.category(Category.USER)
+				.build();
+
+			UploadFile.Response fileResponse = fileService.uploadImage(fileRequest);
+
+			savedProfileImage = File.createFile(fileResponse.getCategory(), fileResponse.getFileName(),
+				fileResponse.getOriginalFileName(),
+				fileResponse.getUrl(), fileResponse.getBucket(), fileResponse.getFileSize(),
+				fileResponse.getFileType());
+		}
+
+		return savedProfileImage;
 	}
 }

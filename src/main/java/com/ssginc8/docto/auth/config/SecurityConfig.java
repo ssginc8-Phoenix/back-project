@@ -39,9 +39,7 @@ public class SecurityConfig {
 		return http
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(
-					"/static/**", "/api/v1/auth/login/**", "/api/v1/users/register",
-					"/api/v1/users/check-email", "/api/v1/users/find-email", "/api/v1/users/password-reset",
-					"/api/v1/users/email/**"
+					"/static/**", "/api/v1/auth/login/**", "/api/v1/users/**"
 				).permitAll()
 
 				// .requestMatchers(
