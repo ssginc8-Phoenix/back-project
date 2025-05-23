@@ -8,10 +8,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.ssginc8.docto.auth.handler.OAuth2SuccessHandler;
 import com.ssginc8.docto.auth.jwt.filter.TokenAuthenticationFilter;
@@ -32,6 +34,7 @@ public class SecurityConfig {
 	private final CookieUtil cookieUtil;
 	private final DefaultOAuth2UserService oAuth2UserService;
 	private final OAuth2SuccessHandler oAuth2SuccessHandler;
+	private final LogoutHandler logoutHandler;
 
 	// 특정 http 요청에 대해 웹 기반 보안 구성
 	@Bean
@@ -70,6 +73,10 @@ public class SecurityConfig {
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/callback/*"))
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 				.successHandler(oAuth2SuccessHandler) // 로그인 성공시 OAuth2SuccessHandler 동작
+			)
+			.logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
+				.addLogoutHandler(logoutHandler)
+				.logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
 			)
 			.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, refreshTokenServiceImpl, cookieUtil),
 				UsernamePasswordAuthenticationFilter.class)

@@ -27,4 +27,8 @@ public class RefreshTokenProvider {
 	public void saveRefreshToken(RefreshToken refreshToken) {
 		refreshTokenRepo.save(refreshToken);
 	}
+
+	public void deleteRefreshToken(String refreshToken) {
+		refreshTokenRepo.deleteRefreshTokenByRefreshToken(refreshToken);
+	}
 }
