@@ -1,7 +1,11 @@
 package com.ssginc8.docto.cs.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssginc8.docto.cs.dto.CsMessageRequest;
+import com.ssginc8.docto.cs.dto.CsMessageResponse;
 import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
+import com.ssginc8.docto.cs.repo.CsMessageRepo;
 import com.ssginc8.docto.cs.service.CsService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class CsController {
 
 	private final CsService csService;
+	private final CsMessageRepo csMessageRepo;
 
 	/*  회원별 CS 조회
 	 *	URL: /api/v1/csrooms/users/me
@@ -96,14 +105,24 @@ public class CsController {
 	 *	URL: /api/v1/csrooms/{csRoomId}/messages?before=2024-05-20T12:00:00&size=20
 	 *	Method: GET
 	 */
-	@GetMapping("/csrooms/{csRoomId}/message")
-	public ResponseEntity<?> getMessages(@PathVariable Long csRoomId) {
+	@GetMapping("/csrooms/{csRoomId}/messages")
+	public ResponseEntity<?> getMessages(
+		@PathVariable Long csRoomId,
+		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime before,
+		@RequestParam(defaultValue = "20") int size) {
 
-		return null;
+		List<CsMessageResponse> messages = csService.getMessages(csRoomId, before, size);
+
+		return ResponseEntity.ok(messages);
 	}
 
 	/* CS 메시지 전송
 	 *	URL: /api/v1/csrooms/{csRoomId}/messages
 	 *	Method: POST
 	 */
+	@PostMapping("/csrooms/{csRoomId}/messages")
+	public ResponseEntity<?> createMessage(@PathVariable Long csRoomId, @RequestBody CsMessageRequest request) {
+
+		return null;
+	}
 }

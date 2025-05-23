@@ -1,7 +1,5 @@
 package com.ssginc8.docto.cs.entity;
 
-import java.time.LocalDateTime;
-
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -43,6 +41,14 @@ public class CsMessage extends BaseTimeEntity {
 	@Column(nullable = false)
 	private MessageType messageType;	// TEXT, IMAGE
 
-	private Boolean isRead = false;
-	private LocalDateTime readAt;
+	public CsMessage(CsRoom csRoom, Long userId, String content, MessageType messageType) {
+		this.csRoom = csRoom;
+		this.userId = userId;
+		this.content = content;
+		this.messageType = messageType;
+	}
+
+	public static CsMessage create(CsRoom csRoom, Long userId, String content, MessageType messageType) {
+		return new CsMessage(csRoom, userId, content, messageType);
+	}
 }
