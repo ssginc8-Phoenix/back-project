@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		// // phone, 프로필 이미지, role 입력 받기 => 이후 role에 맞게 추가 정보 입력 (환자 - 주소, 주민번호) / (병원 관리자 - 의사 정보)
 		// if (Objects.isNull(user.getRole())) {
 		// 	response.sendRedirect("");
-		// } else { // 비어있지 않다면 메인 페이지로 리다이렉트
+		// } else { // 비어있지 않다면 메인 페이지로 리다이렉트 + 토큰 생성
 		// 	response.sendRedirect("");
 		// }
 	}
