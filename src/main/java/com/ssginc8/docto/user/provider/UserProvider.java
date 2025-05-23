@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ssginc8.docto.global.error.exception.userException.EmailNotFoundException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.repository.UserRepo;
@@ -37,6 +38,11 @@ public class UserProvider {
 	public User loadUserByProviderId(String providerId) {
 		return userRepo.findByProviderId(providerId)
 			.orElseThrow(UserNotFoundException::new);
+	}
+
+	public User loadEmailByNameAndPhone(String name, String phone) {
+		return userRepo.findByNameAndPhone(name, phone)
+			.orElseThrow(EmailNotFoundException::new);
 	}
 
 	public User createUser(User user) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssginc8.docto.auth.jwt.dto.TokenType;
 import com.ssginc8.docto.user.dto.AddDoctorList;
 import com.ssginc8.docto.user.dto.AddUser;
+import com.ssginc8.docto.user.dto.FindEmail;
 import com.ssginc8.docto.user.dto.Login;
 import com.ssginc8.docto.user.dto.SocialSignup;
 import com.ssginc8.docto.user.service.UserService;
@@ -32,6 +33,11 @@ public class UserApiController {
 	@GetMapping("/users/check-email")
 	public void checkEmail(@RequestParam(value = "email") String email) {
 		userService.checkEmail(email);
+	}
+
+	@GetMapping("/users/email/find")
+	public FindEmail.Response findEmail(@RequestBody FindEmail.Request request) {
+		return userService.findEmail(request);
 	}
 
 	@PostMapping("/users/register")

@@ -21,6 +21,7 @@ import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailExce
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.user.dto.AddDoctorList;
 import com.ssginc8.docto.user.dto.AddUser;
+import com.ssginc8.docto.user.dto.FindEmail;
 import com.ssginc8.docto.user.dto.Login;
 import com.ssginc8.docto.user.dto.SocialSignup;
 import com.ssginc8.docto.user.entity.Role;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
 	private final TokenProvider tokenProvider;
 	private final RefreshTokenProvider refreshTokenProvider;
 
+	@Transactional(readOnly = true)
 	@Override
 	public void checkEmail(String email) {
 		if (userProvider.checkEmail(email).isPresent()) {
@@ -148,6 +150,16 @@ public class UserServiceImpl implements UserService {
 			.refreshToken(tokens.getRefreshToken())
 			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
 			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
+			.build();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public FindEmail.Response findEmail(FindEmail.Request request) {
+		User user = userProvider.loadEmailByNameAndPhone(request.getName(), request.getPhone());
+
+		return FindEmail.Response.builder()
+			.email(user.getEmail())
 			.build();
 	}
 
