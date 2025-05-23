@@ -37,8 +37,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		log.info("소셜 로그인 성공 " + user.getUserId());
 
-		// // user의 role이 비어있다면 환자, 보호자, 병원 관리자인지 선택하는 화면으로 리다이렉트
-		// // 소셜 로그인으로 회원 가입 -> 환자, 보호자, 병원 관리자 중 선택 -> 추가 정보 입력 받고 api 호출
+		// // user의 role이 비어있다면 환자, 보호자, 병원 관리자인지 선택하는 화면으로 리다이렉트 (user의 providerId 세션으로 같이 넘기기)
+		// // 소셜 로그인으로 회원 가입
+		// // phone, 프로필 이미지, role 입력 받기 => 이후 role에 맞게 추가 정보 입력 (환자 - 주소, 주민번호) / (병원 관리자 - 의사 정보)
 		// if (Objects.isNull(user.getRole())) {
 		// 	response.sendRedirect("");
 		// } else { // 비어있지 않다면 메인 페이지로 리다이렉트
