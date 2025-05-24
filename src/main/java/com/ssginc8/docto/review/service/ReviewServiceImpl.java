@@ -1,5 +1,6 @@
 package com.ssginc8.docto.review.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,52 +70,36 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
-	// //리뷰 수정
-	// @Override
-	// @Transactional
-	// public ReviewResponse updateReview(ReviewUpdateRequest request, Long reviewId) {
-	// 	//1. 리뷰를 불러온다
-	// 	Review review = reviewProvider.getById(reviewId);
-	//
-	// 	//2. 본문 내용을 변경한다
-	// 	review.updateContents(request.getContents());
-	//
-	// 	//3. 키워드를 변경한다
-	// 	Set<KeywordType> keywordTypes = request.getKeywords().stream()
-	// 		.map(KeywordType::valueOf)
-	// 		.collect(Collectors.toSet());
-	// 	review.getKeywords().clear();
-	// 	review.getKeywords().addAll(keywordTypes);
-	//
-	// 	//4. 변경된 값들을 저장한다
-	// 	Review saved = reviewProvider.save(review);
-	//
-	// 	//5. 응답DTO를 만들어준다
-	// 	List<String> keywords = saved.getKeywords().stream()
-	// 		.map(Enum::name)
-	// 		.toList();
-	//
-	// 	return ReviewResponse.fromEntity(saved, keywords);
-	//
-	// }
-
+	//리뷰 수정
 	@Override
 	@Transactional
-	public ReviewResponse updateReview(ReviewUpdateRequest req, Long reviewId) {
+	public ReviewResponse updateReview(ReviewUpdateRequest request, Long reviewId) {
+		//1. 리뷰를 불러온다
 		Review review = reviewProvider.getById(reviewId);
-		review.updateContents(req.getContents());
 
-		Set<KeywordType> kws = req.getKeywords().stream()
+		//2. 본문 내용을 변경한다
+		review.updateContents(request.getContents());
+
+		//3. 키워드를 변경한다
+		Set<KeywordType> keywordTypes = request.getKeywords().stream()
 			.map(KeywordType::valueOf)
 			.collect(Collectors.toSet());
 		review.getKeywords().clear();
-		review.getKeywords().addAll(kws);
+		review.getKeywords().addAll(keywordTypes);
 
-		// ★ 이미 영속 상태이므로 save() 생략해도 됩니다.
-		List<String> keywords = review.getKeywords().stream()
-			.map(Enum::name).toList();
-		return ReviewResponse.fromEntity(review, keywords);
+
+		//4. 변경된 값들을 저장한다
+		Review saved = reviewProvider.save(review);
+
+		//4. 응답DTO를 만들어준다
+		List<String> keywords = saved.getKeywords().stream()
+			.map(Enum::name)
+			.toList();
+
+		return ReviewResponse.fromEntity(saved, keywords);
+
 	}
+
 
 
 	// 리뷰 삭제
@@ -153,6 +138,8 @@ public class ReviewServiceImpl implements ReviewService {
 		review.incrementReportCount();
 		reviewProvider.save(review);
 	}
+
+
 }
 
 
