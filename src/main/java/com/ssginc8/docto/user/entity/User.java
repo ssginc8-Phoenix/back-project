@@ -76,6 +76,20 @@ public class User extends BaseTimeEntity {
 	private File profileImage;
 
 	private User(String uuid, String email, String password, String name, String phone,
+		String address, LoginType loginType, Role role, File profileImage, Boolean isSuspended) {
+		this.uuid = uuid;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.loginType = loginType;
+		this.role = role;
+		this.profileImage = profileImage;
+		this.isSuspended = isSuspended;
+	}
+
+	private User(String uuid, String email, String password, String name, String phone,
 		LoginType loginType, Role role, File profileImage, Boolean isSuspended) {
 		this.uuid = uuid;
 		this.email = email;
@@ -97,7 +111,14 @@ public class User extends BaseTimeEntity {
 		this.isSuspended = isSuspended;
 	}
 
-	public static User createUserByEmail(String email, String password, String name, String phone,
+	public static User createUserByEmail(String email, String password, String name, String phone, String address,
+		Role role, File profileImage) {
+		String uuid = UUID.randomUUID().toString();
+
+		return new User(uuid, email, password, name, phone, address, LoginType.EMAIL, role, profileImage, false);
+	}
+
+	public static User createDoctorByEmail(String email, String password, String name, String phone,
 		Role role, File profileImage) {
 		String uuid = UUID.randomUUID().toString();
 

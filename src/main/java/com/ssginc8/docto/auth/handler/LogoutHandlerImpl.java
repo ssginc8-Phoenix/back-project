@@ -24,11 +24,8 @@ public class LogoutHandlerImpl implements LogoutHandler {
 	@Transactional
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-		log.info("로그아웃");
-		String token = cookieUtil.getToken(request, TokenType.REFRESH_TOKEN.getTokenType());
+		String refreshToken = cookieUtil.getToken(request, TokenType.REFRESH_TOKEN.getTokenType());
 
-		log.info(token);
-
-		refreshTokenProvider.deleteRefreshToken(token);
+		refreshTokenProvider.deleteRefreshToken(refreshToken);
 	}
 }

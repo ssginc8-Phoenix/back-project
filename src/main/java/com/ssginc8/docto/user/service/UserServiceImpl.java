@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public AddUser.Response createUser(AddUser.Request request) {
+		log.info(request.toString());
 		// 1. 이메일 중복 검사, 패스워드 검증
 		createUserValidator.validate(request);
 
@@ -66,18 +67,14 @@ public class UserServiceImpl implements UserService {
 
 		// 4. User 엔티티 생성
 		User user = User.createUserByEmail(request.getEmail(), encryptedPassword, request.getName(), request.getPhone(),
-			Role.valueOf(request.getRole()), profileImage);
+			request.getAddress(), request.getRole(), profileImage);
 
 		user = userProvider.createUser(user);
-
-		log.info(user.getRole().getKey());
-
-		log.info(Role.valueOf(request.getRole()).getKey());
 
 		// 5. user 저장 후 만들어진 user id 반환
 		return AddUser.Response.builder()
 			.userId(user.getUserId())
-			.role(user.getRole().getKey())
+			.role(user.getRole())
 			.build();
 	}
 
@@ -110,7 +107,7 @@ public class UserServiceImpl implements UserService {
 			createUserValidator.validateEmail(doctor.getEmail());
 			String encryptedPassword = bCryptPasswordEncoder.encode(doctor.getPassword());
 
-			User user = User.createUserByEmail(doctor.getEmail(), encryptedPassword,
+			User user = User.createDoctorByEmail(doctor.getEmail(), encryptedPassword,
 				doctor.getName(), doctor.getPhone(), Role.DOCTOR, null);
 
 			ids.add(userProvider.createUser(user).getUserId());
