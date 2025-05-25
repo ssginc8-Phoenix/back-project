@@ -6,8 +6,8 @@ import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailExce
 import com.ssginc8.docto.global.error.exception.userException.PasswordHasSequenceException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooShortException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooSimpleException;
-import com.ssginc8.docto.user.dto.AddUser;
 import com.ssginc8.docto.user.provider.UserProvider;
+import com.ssginc8.docto.user.service.dto.AddUser;
 
 import lombok.RequiredArgsConstructor;
 

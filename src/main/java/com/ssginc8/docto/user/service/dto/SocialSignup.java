@@ -1,4 +1,4 @@
-package com.ssginc8.docto.user.dto;
+package com.ssginc8.docto.user.service.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 

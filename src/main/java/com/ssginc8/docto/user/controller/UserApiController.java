@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.auth.jwt.dto.TokenType;
-import com.ssginc8.docto.user.dto.AddDoctorList;
-import com.ssginc8.docto.user.dto.AddUser;
-import com.ssginc8.docto.user.dto.FindEmail;
-import com.ssginc8.docto.user.dto.Login;
-import com.ssginc8.docto.user.dto.SocialSignup;
 import com.ssginc8.docto.user.service.UserService;
+import com.ssginc8.docto.user.service.dto.AddDoctorList;
+import com.ssginc8.docto.user.service.dto.AddUser;
+import com.ssginc8.docto.user.service.dto.FindEmail;
+import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;

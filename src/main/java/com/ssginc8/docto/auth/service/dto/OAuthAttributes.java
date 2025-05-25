@@ -1,4 +1,4 @@
-package com.ssginc8.docto.auth.dto;
+package com.ssginc8.docto.auth.service.dto;
 
 import com.ssginc8.docto.user.entity.LoginType;
 import com.ssginc8.docto.user.entity.User;

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssginc8.docto.auth.dto.OAuthAttributes;
 import com.ssginc8.docto.auth.entity.CustomOAuth2User;
+import com.ssginc8.docto.auth.service.dto.OAuthAttributes;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.repository.UserRepo;

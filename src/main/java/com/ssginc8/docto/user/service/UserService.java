@@ -1,10 +1,10 @@
 package com.ssginc8.docto.user.service;
 
-import com.ssginc8.docto.user.dto.AddDoctorList;
-import com.ssginc8.docto.user.dto.AddUser;
-import com.ssginc8.docto.user.dto.FindEmail;
-import com.ssginc8.docto.user.dto.Login;
-import com.ssginc8.docto.user.dto.SocialSignup;
+import com.ssginc8.docto.user.service.dto.AddDoctorList;
+import com.ssginc8.docto.user.service.dto.AddUser;
+import com.ssginc8.docto.user.service.dto.FindEmail;
+import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.SocialSignup;
 
 public interface UserService {
 	void checkEmail(String email);
