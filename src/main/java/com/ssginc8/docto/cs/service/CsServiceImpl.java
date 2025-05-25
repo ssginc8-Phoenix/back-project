@@ -16,7 +16,6 @@ import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
 import com.ssginc8.docto.cs.entity.CsMessage;
 import com.ssginc8.docto.cs.entity.CsRoom;
-import com.ssginc8.docto.cs.entity.MessageType;
 import com.ssginc8.docto.cs.entity.Status;
 import com.ssginc8.docto.cs.provider.CsProvider;
 import com.ssginc8.docto.user.entity.User;
@@ -69,7 +68,10 @@ public class CsServiceImpl implements CsService {
 	@Override
 	public void updateCsRoomStatus(Long csRoomId, String status) {
 		CsRoom csRoom = csProvider.findById(csRoomId);
-		csRoom.changeStatus(Status.from(status));
+		Status newStatus = Status.from(status);
+		csRoom.changeStatus(newStatus);
+
+		csProvider.save(csRoom);
 	}
 
 	@Transactional
@@ -104,8 +106,7 @@ public class CsServiceImpl implements CsService {
 		CsMessage message = CsMessage.create(
 			csRoom,
 			user.getUserId(),
-			request.getContent(),
-			MessageType.from(request.getMessageType())
+			request.getContent()
 		);
 
 		return csProvider.save(message);

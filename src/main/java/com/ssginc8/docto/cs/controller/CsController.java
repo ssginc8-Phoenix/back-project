@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssginc8.docto.cs.dto.AssignAgentRequest;
 import com.ssginc8.docto.cs.dto.CsMessageRequest;
 import com.ssginc8.docto.cs.dto.CsMessageResponse;
 import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
+import com.ssginc8.docto.cs.dto.UpdateStatusRequest;
 import com.ssginc8.docto.cs.repo.CsMessageRepo;
 import com.ssginc8.docto.cs.service.CsService;
 
@@ -50,10 +52,10 @@ public class CsController {
 	}
 
 	/* ✅ CS 채팅방 단건(Detail) 조회
-	 *	URL: /api/v1/admin/csrooms/{csRoomId}
+	 *	URL: /api/v1/csrooms/{csRoomId}
 	 *	Method: GET
 	 */
-	@GetMapping("/{csRoomId}")
+	@GetMapping("/csRooms/{csRoomId}")
 	public ResponseEntity<CsRoomResponse> getCsRoomDetail(@PathVariable Long csRoomId) {
 		return ResponseEntity.ok(csService.findById(csRoomId));
 	}
@@ -73,8 +75,8 @@ public class CsController {
 	 *	Method: PATCH
 	 */
 	@PatchMapping("/csrooms/{csRoomId}/assign")
-	public ResponseEntity<Void> assignAgent(@PathVariable Long csRoomId, @RequestBody Long agentId) {
-		csService.assignAgent(csRoomId, agentId);
+	public ResponseEntity<Void> assignAgent(@PathVariable Long csRoomId, @RequestBody AssignAgentRequest request) {
+		csService.assignAgent(csRoomId, request.getAgentId());
 
 		return ResponseEntity.noContent().build();
 	}
@@ -84,8 +86,10 @@ public class CsController {
 	 *	Method: PATCH
 	 */
 	@PatchMapping("/csrooms/{csRoomId}/status")
-	public ResponseEntity<Void> updateCsRoomStatus(@PathVariable Long csRoomId, @RequestBody String status) {
-		csService.updateCsRoomStatus(csRoomId, status);
+	public ResponseEntity<Void> updateCsRoomStatus(
+		@PathVariable Long csRoomId,
+		@RequestBody UpdateStatusRequest request) {
+		csService.updateCsRoomStatus(csRoomId, request.getStatus());
 
 		return ResponseEntity.noContent().build();
 	}
@@ -106,7 +110,7 @@ public class CsController {
 	 *	Method: GET
 	 */
 	@GetMapping("/csrooms/{csRoomId}/messages")
-	public ResponseEntity<?> getMessages(
+	public ResponseEntity<List<CsMessageResponse>> getMessages(
 		@PathVariable Long csRoomId,
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime before,
 		@RequestParam(defaultValue = "20") int size) {
@@ -121,8 +125,8 @@ public class CsController {
 	 *	Method: POST
 	 */
 	@PostMapping("/csrooms/{csRoomId}/messages")
-	public ResponseEntity<?> createMessage(@PathVariable Long csRoomId, @RequestBody CsMessageRequest request) {
+	public ResponseEntity<Long> createMessage(@PathVariable Long csRoomId, @RequestBody CsMessageRequest request) {
 
-		return null;
+		return ResponseEntity.ok(csService.createMessage(csRoomId, request));
 	}
 }

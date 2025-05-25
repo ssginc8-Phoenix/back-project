@@ -4,8 +4,6 @@ import com.ssginc8.docto.global.base.BaseTimeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,18 +35,13 @@ public class CsMessage extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private MessageType messageType;	// TEXT, IMAGE
-
-	public CsMessage(CsRoom csRoom, Long userId, String content, MessageType messageType) {
+	public CsMessage(CsRoom csRoom, Long userId, String content) {
 		this.csRoom = csRoom;
 		this.userId = userId;
 		this.content = content;
-		this.messageType = messageType;
 	}
 
-	public static CsMessage create(CsRoom csRoom, Long userId, String content, MessageType messageType) {
-		return new CsMessage(csRoom, userId, content, messageType);
+	public static CsMessage create(CsRoom csRoom, Long userId, String content) {
+		return new CsMessage(csRoom, userId, content);
 	}
 }

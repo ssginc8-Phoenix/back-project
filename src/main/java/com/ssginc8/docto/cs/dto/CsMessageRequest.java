@@ -9,8 +9,6 @@ import lombok.Getter;
 @Builder
 public class CsMessageRequest {
 
-	private Long csRoomId;
 	private Long userId;
 	private String content;
-	private String messageType;
 }

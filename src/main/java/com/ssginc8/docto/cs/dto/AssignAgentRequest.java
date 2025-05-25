@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 @Builder
-public class CsRoomCreateRequest {
+@AllArgsConstructor
+public class AssignAgentRequest {
 
-	private Long customerId;
+	private Long agentId;
 }
