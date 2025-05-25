@@ -1,35 +1,81 @@
 = DOCTO API 문서
-Author: Your Name
+Author: 불4조
 :doctype: book
 :toc: left
 :source-highlighter: highlightjs
 :sectnums:
 :icons: font
 
-== 예약 요청
+== 예약
+=== 예약 요청
 
 include::{snippets}/appointment-controller-test/request-appointment/http-request.adoc[]
 include::{snippets}/appointment-controller-test/request-appointment/request-fields.adoc[]
 include::{snippets}/appointment-controller-test/request-appointment/http-response.adoc[]
 
-== 예약 단건 조회
+=== 예약 단건 조회
 include::{snippets}/appointment-controller-test/get-appointment-detail/http-request.adoc[]
 include::{snippets}/appointment-controller-test/get-appointment-detail/path-parameters.adoc[]
 include::{snippets}/appointment-controller-test/get-appointment-detail/http-response.adoc[]
 
-== 예약 리스트 조회
+=== 예약 리스트 조회
 include::{snippets}/appointment-controller-test/get-appointment-list/http-request.adoc[]
 include::{snippets}/appointment-controller-test/get-appointment-list/query-parameters.adoc[]
 include::{snippets}/appointment-controller-test/get-appointment-list/http-response.adoc[]
 
-== 예약 상태 업데이트
+=== 예약 상태 업데이트
 include::{snippets}/appointment-controller-test/update-appointment-status/http-request.adoc[]
 include::{snippets}/appointment-controller-test/update-appointment-status/path-parameters.adoc[]
 include::{snippets}/appointment-controller-test/update-appointment-status/request-fields.adoc[]
 include::{snippets}/appointment-controller-test/update-appointment-status/http-response.adoc[]
 
-== 재예약
+=== 재예약
 include::{snippets}/appointment-controller-test/reschedule-appointment/http-request.adoc[]
 include::{snippets}/appointment-controller-test/reschedule-appointment/path-parameters.adoc[]
 include::{snippets}/appointment-controller-test/reschedule-appointment/request-fields.adoc[]
 include::{snippets}/appointment-controller-test/reschedule-appointment/http-response.adoc[]
+
+== CS
+
+=== 채팅방 생성
+include::{snippets}/cs-controller-test/create-cs-room/http-request.adoc[]
+include::{snippets}/cs-controller-test/create-cs-room/request-fields.adoc[]
+include::{snippets}/cs-controller-test/create-cs-room/http-response.adoc[]
+
+=== WAITING 중인 채팅방 상담사 배정
+include::{snippets}/cs-controller-test/assign-agent/http-request.adoc[]
+include::{snippets}/cs-controller-test/assign-agent/path-parameters.adoc[]
+include::{snippets}/cs-controller-test/assign-agent/request-fields.adoc[]
+
+=== 채팅방 상세 조회
+include::{snippets}/cs-controller-test/get-cs-room-detail/http-request.adoc[]
+include::{snippets}/cs-controller-test/get-cs-room-detail/response-fields.adoc[]
+include::{snippets}/cs-controller-test/get-cs-room-detail/http-response.adoc[]
+
+=== 채팅방 리스트 조회
+include::{snippets}/cs-controller-test/get-cs-room-list/http-request.adoc[]
+include::{snippets}/cs-controller-test/get-cs-room-list/query-parameters.adoc[]
+include::{snippets}/cs-controller-test/get-cs-room-list/http-response.adoc[]
+
+=== 상담 상태 변경
+include::{snippets}/cs-controller-test/change-status/http-request.adoc[]
+include::{snippets}/cs-controller-test/change-status/path-parameters.adoc[]
+include::{snippets}/cs-controller-test/change-status/request-fields.adoc[]
+include::{snippets}/cs-controller-test/change-status/http-response.adoc[]
+
+=== 채팅방 삭제
+include::{snippets}/cs-controller-test/delete-cs-room/http-request.adoc[]
+include::{snippets}/cs-controller-test/delete-cs-room/path-parameters.adoc[]
+include::{snippets}/cs-controller-test/delete-cs-room/http-response.adoc[]
+
+=== 메시지 전송
+include::{snippets}/cs-controller-test/create-message/http-request.adoc[]
+include::{snippets}/cs-controller-test/create-message/path-parameters.adoc[]
+include::{snippets}/cs-controller-test/create-message/request-fields.adoc[]
+include::{snippets}/cs-controller-test/create-message/http-response.adoc[]
+
+=== 메시지 조회 (무한스크롤)
+include::{snippets}/cs-controller-test/get-messages/http-request.adoc[]
+include::{snippets}/cs-controller-test/get-messages/path-parameters.adoc[]
+include::{snippets}/cs-controller-test/get-messages/response-fields.adoc[]
+include::{snippets}/cs-controller-test/get-messages/http-response.adoc[]
