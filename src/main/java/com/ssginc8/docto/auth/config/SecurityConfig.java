@@ -42,9 +42,14 @@ public class SecurityConfig {
 		return http
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(
-					"/static/**", "/api/v1/auth/login/**", "/api/v1/users/**"
+					"/static/**", "/api/v1/auth/**", "/api/v1/users/register", "/api/v1/users/social",
+					"/api/v1/users/doctors", "/api/v1/users/check-email", "/api/v1/users/email/find",
+					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
+					"/api/v1/users/email/verify-code/confirm"
 				).permitAll()
-
+				.requestMatchers(
+					"/api/v1/users/me"
+				).authenticated() // 로그인 한 사용자만 접근 가능
 				// .requestMatchers(
 				//
 				// ).hasRole("PATIENT")
@@ -53,17 +58,17 @@ public class SecurityConfig {
 				// 	"/api/v1/patients/**"
 				// ).hasRole("GUARDIAN")
 				//
-				// .requestMatchers(
-				//
-				// ).hasRole("HOSPITAL_ADMIN")
+				.requestMatchers(
+					"/api/v1/users/doctors"
+				).hasRole("HOSPITAL_ADMIN")
 				//
 				// .requestMatchers(
 				//
 				// ).hasRole("DOCTOR")
 				//
-				// .requestMatchers(
-				//
-				// ).hasRole("SYSTEM_ADMIN")
+				.requestMatchers(
+					"/api/v1/admin/users"
+				).hasRole("SYSTEM_ADMIN")
 
 				.anyRequest().authenticated()) // 그외 모든 요청 인증 필요
 			.csrf(AbstractHttpConfigurer::disable)

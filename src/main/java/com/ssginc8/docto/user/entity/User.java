@@ -1,6 +1,7 @@
 package com.ssginc8.docto.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -147,6 +148,13 @@ public class User extends BaseTimeEntity {
 		this.role = role;
 
 		return this;
+	}
+
+	public String getProfileUrl() {
+		if (Objects.isNull(this.profileImage)) {
+			return null;
+		}
+		return this.profileImage.getUrl();
 	}
 
 	public void updateProfileImage(File profileImage) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
+import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
@@ -27,6 +29,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
+import com.ssginc8.docto.user.service.dto.UserInfo;
 import com.ssginc8.docto.user.validator.CreateUserValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -43,6 +46,30 @@ public class UserServiceImpl implements UserService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final TokenProvider tokenProvider;
 	private final RefreshTokenProvider refreshTokenProvider;
+
+	@Transactional(readOnly = true)
+	@Override
+	public UserInfo.Response getMyInfo() {
+		// 토큰으로 uuid 알아내기
+		String uuid = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		log.info(uuid);
+		// uuid로 user 찾기
+		User user = userProvider.loadUserByUuid(uuid);
+
+		// user 정보 반환
+		return UserInfo.Response.from(user);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public FindEmail.Response findEmail(FindEmail.Request request) {
+		User user = userProvider.loadEmailByNameAndPhone(request.getName(), request.getPhone());
+
+		return FindEmail.Response.builder()
+			.email(user.getEmail())
+			.build();
+	}
 
 	@Transactional(readOnly = true)
 	@Override
@@ -122,7 +149,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Login.Response login(Login.Request request) {
 		User user = userProvider.loadUserByEmail(request.getEmail())
-			.orElseThrow(DuplicateEmailException::new);
+			.orElseThrow(UserNotFoundException::new);
 
 		if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new InvalidPasswordException();
@@ -135,7 +162,6 @@ public class UserServiceImpl implements UserService {
 
 		RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
 
-		// 다중 디바이스에서 로그인 한 경우 한 쪽에서 로그인하면 다른 쪽은 끊기게 될 것 같은데 로그인 할 때 새로 발급하는게 나을까?
 		if (refreshToken != null) {
 			refreshToken.update(tokens.getRefreshToken());
 		} else {
@@ -148,16 +174,6 @@ public class UserServiceImpl implements UserService {
 			.refreshToken(tokens.getRefreshToken())
 			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
 			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
-			.build();
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public FindEmail.Response findEmail(FindEmail.Request request) {
-		User user = userProvider.loadEmailByNameAndPhone(request.getName(), request.getPhone());
-
-		return FindEmail.Response.builder()
-			.email(user.getEmail())
 			.build();
 	}
 

@@ -24,6 +24,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 		String uuid = refreshTokenProvider.findByRefreshToken(refreshToken).getUuid();
 		User user = userProvider.loadUserByUuid(uuid);
 
-		return tokenProvider.generateAccessToken(user.getEmail(), user.getRole().getKey());
+		return tokenProvider.generateAccessToken(uuid, user.getRole().getKey());
 	}
 }

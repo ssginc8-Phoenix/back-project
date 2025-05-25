@@ -18,7 +18,9 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class TokenProvider {
@@ -48,7 +50,6 @@ public class TokenProvider {
 			.setIssuedAt(now) // 내용 iat(발급일시) : 현재 시간
 			.setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRY.toMillis())) // 내용 exp(만료일시)
 			.setSubject(uuid) // 내용 sub(토큰 제목) : 유저의 uuid
-			.claim("uuid", uuid)
 			.claim("role", role) // 클레임 role : 유저 권한
 			.signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey()) // 서명 - 비밀 값과 함께 암호화
 			.compact();
@@ -84,7 +85,9 @@ public class TokenProvider {
 	public Authentication getAuthentication(String token) {
 		Claims claims = getClaims(token);
 
-		String role = claims.get("role").toString();
+		log.info(claims.getSubject());
+
+		String role = claims.get("role", String.class);
 
 		Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(role));
 

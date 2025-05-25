@@ -15,6 +15,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
+import com.ssginc8.docto.user.service.dto.UserInfo;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,11 @@ import lombok.extern.log4j.Log4j2;
 public class UserApiController {
 	private final UserService userService;
 	private final CookieUtil cookieUtil;
+
+	@GetMapping("/users/me")
+	public UserInfo.Response getMyInfo() {
+		return userService.getMyInfo();
+	}
 
 	@GetMapping("/users/check-email")
 	public void checkEmail(@RequestParam(value = "email") String email) {

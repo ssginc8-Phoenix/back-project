@@ -36,6 +36,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		if (tokenProvider.validToken(accessToken)) { // 토큰 검증 -> 토큰이 유효하다면
 			// 토큰 기반으로 인증 정보 가져오기
 			Authentication authentication = tokenProvider.getAuthentication(accessToken);
+			log.info(authentication);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} else { // 유효하지 않다면
 			String refreshToken = cookieUtil.getToken(request, TokenType.REFRESH_TOKEN.getTokenType());
