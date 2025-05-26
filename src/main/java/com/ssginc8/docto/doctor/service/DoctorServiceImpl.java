@@ -115,24 +115,23 @@ public class DoctorServiceImpl implements DoctorService {
 			.collect(Collectors.toList());
 
 	}
-
 	/**
 	 * 의사 영업시간 등록
 	 *
 	 */
 	@Override
-	public List<DoctorScheduleList> saveDoctorSchedule(Long doctorId, List<DoctorScheduleList> doctorScheduleList) {
+	public List<DoctorScheduleRequest> saveDoctorSchedule(Long doctorId, List<DoctorScheduleRequest> doctorScheduleRequest) {
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
 		List<DoctorSchedule> savedSchedules = new ArrayList<>();
 
-		for (DoctorScheduleList scheduleList : doctorScheduleList) {
+		for (DoctorScheduleRequest scheduleList : doctorScheduleRequest) {
 			DoctorSchedule schedule = DoctorSchedule.create(
 				doctor,
 				scheduleList.getDayOfWeek(),
-				scheduleList.getLunchStart(),
-				scheduleList.getLunchEnd(),
 				scheduleList.getStartTime(),
-				scheduleList.getEndTime()
+				scheduleList.getEndTime(),
+				scheduleList.getLunchStart(),
+				scheduleList.getLunchEnd()
 			);
 
 			DoctorSchedule saved = doctorScheduleProvider.saveDoctorSchedule(schedule);
@@ -142,9 +141,12 @@ public class DoctorServiceImpl implements DoctorService {
 
 		// Entity → DTO 변환 후 반환
 		return savedSchedules.stream()
-			.map(DoctorScheduleList::new)
+			.map(DoctorScheduleRequest::new)
 			.collect(Collectors.toList());
 	}
+
+
+
 
 	/**
 	 * 의사 영업시간 조회
