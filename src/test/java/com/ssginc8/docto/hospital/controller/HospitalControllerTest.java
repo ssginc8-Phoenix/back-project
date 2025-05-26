@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -379,6 +380,34 @@ public class HospitalControllerTest {
 				),
 				requestFields(
 					fieldWithPath("waiting").description("수정할 대기 인원 수")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("병원에서 리뷰 조회")
+	void getAllReviews() throws Exception {
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/hospitals/{hospitalId}/reviews", 2L)
+				.param("page", "0")
+				.param("size", "5"))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				pathParameters(
+					parameterWithName("hospitalId")
+						.attributes(key("constraints").value("숫자 입력"))
+						.description("Required, 병원 ID")
+				),
+				queryParameters(
+					parameterWithName("page")
+						.attributes(
+							key("constraints").value("0 이상의 정수"),
+							key("defaultValue").value("0"))
+						.description("Optional, 페이지 번호 (0부터 시작)").optional(),
+					parameterWithName("size")
+						.attributes(
+							key("constraints").value("1 이상의 정수"),
+							key("defaultValue").value("5"))
+						.description("Optional, 페이지당 항목 수").optional()
 				)
 			));
 	}

@@ -11,8 +11,9 @@ import com.ssginc8.docto.hospital.entity.ProvidedService;
 import com.ssginc8.docto.hospital.repo.HospitalRepo;
 import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
 import com.ssginc8.docto.hospital.repo.ProvidedServiceRepo;
-import com.ssginc8.docto.User.repo.UserRepo;
+
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class HospitalProvider {
 
 	private final HospitalRepo hospitalRepo;
-	private final UserRepository userRepository;
+	private final UserRepo userRepo;
 	private final HospitalScheduleRepo hospitalScheduleRepo;
 	private final ProvidedServiceRepo providedServiceRepo;
 
@@ -34,7 +35,7 @@ public class HospitalProvider {
 	}
 
 	public User getUserById(Long userId) {
-		return userRepository.findById(userId)
+		return userRepo.findById(userId)
 			.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 	}
 

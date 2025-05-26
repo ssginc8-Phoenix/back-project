@@ -28,7 +28,7 @@ public class PatientProvider {
 		return patientRepo.findByPatientIdAndDeletedAtIsNull(id)
 			.orElseThrow(() -> new EntityNotFoundException("Patient not found"));
 	}
-}
+
 
 	@Transactional(readOnly = true)
 	public Patient getPatientById(Long patientId) {

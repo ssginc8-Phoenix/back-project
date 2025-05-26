@@ -61,10 +61,5 @@ public class Patient extends BaseTimeEntity {
 		this.residentRegistrationNumber = newRRN;
 	}
 
-	/**
-	 * 환자 정보 소프트 삭제 처리
-	 */
-	public void softDelete() {
-		this.deletedAt = LocalDateTime.now();
-	}
+
 }
