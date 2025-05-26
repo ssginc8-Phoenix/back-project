@@ -10,6 +10,7 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -25,12 +26,22 @@ public class DoctorScheduleProvider {
 
 		LocalTime time = appointmentTime.toLocalTime();
 
-		if (time.isBefore(schedule.getStartTime().toLocalTime()) || time.isAfter(schedule.getEndTime().toLocalTime())) {
+		if (time.isBefore(schedule.getStartTime()) || time.isAfter(schedule.getEndTime())) {
 			throw new IllegalArgumentException("예약 시간이 진료 시간 외입니다.");
 		}
 
-		if (!time.isBefore(schedule.getLunchStart().toLocalTime()) && !time.isAfter(schedule.getLunchEnd().toLocalTime())) {
+		if (!time.isBefore(schedule.getLunchStart()) && !time.isAfter(schedule.getLunchEnd())) {
 			throw new IllegalArgumentException("예약 시간이 점심 시간입니다.");
 		}
+	}
+
+	public DoctorSchedule saveDoctorSchedule(DoctorSchedule doctorSchedule) {
+		doctorScheduleRepo.save(doctorSchedule);
+		return doctorSchedule;
+	}
+
+	public DoctorSchedule getDoctorScheduleById(Long scheduleId) {
+		return doctorScheduleRepo.findById(scheduleId)
+			.orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
 	}
 }

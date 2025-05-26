@@ -20,4 +20,8 @@ public class DoctorProvider {
 			() -> new IllegalArgumentException("해당 의사가 존재하지 않습니다. id = " + doctorId)
 		);
 	}
+	public Doctor saveDoctor(Doctor doctor) {
+		doctorRepo.save(doctor);
+		return doctor;
+	}
 }
