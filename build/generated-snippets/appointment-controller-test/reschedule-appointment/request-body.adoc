@@ -1,0 +1,6 @@
+[source,json,options="nowrap"]
+----
+{
+  "newTime" : "2025-05-24T09:53:12.3379068"
+}
+----

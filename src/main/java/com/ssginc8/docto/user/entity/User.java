@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+// @IdClass(UserId.class)
 @Table(name = "tbl_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -51,6 +52,8 @@ public class User extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role;
+
+	private Long penalty;
 
 	@Column(nullable = false)
 	private Boolean suspended;
