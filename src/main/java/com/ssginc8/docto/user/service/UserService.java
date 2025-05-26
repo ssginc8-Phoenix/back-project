@@ -1,7 +1,12 @@
 package com.ssginc8.docto.user.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
+import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
@@ -16,6 +21,8 @@ public interface UserService {
 
 	FindEmail.Response findEmail(FindEmail.Request request);
 
+	Page<AdminUserList.Response> getUsers(Role role, Pageable pageable);
+
 	AddUser.Response createUser(AddUser.Request request);
 
 	SocialSignup.Response updateSocialInfo(SocialSignup.Request request);
@@ -25,4 +32,6 @@ public interface UserService {
 	Login.Response login(Login.Request request);
 
 	void updateInfo(UpdateUser.Request request);
+
+	void deleteAccount();
 }

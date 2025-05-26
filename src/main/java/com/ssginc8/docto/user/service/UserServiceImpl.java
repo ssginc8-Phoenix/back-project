@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,6 @@ import com.ssginc8.docto.auth.jwt.provider.RefreshTokenProvider;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
-import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.file.service.dto.UpdateFile;
 import com.ssginc8.docto.file.service.dto.UploadFile;
@@ -25,8 +27,10 @@ import com.ssginc8.docto.global.error.exception.userException.UserNotFoundExcept
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
+import com.ssginc8.docto.user.repository.UserSearchRepoImpl;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
+import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final TokenProvider tokenProvider;
 	private final RefreshTokenProvider refreshTokenProvider;
-	private final FileProvider fileProvider;
+	private final UserSearchRepoImpl userSearchRepoImpl;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -66,6 +70,16 @@ public class UserServiceImpl implements UserService {
 		return FindEmail.Response.builder()
 			.email(user.getEmail())
 			.build();
+	}
+
+	@Override
+	public Page<AdminUserList.Response> getUsers(Role role, Pageable pageable) {
+		Page<User> users = userSearchRepoImpl.findByRoleAndDeletedAtIsNotNull(role, pageable);
+
+		List<AdminUserList.Response> userList = users.stream()
+			.map(AdminUserList.Response::from).toList();
+
+		return new PageImpl<>(userList, pageable, users.getTotalElements());
 	}
 
 	@Transactional(readOnly = true)
@@ -201,6 +215,14 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user.updateUser(request.getName(), request.getEmail(), request.getPhone(), request.getAddress(), file);
+	}
+
+	@Transactional
+	@Override
+	public void deleteAccount() {
+		User user = getUserFromUuid();
+
+		user.delete();
 	}
 
 	// 프로필 사진이 있는 경우 -> s3에 저장
