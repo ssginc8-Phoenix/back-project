@@ -11,7 +11,7 @@ import com.ssginc8.docto.hospital.entity.ProvidedService;
 import com.ssginc8.docto.hospital.repo.HospitalRepo;
 import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
 import com.ssginc8.docto.hospital.repo.ProvidedServiceRepo;
-import com.ssginc8.docto.hospital.repo.UserRepository;
+import com.ssginc8.docto.User.repo.UserRepo;
 import com.ssginc8.docto.user.entity.User;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -44,15 +44,10 @@ public class HospitalProvider {
 	}
 
 	public void validateScheduleBelongsToHospital(HospitalSchedule schedule, Hospital hospital) {
-
-
 		if (!schedule.getHospital().getHospitalId().equals(hospital.getHospitalId())) {
 			throw new IllegalArgumentException("해당 스케줄은 병원에 속하지 않습니다.");
 		}
 	}
-
-
-
 
 	public void saveHospital(Hospital hospital) {
 		hospitalRepo.save(hospital);
