@@ -1,6 +1,7 @@
 package com.ssginc8.docto.hospital.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
@@ -108,8 +109,8 @@ public class HospitalController {
 		@PathVariable Long hospitalId,
 		@RequestBody List<HospitalScheduleRequest> schedules) {
 
-		List<HospitalScheduleRequest> savedSchedules = hospitalService.saveSchedules(hospitalId, schedules);
-		return ResponseEntity.ok(savedSchedules);
+		hospitalService.saveSchedules(hospitalId, schedules);
+		return ResponseEntity.ok().build();
 	}
 
 	// @GetMapping("/hospitals")
@@ -152,13 +153,14 @@ public class HospitalController {
 	 * 병원 웨이팅 등록
 	 *
 	 */
-	@PatchMapping("/hospitals/{hospitalId}/waiting")
+	@PostMapping("/hospitals/{hospitalId}/waiting")
 	public ResponseEntity<Long> saveHospitalWaiting(
 		@PathVariable Long hospitalId,
-		@RequestBody HospitalWaiting hospitalWaiting
+		@RequestBody Map<String, Long> request
 	) {
-		Long updatedHospitalId = hospitalService.saveHospitalWaiting(hospitalId, hospitalWaiting);
-		return ResponseEntity.ok(updatedHospitalId);
+		Long waiting = request.get("waiting");
+		hospitalService.saveHospitalWaiting(hospitalId, new HospitalWaiting(waiting));
+		return ResponseEntity.ok(waiting);
 	}
 
 	/**
@@ -175,13 +177,13 @@ public class HospitalController {
 	 * 병원 웨이팅 수정
 	 *
 	 */
-	@PostMapping("/hospitals/{hospitalId}/waiting")
+	@PatchMapping("/hospitals/{hospitalId}/waiting")
 	public ResponseEntity<Long> updateHospitalWaiting(
 		@PathVariable Long hospitalId,
 		@RequestBody HospitalWaiting hospitalWaiting
 	) {
-		Long updatedId = hospitalService.updateHospitalWaiting(hospitalId, hospitalWaiting);
-		return ResponseEntity.ok(updatedId);
+		hospitalService.updateHospitalWaiting(hospitalId, hospitalWaiting);
+		return ResponseEntity.noContent().build();
 	}
 
 

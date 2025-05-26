@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 
 public class HospitalWaiting {
 
-	private Long HospitalId;
+
 
 	private Long waiting;
+
+
 }
