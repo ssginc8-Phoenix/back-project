@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tbl_qa_post")
@@ -24,12 +25,13 @@ public class QaPost extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long qnoPostId;
+	private Long qnaPostId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "appointmentId", nullable = false)
 	private Appointment appointment;
 
+	@Setter
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
 
@@ -39,4 +41,6 @@ public class QaPost extends BaseTimeEntity {
 		qaPost.content = content;
 		return qaPost;
 	}
+
+
 }
