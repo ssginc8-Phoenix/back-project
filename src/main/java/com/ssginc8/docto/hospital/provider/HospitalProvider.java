@@ -3,14 +3,15 @@ package com.ssginc8.docto.hospital.provider;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
-import com.ssginc8.docto.hospital.repository.HospitalRepo;
-import com.ssginc8.docto.hospital.repository.HospitalScheduleRepo;
-import com.ssginc8.docto.hospital.repository.ProvidedServiceRepo;
-import com.ssginc8.docto.hospital.repository.UserRepository;
+import com.ssginc8.docto.hospital.repo.HospitalRepo;
+import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
+import com.ssginc8.docto.hospital.repo.ProvidedServiceRepo;
+import com.ssginc8.docto.hospital.repo.UserRepository;
 import com.ssginc8.docto.user.entity.User;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -43,15 +44,15 @@ public class HospitalProvider {
 	}
 
 	public void validateScheduleBelongsToHospital(HospitalSchedule schedule, Hospital hospital) {
+
+
 		if (!schedule.getHospital().getHospitalId().equals(hospital.getHospitalId())) {
 			throw new IllegalArgumentException("해당 스케줄은 병원에 속하지 않습니다.");
 		}
 	}
-		return hospitalRepo.findById(hospitalId).orElseThrow(
-			() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. id = " + hospitalId)
-		);
-	}
-}
+
+
+
 
 	public void saveHospital(Hospital hospital) {
 		hospitalRepo.save(hospital);
