@@ -6,8 +6,10 @@ import com.ssginc8.docto.qna.entity.QaComment;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class CommentResponse {
 
