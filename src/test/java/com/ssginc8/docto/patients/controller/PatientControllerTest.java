@@ -66,15 +66,15 @@ public class PatientControllerTest {
 
 		// 테스트용 유저 생성 (UUID와 이메일은 시간 기반으로 유일하게 보장)
 		String uniqueId = String.valueOf(System.currentTimeMillis());
-		User user = User.create(
+		User user = User.createUser(
 			"uuid-" + uniqueId,
 			"user" + uniqueId + "@example.com",
 			"1234",
 			"테스트유저",
 			"01099998888",
-			"서울",
-			LoginType.EMAIL,
-			Role.PATIENT
+			false,
+		"asd123212222222"
+
 		);
 		User savedUser = userRepo.save(user);
 		testUserId = savedUser.getUserId();
@@ -89,17 +89,17 @@ public class PatientControllerTest {
 	void createPatient() throws Exception {
 		// 테스트용 다른 유저 생성
 		String uniqueId = String.valueOf(System.currentTimeMillis() + 1); // 밀리초 차이로 충돌 방지
-		User newUser = User.create(
+		User user = User.createUser(
 			"uuid-" + uniqueId,
 			"user" + uniqueId + "@example.com",
-			"abcd1234",
-			"등록테스트유저",
-			"01088887777",
-			"부산",
-			LoginType.EMAIL,
-			Role.PATIENT
+			"1234",
+			"테스트유저",
+			"01099998888",
+			false,
+			"asd123212222222"
+
 		);
-		User savedNewUser = userRepo.save(newUser);
+		User savedNewUser = userRepo.save(user);
 
 		PatientRequest request = new PatientRequest(savedNewUser.getUserId(), "010101-2345678");
 
