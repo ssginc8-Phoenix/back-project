@@ -1,0 +1,69 @@
+= DOCTO API 문서
+Author: 불4조
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 병원 등록
+include::{snippets}/hospital-controller-test/save-hospital-test/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-test/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-test/http-response.adoc[]
+
+== 병원 상세 조회
+include::{snippets}/hospital-controller-test/get-hospital-by-id/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-by-id/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-by-id/http-response.adoc[]
+
+== 병원 정보 수정
+include::{snippets}/hospital-controller-test/update-hospital/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital/http-response.adoc[]
+
+== 병원 삭제
+include::{snippets}/hospital-controller-test/delete-hospital/http-request.adoc[]
+include::{snippets}/hospital-controller-test/delete-hospital/http-response.adoc[]
+
+== 병원 전체 리스트 조회(admin)
+include::{snippets}/hospital-controller-test/get-all-hospitals/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-all-hospitals/query-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-all-hospitals/http-response.adoc[]
+
+== 병원 영업시간 조회
+include::{snippets}/hospital-controller-test/get-schedules/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-schedules/http-response.adoc[]
+
+== 병원 영업시간 등록
+include::{snippets}/hospital-controller-test/save-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-schedule/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-schedule/http-response.adoc[]
+
+== 병원 영업시간 삭제
+include::{snippets}/hospital-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/delete-schedule/http-response.adoc[]
+
+== 병원 영업시간 수정
+include::{snippets}/hospital-controller-test/update-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-schedule/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/update-schedule/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-schedule/http-response.adoc[]
+
+== 병원 웨이팅 등록
+include::{snippets}/hospital-controller-test/save-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/http-response.adoc[]
+
+== 병원 웨이팅 조회
+include::{snippets}/hospital-controller-test/get-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-waiting/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-waiting/http-response.adoc[]
+
+== 병원 웨이팅 수정
+include::{snippets}/hospital-controller-test/update-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/http-response.adoc[]
+
+
