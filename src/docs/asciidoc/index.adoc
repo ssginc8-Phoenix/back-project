@@ -66,4 +66,7 @@ include::{snippets}/hospital-controller-test/update-hospital-waiting/path-parame
 include::{snippets}/hospital-controller-test/update-hospital-waiting/request-fields.adoc[]
 include::{snippets}/hospital-controller-test/update-hospital-waiting/http-response.adoc[]
 
-
+== 병원 리뷰 조회
+include::{snippets}/hospital-controller-test/get-all-reviews/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-all-reviews/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-all-reviews/http-response.adoc[]
