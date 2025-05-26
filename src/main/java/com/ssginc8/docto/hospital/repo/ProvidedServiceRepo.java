@@ -1,4 +1,4 @@
-package com.ssginc8.docto.hospital.repository;
+package com.ssginc8.docto.hospital.repo;
 
 import java.util.List;
 
