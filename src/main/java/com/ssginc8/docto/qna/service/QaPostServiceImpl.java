@@ -16,6 +16,8 @@ public class QaPostServiceImpl implements QaPostService{
 
 	private final QaPostProvider qaPostProvider;
 
+
+	// 게시글 생성
 	@Transactional
 	@Override
 	public QaPost createQaPost(Appointment appointment, String content) {
@@ -23,6 +25,7 @@ public class QaPostServiceImpl implements QaPostService{
 		return qaPostProvider.save(post);
 	}
 
+	// 게시글 수정
 	@Override
 	@Transactional
 	public QaPostResponse updateQaPost(Long qnaId, String content) {
@@ -32,12 +35,14 @@ public class QaPostServiceImpl implements QaPostService{
 		return QaPostResponse.fromEntity(saved);
 	}
 
+	// 게시글 조회
 	@Override
 	@Transactional(readOnly = true)
 	public QaPostResponse getQaPost(Long qnaId) {
 		return QaPostResponse.fromEntity(qaPostProvider.getById(qnaId));
 	}
 
+	// 게시글 삭제
 	@Override
 	@Transactional
 	public void deleteQaPost(Long qnaId) {
