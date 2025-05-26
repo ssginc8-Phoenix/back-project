@@ -2,6 +2,8 @@ package com.ssginc8.docto.user.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicUpdate
 public class User extends BaseTimeEntity {
 
 	@Id
@@ -61,6 +64,7 @@ public class User extends BaseTimeEntity {
 	private LocalDateTime suspendedAt;
 
 	private LocalDateTime suspensionExpiresAt;
+
 	public static User createUser(String username, String password, String email, String loginType, String role, Boolean suspended, String uuid) {
 		User user = new User();
 		user.name = username;
@@ -83,5 +87,4 @@ public class User extends BaseTimeEntity {
 	public void updateEmail(String email) {
 		this.email = email;
 	}
-
 }
