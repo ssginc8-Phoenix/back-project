@@ -62,13 +62,6 @@ public class ReviewController {
 	}
 
 
-	//병원 리스트 에서 전체 리뷰 조회
-	@GetMapping("/hospitals/{hospitalId}/reviews")
-	public ResponseEntity<Page<ReviewAllListResponse>> getAllReviews(@PathVariable Long hospitalId, Pageable pageable
-	) {Page<ReviewAllListResponse> page = reviewService.getAllReviews(hospitalId,pageable);
-		return ResponseEntity.ok(page);
-	}
-
 	// 신고 엔드포인트
 	@PostMapping("/reviews/{reviewId}/report")
 	public ResponseEntity<Void> report(@PathVariable Long reviewId) {
