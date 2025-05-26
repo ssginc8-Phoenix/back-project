@@ -120,3 +120,60 @@ include::{snippets}/medication-controller-test/update-medication-time/http-respo
 include::{snippets}/medication-controller-test/delete-medication-schedule/http-request.adoc[]
 include::{snippets}/medication-controller-test/delete-medication-schedule/path-parameters.adoc[]
 include::{snippets}/medication-controller-test/delete-medication-schedule/http-response.adoc[]
+
+== QNA
+=== 문의글 생성
+include::{snippets}/qna-controller-test/create-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/request-fields.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/response-fields.adoc[]
+
+=== 문의글 상세 조회
+include::{snippets}/qna-controller-test/get-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/response-fields.adoc[]
+
+=== 문의글 수정
+include::{snippets}/qna-controller-test/update-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/request-fields.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/response-fields.adoc[]
+
+=== 문의글 삭제
+include::{snippets}/qna-controller-test/delete-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/delete-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/delete-qa-post/http-response.adoc[]
+
+== Comment
+=== 답변 생성
+include::{snippets}/comment-controller-test/create-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/request-fields.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/response-fields.adoc[]
+
+=== 답변 리스트 조회
+include::{snippets}/comment-controller-test/get-qa-comments/http-request.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/http-response.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/response-fields.adoc[]
+
+=== 답변 단건 조회
+include::{snippets}/comment-controller-test/get-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/response-fields.adoc[]
+
+=== 답변 수정
+include::{snippets}/comment-controller-test/update-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/request-fields.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/response-fields.adoc[]
+
+=== 답변 삭제
+include::{snippets}/comment-controller-test/delete-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/delete-qa-comment/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/delete-qa-comment/http-response.adoc[]
+
+
