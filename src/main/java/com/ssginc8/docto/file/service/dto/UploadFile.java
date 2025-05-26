@@ -1,4 +1,4 @@
-package com.ssginc8.docto.file.dto;
+package com.ssginc8.docto.file.service.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,19 +9,19 @@ import lombok.Getter;
 
 public class UploadFile {
 	@Getter
-	public static class Request {
+	public static class Command {
 		private MultipartFile file; // 업로드 할 파일
 		private Category category; // 어떤 카테고리에 속하는지
 
 		@Builder
-		public Request(MultipartFile file, Category category) {
+		public Command(MultipartFile file, Category category) {
 			this.file = file;
 			this.category = category;
 		}
 	}
 
 	@Getter
-	public static class Response {
+	public static class Result {
 		private Category category;
 		private String fileName;
 		private String originalFileName;
@@ -31,7 +31,7 @@ public class UploadFile {
 		private String fileType;
 
 		@Builder
-		public Response(Category category, String fileName, String originalFileName, String url, String bucket,
+		public Result(Category category, String fileName, String originalFileName, String url, String bucket,
 			Long fileSize, String fileType) {
 			this.category = category;
 			this.fileName = fileName;

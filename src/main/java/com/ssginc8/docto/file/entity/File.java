@@ -63,4 +63,14 @@ public class File extends BaseTimeEntity {
 		Long fileSize, String fileType) {
 		return new File(category, fileName, originalName, url, bucketName, fileSize, fileType);
 	}
+
+	public void updateFile(String fileName, String originalName, String url,
+		String bucketName, Long fileSize, String fileType) {
+		this.fileName = fileName;
+		this.originalName = originalName;
+		this.url = url;
+		this.bucketName = bucketName;
+		this.fileSize = fileSize;
+		this.fileType = fileType;
+	}
 }

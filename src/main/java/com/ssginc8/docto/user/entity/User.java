@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -157,7 +158,34 @@ public class User extends BaseTimeEntity {
 		return this.profileImage.getUrl();
 	}
 
-	public void updateProfileImage(File profileImage) {
-		this.profileImage = profileImage;
+	public String getProfileName() {
+		if (Objects.isNull(this.profileImage)) {
+			return null;
+		}
+		return this.profileImage.getFileName();
+	}
+
+	public void updateUser(String name, String email, String phone, String address, File profileImage) {
+		if (StringUtils.isNotBlank(name)) {
+			this.name = name;
+		}
+
+		if (StringUtils.isNotBlank(email)) {
+			this.email = email;
+		}
+
+		if (StringUtils.isNotBlank(phone)) {
+			this.phone = phone;
+		}
+
+		if (StringUtils.isNotBlank(address)) {
+			this.address = address;
+		}
+
+		if (Objects.nonNull(profileImage)) {
+			this.profileImage.updateFile(profileImage.getFileName(), profileImage.getOriginalName(),
+				profileImage.getUrl(),
+				profileImage.getBucketName(), profileImage.getFileSize(), profileImage.getFileType());
+		}
 	}
 }

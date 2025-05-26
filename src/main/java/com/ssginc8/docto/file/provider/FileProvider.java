@@ -6,7 +6,9 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.repository.FileRepo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequiredArgsConstructor
 @Component
 public class FileProvider {

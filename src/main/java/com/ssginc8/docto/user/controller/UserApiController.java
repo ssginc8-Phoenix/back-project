@@ -2,6 +2,7 @@ package com.ssginc8.docto.user.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
+import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
 import com.ssginc8.docto.util.CookieUtil;
 
@@ -52,7 +54,7 @@ public class UserApiController {
 	}
 
 	@PostMapping("/users/social")
-	public SocialSignup.Response signup(SocialSignup.Request request) {
+	public SocialSignup.Response signup(@Valid SocialSignup.Request request) {
 		return userService.updateSocialInfo(request);
 	}
 
@@ -78,5 +80,12 @@ public class UserApiController {
 			));
 
 		return ResponseEntity.ok("로그인 성공");
+	}
+
+	@PatchMapping("/users/me")
+	public ResponseEntity<Void> updateInfo(UpdateUser.Request request) {
+		userService.updateInfo(request);
+
+		return ResponseEntity.noContent().build();
 	}
 }

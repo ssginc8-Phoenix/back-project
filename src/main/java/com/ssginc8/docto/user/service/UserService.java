@@ -5,6 +5,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
+import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
 
 public interface UserService {
@@ -22,4 +23,6 @@ public interface UserService {
 	AddDoctorList.Response registerDoctor(AddDoctorList.Request request);
 
 	Login.Response login(Login.Request request);
+
+	void updateInfo(UpdateUser.Request request);
 }

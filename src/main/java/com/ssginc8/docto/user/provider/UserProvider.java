@@ -16,11 +16,6 @@ import lombok.RequiredArgsConstructor;
 public class UserProvider {
 	private final UserRepo userRepo;
 
-	// 이메일 중복 검사
-	public Optional<User> checkEmail(String email) {
-		return userRepo.findByEmail(email);
-	}
-
 	public User loadUserByEmailOrException(String email) {
 		return userRepo.findByEmail(email)
 			.orElseThrow(UserNotFoundException::new);

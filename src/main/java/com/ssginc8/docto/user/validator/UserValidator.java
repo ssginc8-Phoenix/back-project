@@ -1,11 +1,15 @@
 package com.ssginc8.docto.user.validator;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordHasSequenceException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooShortException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooSimpleException;
+import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.dto.AddUser;
 
@@ -13,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class CreateUserValidator {
+public class UserValidator {
 	private final UserProvider userProvider;
 
 	// 이메일 + 비밀번호 검사 메서드
@@ -26,9 +30,20 @@ public class CreateUserValidator {
 		checkEmail(email);
 	}
 
+	public void validateUpdateEmail(String email, Long userId) {
+		Optional<User> user = userProvider.loadUserByEmail(email);
+
+		if (user.isPresent()) {
+			if (Objects.equals(userId, user.get().getUserId())) {
+				return;
+			}
+			throw new DuplicateEmailException();
+		}
+	}
+
 	// 이메일 중복 검증 메서드
 	private void checkEmail(String email) {
-		if (userProvider.checkEmail(email).isPresent()) {
+		if (userProvider.loadUserByEmail(email).isPresent()) {
 			throw new DuplicateEmailException();
 		}
 	}

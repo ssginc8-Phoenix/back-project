@@ -27,7 +27,8 @@ public enum ErrorCode {
 	INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "T_002", "엑세스 토큰이 유효하지 않습니다."),
 
 	// File 관련 에러(F_)
-	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다.");
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
+	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다.");
 
 	private final HttpStatus status;
 	private final String code;
