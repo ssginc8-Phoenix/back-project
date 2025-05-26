@@ -33,9 +33,17 @@ public class GuardianServiceImpl implements GuardianService {
 	 * 보호자 권한 상태를 수락 또는 거절로 변경합니다.
 	 */
 	@Override
-	public void updateStatus(Long requestId, GuardianStatusRequest request) {
+	@Transactional
+	public void updateStatus(Long requestId, String inviteCode, String statusStr) {
 		PatientGuardian pg = guardianProvider.getById(requestId);
-		Status newStatus = Status.valueOf(request.getStatus());
+
+		// 1) 초대코드 일치 여부 검증
+		if (!pg.getInviteCode().equals(inviteCode)) {
+			throw new IllegalArgumentException("유효하지 않은 초대 코드입니다.");
+		}
+
+		// 2) 상태 변경
+		Status newStatus = Status.valueOf(statusStr);
 		pg.updateStatus(newStatus);
 	}
 

@@ -35,11 +35,16 @@ public class GuardianController {
 	 * 보호자 권한 요청 수락/거절 API
 	 */
 	@PostMapping("/request/{requestId}")
-	public ResponseEntity<Void> respond(@PathVariable Long requestId,
+	public ResponseEntity<Void> respond(
+		@PathVariable Long requestId,
 		@RequestBody GuardianStatusRequest request) {
-		guardianService.updateStatus(requestId, request);
+
+		guardianService.updateStatus(requestId,
+			request.getInviteCode(),
+			request.getStatus());
 		return ResponseEntity.ok().build();
 	}
+
 
 	/**
 	 * 보호자-환자 매핑 삭제 API

@@ -13,7 +13,12 @@ import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
  */
 public interface GuardianService {
 
-	void updateStatus(Long requestId, GuardianStatusRequest request);
+	/**
+	 * @param requestId  요청 ID
+	 * @param inviteCode 클라이언트가 보낸 초대코드 (검증용)
+	 * @param status     새 상태 ("ACCEPTED" or "REJECTED")
+	 */
+	void updateStatus(Long requestId, String inviteCode, String status);
 
 	void deleteMapping(Long guardianId, Long patientId);
 

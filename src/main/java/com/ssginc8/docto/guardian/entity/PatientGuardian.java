@@ -70,6 +70,12 @@ public class PatientGuardian extends BaseTimeEntity {
 	 */
 	private LocalDateTime respondedAt;
 
+	/**
+	 * 초대 코드 (NOT NULL)
+	 */
+	@Column(name = "inviteCode", nullable = false, length = 255)
+	private String inviteCode;
+
 	// -------------------------------------
 	// ✅ 정적 팩토리 메서드
 	// -------------------------------------
@@ -81,12 +87,18 @@ public class PatientGuardian extends BaseTimeEntity {
 	 * @param invitedAt 위임 요청 시간
 	 * @return 생성된 PatientGuardian 객체
 	 */
-	public static PatientGuardian create(User user, Patient patient, LocalDateTime invitedAt) {
+	public static PatientGuardian create(
+		User user,
+		Patient patient,
+		LocalDateTime invitedAt
+	) {
 		PatientGuardian pg = new PatientGuardian();
 		pg.user = user;
 		pg.patient = patient;
 		pg.invitedAt = invitedAt;
 		pg.status = Status.PENDING;
+		// User 테이블의 uuid 필드를 초대코드로 사용
+		pg.inviteCode = user.getUuid();
 		return pg;
 	}
 
