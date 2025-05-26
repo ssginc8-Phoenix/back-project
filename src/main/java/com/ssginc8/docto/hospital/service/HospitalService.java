@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
+import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
@@ -52,6 +53,9 @@ public interface HospitalService {
 		//병원 웨이팅 조회
 		Long getHospitalWaiting(Long hospitalId);
 
+		//병원 웨이팅 수정
 		Long updateHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting);
+
+		Page<HospitalReviewResponse> getReviews(Long hospitalId, Pageable pageable);
 }
 

@@ -13,10 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
-import com.ssginc8.docto.doctor.repo.DoctorRepository;
-import com.ssginc8.docto.doctor.repo.DoctorScheduleRepository;
+
+import com.ssginc8.docto.doctor.repo.DoctorRepo;
+import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
+
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
+import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
@@ -25,9 +28,12 @@ import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
-import com.ssginc8.docto.hospital.repository.HospitalRepo;
-import com.ssginc8.docto.hospital.repository.HospitalScheduleRepo;
-import com.ssginc8.docto.hospital.repository.ProvidedServiceRepo;
+import com.ssginc8.docto.hospital.repo.HospitalRepo;
+import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
+import com.ssginc8.docto.hospital.repo.ProvidedServiceRepo;
+import com.ssginc8.docto.review.dto.ReviewAllListResponse;
+import com.ssginc8.docto.review.provider.ReviewProvider;
+import com.ssginc8.docto.review.repository.ReviewRepo;
 import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -43,8 +49,10 @@ public class HospitalServiceImpl implements HospitalService {
 
 	private final ProvidedServiceRepo providedServiceRepo;
 	private final HospitalScheduleRepo hospitalScheduleRepo;
-	private final DoctorRepository doctorRepository;
-	private final DoctorScheduleRepository doctorScheduleRepository;
+	private final DoctorRepo doctorRepo;
+	private final DoctorScheduleRepo doctorScheduleRepo;
+
+	private final ReviewProvider reviewProvider;
 
 	/**
 	 *  위치기반 병원 리스트 조회
@@ -176,15 +184,15 @@ public class HospitalServiceImpl implements HospitalService {
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
 		// 1. 병원이 가진 모든 의사를 조회
-		List<Doctor> doctors = doctorRepository.findByHospital(hospital);
+		List<Doctor> doctors = doctorRepo.findByHospital(hospital);
 
 		// 2. 각 의사의 스케줄 먼저 삭제
 		for (Doctor doctor : doctors) {
-			doctorScheduleRepository.deleteByDoctor(doctor);
+			doctorScheduleRepo.deleteByDoctor(doctor);
 		}
 
 		// 3. 의사 삭제
-		doctorRepository.deleteAll(doctors);
+		doctorRepo.deleteAll(doctors);
 
 		// 4. 병원의 서비스 삭제
 		providedServiceRepo.deleteByHospital(hospital);
@@ -353,6 +361,18 @@ public class HospitalServiceImpl implements HospitalService {
 		hospital.updateWaiting(hospitalWaiting.getWaiting());
 
 		return hospital.getHospitalId();
+	}
+
+
+
+	// 병원별 전체 리뷰 조회
+	@Override
+	@Transactional(readOnly = true)
+	public Page<HospitalReviewResponse> getReviews(Long hospitalId, Pageable pageable) {
+
+		return reviewProvider.getHospitalReviews(hospitalId, pageable)
+			.map(HospitalReviewResponse::fromEntity);
+
 	}
 
 }

@@ -23,6 +23,8 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaiting;
 import com.ssginc8.docto.hospital.service.HospitalService;
+import com.ssginc8.docto.review.dto.ReviewAllListResponse;
+import com.ssginc8.docto.review.service.ReviewService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class HospitalController {
 
 
 	private final HospitalService hospitalService;
+	private final ReviewService reviewService;
 
 	/**
 	 * 병원아이디에 대한 상세 조회
@@ -185,6 +188,14 @@ public class HospitalController {
 		hospitalService.updateHospitalWaiting(hospitalId, hospitalWaiting);
 		return ResponseEntity.noContent().build();
 	}
+
+	//병원 리스트 에서 전체 리뷰 조회
+	@GetMapping("/hospitals/{hospitalId}/reviews")
+	public ResponseEntity<Page<ReviewAllListResponse>> getAllReviews(@PathVariable Long hospitalId, Pageable pageable
+	) {Page<ReviewAllListResponse> page = reviewService.getAllReviews(hospitalId,pageable);
+		return ResponseEntity.ok(page);
+	}
+
 
 
 
