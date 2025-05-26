@@ -93,10 +93,9 @@ public class Hospital extends BaseTimeEntity {
 		String introduction,
 		BigDecimal latitude,
 		BigDecimal longitude,
-		Long waiting,
 		String notice,
 		String businessRegistrationNumber) {
-		return new Hospital(user,name,address,phone,introduction,notice,businessRegistrationNumber,latitude,longitude,waiting);
+		return new Hospital(user,name,address,phone,introduction,notice,businessRegistrationNumber,latitude,longitude,null);
 	}
 
 	public void updateFromDTO(HospitalUpdate dto) {

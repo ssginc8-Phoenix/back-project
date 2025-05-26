@@ -62,7 +62,7 @@ public class HospitalServiceImpl implements HospitalService {
 	// }
 
 	/**
-	 * 병원아이디에 대한 상세 조회
+	 * 병원아이디 상세 조회
 	 *
 	 */
 	@Override
@@ -113,7 +113,6 @@ public class HospitalServiceImpl implements HospitalService {
 			hospitalRequest.getIntroduction(),
 			hospitalRequest.getLongitude(),
 			hospitalRequest.getLatitude(),
-			hospitalRequest.getWaiting(),
 			hospitalRequest.getNotice(),
 			hospitalRequest.getBusinessRegistrationNumber()
 		);
@@ -123,13 +122,16 @@ public class HospitalServiceImpl implements HospitalService {
 
 
 		// 서비스 엔티티 생성 및 저장
-		ProvidedService service = ProvidedService.create(
-			hospitalRequest.getServiceName().toString(),
-			hospital
+		List<String> serviceNames = hospitalRequest.getServiceName();
 
-		);
+		if (serviceNames != null && !serviceNames.isEmpty()) {
+			List<ProvidedService> services = serviceNames.stream()
+				.filter(name -> name != null && !name.trim().isEmpty())
+				.map(name -> ProvidedService.create(name.trim(), hospital))
+				.collect(Collectors.toList());
 
-		hospitalProvider.saveServices(service);
+			hospitalProvider.saveServices(services); // 여러 개 저장
+		}
 
 		return hospital.getHospitalId();
 	}
@@ -204,8 +206,15 @@ public class HospitalServiceImpl implements HospitalService {
 	 */
 	@Override
 	public Page<HospitalResponse> getHospitals(Pageable pageable) {
-		return hospitalRepo.findAll(pageable)
-			.map(hospital -> HospitalResponse.builder()
+		Page<Hospital> hospitals = hospitalRepo.findAll(pageable);
+
+		return hospitals.map(hospital -> {
+			List<String> serviceNames = providedServiceRepo.findByHospitalHospitalId(hospital.getHospitalId())
+				.stream()
+				.map(ProvidedService::getServiceName)
+				.collect(Collectors.toList());
+
+			return HospitalResponse.builder()
 				.hospitalId(hospital.getHospitalId())
 				.userId(hospital.getUser() != null ? hospital.getUser().getUserId() : null)
 				.name(hospital.getName())
@@ -217,8 +226,11 @@ public class HospitalServiceImpl implements HospitalService {
 				.phone(hospital.getPhone())
 				.waiting(hospital.getWaiting())
 				.businessRegistrationNumber(hospital.getBusinessRegistrationNumber())
-				.build());
+				.serviceNames(serviceNames)
+				.build();
+		});
 	}
+
 
 	/**
 	 * 병원 영업시간 등록
@@ -320,6 +332,7 @@ public class HospitalServiceImpl implements HospitalService {
 	 *
 	 */
 	@Override
+
 	public Long getHospitalWaiting(Long hospitalId) {
 
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
@@ -332,6 +345,7 @@ public class HospitalServiceImpl implements HospitalService {
 	 *
 	 */
 	@Override
+	@Transactional
 	public Long updateHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting) {
 
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);

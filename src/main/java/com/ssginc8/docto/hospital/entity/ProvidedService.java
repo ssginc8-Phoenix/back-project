@@ -39,11 +39,7 @@ public class ProvidedService {
 
 	}
 
-	public static ProvidedService create(
-		String serviceName,
-	Hospital hospital
-
-	) {
+	public static ProvidedService create(String serviceName, Hospital hospital) {
 		return new ProvidedService(serviceName, hospital);
 	}
 }

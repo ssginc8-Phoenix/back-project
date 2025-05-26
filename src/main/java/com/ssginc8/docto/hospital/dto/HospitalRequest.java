@@ -39,12 +39,12 @@ public class HospitalRequest {
 	@NotNull(message = "서비스이름은 필수입니다.")
 	private List<String> serviceName;
 
-	private Long providedServiceId;
+
 
 	private BigDecimal latitude;
 
 	private BigDecimal longitude;
-	private Long waiting;
+
 
 
 }
