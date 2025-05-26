@@ -38,11 +38,8 @@ public class Patient extends BaseTimeEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@Column(name = "resident_registration_number", nullable = false, length = 20)
+	@Column(name = "resident_registration_number", nullable = false)
 	private String residentRegistrationNumber;
-
-	@Column(name = "deleted_at")
-	private LocalDateTime deletedAt;
 
 	// 생성자 대신 사용하는 정적 팩토리 메서드용 private 생성자
 	private Patient(User user, String residentRegistrationNumber) {
