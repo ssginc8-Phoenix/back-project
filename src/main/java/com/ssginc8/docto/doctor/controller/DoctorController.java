@@ -82,10 +82,10 @@ public class DoctorController {
 	 * 요일, 영업 시작 시간, 종료 시간, 점심 시작 시간, 종료 시간
 	 */
 	@PostMapping("/{doctorId}/schedules")
-	public ResponseEntity<List<DoctorScheduleList>> saveDoctorSchedules(
+	public ResponseEntity<List<DoctorScheduleRequest>> saveDoctorSchedules(
 		@PathVariable Long doctorId,
-		@RequestBody List<DoctorScheduleList> doctorScheduleList) {
-		doctorService.saveDoctorSchedule(doctorId, doctorScheduleList);
+		@RequestBody List<DoctorScheduleRequest> doctorScheduleRequest) {
+		doctorService.saveDoctorSchedule(doctorId, doctorScheduleRequest);
 		return ResponseEntity.ok().build();
 	}
 
