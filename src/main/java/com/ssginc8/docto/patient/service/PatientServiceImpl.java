@@ -65,6 +65,6 @@ public class PatientServiceImpl implements PatientService {
 	@Transactional
 	public void deletePatient(Long patientId) {
 		Patient patient = patientProvider.getActivePatient(patientId);
-		patient.softDelete();
+		patient.delete();
 	}
 }
