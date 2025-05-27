@@ -10,6 +10,7 @@ import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
@@ -36,6 +37,8 @@ public interface UserService {
 	void sendVerificationCode(SendVerifyCode.Request request);
 
 	void confirmVerificationCode(EmailVerification.Request request);
+
+	void resetPassword(ResetPassword.Request request);
 
 	void updateInfo(UpdateUser.Request request);
 

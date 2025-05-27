@@ -3,12 +3,16 @@ package com.ssginc8.docto.user.validator;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.ssginc8.docto.global.error.exception.emailException.EmailVerificationFailedException;
 import com.ssginc8.docto.global.error.exception.userException.DuplicateEmailException;
+import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordHasSequenceException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooShortException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooSimpleException;
+import com.ssginc8.docto.global.error.exception.userException.SameAsPreviousPasswordException;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.dto.AddUser;
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class UserValidator {
 	private final UserProvider userProvider;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// 이메일 + 비밀번호 검사 메서드
 	public void validate(AddUser.Request request) {
@@ -26,8 +31,28 @@ public class UserValidator {
 		checkPassword(request.getPassword());
 	}
 
+	public void isPasswordMatch(String storedPassword, String inputPassword) {
+		if (!bCryptPasswordEncoder.matches(storedPassword, inputPassword)) {
+			throw new InvalidPasswordException();
+		}
+	}
+
 	public void validateEmail(String email) {
 		checkEmail(email);
+	}
+
+	public void validatePassword(String storedPassword, String inputPassword) {
+		if (bCryptPasswordEncoder.matches(inputPassword, storedPassword)) {
+			throw new SameAsPreviousPasswordException();
+		}
+
+		checkPassword(inputPassword);
+	}
+
+	public void validateCode(String inputCode, String storedCode) {
+		if (!Objects.equals(inputCode, storedCode)) {
+			throw new EmailVerificationFailedException();
+		}
 	}
 
 	public void validateUpdateEmail(String email, Long userId) {

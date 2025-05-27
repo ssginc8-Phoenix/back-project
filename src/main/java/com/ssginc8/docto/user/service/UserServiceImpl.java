@@ -23,8 +23,6 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.file.service.dto.UpdateFile;
 import com.ssginc8.docto.file.service.dto.UploadFile;
-import com.ssginc8.docto.global.error.exception.emailException.EmailVerificationFailedException;
-import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.global.event.EmailSendEvent;
 import com.ssginc8.docto.global.util.CodeGenerator;
@@ -40,6 +38,7 @@ import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
@@ -168,9 +167,7 @@ public class UserServiceImpl implements UserService {
 		User user = userProvider.loadUserByEmail(request.getEmail())
 			.orElseThrow(UserNotFoundException::new);
 
-		if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
-			throw new InvalidPasswordException();
-		}
+		userValidator.isPasswordMatch(request.getPassword(), user.getPassword());
 
 		Token tokens = tokenProvider.generateTokens(
 			user.getUuid(),
@@ -207,11 +204,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void confirmVerificationCode(EmailVerification.Request request) {
-		String code = redisUtil.getData(RedisKeyPrefix.EMAIL_AUTH.key(request.getEmail()));
+		String storedCode = redisUtil.getData(RedisKeyPrefix.EMAIL_AUTH.key(request.getEmail()));
 
-		if (!Objects.equals(code, request.getCode())) {
-			throw new EmailVerificationFailedException();
-		}
+		userValidator.validateCode(request.getCode(), storedCode);
+	}
+
+	@Transactional
+	@Override
+	public void resetPassword(ResetPassword.Request request) {
+		User user = userProvider.loadUserByEmailOrException(request.getEmail());
+
+		userValidator.validatePassword(user.getPassword(), request.getPassword());
+
+		user.updatePassword(bCryptPasswordEncoder.encode(request.getPassword()));
 	}
 
 	@Transactional

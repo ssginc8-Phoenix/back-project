@@ -21,6 +21,7 @@ import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
@@ -81,16 +82,12 @@ public class UserApiController {
 		Login.Response loginResponse = userService.login(request);
 
 		response.addCookie(
-			cookieUtil.createCookie(
-				TokenType.ACCESS_TOKEN.getTokenType(), loginResponse.getAccessToken(),
-				loginResponse.getAccessTokenCookieMaxAge()
-			));
+			cookieUtil.createCookie(TokenType.ACCESS_TOKEN.getTokenType(), loginResponse.getAccessToken(),
+				loginResponse.getAccessTokenCookieMaxAge()));
 
 		response.addCookie(
-			cookieUtil.createCookie(
-				TokenType.REFRESH_TOKEN.getTokenType(), loginResponse.getRefreshToken(),
-				loginResponse.getRefreshTokenCookieMaxAge()
-			));
+			cookieUtil.createCookie(TokenType.REFRESH_TOKEN.getTokenType(), loginResponse.getRefreshToken(),
+				loginResponse.getRefreshTokenCookieMaxAge()));
 
 		return ResponseEntity.ok("로그인 성공");
 	}
@@ -105,6 +102,13 @@ public class UserApiController {
 	@PostMapping("/users/email/verify-code/confirm")
 	public ResponseEntity<Void> confirmVerificationCode(@RequestBody @Valid EmailVerification.Request request) {
 		userService.confirmVerificationCode(request);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/users/password-reset")
+	public ResponseEntity<Void> resetPassword(@RequestBody ResetPassword.Request request) {
+		userService.resetPassword(request);
 
 		return ResponseEntity.ok().build();
 	}

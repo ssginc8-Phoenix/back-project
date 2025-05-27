@@ -143,12 +143,15 @@ public class User extends BaseTimeEntity {
 		return this;
 	}
 
-	public User updateSocialInfo(String phone, File profileImage, Role role) {
+	public void updateSocialInfo(String phone, File profileImage, Role role) {
 		this.phone = phone;
 		this.profileImage = profileImage;
 		this.role = role;
 
-		return this;
+	}
+
+	public void updatePassword(String password) {
+		this.password = password;
 	}
 
 	public String getProfileUrl() {
