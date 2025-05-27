@@ -23,6 +23,7 @@ import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
+import com.ssginc8.docto.user.service.dto.VerifyEmail;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -91,6 +92,13 @@ public class UserApiController {
 			));
 
 		return ResponseEntity.ok("로그인 성공");
+	}
+
+	@PostMapping("/users/email/verify-code/send")
+	public ResponseEntity<Void> sendVerificationCode(@RequestBody @Valid VerifyEmail.Request request) {
+		userService.sendVerificationCode(request);
+
+		return ResponseEntity.ok().build();
 	}
 
 	@PatchMapping("/users/me")

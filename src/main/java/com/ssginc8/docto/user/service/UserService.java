@@ -12,6 +12,7 @@ import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
+import com.ssginc8.docto.user.service.dto.VerifyEmail;
 
 public interface UserService {
 
@@ -30,6 +31,8 @@ public interface UserService {
 	AddDoctorList.Response registerDoctor(AddDoctorList.Request request);
 
 	Login.Response login(Login.Request request);
+
+	void sendVerificationCode(VerifyEmail.Request request);
 
 	void updateInfo(UpdateUser.Request request);
 

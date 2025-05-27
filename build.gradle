@@ -69,14 +69,22 @@ dependencies {
     // 🔹 oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+    // 🔹 이메일 인증 (SMTP)
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // 🔹 Redis (세션 캐시 or 알림 큐로 활용)
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // 🔹 타임리프 (이메일 전송할 때 사용)
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
     /* 추가 될 수 있는 의존성들 */
-    // 🔹 이메일 인증 (JavaMailSender)
 
     // 🔹 스케줄링 (복약 알림 등 주기 작업)
 
     // 🔹 FCM Push 알림
 
-    // 🔹 Redis (세션 캐시 or 알림 큐로 활용)
 
     // 🔹 파일 업로드/다운로드 (보험 서류 등)
 

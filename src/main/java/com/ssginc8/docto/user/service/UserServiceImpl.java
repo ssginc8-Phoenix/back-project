@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,10 @@ import com.ssginc8.docto.file.service.dto.UpdateFile;
 import com.ssginc8.docto.file.service.dto.UploadFile;
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
+import com.ssginc8.docto.global.event.EmailSendEvent;
+import com.ssginc8.docto.global.util.CodeGenerator;
+import com.ssginc8.docto.global.util.RedisKeyPrefix;
+import com.ssginc8.docto.global.util.RedisUtil;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
@@ -36,6 +41,7 @@ import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
+import com.ssginc8.docto.user.service.dto.VerifyEmail;
 import com.ssginc8.docto.user.validator.UserValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -46,13 +52,14 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class UserServiceImpl implements UserService {
 	private final FileService fileService;
-
 	private final UserProvider userProvider;
 	private final UserValidator userValidator;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final TokenProvider tokenProvider;
 	private final RefreshTokenProvider refreshTokenProvider;
 	private final UserSearchRepoImpl userSearchRepoImpl;
+	private final ApplicationEventPublisher applicationEventPublisher;
+	private final RedisUtil redisUtil;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -183,6 +190,17 @@ public class UserServiceImpl implements UserService {
 			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
 			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
 			.build();
+	}
+
+	@Transactional
+	@Override
+	public void sendVerificationCode(VerifyEmail.Request request) {
+		String code = CodeGenerator.generateCode();
+		String toEmail = request.getEmail();
+
+		redisUtil.createRedisData(RedisKeyPrefix.EMAIL_AUTH.key(toEmail), code, RedisKeyPrefix.EMAIL_AUTH.getTtl());
+
+		applicationEventPublisher.publishEvent(EmailSendEvent.emailVerification(toEmail, code));
 	}
 
 	@Transactional

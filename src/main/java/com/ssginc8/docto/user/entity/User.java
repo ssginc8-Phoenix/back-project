@@ -104,7 +104,7 @@ public class User extends BaseTimeEntity {
 		this.isSuspended = isSuspended;
 	}
 
-	public User(String uuid, String email, String providerId, String name, LoginType loginType, Boolean isSuspended) {
+	private User(String uuid, String email, String providerId, String name, LoginType loginType, Boolean isSuspended) {
 		this.uuid = uuid;
 		this.email = email;
 		this.providerId = providerId;
