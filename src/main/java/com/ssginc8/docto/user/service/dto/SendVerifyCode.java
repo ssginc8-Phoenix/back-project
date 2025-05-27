@@ -4,11 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-public class VerifyEmail {
+public class SendVerifyCode {
 	@Getter
-	@Setter
 	@NoArgsConstructor
 	public static class Request {
 		@Email

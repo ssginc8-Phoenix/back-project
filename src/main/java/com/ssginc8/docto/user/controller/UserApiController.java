@@ -18,12 +18,13 @@ import com.ssginc8.docto.user.service.UserService;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
-import com.ssginc8.docto.user.service.dto.VerifyEmail;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -95,8 +96,15 @@ public class UserApiController {
 	}
 
 	@PostMapping("/users/email/verify-code/send")
-	public ResponseEntity<Void> sendVerificationCode(@RequestBody @Valid VerifyEmail.Request request) {
+	public ResponseEntity<Void> sendVerificationCode(@RequestBody @Valid SendVerifyCode.Request request) {
 		userService.sendVerificationCode(request);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/users/email/verify-code/confirm")
+	public ResponseEntity<Void> confirmVerificationCode(@RequestBody @Valid EmailVerification.Request request) {
+		userService.confirmVerificationCode(request);
 
 		return ResponseEntity.ok().build();
 	}

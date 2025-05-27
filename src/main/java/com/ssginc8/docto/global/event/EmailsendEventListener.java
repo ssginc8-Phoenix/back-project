@@ -8,7 +8,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import com.ssginc8.docto.global.error.exception.EmailSendFailedException;
+import com.ssginc8.docto.global.error.exception.emailException.EmailSendFailedException;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

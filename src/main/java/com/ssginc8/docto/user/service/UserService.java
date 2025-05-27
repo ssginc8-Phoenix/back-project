@@ -7,12 +7,13 @@ import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
-import com.ssginc8.docto.user.service.dto.VerifyEmail;
 
 public interface UserService {
 
@@ -32,7 +33,9 @@ public interface UserService {
 
 	Login.Response login(Login.Request request);
 
-	void sendVerificationCode(VerifyEmail.Request request);
+	void sendVerificationCode(SendVerifyCode.Request request);
+
+	void confirmVerificationCode(EmailVerification.Request request);
 
 	void updateInfo(UpdateUser.Request request);
 

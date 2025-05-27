@@ -23,6 +23,7 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.file.service.dto.UpdateFile;
 import com.ssginc8.docto.file.service.dto.UploadFile;
+import com.ssginc8.docto.global.error.exception.emailException.EmailVerificationFailedException;
 import com.ssginc8.docto.global.error.exception.userException.InvalidPasswordException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.global.event.EmailSendEvent;
@@ -36,12 +37,13 @@ import com.ssginc8.docto.user.repository.UserSearchRepoImpl;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
 import com.ssginc8.docto.user.service.dto.UpdateUser;
 import com.ssginc8.docto.user.service.dto.UserInfo;
-import com.ssginc8.docto.user.service.dto.VerifyEmail;
 import com.ssginc8.docto.user.validator.UserValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -194,13 +196,22 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void sendVerificationCode(VerifyEmail.Request request) {
+	public void sendVerificationCode(SendVerifyCode.Request request) {
 		String code = CodeGenerator.generateCode();
 		String toEmail = request.getEmail();
 
 		redisUtil.createRedisData(RedisKeyPrefix.EMAIL_AUTH.key(toEmail), code, RedisKeyPrefix.EMAIL_AUTH.getTtl());
 
 		applicationEventPublisher.publishEvent(EmailSendEvent.emailVerification(toEmail, code));
+	}
+
+	@Override
+	public void confirmVerificationCode(EmailVerification.Request request) {
+		String code = redisUtil.getData(RedisKeyPrefix.EMAIL_AUTH.key(request.getEmail()));
+
+		if (!Objects.equals(code, request.getCode())) {
+			throw new EmailVerificationFailedException();
+		}
 	}
 
 	@Transactional
