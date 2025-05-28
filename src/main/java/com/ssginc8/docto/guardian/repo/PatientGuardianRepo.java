@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
+import com.ssginc8.docto.patient.entity.Patient;
+import com.ssginc8.docto.user.entity.User;
 
 /**
  * 환자-보호자 관계를 관리하는 JPA 레포지토리
@@ -25,8 +27,7 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.patient.patientId = :patientId AND pg.deletedAt IS NULL")
 	Optional<PatientGuardian> findByUserIdAndPatientId(Long userId, Long patientId);
-  
-  Optional<PatientGuardian> findByUserAndPatient(User user, Patient patient);
 
+	Optional<PatientGuardian> findByUserAndPatient(User user, Patient patient);
 }
 
