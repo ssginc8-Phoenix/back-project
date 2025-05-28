@@ -70,7 +70,7 @@ public class GuardianServiceImpl implements GuardianService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 매핑입니다."));
 
 		// 실제 삭제하지 않고 deletedAt 필드에 시간 설정 (논리적 삭제 처리)
-		pg.softDelete();
+		pg.delete();
 	}
 
 
