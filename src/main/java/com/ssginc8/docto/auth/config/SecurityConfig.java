@@ -15,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import com.ssginc8.docto.auth.handler.CustomAccessDeniedHandler;
+import com.ssginc8.docto.auth.handler.CustomAuthenticationEntryPoint;
 import com.ssginc8.docto.auth.handler.OAuth2SuccessHandler;
 import com.ssginc8.docto.auth.jwt.filter.TokenAuthenticationFilter;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
@@ -35,6 +37,9 @@ public class SecurityConfig {
 	private final DefaultOAuth2UserService oAuth2UserService;
 	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 	private final LogoutHandler logoutHandler;
+
+	private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+	private final CustomAccessDeniedHandler accessDeniedHandler;
 
 	// 특정 http 요청에 대해 웹 기반 보안 구성
 	@Bean
@@ -85,6 +90,9 @@ public class SecurityConfig {
 			)
 			.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, refreshTokenServiceImpl, cookieUtil),
 				UsernamePasswordAuthenticationFilter.class)
+			.exceptionHandling(e -> e
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.accessDeniedHandler(accessDeniedHandler))
 			.build();
 	}
 
