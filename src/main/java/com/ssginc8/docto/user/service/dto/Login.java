@@ -1,5 +1,6 @@
 package com.ssginc8.docto.user.service.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class Login {
 	@Getter
 	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Request {
 		private String email;
 		private String password;

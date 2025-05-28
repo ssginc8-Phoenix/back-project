@@ -1,0 +1,137 @@
+= DOCTO API 문서
+Author: 불4조
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 내 정보 조회
+
+로그인된 유저만 사용 가능
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/get-my-info-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/get-my-info-test/response-fields.adoc[]
+include::{snippets}/user-api-controller-test/get-my-info-test/http-response.adoc[]
+
+== 이메일 중복 확인
+
+이메일 중복 여부를 확인하는 API
+
+중복된 이메일이면 예외가 발생하고, 사용 가능한 이메일이면 200 OK를 반환
+
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/query-parameters.adoc[]
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/http-response.adoc[]
+
+== 유저 리스트 조회
+
+역할(`role`)을 기준으로 필터링된 유저 리스트를 페이지네이션 형태로 조회하는 API
+
+역할을 안주는 경우 모든 유저 리스트를 조회
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/get-users-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/query-parameters.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/response-fields.adoc[]
+
+== 이메일 회원 가입
+
+프로필 이미지는 선택적으로 업로드 가능
+
+프로필 이미지가 없는 경우 해당 필드는 빼고 요청 보내기
+
+include::{snippets}/user-api-controller-test/email-signup-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/request-parts.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/form-parameters.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/response-fields.adoc[]
+
+== 소셜 회원가입
+
+소셜 로그인 후 추가 정보를 입력하여 회원가입을 완료하는 API
+
+필수로 전화번호와 역할을 입력하며, 선택적으로 프로필 이미지를 첨부 가능
+
+include::{snippets}/user-api-controller-test/social-signup-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/social-signup-test/request-parts.adoc[]
+include::{snippets}/user-api-controller-test/social-signup-test/form-parameters.adoc[]
+include::{snippets}/user-api-controller-test/social-signup-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/social-signup-test/response-fields.adoc[]
+
+== 의사 리스트 등록
+
+여러 명의 의사를 한 번에 등록하는 API
+
+병원 관리자만 접근 가능
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/register-doctor-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/response-fields.adoc[]
+
+== 로그인
+
+이메일과 비밀번호를 통해 로그인을 진행하고, 성공 시 Access/Refresh 토큰을 쿠키로 내려주는 API
+
+include::{snippets}/user-api-controller-test/login-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/login-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/login-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/login-test/response-cookies.adoc[]
+
+
+== 이메일 인증 코드 발송
+
+입력한 이메일 주소로 인증 코드를 발송하는 API
+
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/http-response.adoc[]
+
+== 이메일 인증 코드 확인
+
+이메일로 발송된 인증 코드를 입력하여 인증을 완료하는 API
+
+include::{snippets}/user-api-controller-test/confirm-email-verification-code-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/confirm-email-verification-code-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/confirm-email-verification-code-test/http-response.adoc[]
+
+== 비밀번호 재설정
+
+인증된 사용자가 새 비밀번호로 비밀번호를 재설정하는 AP
+
+include::{snippets}/user-api-controller-test/reset-password-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/reset-password-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/reset-password-test/http-response.adoc[]
+
+== 회원 정보 수정
+
+회원이 자신의 정보를 수정하는 API
+
+프로필 이미지 수정은 선택 사항
+
+모든 요청 필드는 Multipart/Form-Data 형식으로 전송
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/update-user-info-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/request-parts.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/form-parameters.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/http-response.adoc[]
+
+== 회원 탈퇴
+
+현재 로그인한 사용자의 계정을 삭제
+
+요청 시 ACCESS_TOKEN 쿠키가 필요하며, 성공 시 응답은 HTTP 204(No Content)
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/delete-account-test/request-cookies.adoc[]
+include::{snippets}/user-api-controller-test/delete-account-test/http-response.adoc[]

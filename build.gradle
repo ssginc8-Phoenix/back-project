@@ -28,6 +28,12 @@ ext {
     set('snippetsDir', file("build/generated-snippets"))
 }
 
+asciidoctor {
+    inputs.dir snippetsDir
+    attributes 'snippets': snippetsDir
+    dependsOn test
+}
+
 def querydslVersion = "5.0.0"
 
 dependencies {
@@ -99,4 +105,8 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+tasks.named("build") {
+    dependsOn asciidoctor
 }

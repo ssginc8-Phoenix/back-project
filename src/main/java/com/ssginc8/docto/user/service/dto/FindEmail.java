@@ -10,6 +10,12 @@ public class FindEmail {
 	public static class Request {
 		private String name;
 		private String phone;
+
+		@Builder
+		public Request(String name, String phone) {
+			this.name = name;
+			this.phone = phone;
+		}
 	}
 
 	@Getter
