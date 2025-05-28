@@ -8,5 +8,6 @@ public enum Status {
 	 * - ACCEPTED: 수락됨
 	 * - REJECTED: 거절됨
 	 */
+
 	PENDING, ACCEPTED, REJECTED;
 }

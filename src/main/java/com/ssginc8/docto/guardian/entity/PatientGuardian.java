@@ -10,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,14 +42,14 @@ public class PatientGuardian extends BaseTimeEntity {
 	/**
 	 * 보호자 사용자 (User)
 	 */
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId", nullable = false)
 	private User user;
 
-	/**
+  /**
 	 * 보호받는 환자 (Patient)
 	 */
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patientId", nullable = false)
 	private Patient patient;
 
@@ -113,12 +114,5 @@ public class PatientGuardian extends BaseTimeEntity {
 	public void updateStatus(Status newStatus) {
 		this.status = newStatus;
 		this.respondedAt = LocalDateTime.now();
-	}
-
-	/**
-	 * Soft Delete - 상속받은 deletedAt 필드를 현재 시간으로 설정
-	 */
-	public void softDelete() {
-		super.delete();
 	}
 }

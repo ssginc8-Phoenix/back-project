@@ -25,5 +25,8 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.patient.patientId = :patientId AND pg.deletedAt IS NULL")
 	Optional<PatientGuardian> findByUserIdAndPatientId(Long userId, Long patientId);
+  
+  Optional<PatientGuardian> findByUserAndPatient(User user, Patient patient);
 
 }
+
