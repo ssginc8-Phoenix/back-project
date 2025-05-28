@@ -47,7 +47,7 @@ public class UserApiController {
 	}
 
 	@GetMapping("/users/check-email")
-	public void checkEmail(@RequestParam(value = "email") String email) {
+	public void checkEmailDuplicate(@RequestParam(value = "email") String email) {
 		userService.checkEmail(email);
 	}
 
@@ -63,12 +63,12 @@ public class UserApiController {
 	}
 
 	@PostMapping("/users/register")
-	public AddUser.Response signup(@Valid AddUser.Request request) {
+	public AddUser.Response emailSignup(@Valid AddUser.Request request) {
 		return userService.createUser(request);
 	}
 
 	@PostMapping("/users/social")
-	public SocialSignup.Response signup(@Valid SocialSignup.Request request) {
+	public SocialSignup.Response socialSignup(@Valid SocialSignup.Request request) {
 		return userService.updateSocialInfo(request);
 	}
 

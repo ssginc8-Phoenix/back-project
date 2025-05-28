@@ -85,8 +85,6 @@ public class TokenProvider {
 	public Authentication getAuthentication(String token) {
 		Claims claims = getClaims(token);
 
-		log.info(claims.getSubject());
-
 		String role = claims.get("role", String.class);
 
 		Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(role));
