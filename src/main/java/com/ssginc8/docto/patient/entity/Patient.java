@@ -61,5 +61,4 @@ public class Patient extends BaseTimeEntity {
 	public void update(String newRRN) {
 		this.residentRegistrationNumber = newRRN;
 	}
-
 }

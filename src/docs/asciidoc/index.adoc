@@ -323,4 +323,3 @@ include::{snippets}/comment-controller-test/update-qa-comment/response-fields.ad
 include::{snippets}/comment-controller-test/delete-qa-comment/http-request.adoc[]
 include::{snippets}/comment-controller-test/delete-qa-comment/path-parameters.adoc[]
 include::{snippets}/comment-controller-test/delete-qa-comment/http-response.adoc[]
-

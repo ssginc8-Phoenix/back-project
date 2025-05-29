@@ -26,7 +26,7 @@ public interface DoctorService {
 	List<DoctorResponse> getDoctorsByHospital(Long hospitalId);
 
 	//의사스케쥴 등록
-	List<DoctorScheduleList> saveDoctorSchedule(Long doctorId, List<DoctorScheduleList> doctorScheduleList);
+	List<DoctorScheduleRequest> saveDoctorSchedule(Long doctorId, List<DoctorScheduleRequest> doctorScheduleRequest);
 
 	//의사스케쥴 조회
 	List<DoctorScheduleList> getDoctorSchedule(Long doctorId);
