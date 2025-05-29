@@ -1,7 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "email" : "udevel@naver.com",
-  "code" : "AONZ4UL1"
-}
-----

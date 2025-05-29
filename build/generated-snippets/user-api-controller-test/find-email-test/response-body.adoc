@@ -1,7 +1,6 @@
 [source,json,options="nowrap"]
 ----
 {
-  "message" : "이메일을 찾을 수 없습니다.",
-  "code" : "U_007"
+  "email" : "user111@naver.com"
 }
 ----

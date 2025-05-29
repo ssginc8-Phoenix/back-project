@@ -1,17 +1,16 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 404 Not Found
-Content-Type: application/json;charset=UTF-8
+HTTP/1.1 200 OK
+Set-Cookie: accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg1MjAyNzIsImV4cCI6MTc0ODUyMTE3Miwic3ViIjoiZTdkZmZjNWQtNDI4OS00MjBmLTkyZmItMWUwMjE2NGI0ZGE5Iiwicm9sZSI6IlJPTEVfRE9DVE9SIn0.I1epgUvWYRqnQX1IP-Etu36JcV4ZD_JCrk0vR-axL8E; Path=/; Max-Age=900; Expires=Thu, 29 May 2025 12:19:32 GMT; Secure; HttpOnly
+Set-Cookie: refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg1MjAyNzIsImV4cCI6MTc0OTEyNTA3Miwic3ViIjoiZTdkZmZjNWQtNDI4OS00MjBmLTkyZmItMWUwMjE2NGI0ZGE5In0.K6LMIOA7LzlhDNv3SLQBi9UkfkM6YINKYwYrS-ai6TQ; Path=/; Max-Age=604800; Expires=Thu, 05 Jun 2025 12:04:32 GMT; Secure; HttpOnly
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 16
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 77
 
-{
-  "message" : "유저를 찾을 수 없습니다.",
-  "code" : "U_001"
-}
+로그인 성공
 ----

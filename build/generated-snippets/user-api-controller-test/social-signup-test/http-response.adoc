@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 404 Not Found
+HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -8,10 +8,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 77
+Content-Length: 53
 
 {
-  "message" : "유저를 찾을 수 없습니다.",
-  "code" : "U_001"
+  "userId" : 9,
+  "role" : "ROLE_SYSTEM_ADMIN"
 }
 ----

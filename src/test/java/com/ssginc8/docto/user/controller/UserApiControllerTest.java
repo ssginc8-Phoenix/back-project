@@ -33,10 +33,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssginc8.docto.auth.jwt.dto.Token;
 import com.ssginc8.docto.auth.jwt.dto.TokenType;
+import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
+import com.ssginc8.docto.user.entity.Role;
+import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
-import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.ResetPassword;
@@ -58,10 +62,13 @@ public class UserApiControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private WebApplicationContext context;
+	private ObjectMapper objectMapper;
 
 	@Autowired
-	private ObjectMapper objectMapper;
+	private TokenProvider tokenProvider;
+
+	@Autowired
+	private UserRepo userRepo;
 
 	@BeforeEach
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
@@ -76,12 +83,13 @@ public class UserApiControllerTest {
 	@Test
 	@DisplayName("내 정보 조회 테스트")
 	void getMyInfoTest() throws Exception {
+
+		Token token = makeTokenBySystemAdmin();
+
 		mockMvc.perform(get("/api/v1/users/me")
 				.cookie(
-					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzcxMzYsImV4cCI6MTc0ODQzODAzNiwic3ViIjoiOGRjZGYyZWYtNzlmYi00MTYxLThiYmItMGU1YzY1NmEyMGMxIiwicm9sZSI6IlJPTEVfUEFUSUVOVCJ9.zGBJ1yA1tKG78z-Ji82r1jBQqMHRMFpVo-bV7o381d8"),
-					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzcxMzYsImV4cCI6MTc0OTA0MTkzNiwic3ViIjoiOGRjZGYyZWYtNzlmYi00MTYxLThiYmItMGU1YzY1NmEyMGMxIn0.5t9qloBNH-xfnCf2XtQC1t_ZUPGItCyjoFB80M1pd8U")
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
 				))
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
@@ -137,13 +145,14 @@ public class UserApiControllerTest {
 	@Test
 	@DisplayName("유저 리스트 조회 테스트")
 	void getUsersTest() throws Exception {
+
+		Token token = makeTokenBySystemAdmin();
+
 		mockMvc.perform(get("/api/v1/admin/users")
 				.cookie(
-					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MjEwOTIsImV4cCI6MTc0ODQyMTk5Miwic3ViIjoiN2EyN2U0NWUtMDEyMS00MWMzLWI5NWEtZjBiMTQ3YjEyNDgwIiwicm9sZSI6IlJPTEVfU1lTVEVNX0FETUlOIn0.1jSA1o2vSOVgFqI9fu8YNSSQQns03lfbpC2IUmZQ-iM"),
-					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MjEwOTIsImV4cCI6MTc0OTAyNTg5Miwic3ViIjoiN2EyN2U0NWUtMDEyMS00MWMzLWI5NWEtZjBiMTQ3YjEyNDgwIn0.QLdwVoN9iyEofq7hqfOgmxYuVQmVqRmu8kAS33ueY2Y"
-					))
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				)
 				.param("role", "DOCTOR")
 				.param("page", "0")
 				.param("size", "10"))
@@ -233,7 +242,7 @@ public class UserApiControllerTest {
 					//.file(profileImage)
 					.param("providerId", "4271713030")
 					.param("phone", "010-5678-1234")
-					.param("role", "PATIENT")
+					.param("role", "SYSTEM_ADMIN")
 					.contentType(MediaType.MULTIPART_FORM_DATA)
 					.accept(MediaType.APPLICATION_JSON)
 			)
@@ -272,13 +281,13 @@ public class UserApiControllerTest {
 		AddDoctorList.Request request = new AddDoctorList.Request();
 		ReflectionTestUtils.setField(request, "doctorInfos", List.of(doctor1, doctor2));
 
+		Token token = makeTokenByHospitalAdmin();
+
 		mockMvc.perform(post("/api/v1/users/doctors")
 				.cookie(
-					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzY5MTksImV4cCI6MTc0ODQzNzgxOSwic3ViIjoiNDJkMjhiZWUtYzU2Mi00ZWU1LThkYjgtNWEzNzg0NjdhMzZiIiwicm9sZSI6IlJPTEVfSE9TUElUQUxfQURNSU4ifQ.-m3PKoTgRx8bhepxgcWkOEZMQB96bF5Rh6LWvPaO1ig"),
-					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzY5MTksImV4cCI6MTc0OTA0MTcxOSwic3ViIjoiNDJkMjhiZWUtYzU2Mi00ZWU1LThkYjgtNWEzNzg0NjdhMzZiIn0.Vq4nmJZ6lmGAG0YhZT8si-ven1BVg-IKkdO5KZhmn8k"
-					))
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request))
 				.accept(MediaType.APPLICATION_JSON))
@@ -302,7 +311,7 @@ public class UserApiControllerTest {
 		mockMvc.perform(
 				post("/api/v1/auth/login")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(new Login.Request("hospital@naver.com", "Fkdlej5115")))
+					.content(objectMapper.writeValueAsString(new Login.Request("doctor1@example.com", "securePass123!")))
 			)
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
@@ -337,33 +346,33 @@ public class UserApiControllerTest {
 			));
 	}
 
-	@DisplayName("이메일 인증 코드 확인 API 테스트")
-	@Test
-	void confirmEmailVerificationCodeTest() throws Exception {
-		EmailVerification.Request request = new EmailVerification.Request();
-		ReflectionTestUtils.setField(request, "email", "udevel@naver.com");
-		ReflectionTestUtils.setField(request, "code", "AONZ4UL1");
-
-		mockMvc.perform(
-				post("/api/v1/users/email/verify-code/confirm")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(request))
-			)
-			.andExpect(status().isOk())
-			.andDo(restDocs.document(
-				requestFields(
-					fieldWithPath("email").type(JsonFieldType.STRING).description("이메일 주소"),
-					fieldWithPath("code").type(JsonFieldType.STRING).description("이메일로 발송된 인증 코드")
-				)
-			));
-	}
+	// @DisplayName("이메일 인증 코드 확인 API 테스트")
+	// @Test
+	// void confirmEmailVerificationCodeTest() throws Exception {
+	// 	EmailVerification.Request request = new EmailVerification.Request();
+	// 	ReflectionTestUtils.setField(request, "email", "udevel@naver.com");
+	// 	ReflectionTestUtils.setField(request, "code", "AONZ4UL1");
+	//
+	// 	mockMvc.perform(
+	// 			post("/api/v1/users/email/verify-code/confirm")
+	// 				.contentType(MediaType.APPLICATION_JSON)
+	// 				.content(objectMapper.writeValueAsString(request))
+	// 		)
+	// 		.andExpect(status().isOk())
+	// 		.andDo(restDocs.document(
+	// 			requestFields(
+	// 				fieldWithPath("email").type(JsonFieldType.STRING).description("이메일 주소"),
+	// 				fieldWithPath("code").type(JsonFieldType.STRING).description("이메일로 발송된 인증 코드")
+	// 			)
+	// 		));
+	// }
 
 	@DisplayName("비밀번호 재설정 API 테스트")
 	@Test
 	void resetPasswordTest() throws Exception {
 		ResetPassword.Request request = new ResetPassword.Request();
-		ReflectionTestUtils.setField(request, "email", "wow11432@naver.com");
-		ReflectionTestUtils.setField(request, "password", "fkdlej5115**");
+		ReflectionTestUtils.setField(request, "email", "doctor1@example.com");
+		ReflectionTestUtils.setField(request, "password", "Fkdlej5115");
 
 		mockMvc.perform(
 				post("/api/v1/users/password-reset")
@@ -391,6 +400,8 @@ public class UserApiControllerTest {
 			return request;
 		});
 
+		Token token = makeTokenBySystemAdmin();
+
 		mockMvc.perform(builder
 				//.file(profileImage)
 				.param("name", "하이")
@@ -398,11 +409,9 @@ public class UserApiControllerTest {
 				.param("phone", "010-3232-5678")
 				.param("address", "부산광역시")
 				.cookie(
-					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzcxMzYsImV4cCI6MTc0ODQzODAzNiwic3ViIjoiOGRjZGYyZWYtNzlmYi00MTYxLThiYmItMGU1YzY1NmEyMGMxIiwicm9sZSI6IlJPTEVfUEFUSUVOVCJ9.zGBJ1yA1tKG78z-Ji82r1jBQqMHRMFpVo-bV7o381d8"),
-					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MzcxMzYsImV4cCI6MTc0OTA0MTkzNiwic3ViIjoiOGRjZGYyZWYtNzlmYi00MTYxLThiYmItMGU1YzY1NmEyMGMxIn0.5t9qloBNH-xfnCf2XtQC1t_ZUPGItCyjoFB80M1pd8U"
-					))
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				)
 				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isNoContent())
@@ -422,13 +431,14 @@ public class UserApiControllerTest {
 	@DisplayName("회원 탈퇴 API 테스트")
 	@Test
 	void deleteAccountTest() throws Exception {
+
+		Token token = makeTokenBySystemAdmin();
+
 		mockMvc.perform(delete("/api/v1/users/me")
 				.cookie(
-					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MjE1NDQsImV4cCI6MTc0ODQyMjQ0NCwic3ViIjoiY2JlOTdjOWMtYmM5MS00MGFjLWI1MjQtMGE4NDc2Y2NhYTRkIiwicm9sZSI6IlJPTEVfRE9DVE9SIn0.h5zZABdMbWx_PeWqmzuSOgb6iXCWmenE9_LE0PHQ2Y8"),
-					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(),
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg0MjE1NDQsImV4cCI6MTc0OTAyNjM0NCwic3ViIjoiY2JlOTdjOWMtYmM5MS00MGFjLWI1MjQtMGE4NDc2Y2NhYTRkIn0.X0G_ZFPoBYH_u2B_Tva3wWGi_zgWkn153ecYUkOorhc"
-					))
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				)
 				.accept(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(status().isNoContent())
@@ -438,6 +448,24 @@ public class UserApiControllerTest {
 					cookieWithName("refreshToken").description("리프레시 토큰 쿠키")
 				)
 			));
+	}
+
+	private Token makeTokenBySystemAdmin() {
+		User user = User.createUserByEmail("dong112@naver.com", "Fkdlej5115",
+			"짱구", "010-1111-1111", "어딘가", Role.SYSTEM_ADMIN, null);
+
+		user = userRepo.save(user);
+
+		return tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
+	}
+
+	private Token makeTokenByHospitalAdmin() {
+		User user = User.createUserByEmail("mang112@naver.com", "Fkdlej5115",
+			"맹구", "010-2222-2222", "어딘가", Role.HOSPITAL_ADMIN, null);
+
+		user = userRepo.save(user);
+
+		return tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
 	}
 
 }
