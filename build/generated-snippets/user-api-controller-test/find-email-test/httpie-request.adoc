@@ -1,0 +1,8 @@
+[source,bash]
+----
+$ echo '{
+  "name" : "홍길동",
+  "phone" : "010-1234-5678"
+}' | http GET 'http://localhost:8080/api/v1/users/email/find' \
+    'Content-Type:application/json;charset=UTF-8'
+----
