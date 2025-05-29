@@ -42,8 +42,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
 @Import(RestDocsConfig.class)
-
-
 public class QnaControllerTest {
 
 	@Autowired
