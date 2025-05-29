@@ -1,0 +1,7 @@
+|===
+|Parameter|Description
+
+|`+email+`
+|중복 확인할 이메일 주소
+
+|===
