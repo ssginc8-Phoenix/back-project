@@ -26,7 +26,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @DynamicUpdate
+@Entity
+@Table(name = "tbl_user")
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "tbl_user")
@@ -63,6 +67,8 @@ public class User extends BaseTimeEntity {
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	private Long penalty;
 
 	@Column(nullable = false)
 	private Boolean isSuspended;

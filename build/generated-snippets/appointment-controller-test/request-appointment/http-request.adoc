@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/appointments HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 267
+Host: localhost:8080
+
+{
+  "hospitalId" : 1,
+  "doctorId" : 1,
+  "userId" : 2,
+  "patientId" : 1,
+  "symptom" : "기침과 열",
+  "question" : "감기일까요?",
+  "appointmentTime" : "2025-05-23T09:53:11.9336571",
+  "appointmentType" : "SCHEDULED",
+  "paymentType" : "ONSITE"
+}
+----

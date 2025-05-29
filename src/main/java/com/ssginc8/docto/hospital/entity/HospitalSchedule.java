@@ -1,8 +1,7 @@
 package com.ssginc8.docto.hospital.entity;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-
-import com.ssginc8.docto.global.base.DayOfWeek;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "tbl_hospital_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class HospitalSchedule {

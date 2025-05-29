@@ -11,7 +11,7 @@ import org.springframework.restdocs.snippet.Attributes;
 public class RestDocsConfig {
 
 	@Bean
-	public RestDocumentationResultHandler write() {
+	public RestDocumentationResultHandler write(){
 		return MockMvcRestDocumentation.document(
 			"{class-name}/{method-name}",
 			Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),

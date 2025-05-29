@@ -1,0 +1,90 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2229
+
+{
+  "content" : [ {
+    "appointmentId" : 1,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-21T15:24:21.878565",
+    "appointmentType" : "SCHEDULED",
+    "status" : "CANCELLED"
+  }, {
+    "appointmentId" : 6,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-22T11:17:09.334258",
+    "appointmentType" : "SCHEDULED",
+    "status" : "REQUESTED"
+  }, {
+    "appointmentId" : 7,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-22T11:19:18.388728",
+    "appointmentType" : "SCHEDULED",
+    "status" : "REQUESTED"
+  }, {
+    "appointmentId" : 8,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-22T11:31:46.13717",
+    "appointmentType" : "SCHEDULED",
+    "status" : "REQUESTED"
+  }, {
+    "appointmentId" : 9,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-22T14:21:55.415783",
+    "appointmentType" : "SCHEDULED",
+    "status" : "REQUESTED"
+  } ],
+  "pageable" : {
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "sort" : {
+      "empty" : true,
+      "unsorted" : true,
+      "sorted" : false
+    },
+    "offset" : 0,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "last" : false,
+  "totalElements" : 19,
+  "totalPages" : 4,
+  "size" : 5,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "unsorted" : true,
+    "sorted" : false
+  },
+  "first" : true,
+  "numberOfElements" : 5,
+  "empty" : false
+}
+----

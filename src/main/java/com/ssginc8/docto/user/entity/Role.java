@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-
+  
 	PATIENT("ROLE_PATIENT", "환자"),
 	GUARDIAN("ROLE_GUARDIAN", "보호자"),
 	HOSPITAL_ADMIN("ROLE_HOSPITAL_ADMIN", "병원 관리자"),

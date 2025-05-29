@@ -3,26 +3,27 @@ package com.ssginc8.docto.appointment.entity;
 import java.time.LocalDateTime;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
-import com.ssginc8.docto.global.base.AppointmentStatus;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.hospital.entity.Hospital;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "tbl_appointment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Appointment extends BaseTimeEntity {
@@ -31,24 +32,84 @@ public class Appointment extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long appointmentId;
 
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patientGuardianId", nullable = false)
 	private PatientGuardian patientGuardian;
 
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hospitalId", nullable = false)
+	private Hospital hospital;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctorId", nullable = false)
 	private Doctor doctor;
 
 	@Column(nullable = false)
-	private LocalDateTime appointmentDate;
+	private LocalDateTime appointmentTime;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private AppointmentType appointmentType;
 
+	@Column(nullable = false)
+	private String symptom;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private AppointmentStatus status;
 
-	private Long queueNumber;	// 대기 순번
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PaymentType paymentType;
+
+	private Long queueNumber;    // 대기 순번
+
+	public Appointment(
+		PatientGuardian patientGuardian,
+		Hospital hospital,
+		Doctor doctor,
+		LocalDateTime appointmentTime,
+		AppointmentType appointmentType,
+		String symptom,
+		AppointmentStatus status,
+		PaymentType paymentType,
+		Long queueNumber) {
+
+		this.patientGuardian = patientGuardian;
+		this.hospital = hospital;
+		this.doctor = doctor;
+		this.appointmentTime = appointmentTime;
+		this.appointmentType = appointmentType;
+		this.symptom = symptom;
+		this.status = status;
+		this.paymentType = paymentType;
+		this.queueNumber = queueNumber;
+	}
+
+	public static Appointment create(
+		PatientGuardian patientGuardian,
+		Hospital hospital,
+		Doctor doctor,
+		LocalDateTime appointmentTime,
+		AppointmentType appointmentType,
+		String symptom,
+		AppointmentStatus status,
+		PaymentType paymentType) {
+
+		return new Appointment(
+			patientGuardian, hospital, doctor, appointmentTime,
+			appointmentType, symptom, status, paymentType, null);
+	}
+
+	public void changeStatus(AppointmentStatus newStatus) {
+		if (this.status == AppointmentStatus.COMPLETED) {
+			throw new IllegalArgumentException("진료가 완료된 예약은 상태를 변경할 수 없습니다.");
+		}
+
+		if (this.status == AppointmentStatus.CANCELLED) {
+			throw new IllegalArgumentException("취소된 예약은 상태를 변경할 수 없습니다.");
+		}
+
+		this.status = newStatus;
+	}
 }

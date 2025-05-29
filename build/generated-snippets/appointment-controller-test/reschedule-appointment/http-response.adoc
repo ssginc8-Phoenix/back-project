@@ -1,0 +1,23 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 469
+
+{
+  "appointmentId" : 21,
+  "hospitalId" : 1,
+  "doctorId" : 1,
+  "patientGuardianId" : 1,
+  "hospitalName" : "강남헬스케어병원",
+  "doctorName" : "한민상",
+  "patientName" : "홍길동",
+  "symptom" : "기침과 열",
+  "question" : "감기일까요?",
+  "appointmentTime" : "2025-05-24T09:53:12.3379068",
+  "appointmentType" : "SCHEDULED",
+  "paymentType" : "ONSITE",
+  "status" : "REQUESTED",
+  "createdAt" : "2025-05-22T09:53:12.3702669"
+}
+----
