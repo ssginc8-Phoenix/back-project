@@ -38,6 +38,7 @@ import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
+import com.ssginc8.docto.user.service.dto.MyUser;
 import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
 import com.ssginc8.docto.user.service.dto.SocialSignup;
@@ -279,6 +280,10 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return savedProfileImage;
+	}
+
+	public MyUser loadUserFromUuid() {
+		return MyUser.from(getUserFromUuid());
 	}
 
 	private User getUserFromUuid() {
