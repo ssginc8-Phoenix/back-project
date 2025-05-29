@@ -43,6 +43,6 @@ public class MyUser {
 		return new MyUser(user.getUserId(), user.getUuid(), user.getEmail(), user.getName(), user.getPhone(),
 			user.getAddress(), user.getRole(), user.getIsSuspended(), user.getSuspendedAt(),
 			user.getSuspensionExpiresAt(),
-			user.getPanalty(), user.getProfileImage().getUrl());
+			user.getPenalty(), user.getProfileImage().getUrl());
 	}
 }
