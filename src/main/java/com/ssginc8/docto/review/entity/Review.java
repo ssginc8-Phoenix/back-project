@@ -24,11 +24,9 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Review extends BaseTimeEntity {
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long reviewId;
-
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -49,7 +47,6 @@ public class Review extends BaseTimeEntity {
 	@Column(nullable = false, length = 1000)
 	private String contents;
 
-
 	@Column(nullable = false)
 	private Long reportCount;
 
@@ -58,8 +55,7 @@ public class Review extends BaseTimeEntity {
 		joinColumns = @JoinColumn(name = "review_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "keyword", nullable = false)
-	private Set<KeywordType> keywords = new HashSet<>();
-
+	private final Set<KeywordType> keywords = new HashSet<>();
 
 	//리뷰 생성 팩토리 메서드 (user, contents, keywords 모두 필수)
 	public static Review create(
@@ -81,12 +77,10 @@ public class Review extends BaseTimeEntity {
 		return review;
 	}
 
-
 	//내용 수정
 	public void updateContents(String newContents) {
 		this.contents = newContents;
 	}
-
 
 	// 신고 횟수 증가
 	public void incrementReportCount() {
