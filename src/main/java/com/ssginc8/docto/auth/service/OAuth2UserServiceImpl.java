@@ -15,7 +15,7 @@ import com.ssginc8.docto.auth.entity.CustomOAuth2User;
 import com.ssginc8.docto.auth.service.dto.OAuthAttributes;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
-import com.ssginc8.docto.user.repository.UserRepo;
+import com.ssginc8.docto.user.repo.UserRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

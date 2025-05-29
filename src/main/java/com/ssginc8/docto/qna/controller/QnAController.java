@@ -1,8 +1,6 @@
 package com.ssginc8.docto.qna.controller;
 
 
-import static com.ssginc8.docto.appointment.entity.QAppointment.*;
-
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
