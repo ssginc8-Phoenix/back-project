@@ -189,7 +189,7 @@ public class HospitalController {
 		return ResponseEntity.noContent().build();
 	}
 
-	//병원 리스트 에서 전체 리뷰 조회
+	// 한 병원에 대한 리뷰 조회
 	@GetMapping("/hospitals/{hospitalId}/reviews")
 	public ResponseEntity<Page<ReviewAllListResponse>> getAllReviews(@PathVariable Long hospitalId, Pageable pageable
 	) {Page<ReviewAllListResponse> page = reviewService.getAllReviews(hospitalId,pageable);

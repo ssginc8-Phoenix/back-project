@@ -7,5 +7,5 @@ import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 
 public interface UserSearchRepo {
-	Page<User> findByRoleAndDeletedAtIsNotNull(Role role, Pageable pageable);
+	Page<User> findByRoleAndDeletedAtIsNull(Role role, Pageable pageable);
 }

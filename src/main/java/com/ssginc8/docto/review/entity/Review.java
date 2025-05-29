@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
@@ -13,6 +15,7 @@ import com.ssginc8.docto.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+@DynamicUpdate
 @Entity
 @Table(name = "tbl_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

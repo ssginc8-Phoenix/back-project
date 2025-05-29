@@ -25,7 +25,7 @@ public class UserSearchRepoImpl implements UserSearchRepo {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<User> findByRoleAndDeletedAtIsNotNull(Role role, Pageable pageable) {
+	public Page<User> findByRoleAndDeletedAtIsNull(Role role, Pageable pageable) {
 		QUser user = QUser.user;
 		QFile file = QFile.file;
 

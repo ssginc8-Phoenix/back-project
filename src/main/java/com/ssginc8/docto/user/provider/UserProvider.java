@@ -54,7 +54,7 @@ public class UserProvider {
 	}
 
 	public Page<User> loadUsersByRole(Role role, Pageable pageable) {
-		return userSearchRepo.findByRoleAndDeletedAtIsNotNull(role, pageable);
+		return userSearchRepo.findByRoleAndDeletedAtIsNull(role, pageable);
 	}
 
 	public User createUser(User user) {
