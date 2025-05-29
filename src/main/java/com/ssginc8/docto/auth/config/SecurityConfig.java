@@ -2,6 +2,7 @@ package com.ssginc8.docto.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -46,6 +47,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 			.authorizeHttpRequests(auth -> auth
+
 				.requestMatchers(
 					"/static/**", "/docs/index.html", "/api/v1/auth/**", "/api/v1/users/register",
 					"/api/v1/users/social",
@@ -53,29 +55,38 @@ public class SecurityConfig {
 					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
 					"/api/v1/users/email/verify-code/confirm"
 				).permitAll()
-				.requestMatchers(
-					"/api/v1/users/me"
-				).authenticated() // 로그인 한 사용자만 접근 가능
-				// .requestMatchers(
-				//
-				// ).hasRole("PATIENT")
-				//
-				// .requestMatchers(
-				// 	"/api/v1/patients/**"
-				// ).hasRole("GUARDIAN")
-				//
-				.requestMatchers(
-					"/api/v1/users/doctors"
-				).hasRole("HOSPITAL_ADMIN")
-				//
-				// .requestMatchers(
-				//
-				// ).hasRole("DOCTOR")
-				//
-				.requestMatchers(
-					"/api/v1/admin/users"
-				).hasRole("SYSTEM_ADMIN")
 
+				.requestMatchers(
+					"/api/v1/users/me", "/api/v1/calendar/**", "/api/v1/reviews/*/report", "/api/v1/csrooms/**"
+				).authenticated()// 로그인 한 사용자만 접근 가능
+				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**", "/api/v1/doctors/**",
+					"/api/v1/appointments/**", "/api/v1/reviews", "/api/v1/qnas/**").authenticated()
+
+				.requestMatchers(
+					"/api/v1/patients/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
+					"/api/v1/medications/*/complete"
+				).hasRole("PATIENT")
+
+				.requestMatchers(
+					"/api/v1/patients/**", "/api/v1/guardians/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews",
+					"/api/v1/qnas/**", "/api/v1/medications/**"
+				).hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
+
+				.requestMatchers(
+					"/api/v1/hospitals/**", "/api/v1/doctors/**"
+				).hasRole("HOSPITAL_ADMIN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasRole("HOSPITAL_ADMIN")
+
+				.requestMatchers(
+					"/api/v1/doctors/**", "/api/v1/qnas/*/comments/*"
+				).hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**").hasRole("DOCTOR")
+
+				.requestMatchers(
+					"/api/v1/admin/**"
+				).hasRole("SYSTEM_ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasRole("SYSTEM_ADMIN")
 				.anyRequest().authenticated()) // 그외 모든 요청 인증 필요
 			.csrf(AbstractHttpConfigurer::disable)
 			.oauth2Login(oauth2 -> oauth2
