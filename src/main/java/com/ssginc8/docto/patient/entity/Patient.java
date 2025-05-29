@@ -38,6 +38,7 @@ public class Patient extends BaseTimeEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
+
 	@Column(name = "resident_registration_number", nullable = false)
 	private String residentRegistrationNumber;
 
@@ -60,6 +61,4 @@ public class Patient extends BaseTimeEntity {
 	public void update(String newRRN) {
 		this.residentRegistrationNumber = newRRN;
 	}
-
-
 }

@@ -1,6 +1,8 @@
 package com.ssginc8.docto.global.error;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +15,17 @@ import lombok.extern.log4j.Log4j2;
 @RestControllerAdvice
 @Log4j2
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
+		return createErrorResponseEntity(ErrorCode.UNAUTHORIZED_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
+		return createErrorResponseEntity(ErrorCode.FORBIDDEN_REQUEST);
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException e) {
 		e.printStackTrace();

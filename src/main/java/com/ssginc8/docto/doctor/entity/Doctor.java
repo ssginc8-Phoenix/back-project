@@ -65,7 +65,7 @@ public class Doctor extends BaseTimeEntity {
 			if (userRepo.existsByEmail(dto.getEmail())) {
 				throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
 			}
-			this.user.updateEmail(dto.getEmail());
+			// this.user.updateEmail(dto.getEmail());
 		}
 
 		if (dto.getSpecialization() != null) {

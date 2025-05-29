@@ -21,6 +21,12 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 2000
 
+  # Redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   #JPA Config
   jpa:
     hibernate:
@@ -30,6 +36,9 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    open-in-view: false
+
   sql:
     init:
       mode: never

@@ -28,13 +28,13 @@ public class PatientProvider {
 		return patientRepo.findByPatientIdAndDeletedAtIsNull(id)
 			.orElseThrow(() -> new EntityNotFoundException("Patient not found"));
 	}
-
-
-	@Transactional(readOnly = true)
+  
+  @Transactional(readOnly = true)
 	public Patient getPatientById(Long patientId) {
 		return patientRepo.findById(patientId).orElseThrow(
 			() -> new IllegalArgumentException("해당 환자가 존재하지 않습니다. id = " + patientId)
 		);
 	}
 }
+
 
