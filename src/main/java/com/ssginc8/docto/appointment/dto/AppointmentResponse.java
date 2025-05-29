@@ -1,6 +1,8 @@
 package com.ssginc8.docto.appointment.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
@@ -34,9 +36,10 @@ public class AppointmentResponse {
 	private PaymentType paymentType;
 	private AppointmentStatus status;
 
-	private LocalDateTime createdAt;
+	private String createdAt;
 
 	public static AppointmentResponse fromEntity(Appointment appointment, String qaContent) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm", Locale.KOREAN);
 
 		return AppointmentResponse.builder()
 			.appointmentId(appointment.getAppointmentId())
@@ -52,7 +55,7 @@ public class AppointmentResponse {
 			.appointmentType(appointment.getAppointmentType())
 			.paymentType(appointment.getPaymentType())
 			.status(appointment.getStatus())
-			.createdAt(appointment.getCreatedAt())
+			.createdAt(appointment.getCreatedAt().format(formatter))
 			.build();
 	}
 }
