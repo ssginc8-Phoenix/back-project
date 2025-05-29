@@ -1,4 +1,4 @@
-package com.ssginc8.docto.user.repository;
+package com.ssginc8.docto.user.repo;
 
 import java.util.List;
 import java.util.Objects;

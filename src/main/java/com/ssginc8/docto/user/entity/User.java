@@ -27,10 +27,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-@DynamicUpdate
-@Entity
-@Table(name = "tbl_user")
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "tbl_user")
@@ -76,8 +72,6 @@ public class User extends BaseTimeEntity {
 	private LocalDateTime suspendedAt;
 
 	private LocalDateTime suspensionExpiresAt;
-
-	private Long panalty;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "fileId")
@@ -196,5 +190,18 @@ public class User extends BaseTimeEntity {
 				profileImage.getUrl(),
 				profileImage.getBucketName(), profileImage.getFileSize(), profileImage.getFileType());
 		}
+	}
+
+	public static User createUser(String username, String password, String email, String loginType, String role, Boolean suspended, String uuid) {
+		User user = new User();
+		user.name = username;
+		user.password = password;
+		user.email = email;
+		user.loginType = LoginType.valueOf(loginType);
+		user.role = Role.valueOf(role);
+		user.isSuspended = suspended;
+		user.uuid = uuid;
+		// 필요한 초기화 작업 추가
+		return user;
 	}
 }

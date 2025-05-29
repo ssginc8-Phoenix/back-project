@@ -1,4 +1,4 @@
-package com.ssginc8.docto.user.repository;
+package com.ssginc8.docto.user.repo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -31,7 +31,7 @@ import com.ssginc8.docto.global.util.RedisUtil;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
-import com.ssginc8.docto.user.repository.UserSearchRepoImpl;
+import com.ssginc8.docto.user.repo.UserSearchRepoImpl;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
