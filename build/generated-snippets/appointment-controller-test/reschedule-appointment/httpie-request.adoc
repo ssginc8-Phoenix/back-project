@@ -1,0 +1,7 @@
+[source,bash]
+----
+$ echo '{
+  "newTime" : "2025-05-31T15:25:16.0057381"
+}' | http POST 'http://localhost:8080/api/v1/appointments/6/reschedule' \
+    'Content-Type:application/json;charset=UTF-8'
+----
