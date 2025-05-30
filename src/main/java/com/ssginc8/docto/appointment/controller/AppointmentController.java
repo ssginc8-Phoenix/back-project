@@ -36,9 +36,10 @@ public class AppointmentController {
 	*	BODY: AppointmentRequest
 	*/
 	@PostMapping()
-	public ResponseEntity<AppointmentResponse> requestAppointment(@RequestBody @Valid AppointmentRequest request) {
+	public ResponseEntity<Void> requestAppointment(@RequestBody @Valid AppointmentRequest request) {
+		appointmentService.requestAppointment(request);
 
-		return ResponseEntity.ok(appointmentService.requestAppointment(request));
+		return ResponseEntity.ok().build();
 	}
 
 

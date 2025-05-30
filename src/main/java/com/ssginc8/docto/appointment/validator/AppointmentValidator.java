@@ -1,4 +1,4 @@
-package com.ssginc8.docto.doctor.validator;
+package com.ssginc8.docto.appointment.validator;
 
 import java.time.LocalDateTime;
 

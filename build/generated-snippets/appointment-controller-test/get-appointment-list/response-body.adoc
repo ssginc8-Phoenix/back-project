@@ -1,0 +1,64 @@
+[source,json,options="nowrap"]
+----
+{
+  "content" : [ {
+    "appointmentId" : 1,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-31T16:32:37.195366",
+    "appointmentType" : "SCHEDULED",
+    "status" : "CONFIRMED"
+  }, {
+    "appointmentId" : 2,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-05-31T17:00:42.318556",
+    "appointmentType" : "SCHEDULED",
+    "status" : "CANCELED"
+  }, {
+    "appointmentId" : 3,
+    "hospitalId" : 1,
+    "doctorId" : 1,
+    "patientGuardianId" : 1,
+    "hospitalName" : "강남헬스케어병원",
+    "doctorName" : "한민상",
+    "patientName" : "홍길동",
+    "appointmentTime" : "2025-06-01T17:09:26.653765",
+    "appointmentType" : "SCHEDULED",
+    "status" : "REQUESTED"
+  } ],
+  "pageable" : {
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "last" : true,
+  "totalElements" : 3,
+  "totalPages" : 1,
+  "size" : 5,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "sorted" : false,
+    "unsorted" : true
+  },
+  "numberOfElements" : 3,
+  "first" : true,
+  "empty" : false
+}
+----
