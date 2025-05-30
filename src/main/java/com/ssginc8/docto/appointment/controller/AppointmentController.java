@@ -20,6 +20,7 @@ import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
 import com.ssginc8.docto.appointment.service.AppointmentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -35,7 +36,7 @@ public class AppointmentController {
 	*	BODY: AppointmentRequest
 	*/
 	@PostMapping()
-	public ResponseEntity<AppointmentResponse> requestAppointment(@RequestBody AppointmentRequest request) {
+	public ResponseEntity<AppointmentResponse> requestAppointment(@RequestBody @Valid AppointmentRequest request) {
 
 		return ResponseEntity.ok(appointmentService.requestAppointment(request));
 	}
