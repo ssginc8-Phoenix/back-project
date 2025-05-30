@@ -19,6 +19,8 @@ import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
+import com.ssginc8.docto.global.error.exception.appointmentException.DuplicateAppointmentException;
+import com.ssginc8.docto.global.error.exception.appointmentException.InvalidAppointmentTimeException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -181,7 +183,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		// 1) 과거 시간 불가
 		if (appointmentTime.isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("과거 시간으로 예약할 수 없습니다.");
+			throw new InvalidAppointmentTimeException();
 		}
 
 		// 2) 예약 시간과 의사 스케쥴 비교
@@ -189,7 +191,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		// 3)중복 예약 체크
 		if (appointmentProvider.existsDuplicateAppointment(patientGuardian, doctor, appointmentTime)) {
-			throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
+			throw new DuplicateAppointmentException();
 		}
 	}
 }

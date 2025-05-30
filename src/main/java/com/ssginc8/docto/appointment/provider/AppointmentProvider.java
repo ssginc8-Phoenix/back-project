@@ -12,6 +12,7 @@ import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class AppointmentProvider {
 
 	@Transactional(readOnly = true)
 	public Appointment getAppointmentById(Long appointmentId) {
-		return appointmentRepo.findById(appointmentId).orElseThrow(
-			() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다. id = " + appointmentId));
+		return appointmentRepo.findById(appointmentId)
+			.orElseThrow(AppointmentNotFoundException::new);
 	}
 
 	@Transactional(readOnly = true)
