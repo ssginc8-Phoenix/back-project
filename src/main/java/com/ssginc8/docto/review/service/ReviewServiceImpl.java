@@ -1,5 +1,10 @@
 package com.ssginc8.docto.review.service;
 
+import static com.ssginc8.docto.appointment.entity.QAppointment.*;
+import static com.ssginc8.docto.doctor.entity.QDoctor.*;
+import static com.ssginc8.docto.hospital.entity.QHospital.*;
+import static com.ssginc8.docto.user.entity.QUser.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.provider.AppointmentProvider;
+import com.ssginc8.docto.doctor.provider.DoctorProvider;
+import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.review.dto.ReviewAllListResponse;
 import com.ssginc8.docto.review.dto.ReviewCreateRequest;
 import com.ssginc8.docto.review.dto.ReviewMyListResponse;
@@ -23,6 +31,7 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 
 import com.ssginc8.docto.review.provider.ReviewProvider;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.provider.UserProvider;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -34,18 +43,22 @@ public class ReviewServiceImpl implements ReviewService {
 
 	private final ReviewProvider reviewProvider;
 
-	@PersistenceContext
-	private EntityManager em;
+	private final UserProvider userProvider;
+	private final DoctorProvider doctorProvider;
+	private final HospitalProvider hospitalProvider;
+	private final AppointmentProvider appointmentProvider;
+
 
 	// 리뷰 생성
 	@Override
 	@Transactional
 	public Long createReview(ReviewCreateRequest request, Long userId) {
-		//1. 필요한 프록시를 가져온다
-		User user = em.getReference(User.class, userId);
-		Appointment appointment = em.getReference(Appointment.class, request.getAppointmentId());
-		Hospital    hospital    = em.getReference(Hospital.class,    request.getHospitalId());
-		Doctor      doctor      = em.getReference(Doctor.class,      request.getDoctorId());
+
+		// 1. 필요한 정보들을 가져온다
+		User        user        = userProvider.getUserById(request.getUserId());
+		Appointment appointment = appointmentProvider.getAppointmentById(request.getAppointmentId());
+		Hospital    hospital    = hospitalProvider.getHospitalById(request.getHospitalId());
+		Doctor      doctor      = doctorProvider.getDoctorById(request.getDoctorId());
 
 
 		//2. 클라이언트가 보낸 키워드 문자열 목록을 처리한다
