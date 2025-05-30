@@ -13,7 +13,7 @@ import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentInLunchTimeException;
 import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentOutOfWorkingHoursException;
-import com.ssginc8.docto.global.error.exception.appointmentException.DoctorScheduleNotFoundException;
+import com.ssginc8.docto.global.error.exception.doctorScheduleException.DoctorScheduleNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +48,10 @@ public class DoctorScheduleProvider {
 	public DoctorSchedule getDoctorScheduleById(Long scheduleId) {
 		return doctorScheduleRepo.findById(scheduleId)
 			.orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
+	}
+
+	public DoctorSchedule getScheduleByDoctorAndDay(Doctor doctor, DayOfWeek dayOfWeek) {
+		return doctorScheduleRepo.findByDoctorAndDayOfWeek(doctor, dayOfWeek)
+			.orElseThrow();
 	}
 }

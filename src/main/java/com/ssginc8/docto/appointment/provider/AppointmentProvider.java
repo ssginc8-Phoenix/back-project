@@ -1,6 +1,7 @@
 package com.ssginc8.docto.appointment.provider;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +49,14 @@ public class AppointmentProvider {
 		return appointmentRepo.save(appointment);
 	}
 
+	@Transactional(readOnly = true)
+	public boolean existsByPatientAndTimeRange(Long patientId, LocalDateTime start, LocalDateTime end) {
+		return appointmentRepo.existsByPatientIdAndAppointmentTimeBetween(patientId, start, end);
+	}
+
+	@Transactional(readOnly = true)
+	public int countAppointmentsInSlot(Long doctorId, LocalDateTime slotStart, LocalDateTime slotEnd) {
+		return appointmentRepo.countAppointmentsInSlot(doctorId, slotStart, slotEnd);
+	}
 
 }

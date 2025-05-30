@@ -199,8 +199,14 @@ public class DoctorServiceImpl implements DoctorService {
 		}
 
 		doctorScheduleRepo.delete(schedule);
-
-
 	}
 
+	/**
+	 * 의사가 30분 당 받을 수 있는 최대 환자 수 수정
+	 */
+	@Override
+	public void updateCapacityPerHalfHour(Long doctorId, Long capacityPerHalfHour) {
+		Doctor doctor = doctorProvider.getDoctorById(doctorId);
+		doctor.changeCapacityPerHalfHour(capacityPerHalfHour);
+	}
 }
