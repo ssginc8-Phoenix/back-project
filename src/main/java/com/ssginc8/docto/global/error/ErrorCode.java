@@ -41,9 +41,21 @@ public enum ErrorCode {
 	APPOINTMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "A_001", "예약을 찾을 수 없습니다."),
 	INVALID_APPOINTMENT_TIME(HttpStatus.BAD_REQUEST, "A_002", "과거 시간으로 예약할 수 없습니다."),
 	DUPLICATE_APPOINTMENT(HttpStatus.CONFLICT, "A_003", "이미 해당 시간에 예약이 존재합니다."),
-	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "A_004", "해당 요일의 스케쥴이 없습니다."),
-	APPOINTMENT_OUT_OF_WORKING_HOURS(HttpStatus.BAD_REQUEST, "A_005", "예약 시간이 진료 시간 외입니다."),
-	APPOINTMENT_IN_LUNCH_TIME(HttpStatus.BAD_REQUEST, "A_006", "예약 시간이 점심 시간입니다."),;
+	APPOINTMENT_OUT_OF_WORKING_HOURS(HttpStatus.BAD_REQUEST, "A_004", "예약 시간이 진료 시간 외입니다."),
+	APPOINTMENT_IN_LUNCH_TIME(HttpStatus.BAD_REQUEST, "A_005", "예약 시간이 점심 시간입니다."),
+	APPOINTMENT_DUPLICATE_TIME_WINDOW(HttpStatus.CONFLICT, "A_006", "동일 환자의 30분 내 중복 예약은 허용되지 않습니다."),
+	APPOINTMENT_COMPLETED_MODIFICATION_NOT_ALLOWED(HttpStatus.CONFLICT, "A_007", "진료가 완료된 예약은 상태를 변경할 수 없습니다."),
+	APPOINTMENT_CANCELED_MODIFICATION_NOT_ALLOWED(HttpStatus.CONFLICT, "A_008", "취소된 예약은 상태를 변경할 수 없습니다."),
+	INVALID_STATUS_VALUE(HttpStatus.BAD_REQUEST, "A_009", "유효하지 않은 예약 상태입니다."),
+	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "A_010", "유효하지 않은 예약 타입입니다."),
+	INVALID_PAYMENT_VALUE(HttpStatus.BAD_REQUEST, "A_011", "유효하지 않은 결제 방법입니다."),
+
+	// Doctor 관련 에러 (D_)
+	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_001", "진료 가능 인원은 음수일 수 없습니다."),
+	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_002", "해당 시간에는 이미 예약이 가득 찼습니다."),
+
+	// Doctor Schedule 관련 에러 (DS_)
+	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다.");
 
 
 	private final HttpStatus status;

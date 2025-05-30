@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentCanceledModificationNotAllowedException;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentCompletedModificationNotAllowedException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.hospital.entity.Hospital;
 
@@ -103,11 +105,11 @@ public class Appointment extends BaseTimeEntity {
 
 	public void changeStatus(AppointmentStatus newStatus) {
 		if (this.status == AppointmentStatus.COMPLETED) {
-			throw new IllegalArgumentException("진료가 완료된 예약은 상태를 변경할 수 없습니다.");
+			throw new AppointmentCompletedModificationNotAllowedException();
 		}
 
 		if (this.status == AppointmentStatus.CANCELED) {
-			throw new IllegalArgumentException("취소된 예약은 상태를 변경할 수 없습니다.");
+			throw new AppointmentCanceledModificationNotAllowedException();
 		}
 
 		this.status = newStatus;
