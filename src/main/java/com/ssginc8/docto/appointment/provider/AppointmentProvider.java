@@ -1,6 +1,7 @@
 package com.ssginc8.docto.appointment.provider;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 
 import lombok.RequiredArgsConstructor;
@@ -27,19 +30,18 @@ public class AppointmentProvider {
 		return appointmentRepo.findAllByCondition(condition, pageable);
 	}
 
-
 	@Transactional(readOnly = true)
 	public Appointment getAppointmentById(Long appointmentId) {
-		return appointmentRepo.findById(appointmentId).orElseThrow(
-			() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다. id = " + appointmentId));
+		return appointmentRepo.findById(appointmentId)
+			.orElseThrow(AppointmentNotFoundException::new);
 	}
 
 	@Transactional(readOnly = true)
 	public boolean existsDuplicateAppointment(
 		PatientGuardian patientGuardian, Doctor doctor, LocalDateTime appointmentTime
 	) {
-		return appointmentRepo.existsByPatientGuardianAndDoctorAndAppointmentTime(
-			patientGuardian, doctor, appointmentTime);
+		return appointmentRepo.existsByPatientGuardianAndDoctorAndAppointmentTimeAndStatusNot(
+			patientGuardian, doctor, appointmentTime, AppointmentStatus.CANCELED);
 	}
 
 	@Transactional
@@ -47,5 +49,14 @@ public class AppointmentProvider {
 		return appointmentRepo.save(appointment);
 	}
 
+	@Transactional(readOnly = true)
+	public boolean existsByPatientAndTimeRange(Long patientId, LocalDateTime start, LocalDateTime end) {
+		return appointmentRepo.existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(patientId, start, end);
+	}
+
+	@Transactional(readOnly = true)
+	public int countAppointmentsInSlot(Long doctorId, LocalDateTime slotStart, LocalDateTime slotEnd) {
+		return appointmentRepo.countAppointmentsInSlot(doctorId, slotStart, slotEnd);
+	}
 
 }

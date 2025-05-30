@@ -163,14 +163,13 @@ public class AppointmentControllerTest {
 			));
 	}
 
-
 	@Test
 	@DisplayName("예약 상태 변경")
 	void updateAppointmentStatus() throws Exception {
 		UpdateRequest request = new UpdateRequest();
 		request.setStatus("CONFIRMED");
 
-		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 6L)
+		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -190,7 +189,7 @@ public class AppointmentControllerTest {
 		RescheduleRequest request = new RescheduleRequest();
 		request.setNewTime(LocalDateTime.now().plusDays(2));
 
-		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 6L)
+		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())

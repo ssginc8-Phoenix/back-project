@@ -24,9 +24,8 @@ public class UserProvider {
 
 	@Transactional(readOnly = true)
 	public User getUserById(Long userId) {
-		return userRepo.findById(userId).orElseThrow(
-			() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. id = " + userId)
-		);
+		return userRepo.findById(userId)
+			.orElseThrow(UserNotFoundException::new);
 	}
 
 	public User loadUserByEmailOrException(String email) {

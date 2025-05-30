@@ -2,6 +2,8 @@ package com.ssginc8.docto.appointment.entity;
 
 import java.util.Arrays;
 
+import com.ssginc8.docto.global.error.exception.appointmentException.InvalidPaymentValueException;
+
 public enum PaymentType {
 
 	ONSITE, ONLINE;
@@ -10,6 +12,6 @@ public enum PaymentType {
 		return Arrays.stream(values())
 			.filter(e -> e.name().equalsIgnoreCase(input))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 결제 방법입니다.: " + input));
+			.orElseThrow(InvalidPaymentValueException::new);
 	}
 }

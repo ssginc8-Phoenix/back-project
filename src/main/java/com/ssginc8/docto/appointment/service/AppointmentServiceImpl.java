@@ -18,13 +18,14 @@ import com.ssginc8.docto.appointment.entity.PaymentType;
 import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
-import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
+import com.ssginc8.docto.appointment.validator.AppointmentValidator;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
+import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
 import com.ssginc8.docto.user.entity.User;
@@ -37,20 +38,21 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentServiceImpl implements AppointmentService {
 
 	private final AppointmentProvider appointmentProvider;
-
 	private final UserProvider userProvider;
 	private final PatientProvider patientProvider;
 	private final PatientGuardianProvider patientGuardianProvider;
 	private final HospitalProvider hospitalProvider;
 	private final DoctorProvider doctorProvider;
-	private final DoctorScheduleProvider doctorScheduleProvider;
 	private final QaPostProvider qaPostProvider;
 
 	private final QaPostService qaPostService;
 
+	private final AppointmentValidator appointmentValidator;
+
 	/*
 	 * 진료 예약 리스트 조회
 	 * 검색 필터링 조건: hospitalId, doctorId, patientGuardianId
+	 * 병원, 의사, 환자, 보호자 입장에서 검색 가능
 	 */
 	@Override
 	public Page<AppointmentListResponse> getAppointmentList(Pageable pageable, AppointmentSearchCondition condition) {
@@ -74,10 +76,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	/*
 	 * 진료 예약 접수
+	 * 접수 시 STATUS.REQUESTED
+	 * 병원 확인 후 승인 -> CONFIRMED => 이 과정은 updateAppointmentStatus로 관리
+	 * 			  거절 -> CANCELED
 	 */
 	@Transactional
 	@Override
-	public AppointmentResponse requestAppointment(AppointmentRequest request) {
+	public void requestAppointment(AppointmentRequest request) {
 		// 1. 보호자 (user)와 환자 (patient) 조회
 		User guardian = userProvider.getUserById(request.getUserId());
 		Patient patient = patientProvider.getPatientById(request.getPatientId());
@@ -91,18 +96,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 		
 		// 4. request 데이터 검증
 		// 1) validate appointmentTime
-		validateAppointmentTime(doctor, patientGuardian, request.getAppointmentTime());
+		appointmentValidator.validateAppointmentTime(doctor, patientGuardian, request.getAppointmentTime());
 
 		// 2) 수납 방식과 예약 타입 enum 값들 유효성 검사
 		AppointmentType appointmentType = AppointmentType.from(request.getAppointmentType());
 		PaymentType paymentType = PaymentType.from(request.getPaymentType());
 
-			// 동일 환자 예약 제한 (30분) : 다른 병원, 다른 의사라도
+		// 3) 중복 예약 방지
+		// 동일 환자 예약 제한 (30분) : 다른 병원, 다른 의사라도
+		appointmentValidator.validateDuplicateAppointment(patient, request.getAppointmentTime());
 
-			// 한 병원의 한 의사가 30분 단위로 받을 수 있는 환자 수 제한
+		// 한 병원의 한 의사가 30분 단위로 받을 수 있는 환자 수 제한
+		appointmentValidator.validateDoctorSlotCapacity(doctor, request.getAppointmentTime());
 
-			// 예약 대기 리스트 및 자동 순번 배정 시스템 연동
-		
 		// 5. Appointment 엔티티 생성 및 저장
 		Appointment appointment = Appointment.create(
 			patientGuardian,
@@ -119,14 +125,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		// 6. 질문(QaPost) 저장
 		if (request.getQuestion() != null && !request.getQuestion().isBlank()) {
-			qaPostService.createQaPost(appointment, request.getQuestion());
+			QaPostCreateRequest qaPostCreateRequest = QaPostCreateRequest.builder()
+				.appointmentId(appointment.getAppointmentId())
+				.content(request.getQuestion())
+				.build();
+
+			qaPostService.createQaPost(qaPostCreateRequest);
 		}
-
-		String qaContent = qaPostProvider.getQaPostByAppointment(appointment);
-
-		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
-
 
 	/*
 	 * 진료 상태 업데이트
@@ -152,10 +158,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime) {
 		Appointment original = appointmentProvider.getAppointmentById(appointmentId);
-		original.changeStatus(AppointmentStatus.CANCELLED);
+		original.changeStatus(AppointmentStatus.CANCELED);
 		String qaContent = qaPostProvider.getQaPostByAppointment(original);
 
-		validateAppointmentTime(original.getDoctor(), original.getPatientGuardian(), newTime);
+		appointmentValidator.validateAppointmentTime(original.getDoctor(), original.getPatientGuardian(), newTime);
+		appointmentValidator.validateDuplicateAppointment(original.getPatientGuardian().getPatient(), newTime);
+		appointmentValidator.validateDoctorSlotCapacity(original.getDoctor(), newTime);
 
 		Appointment newAppointment = Appointment.create(
 			original.getPatientGuardian(),
@@ -170,26 +178,5 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(newAppointment);
 		return AppointmentResponse.fromEntity(newAppointment, qaContent);
-	}
-
-	// 예약시간 Validate
-	private void validateAppointmentTime(
-		Doctor doctor,
-		PatientGuardian patientGuardian,
-		LocalDateTime appointmentTime
-	) {
-
-		// 1) 과거 시간 불가
-		if (appointmentTime.isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("과거 시간으로 예약할 수 없습니다.");
-		}
-
-		// 2) 예약 시간과 의사 스케쥴 비교
-		doctorScheduleProvider.validateDoctorSchedule(doctor, appointmentTime);
-
-		// 3)중복 예약 체크
-		if (appointmentProvider.existsDuplicateAppointment(patientGuardian, doctor, appointmentTime)) {
-			throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
-		}
 	}
 }

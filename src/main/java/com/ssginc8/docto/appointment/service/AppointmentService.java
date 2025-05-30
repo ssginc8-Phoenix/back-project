@@ -19,7 +19,7 @@ public interface AppointmentService {
 	AppointmentResponse getAppointmentDetail(Long appointmentId);
 
 	// 예약 요청
-	AppointmentResponse requestAppointment(AppointmentRequest request);
+	void requestAppointment(AppointmentRequest request);
 
 	// 예약 상태 업데이트
 	AppointmentResponse updateAppointmentStatus(Long appointmentId, String statusStr);

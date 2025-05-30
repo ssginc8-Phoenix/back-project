@@ -1,0 +1,16 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/appointments' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -d '{
+  "hospitalId" : 1,
+  "doctorId" : 1,
+  "userId" : 2,
+  "patientId" : 1,
+  "symptom" : "기침과 열",
+  "question" : "감기일까요?",
+  "appointmentTime" : "2025-05-31T17:00:42.3185555",
+  "appointmentType" : "SCHEDULED",
+  "paymentType" : "ONSITE"
+}'
+----

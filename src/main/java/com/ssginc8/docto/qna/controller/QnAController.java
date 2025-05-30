@@ -26,10 +26,9 @@ public class QnAController {
 	@PostMapping
 	public ResponseEntity<QaPostResponse> createQaPost(
 		@RequestBody @Valid QaPostCreateRequest request
-	) {Appointment appointment = appointmentRepo.getReferenceById(request.getAppointmentId());
-		QaPost saved = qaPostService.createQaPost(appointment, request.getContent());
-
-		return ResponseEntity.ok(QaPostResponse.fromEntity(saved));
+	) {
+		QaPostResponse response = qaPostService.createQaPost(request);
+		return ResponseEntity.ok(response);
 	}
 
 

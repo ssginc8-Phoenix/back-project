@@ -37,4 +37,6 @@ public interface DoctorService {
 	//의사스케쥴 삭제
 	void deleteDoctorSchedule(Long doctorId, Long scheduleId);
 
+	// 접수 가능한 환자 수 수정
+	void updateCapacityPerHalfHour(Long doctorId, Long capacityPerHalfHour);
 }
