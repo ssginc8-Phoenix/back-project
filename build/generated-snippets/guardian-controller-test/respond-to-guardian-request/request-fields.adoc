@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+status+`
+|`+String+`
+|변경할 권한 상태(ACCEPTED/REJECTED)
+
+|`+inviteCode+`
+|`+String+`
+|초대코드 (User.uuid)
+
+|===

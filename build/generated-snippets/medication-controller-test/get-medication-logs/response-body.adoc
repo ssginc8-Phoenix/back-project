@@ -1,0 +1,9 @@
+[source,json,options="nowrap"]
+----
+[ {
+  "medicationLogId" : 9,
+  "medicationId" : 24,
+  "status" : "TAKEN",
+  "timeToTake" : "2025-05-22T17:36:47.779184"
+} ]
+----

@@ -1,0 +1,9 @@
+[source,json,options="nowrap"]
+----
+{
+  "patientGuardianId" : 1,
+  "medicationName" : "타이레놀",
+  "timeToTake" : "2025-05-22T18:36:47.3207318",
+  "days" : [ "MONDAY", "WEDNESDAY" ]
+}
+----

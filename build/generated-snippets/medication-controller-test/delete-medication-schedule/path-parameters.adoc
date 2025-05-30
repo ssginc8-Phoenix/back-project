@@ -1,0 +1,8 @@
+.+/api/v1/medications/{medicationId}+
+|===
+|Parameter|Description
+
+|`+medicationId+`
+|삭제할 약 ID
+
+|===
