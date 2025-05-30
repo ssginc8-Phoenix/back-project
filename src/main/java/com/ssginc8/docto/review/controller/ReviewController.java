@@ -54,7 +54,7 @@ public class ReviewController {
 
 
 
-	//나의 예약 조회
+	//나의 리뷰 조회
 	@GetMapping("/users/me/reviews")
 	public ResponseEntity<Page<ReviewMyListResponse>> getMyReviews(@RequestParam("userId") Long userId, Pageable pageable
 	) {Page<ReviewMyListResponse> page = reviewService.getMyReviews(userId, pageable);
