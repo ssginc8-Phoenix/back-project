@@ -31,7 +31,7 @@ public interface AppointmentRepo
 		AppointmentStatus status
 	);
 
-	boolean existsByPatientIdAndAppointmentTimeBetween(Long patientId, LocalDateTime start, LocalDateTime end);
+	boolean existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(Long patientId, LocalDateTime start, LocalDateTime end);
 
 	@Query("SELECT COUNT(a) FROM Appointment a " +
 		"WHERE a.doctor.doctorId = :doctorId " +

@@ -51,7 +51,7 @@ public class AppointmentProvider {
 
 	@Transactional(readOnly = true)
 	public boolean existsByPatientAndTimeRange(Long patientId, LocalDateTime start, LocalDateTime end) {
-		return appointmentRepo.existsByPatientIdAndAppointmentTimeBetween(patientId, start, end);
+		return appointmentRepo.existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(patientId, start, end);
 	}
 
 	@Transactional(readOnly = true)
