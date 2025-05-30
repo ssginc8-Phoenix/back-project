@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum AppointmentStatus {
 
 	// 예약요청, 예약완료, 진료완료, 취소
-	REQUESTED, CONFIRMED, COMPLETED, CANCELLED;
+	REQUESTED, CONFIRMED, COMPLETED, CANCELED;
 
 	public static AppointmentStatus from(String input) {
 		return Arrays.stream(values())

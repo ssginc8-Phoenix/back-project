@@ -106,7 +106,7 @@ public class Appointment extends BaseTimeEntity {
 			throw new IllegalArgumentException("진료가 완료된 예약은 상태를 변경할 수 없습니다.");
 		}
 
-		if (this.status == AppointmentStatus.CANCELLED) {
+		if (this.status == AppointmentStatus.CANCELED) {
 			throw new IllegalArgumentException("취소된 예약은 상태를 변경할 수 없습니다.");
 		}
 
