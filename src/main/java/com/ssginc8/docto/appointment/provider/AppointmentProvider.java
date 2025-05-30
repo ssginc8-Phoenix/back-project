@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
@@ -27,7 +28,6 @@ public class AppointmentProvider {
 		return appointmentRepo.findAllByCondition(condition, pageable);
 	}
 
-
 	@Transactional(readOnly = true)
 	public Appointment getAppointmentById(Long appointmentId) {
 		return appointmentRepo.findById(appointmentId).orElseThrow(
@@ -38,8 +38,8 @@ public class AppointmentProvider {
 	public boolean existsDuplicateAppointment(
 		PatientGuardian patientGuardian, Doctor doctor, LocalDateTime appointmentTime
 	) {
-		return appointmentRepo.existsByPatientGuardianAndDoctorAndAppointmentTime(
-			patientGuardian, doctor, appointmentTime);
+		return appointmentRepo.existsByPatientGuardianAndDoctorAndAppointmentTimeAndStatusNot(
+			patientGuardian, doctor, appointmentTime, AppointmentStatus.CANCELED);
 	}
 
 	@Transactional
