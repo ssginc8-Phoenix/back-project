@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.provider.AppointmentProvider;
+import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.entity.QaPost;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
@@ -15,14 +17,20 @@ import lombok.RequiredArgsConstructor;
 public class QaPostServiceImpl implements QaPostService{
 
 	private final QaPostProvider qaPostProvider;
+	private final AppointmentProvider appointmentProvider;
 
 
 	// 게시글 생성
 	@Transactional
 	@Override
-	public QaPost createQaPost(Appointment appointment, String content) {
-		QaPost post = QaPost.create(appointment, content);
-		return qaPostProvider.save(post);
+	public QaPostResponse createQaPost(QaPostCreateRequest request) {
+		// appointment 조회
+		Appointment appointment = appointmentProvider.getAppointmentById(request.getAppointmentId());
+		QaPost post = QaPost.create(appointment, request.getContent());
+
+		QaPost saved = qaPostProvider.save(post);
+		// DTO로 반환
+		return QaPostResponse.fromEntity(saved);
 	}
 
 	// 게시글 수정
