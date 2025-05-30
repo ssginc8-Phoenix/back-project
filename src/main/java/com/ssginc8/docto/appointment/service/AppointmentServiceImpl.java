@@ -53,6 +53,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	/*
 	 * 진료 예약 리스트 조회
 	 * 검색 필터링 조건: hospitalId, doctorId, patientGuardianId
+	 * 병원, 의사, 환자, 보호자 입장에서 검색 가능
 	 */
 	@Override
 	public Page<AppointmentListResponse> getAppointmentList(Pageable pageable, AppointmentSearchCondition condition) {
