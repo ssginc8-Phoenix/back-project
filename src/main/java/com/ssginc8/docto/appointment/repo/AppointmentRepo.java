@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 
@@ -21,5 +22,10 @@ public interface AppointmentRepo
 	})
 	Optional<Appointment> findById(Long appointmentId);
 
-	boolean existsByPatientGuardianAndDoctorAndAppointmentTime(PatientGuardian patientGuardian, Doctor doctor, LocalDateTime appointmentTime);
+	boolean existsByPatientGuardianAndDoctorAndAppointmentTimeAndStatusNot(
+		PatientGuardian patientGuardian,
+		Doctor doctor,
+		LocalDateTime appointmentTime,
+		AppointmentStatus status
+	);
 }

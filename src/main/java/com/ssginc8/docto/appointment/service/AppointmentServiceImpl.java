@@ -152,7 +152,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime) {
 		Appointment original = appointmentProvider.getAppointmentById(appointmentId);
-		original.changeStatus(AppointmentStatus.CANCELLED);
+		original.changeStatus(AppointmentStatus.CANCELED);
 		String qaContent = qaPostProvider.getQaPostByAppointment(original);
 
 		validateAppointmentTime(original.getDoctor(), original.getPatientGuardian(), newTime);
