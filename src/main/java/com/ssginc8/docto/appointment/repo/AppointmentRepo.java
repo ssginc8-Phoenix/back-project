@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
@@ -27,5 +29,18 @@ public interface AppointmentRepo
 		Doctor doctor,
 		LocalDateTime appointmentTime,
 		AppointmentStatus status
+	);
+
+	boolean existsByPatientIdAndAppointmentTimeBetween(Long patientId, LocalDateTime start, LocalDateTime end);
+
+	@Query("SELECT COUNT(a) FROM Appointment a " +
+		"WHERE a.doctor.doctorId = :doctorId " +
+		"AND a.appointmentTime >= :slotStart " +
+		"AND a.appointmentTime < :slotEnd " +
+		"AND a.status = 'CONFIRMED'")
+	int countAppointmentsInSlot(
+		@Param("doctorId") Long doctorId,
+		@Param("slotStart") LocalDateTime slotStart,
+		@Param("slotEnd") LocalDateTime slotEnd
 	);
 }
