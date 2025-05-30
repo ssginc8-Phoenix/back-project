@@ -112,15 +112,22 @@ public class ReviewServiceImpl implements ReviewService {
 
 
 
-	// 리뷰 삭제
 	@Override
 	@Transactional
 	public void deleteReview(Long reviewId) {
-		// 1. 키워드 먼저 삭제
+		// 1. 연관된 키워드 먼저 삭제
 		reviewProvider.deleteByReviewId(reviewId);
-		// 2. 리뷰 본문 삭제
-		reviewProvider.deleteById(reviewId);
+
+		// 2. 리뷰 엔티티 조회
+		Review review = reviewProvider.getById(reviewId);
+
+		// 3) BaseTimeEntity에서  가져오기
+		review.delete();
+
+		reviewProvider.save(review);
 	}
+
+
 
 
 	//내가 쓴 리뷰 조회
