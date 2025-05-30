@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|User ID
+
+|`+residentRegistrationNumber+`
+|`+String+`
+|주민등록번호
+
+|===

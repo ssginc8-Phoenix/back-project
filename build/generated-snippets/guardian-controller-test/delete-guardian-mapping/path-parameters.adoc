@@ -1,0 +1,11 @@
+.+/api/v1/guardians/{userId}/patients/{patientId}+
+|===
+|Parameter|Description
+
+|`+userId+`
+|보호자(유저) 식별자
+
+|`+patientId+`
+|환자 식별자
+
+|===

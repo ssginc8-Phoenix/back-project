@@ -3,14 +3,14 @@
 
 |`+[].patientId+`
 |`+Number+`
-|환자 식별자
+|환자 ID
 
-|`+[].name+`
-|`+String+`
-|환자 이름
+|`+[].userId+`
+|`+Number+`
+|유저 ID
 
 |`+[].residentRegistrationNumber+`
 |`+String+`
-|환자 주민등록번호
+|주민등록번호
 
 |===

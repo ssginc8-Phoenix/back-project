@@ -3,7 +3,7 @@
 
 |`+[].patientId+`
 |`+Number+`
-|환자 식별자
+|환자 ID
 
 |`+[].name+`
 |`+String+`

@@ -1,0 +1,8 @@
+.+/api/v1/guardians/request/{requestId}+
+|===
+|Parameter|Description
+
+|`+requestId+`
+|보호자 요청 식별자
+
+|===

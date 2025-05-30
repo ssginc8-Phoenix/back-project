@@ -1,0 +1,8 @@
+.+/api/v1/medications/patients/{userId}+
+|===
+|Parameter|Description
+
+|`+userId+`
+|보호자 ID (또는 patientGuardianId)
+
+|===
