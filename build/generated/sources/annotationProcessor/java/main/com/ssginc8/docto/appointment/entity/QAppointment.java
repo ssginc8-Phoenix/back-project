@@ -24,9 +24,9 @@ public class QAppointment extends EntityPathBase<Appointment> {
 
     public final com.ssginc8.docto.global.base.QBaseTimeEntity _super = new com.ssginc8.docto.global.base.QBaseTimeEntity(this);
 
-    public final DateTimePath<java.time.LocalDateTime> appointmentDate = createDateTime("appointmentDate", java.time.LocalDateTime.class);
-
     public final NumberPath<Long> appointmentId = createNumber("appointmentId", Long.class);
+
+    public final DateTimePath<java.time.LocalDateTime> appointmentTime = createDateTime("appointmentTime", java.time.LocalDateTime.class);
 
     public final EnumPath<AppointmentType> appointmentType = createEnum("appointmentType", AppointmentType.class);
 
@@ -38,11 +38,17 @@ public class QAppointment extends EntityPathBase<Appointment> {
 
     public final com.ssginc8.docto.doctor.entity.QDoctor doctor;
 
+    public final com.ssginc8.docto.hospital.entity.QHospital hospital;
+
     public final com.ssginc8.docto.guardian.entity.QPatientGuardian patientGuardian;
+
+    public final EnumPath<PaymentType> paymentType = createEnum("paymentType", PaymentType.class);
 
     public final NumberPath<Long> queueNumber = createNumber("queueNumber", Long.class);
 
-    public final EnumPath<com.ssginc8.docto.global.base.AppointmentStatus> status = createEnum("status", com.ssginc8.docto.global.base.AppointmentStatus.class);
+    public final EnumPath<AppointmentStatus> status = createEnum("status", AppointmentStatus.class);
+
+    public final StringPath symptom = createString("symptom");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
@@ -66,6 +72,7 @@ public class QAppointment extends EntityPathBase<Appointment> {
     public QAppointment(Class<? extends Appointment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.doctor = inits.isInitialized("doctor") ? new com.ssginc8.docto.doctor.entity.QDoctor(forProperty("doctor"), inits.get("doctor")) : null;
+        this.hospital = inits.isInitialized("hospital") ? new com.ssginc8.docto.hospital.entity.QHospital(forProperty("hospital"), inits.get("hospital")) : null;
         this.patientGuardian = inits.isInitialized("patientGuardian") ? new com.ssginc8.docto.guardian.entity.QPatientGuardian(forProperty("patientGuardian"), inits.get("patientGuardian")) : null;
     }
 

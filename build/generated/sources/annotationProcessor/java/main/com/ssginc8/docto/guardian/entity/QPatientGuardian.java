@@ -22,6 +22,16 @@ public class QPatientGuardian extends EntityPathBase<PatientGuardian> {
 
     public static final QPatientGuardian patientGuardian = new QPatientGuardian("patientGuardian");
 
+    public final com.ssginc8.docto.global.base.QBaseTimeEntity _super = new com.ssginc8.docto.global.base.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
+    public final StringPath inviteCode = createString("inviteCode");
+
     public final DateTimePath<java.time.LocalDateTime> invitedAt = createDateTime("invitedAt", java.time.LocalDateTime.class);
 
     public final com.ssginc8.docto.patient.entity.QPatient patient;
@@ -31,6 +41,9 @@ public class QPatientGuardian extends EntityPathBase<PatientGuardian> {
     public final DateTimePath<java.time.LocalDateTime> respondedAt = createDateTime("respondedAt", java.time.LocalDateTime.class);
 
     public final EnumPath<Status> status = createEnum("status", Status.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public final com.ssginc8.docto.user.entity.QUser user;
 
@@ -53,7 +66,7 @@ public class QPatientGuardian extends EntityPathBase<PatientGuardian> {
     public QPatientGuardian(Class<? extends PatientGuardian> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.patient = inits.isInitialized("patient") ? new com.ssginc8.docto.patient.entity.QPatient(forProperty("patient"), inits.get("patient")) : null;
-        this.user = inits.isInitialized("user") ? new com.ssginc8.docto.user.entity.QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.ssginc8.docto.user.entity.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

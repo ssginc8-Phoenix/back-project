@@ -1,0 +1,16 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Set-Cookie: accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg1MjE0MTUsImV4cCI6MTc0ODUyMjMxNSwic3ViIjoiZTdkZmZjNWQtNDI4OS00MjBmLTkyZmItMWUwMjE2NGI0ZGE5Iiwicm9sZSI6IlJPTEVfRE9DVE9SIn0.yN6Z1CSkk11eJfsxw1q9Q5EKTHGEPiK5XTcJ_B4s6-g; Path=/; Max-Age=900; Expires=Thu, 29 May 2025 12:38:35 GMT; Secure; HttpOnly
+Set-Cookie: refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg1MjE0MTUsImV4cCI6MTc0OTEyNjIxNSwic3ViIjoiZTdkZmZjNWQtNDI4OS00MjBmLTkyZmItMWUwMjE2NGI0ZGE5In0.vVhpUL3cuq8Yxqf0mUtKSCm4BybNF4Kf0Cx0RWowUFQ; Path=/; Max-Age=604800; Expires=Thu, 05 Jun 2025 12:23:35 GMT; Secure; HttpOnly
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 16
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+
+로그인 성공
+----

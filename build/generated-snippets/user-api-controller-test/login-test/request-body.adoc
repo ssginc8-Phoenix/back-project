@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "email" : "doctor1@example.com",
+  "password" : "securePass123!"
+}
+----

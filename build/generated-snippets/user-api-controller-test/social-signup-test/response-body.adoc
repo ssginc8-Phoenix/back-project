@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "userId" : 9,
+  "role" : "ROLE_SYSTEM_ADMIN"
+}
+----

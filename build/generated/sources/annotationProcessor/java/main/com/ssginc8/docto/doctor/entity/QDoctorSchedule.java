@@ -27,22 +27,22 @@ public class QDoctorSchedule extends EntityPathBase<DoctorSchedule> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final EnumPath<com.ssginc8.docto.global.base.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", com.ssginc8.docto.global.base.DayOfWeek.class);
+    public final EnumPath<java.time.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", java.time.DayOfWeek.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
     public final QDoctor doctor;
 
-    public final DateTimePath<java.time.LocalDateTime> endTime = createDateTime("endTime", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> endTime = createTime("endTime", java.time.LocalTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> lunchEnd = createDateTime("lunchEnd", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> lunchEnd = createTime("lunchEnd", java.time.LocalTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> lunchStart = createDateTime("lunchStart", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> lunchStart = createTime("lunchStart", java.time.LocalTime.class);
 
     public final NumberPath<Long> scheduleId = createNumber("scheduleId", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> startTime = createDateTime("startTime", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> startTime = createTime("startTime", java.time.LocalTime.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

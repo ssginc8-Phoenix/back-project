@@ -22,19 +22,19 @@ public class QHospitalSchedule extends EntityPathBase<HospitalSchedule> {
 
     public static final QHospitalSchedule hospitalSchedule = new QHospitalSchedule("hospitalSchedule");
 
-    public final DateTimePath<java.time.LocalDateTime> closeTime = createDateTime("closeTime", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> closeTime = createTime("closeTime", java.time.LocalTime.class);
 
-    public final EnumPath<com.ssginc8.docto.global.base.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", com.ssginc8.docto.global.base.DayOfWeek.class);
+    public final EnumPath<java.time.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", java.time.DayOfWeek.class);
 
     public final QHospital hospital;
 
     public final NumberPath<Long> hospitalScheduleId = createNumber("hospitalScheduleId", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> lunchEnd = createDateTime("lunchEnd", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> lunchEnd = createTime("lunchEnd", java.time.LocalTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> lunchStart = createDateTime("lunchStart", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> lunchStart = createTime("lunchStart", java.time.LocalTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> openTime = createDateTime("openTime", java.time.LocalDateTime.class);
+    public final TimePath<java.time.LocalTime> openTime = createTime("openTime", java.time.LocalTime.class);
 
     public QHospitalSchedule(String variable) {
         this(HospitalSchedule.class, forVariable(variable), INITS);

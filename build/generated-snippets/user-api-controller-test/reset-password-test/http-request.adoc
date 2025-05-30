@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/users/password-reset HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 69
+Host: localhost:8080
+
+{
+  "email" : "doctor1@example.com",
+  "password" : "Fkdlej5115"
+}
+----
