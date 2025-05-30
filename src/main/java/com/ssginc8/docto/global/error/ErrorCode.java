@@ -35,7 +35,16 @@ public enum ErrorCode {
 
 	// File 관련 에러(F_)
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
-	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다.");
+	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
+
+	// Appointment 관련 에러 (A_)
+	APPOINTMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "A_001", "예약을 찾을 수 없습니다."),
+	INVALID_APPOINTMENT_TIME(HttpStatus.BAD_REQUEST, "A_002", "과거 시간으로 예약할 수 없습니다."),
+	DUPLICATE_APPOINTMENT(HttpStatus.CONFLICT, "A_003", "이미 해당 시간에 예약이 존재합니다."),
+	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "A_004", "해당 요일의 스케쥴이 없습니다."),
+	APPOINTMENT_OUT_OF_WORKING_HOURS(HttpStatus.BAD_REQUEST, "A_005", "예약 시간이 진료 시간 외입니다."),
+	APPOINTMENT_IN_LUNCH_TIME(HttpStatus.BAD_REQUEST, "A_006", "예약 시간이 점심 시간입니다."),;
+
 
 	private final HttpStatus status;
 	private final String code;
