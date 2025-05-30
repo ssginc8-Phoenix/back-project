@@ -18,13 +18,14 @@ import com.ssginc8.docto.appointment.entity.PaymentType;
 import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
-import com.ssginc8.docto.doctor.validator.AppointmentValidator;
+import com.ssginc8.docto.appointment.validator.AppointmentValidator;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
+import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
 import com.ssginc8.docto.user.entity.User;
@@ -81,7 +82,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	 */
 	@Transactional
 	@Override
-	public AppointmentResponse requestAppointment(AppointmentRequest request) {
+	public void requestAppointment(AppointmentRequest request) {
 		// 1. 보호자 (user)와 환자 (patient) 조회
 		User guardian = userProvider.getUserById(request.getUserId());
 		Patient patient = patientProvider.getPatientById(request.getPatientId());
@@ -124,14 +125,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		// 6. 질문(QaPost) 저장
 		if (request.getQuestion() != null && !request.getQuestion().isBlank()) {
-			qaPostService.createQaPost(appointment, request.getQuestion());
+			QaPostCreateRequest qaPostCreateRequest = QaPostCreateRequest.builder()
+				.appointmentId(appointment.getAppointmentId())
+				.content(request.getQuestion())
+				.build();
+
+			qaPostService.createQaPost(qaPostCreateRequest);
 		}
-
-		String qaContent = qaPostProvider.getQaPostByAppointment(appointment);
-
-		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
-
 
 	/*
 	 * 진료 상태 업데이트

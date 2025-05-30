@@ -1,0 +1,8 @@
+.+/api/v1/appointments/{appointmentId}/status+
+|===
+|Parameter|Description
+
+|`+appointmentId+`
+|예약 ID
+
+|===
