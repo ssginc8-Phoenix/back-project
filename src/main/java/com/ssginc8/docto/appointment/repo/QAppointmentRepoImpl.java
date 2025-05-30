@@ -37,7 +37,9 @@ public class QAppointmentRepoImpl implements QAppointmentRepo {
 		BooleanBuilder builder = new BooleanBuilder();
 
 		if (condition.getUserId() != null) {
-			builder.and(user.userId.eq(condition.getUserId()));
+			builder.and(
+				guardian.user.userId.eq(condition.getUserId())
+					.or(user.userId.eq(condition.getUserId())));
 		}
 
 		if (condition.getHospitalId() != null) {
