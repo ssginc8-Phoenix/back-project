@@ -70,17 +70,17 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
-	//리뷰 수정
+	// 리뷰 수정
 	@Override
 	@Transactional
 	public ReviewResponse updateReview(ReviewUpdateRequest request, Long reviewId) {
-		//1. 리뷰를 불러온다
+		// 1. 리뷰를 불러온다
 		Review review = reviewProvider.getById(reviewId);
 
-		//2. 본문 내용을 변경한다
+		// 2. 본문 내용을 변경한다
 		review.updateContents(request.getContents());
 
-		//3. 키워드를 변경한다
+		// 3. 키워드를 변경한다
 		Set<KeywordType> keywordTypes = request.getKeywords().stream()
 			.map(KeywordType::valueOf)
 			.collect(Collectors.toSet());
@@ -88,17 +88,14 @@ public class ReviewServiceImpl implements ReviewService {
 		review.getKeywords().addAll(keywordTypes);
 
 
-		//4. 변경된 값들을 저장한다
-		Review saved = reviewProvider.save(review);
-
-		//4. 응답DTO를 만들어준다
-		List<String> keywords = saved.getKeywords().stream()
+		// 4. 응답DTO를 만들어준다
+		List<String> keywords = review.getKeywords().stream()
 			.map(Enum::name)
 			.toList();
 
-		return ReviewResponse.fromEntity(saved, keywords);
-
+		return ReviewResponse.fromEntity(review, keywords);
 	}
+
 
 
 
