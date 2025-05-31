@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
  * 환자 등록 요청 DTO
  */
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PatientRequest {
-	private Long userId;
+	private Long userId; // user 생성할 때 이메일로 식별
 	private String residentRegistrationNumber;
 }
