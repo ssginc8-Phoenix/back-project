@@ -14,14 +14,16 @@ public class ReviewResponse {
 	private Long reviewId;
 	private String contents;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	private List<String> keywords;
 
 	public static ReviewResponse fromEntity(Review review, List<String> keywords) {
 		ReviewResponse reviewResponse = new ReviewResponse();
 		reviewResponse.reviewId = review.getReviewId();
-		reviewResponse.contents      = review.getContents();
-		reviewResponse.createdAt     = review.getCreatedAt();
-		reviewResponse.keywords      = keywords;
+		reviewResponse.contents = review.getContents();
+		reviewResponse.createdAt = review.getCreatedAt();
+		reviewResponse.updatedAt = review.getUpdatedAt();
+		reviewResponse.keywords = keywords;
 		return reviewResponse;
 	}
 }

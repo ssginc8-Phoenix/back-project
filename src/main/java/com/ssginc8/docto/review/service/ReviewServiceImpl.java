@@ -100,6 +100,7 @@ public class ReviewServiceImpl implements ReviewService {
 		review.getKeywords().clear();
 		review.getKeywords().addAll(keywordTypes);
 
+		reviewProvider.save(review);
 
 		// 4. 응답DTO를 만들어준다
 		List<String> keywords = review.getKeywords().stream()
