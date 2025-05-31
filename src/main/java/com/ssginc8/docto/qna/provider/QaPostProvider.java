@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.global.error.exception.qnaException.QnaNotFoundException;
 import com.ssginc8.docto.qna.entity.QaPost;
 import com.ssginc8.docto.qna.repo.QaPostRepo;
 
@@ -27,9 +28,7 @@ public class QaPostProvider {
 	@Transactional(readOnly = true)
 	public QaPost getById(Long qnaId) {
 		return qaPostRepo.findById(qnaId)
-			.orElseThrow(() ->
-				new IllegalArgumentException("Q&A 게시글이 없습니다. id=" + qnaId)
-			);
+			.orElseThrow(QnaNotFoundException::new);
 	}
 
 	// 게시글 저장
@@ -38,11 +37,5 @@ public class QaPostProvider {
 		return qaPostRepo.save(qaPost);
 	}
 
-
-	// 게시글을 삭제
-	@Transactional
-	public void deleteById(Long qnaId) {
-		qaPostRepo.deleteById(qnaId);
-	}
 
 }
