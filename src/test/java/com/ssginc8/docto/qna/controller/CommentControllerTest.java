@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,17 +35,18 @@ public class CommentControllerTest {
 
 	@Test
 	@DisplayName("의사 답변 생성")
+	@WithMockUser(username = "guardianUser", roles = {"GUARDIAN"})
 	void createQaComment() throws Exception {
 		CommentRequest req = new CommentRequest();
 		req.setContent("답글 내용 예시");
 
-		mockMvc.perform(post("/api/v1/qnas/{qnaId}/comments", 12L)
+		mockMvc.perform(post("/api/v1/qnas/{qnaId}/comments", 14L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(req)))
 			.andExpect(status().isOk())
 
 			.andExpect(jsonPath("$.commentId").isNumber())
-			.andExpect(jsonPath("$.qnaPostId").value(12))
+			.andExpect(jsonPath("$.qnaPostId").value(14))
 			.andExpect(jsonPath("$.content").value("답글 내용 예시"))
 			.andDo(document("comment-controller-test/create-qa-comment",
 				pathParameters(
@@ -67,8 +69,9 @@ public class CommentControllerTest {
 
 	@Test
 	@DisplayName("답변 리스트 조회")
+	@WithMockUser(username = "guardianUser", roles = {"GUARDIAN"})
 	void listComments() throws Exception {
-		mockMvc.perform(get("/api/v1/qnas/{qnaId}/comments", 12L)
+		mockMvc.perform(get("/api/v1/qnas/{qnaId}/comments", 14L)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$").isArray())
@@ -88,11 +91,12 @@ public class CommentControllerTest {
 
 	@Test
 	@DisplayName("답변 단건 댓글 조회")
+	@WithMockUser(username = "guardianUser", roles = {"GUARDIAN"})
 	void getComment() throws Exception {
-		mockMvc.perform(get("/api/v1/qnas/comments/{commentId}", 16L)
+		mockMvc.perform(get("/api/v1/qnas/comments/{commentId}", 18L)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.commentId").value(16))
+			.andExpect(jsonPath("$.commentId").value(18))
 			.andDo(document("comment-controller-test/get-qa-comment",
 				pathParameters(
 					parameterWithName("commentId").description("답변 ID")
@@ -110,15 +114,16 @@ public class CommentControllerTest {
 
 	@Test
 	@DisplayName("의사 답변 수정")
+	@WithMockUser(username = "guardianUser", roles = {"GUARDIAN"})
 	void updateComment() throws Exception {
 		CommentRequest req = new CommentRequest();
 		req.setContent("수정된 답변 내용");
 
-		mockMvc.perform(patch("/api/v1/qnas/comments/{commentId}", 16L)
+		mockMvc.perform(patch("/api/v1/qnas/comments/{commentId}", 18L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(req)))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.commentId").value(16))
+			.andExpect(jsonPath("$.commentId").value(18))
 			.andExpect(jsonPath("$.content").value("수정된 답변 내용"))
 			.andDo(document("comment-controller-test/update-qa-comment",
 				pathParameters(
@@ -139,6 +144,7 @@ public class CommentControllerTest {
 
 	@Test
 	@DisplayName("의사 답변 삭제")
+	@WithMockUser(username = "guardianUser", roles = {"GUARDIAN"})
 	void deleteComment() throws Exception {
 		mockMvc.perform(delete("/api/v1/qnas/comments/{commentId}", 16L))
 			.andExpect(status().isNoContent())

@@ -1,0 +1,8 @@
+.+/api/v1/qnas/comments/{commentId}+
+|===
+|Parameter|Description
+
+|`+commentId+`
+|답변 ID
+
+|===

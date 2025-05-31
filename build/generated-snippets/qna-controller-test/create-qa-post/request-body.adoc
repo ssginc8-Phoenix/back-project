@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "appointmentId" : 5,
+  "content" : "문의 내용 예시"
+}
+----
