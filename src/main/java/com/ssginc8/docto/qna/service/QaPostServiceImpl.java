@@ -68,6 +68,8 @@ public class QaPostServiceImpl implements QaPostService{
 	@Override
 	@Transactional
 	public void deleteQaPost(Long qnaId) {
-		qaPostProvider.deleteById(qnaId);
+		QaPost qaPost = qaPostProvider.getById(qnaId);
+		qaPost.delete();
+		qaPostProvider.save(qaPost);
 	}
 }
