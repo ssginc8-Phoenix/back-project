@@ -35,7 +35,13 @@ public enum ErrorCode {
 
 	// File 관련 에러(F_)
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
-	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다.");
+	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
+
+	// QNA 관련 에러(Q_)
+	QNA_NOT_FOUND(HttpStatus.NOT_FOUND, "Q_001", "Q&A 게시글이 없습니다."),
+
+	// Comment 관련 에러(C_)
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C_001", "답변이 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;
