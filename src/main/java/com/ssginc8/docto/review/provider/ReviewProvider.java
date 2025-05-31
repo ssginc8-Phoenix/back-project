@@ -20,17 +20,23 @@ public class ReviewProvider {
 
 
 
-	//내가 쓴 리뷰 조회
+	// 내가 쓴 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getMyReviews(Long userId, Pageable pageable) {
 		return reviewRepo.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
 	}
 
 
-	//병원에서 전체 리뷰 조회
+	// 병원 전체 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getHospitalReviews(Long hospitalId, Pageable pageable) {
 		return reviewRepo.findByHospitalHospitalId(hospitalId, pageable);
+	}
+
+	// admin 전체 리뷰 조회
+	@Transactional(readOnly = true)
+	public Page<Review> getAllReviews(Pageable pageable) {
+		return reviewRepo.findAll(pageable);
 	}
 
 

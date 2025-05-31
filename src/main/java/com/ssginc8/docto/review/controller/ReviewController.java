@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssginc8.docto.review.dto.ReviewAllListResponse;
@@ -58,6 +59,14 @@ public class ReviewController {
 	@GetMapping("/users/me/reviews")
 	public ResponseEntity<Page<ReviewMyListResponse>> getMyReviews(@RequestParam("userId") Long userId, Pageable pageable
 	) {Page<ReviewMyListResponse> page = reviewService.getMyReviews(userId, pageable);
+		return ResponseEntity.ok(page);
+	}
+
+	// admin 전체 리뷰 조회
+	@GetMapping("/admin/reviews")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Page<ReviewAllListResponse>> getAllReviews(Pageable pageable) {
+		Page<ReviewAllListResponse> page = reviewService.getAllReviews(pageable);
 		return ResponseEntity.ok(page);
 	}
 

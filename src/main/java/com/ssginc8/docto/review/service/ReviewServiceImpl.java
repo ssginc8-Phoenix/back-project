@@ -130,7 +130,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
 
-	//내가 쓴 리뷰 조회
+	// 내가 쓴 리뷰 조회
 	@Override
 	@Transactional
 	public Page<ReviewMyListResponse> getMyReviews(Long userId, Pageable pageable) {
@@ -138,14 +138,14 @@ public class ReviewServiceImpl implements ReviewService {
 			.map(ReviewMyListResponse::fromEntity);
 	}
 
-	// 병원별 전체 리뷰 조회
+	// (admin)전체 리뷰 조회
 	@Override
 	@Transactional(readOnly = true)
-	public Page<ReviewAllListResponse> getAllReviews(Long hospitalId, Pageable pageable) {
-		return reviewProvider.getHospitalReviews(hospitalId, pageable)
-			.map(ReviewAllListResponse::fromEntity);
-
+	public Page<ReviewAllListResponse> getAllReviews(Pageable pageable) {
+		Page<Review> pageOfReview = reviewProvider.getAllReviews(pageable);
+		return pageOfReview.map(ReviewAllListResponse::fromEntity);
 	}
+
 
 	//리뷰 신고 횟수 추가 기능
 	@Override
