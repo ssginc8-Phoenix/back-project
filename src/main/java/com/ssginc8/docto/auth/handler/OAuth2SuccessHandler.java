@@ -47,9 +47,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		// 소셜 로그인으로 회원 가입
 		// phone, 프로필 이미지, role 입력 받기 => 이후 role에 맞게 추가 정보 입력 (환자 - 주소, 주민번호) / (병원 관리자 - 의사 정보)
 		if (Objects.isNull(user.getRole())) {
-			request.getSession().setAttribute("providerId", user.getProviderId());
 
-			response.sendRedirect(url + "/signup");
+			response.sendRedirect(url + "/social-signup");
 		} else { // 비어있지 않다면 메인 페이지로 리다이렉트 + 토큰 생성
 			// Token token = tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
 

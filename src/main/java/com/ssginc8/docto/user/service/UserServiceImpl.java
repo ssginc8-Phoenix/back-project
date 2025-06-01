@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 		User user = userProvider.loadUserByProviderId(request.getProviderId());
 
 		// user 정보 업데이트
-		user.updateSocialInfo(request.getPhone(), profileImage, Role.valueOf(request.getRole()));
+		user.updateSocialInfo(request.getPhone(), profileImage, request.getAddress(), Role.valueOf(request.getRole()));
 
 		// response 만들어서 반환
 		return SocialSignup.Response.builder()

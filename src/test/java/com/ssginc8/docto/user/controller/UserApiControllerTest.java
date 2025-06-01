@@ -242,6 +242,7 @@ public class UserApiControllerTest {
 					//.file(profileImage)
 					.param("providerId", "4271713030")
 					.param("phone", "010-5678-1234")
+					.param("address", "부산시")
 					.param("role", "SYSTEM_ADMIN")
 					.contentType(MediaType.MULTIPART_FORM_DATA)
 					.accept(MediaType.APPLICATION_JSON)
@@ -254,6 +255,7 @@ public class UserApiControllerTest {
 				formParameters(
 					parameterWithName("providerId").optional().description("소셜 로그인 제공자의 고유 식별자"),
 					parameterWithName("phone").optional().description("사용자 전화번호"),
+					parameterWithName("address").optional().description("사용자 주소"),
 					parameterWithName("role").optional().description("사용자 역할")
 				),
 				responseFields(
