@@ -99,7 +99,7 @@ public class UserApiControllerTest {
 					fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호"),
 					fieldWithPath("address").type(JsonFieldType.STRING).description("주소"),
 					fieldWithPath("role").type(JsonFieldType.STRING).description("사용자 역할"),
-					fieldWithPath("profileImageUrl").type(JsonFieldType.NULL)
+					fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
 						.optional()
 						.description("프로필 이미지 URL (없을 수 있음, 있다면 url 반환)")
 				)

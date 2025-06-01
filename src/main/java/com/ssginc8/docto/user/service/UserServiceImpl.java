@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -62,12 +63,15 @@ public class UserServiceImpl implements UserService {
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final RedisUtil redisUtil;
 
+	@Value("${cloud.default.image.address}")
+	private String defaultProfileUrl;
+
 	@Transactional(readOnly = true)
 	@Override
 	public UserInfo.Response getMyInfo() {
 		User user = getUserFromUuid();
 
-		return UserInfo.Response.from(user);
+		return UserInfo.Response.from(user, defaultProfileUrl);
 	}
 
 	@Transactional(readOnly = true)
