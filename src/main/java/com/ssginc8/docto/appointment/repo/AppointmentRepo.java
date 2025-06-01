@@ -3,6 +3,8 @@ package com.ssginc8.docto.appointment.repo;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,4 +45,12 @@ public interface AppointmentRepo
 		@Param("slotStart") LocalDateTime slotStart,
 		@Param("slotEnd") LocalDateTime slotEnd
 	);
+
+	Page<Appointment> findByPatientGuardian_Patient_User_UserId(Long userId, Pageable pageable);
+
+	Page<Appointment> findByPatientGuardian_User_UserId(Long userId, Pageable pageable);
+
+	Page<Appointment> findByDoctor_User_UserId(Long userId, Pageable pageable);
+
+	Page<Appointment> findByHospital_User_UserId(Long userId, Pageable pageable);
 }
