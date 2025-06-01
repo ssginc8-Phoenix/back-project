@@ -55,7 +55,12 @@ public enum ErrorCode {
 	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_002", "해당 시간에는 이미 예약이 가득 찼습니다."),
 
 	// Doctor Schedule 관련 에러 (DS_)
-	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다.");
+	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다."),
+
+	// Medication 관련 에러 (MD_)
+	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),
+	MEDICATION_ALERT_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_002", "복약 시간을 찾을 수 없습니다."),
+	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다.");
 
 
 	private final HttpStatus status;
