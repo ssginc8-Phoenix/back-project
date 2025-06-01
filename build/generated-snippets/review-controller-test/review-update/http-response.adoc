@@ -1,0 +1,14 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 223
+
+{
+  "reviewId" : 125,
+  "contents" : "업데이트된 리뷰 내용입니다.",
+  "createdAt" : "2025-06-01T02:13:56.27591",
+  "updatedAt" : "2025-06-01T02:16:46.098494",
+  "keywords" : [ "THOROUGH", "WANT_RETURN" ]
+}
+----
