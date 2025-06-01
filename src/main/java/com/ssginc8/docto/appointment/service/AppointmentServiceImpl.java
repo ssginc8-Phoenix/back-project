@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,10 @@ import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
+import com.ssginc8.docto.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,6 +49,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private final QaPostProvider qaPostProvider;
 
 	private final QaPostService qaPostService;
+	private final UserService userService;
 
 	private final AppointmentValidator appointmentValidator;
 
@@ -60,6 +64,30 @@ public class AppointmentServiceImpl implements AppointmentService {
 		Page<Appointment> appointments = appointmentProvider.getAppointmentListByCondition(pageable, condition);
 
 		return appointments.map(AppointmentListResponse::fromEntity);
+	}
+
+	@Override
+	public Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable) {
+		// 1. 로그인한 사용자 가져오기
+		User loginUser = userService.getUserFromUuid();
+
+		// 2. 역할에 따라 분기 처리
+		switch (loginUser.getRole()) {
+			case PATIENT:
+				return appointmentProvider.getAppointmentsByPatient(loginUser.getUserId(), pageable)
+					.map(AppointmentListResponse::fromEntity);
+			case GUARDIAN:
+				return appointmentProvider.getAppointmentsByGuardian(loginUser.getUserId(), pageable)
+					.map(AppointmentListResponse::fromEntity);
+			case DOCTOR:
+				return appointmentProvider.getAppointmentsByDoctor(loginUser.getUserId(), pageable)
+					.map(AppointmentListResponse::fromEntity);
+			case HOSPITAL_ADMIN:
+				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable)
+					.map(AppointmentListResponse::fromEntity);
+			default:
+				throw new AccessDeniedException("해당 역할은 예약 조회 권한이 없습니다.");
+		}
 	}
 
 	/*

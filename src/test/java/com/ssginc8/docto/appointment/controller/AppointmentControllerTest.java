@@ -32,7 +32,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
+import com.ssginc8.docto.auth.jwt.dto.Token;
+import com.ssginc8.docto.auth.jwt.dto.TokenType;
+import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
+import com.ssginc8.docto.user.entity.Role;
+import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
+
+import jakarta.servlet.http.Cookie;
 
 @ActiveProfiles("prod")
 @ExtendWith(RestDocumentationExtension.class)
@@ -51,6 +59,12 @@ public class AppointmentControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private TokenProvider tokenProvider;
+
+	@Autowired
+	private UserRepo userRepo;
+
 	@BeforeEach
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
@@ -59,6 +73,7 @@ public class AppointmentControllerTest {
 			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 방지
 			.build();
+
 	}
 
 	@Test
@@ -164,6 +179,23 @@ public class AppointmentControllerTest {
 	}
 
 	@Test
+	@DisplayName("내 예약 리스트 조회")
+	void getMyAppointmentList() throws Exception {
+
+		Token token = makeTokenByHospitalAdmin();
+
+		mockMvc.perform(get("/api/v1/users/me/appointments")
+				.cookie(
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+
+			));
+	}
+
+	@Test
 	@DisplayName("예약 상태 변경")
 	void updateAppointmentStatus() throws Exception {
 		UpdateRequest request = new UpdateRequest();
@@ -207,5 +239,14 @@ public class AppointmentControllerTest {
 						)
 				)
 			));
+	}
+
+	private Token makeTokenByHospitalAdmin() {
+		User user = User.createUserByEmail("mang112@naver.com", "Fkdlej5115",
+			"맹구", "010-2222-2222", "어딘가", Role.HOSPITAL_ADMIN, null);
+
+		user = userRepo.save(user);
+
+		return tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
 	}
 }
