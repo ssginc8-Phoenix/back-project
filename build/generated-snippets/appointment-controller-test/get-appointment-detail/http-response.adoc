@@ -1,23 +1,11 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
+HTTP/1.1 404 Not Found
 Content-Type: application/json;charset=UTF-8
-Content-Length: 461
+Content-Length: 77
 
 {
-  "appointmentId" : 1,
-  "hospitalId" : 1,
-  "doctorId" : 1,
-  "patientGuardianId" : 1,
-  "hospitalName" : "강남헬스케어병원",
-  "doctorName" : "한민상",
-  "patientName" : "홍길동",
-  "symptom" : "기침과 열",
-  "question" : "감기일까요?",
-  "appointmentTime" : "2025-05-31T16:32:37.195366",
-  "appointmentType" : "SCHEDULED",
-  "paymentType" : "ONSITE",
-  "status" : "REQUESTED",
-  "createdAt" : "2025.05.30(금) 16:32"
+  "message" : "예약을 찾을 수 없습니다.",
+  "code" : "A_001"
 }
 ----

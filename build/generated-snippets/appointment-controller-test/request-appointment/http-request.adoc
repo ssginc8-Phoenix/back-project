@@ -12,7 +12,7 @@ Host: localhost:8080
   "patientId" : 1,
   "symptom" : "기침과 열",
   "question" : "감기일까요?",
-  "appointmentTime" : "2025-05-31T17:00:42.3185555",
+  "appointmentTime" : "2025-06-02T20:30:33.6173459",
   "appointmentType" : "SCHEDULED",
   "paymentType" : "ONSITE"
 }

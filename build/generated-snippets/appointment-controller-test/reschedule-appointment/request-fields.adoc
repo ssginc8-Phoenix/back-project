@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+newTime+`
-|`+String+`
-|새로운 예약 시간
-
-|===
