@@ -16,9 +16,6 @@ public interface DoctorService {
 	//의사 등록
 	Long saveDoctor(DoctorSaveRequest doctorSaveRequest);
 
-	//의사 정보 수정
-	DoctorUpdateRequest updateDoctor(Long doctorId, DoctorUpdateRequest doctorUpdateRequest);
-
 	//의사 전체 조회
 	Page<DoctorResponse> getDoctors(Pageable pageable);
 
@@ -32,7 +29,7 @@ public interface DoctorService {
 	List<DoctorScheduleList> getDoctorSchedule(Long doctorId);
 
 	//의사스케쥴 수정
-	DoctorScheduleRequest updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest);
+	void updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest);
 
 	//의사스케쥴 삭제
 	void deleteDoctorSchedule(Long doctorId, Long scheduleId);

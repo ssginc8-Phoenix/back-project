@@ -44,32 +44,21 @@ public class Doctor extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Specialization specialization;
 
-	private Doctor(Hospital hospital, User user, Specialization specialization) {
+	public void softDelete(){
+		this.delete();
+	}
 
+	public Doctor(Hospital hospital, Specialization specialization, User user) {
 		this.hospital = hospital;
-		this.user = user;
 		this.specialization = specialization;
+		this.user = user;
+	}
+
+	public static Doctor create(Hospital hospital, Specialization specialization, User user) {
+		return new Doctor(hospital, specialization, user);
 	}
 
 
-	public static Doctor create(Hospital hospital, User user, Specialization specialization) {
-		return new Doctor(hospital, user, specialization);
-	}
 
-	public void updateFromDTO(DoctorUpdateRequest dto, UserRepo userRepo) {
-		if (dto.getPassword() != null) {
-			this.user.updatePassword(dto.getPassword());
-		}
 
-		if (dto.getEmail() != null && !dto.getEmail().equals(user.getEmail())) {
-			if (userRepo.existsByEmail(dto.getEmail())) {
-				throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-			}
-			// this.user.updateEmail(dto.getEmail());
-		}
-
-		if (dto.getSpecialization() != null) {
-			this.specialization = dto.getSpecialization();  // 직접 필드 접근
-		}
-	}
 }

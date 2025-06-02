@@ -12,17 +12,17 @@ public class DoctorResponse {
 	private Long doctorId;
 	private Specialization specialization;
 	private String username;
-	private Long hospitalId;
-	public DoctorResponse(Long doctorId, Long hospitalId, String username, String specialization) {
+	private String hospitalName;
+	public DoctorResponse(Long doctorId, String hospitalName, String username, String specialization) {
 		this.doctorId = doctorId;
-		this.hospitalId=hospitalId;
+		this.hospitalName=hospitalName;
 		this.username = username;
 		this.specialization = Specialization.valueOf(specialization);
 	}
 	public static DoctorResponse from(Doctor doctor) {
 		return new DoctorResponse(
 			doctor.getDoctorId(),
-			doctor.getHospital().getHospitalId(),
+			doctor.getHospital().getName(),
 			doctor.getUser().getName(),
 			doctor.getSpecialization().name()
 		);

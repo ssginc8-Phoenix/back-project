@@ -20,9 +20,12 @@ import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.doctor.repo.DoctorRepo;
 import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 import com.ssginc8.docto.hospital.entity.Hospital;
+import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.hospital.repo.HospitalRepo;
 
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.repo.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -35,11 +38,9 @@ import lombok.RequiredArgsConstructor;
 public class DoctorServiceImpl implements DoctorService {
 
 	private final DoctorProvider doctorProvider;
-	private final UserRepo userRepo;
-	private final DoctorRepo doctorRepo;
-	private final HospitalRepo hospitalRepo;
-	private final DoctorScheduleRepo doctorScheduleRepo;
 	private final DoctorScheduleProvider doctorScheduleProvider;
+	private final HospitalProvider hospitalProvider;
+	private final UserProvider userProvider;
 
 	/**
 	 * 의사 등록
@@ -47,48 +48,20 @@ public class DoctorServiceImpl implements DoctorService {
 	 */
 	@Override
 	public Long saveDoctor(DoctorSaveRequest doctorSaveRequest) {
-		// 1. User 엔티티 생성 (팩토리 메서드 사용)
-		User user = User.createUser(
-			doctorSaveRequest.getUsername(),
-			doctorSaveRequest.getPassword(),
-			doctorSaveRequest.getEmail(),
-			doctorSaveRequest.getLogin_type(),
-			doctorSaveRequest.getRole(),
-			doctorSaveRequest.isSuspended(),
-			doctorSaveRequest.getUuid()
-		);
 
-		// 2. User 저장
-		User savedUser = userRepo.save(user);
+		User user = userProvider.getUserById(doctorSaveRequest.getUserId());
 
-		// 3. Hospital 조회
-		Hospital hospital = hospitalRepo.findById(doctorSaveRequest.getHospitalId())
-			.orElseThrow(() -> new EntityNotFoundException("Hospital not found with id: " + doctorSaveRequest.getHospitalId()));
 
-		// 4. Doctor 생성 (doctorId는 생성자에 넣지 않음)
-		Doctor doctor = Doctor.create(hospital, savedUser, doctorSaveRequest.getSpecialization());
+		doctorProvider.validateUserIsDoctor(user);
 
-		// 5. Doctor 저장
-		Doctor savedDoctor = doctorProvider.saveDoctor(doctor);
+		Hospital hospital = hospitalProvider.getHospitalById(doctorSaveRequest.getHospitalId());
 
-		return savedDoctor.getDoctorId();
+
+		Doctor doctor = Doctor.create(hospital, doctorSaveRequest.getSpecialization(),user);
+
+		return doctorProvider.saveDoctor(doctor).getDoctorId();
 	}
 
-	/**
-	 * 의사 정보 수정
-	 *
-	 */
-	@Override
-	public DoctorUpdateRequest updateDoctor(Long doctorId, DoctorUpdateRequest doctorUpdateRequest) {
-		Doctor doctor = doctorProvider.getDoctorById(doctorId);
-		doctor.updateFromDTO(doctorUpdateRequest, userRepo); // null-safe 업데이트
-
-		return new DoctorUpdateRequest(
-			doctor.getUser().getPassword(),
-			doctor.getUser().getEmail(),
-			doctor.getSpecialization()
-		);
-	}
 
 	/**
 	 * 전체 의사 조회
@@ -96,7 +69,7 @@ public class DoctorServiceImpl implements DoctorService {
 	 */
 	@Override
 	public Page<DoctorResponse> getDoctors(Pageable pageable) {
-		Page<Doctor> doctors = doctorRepo.findAll(pageable);
+		Page<Doctor> doctors = doctorProvider.getAllDoctors(pageable);
 
 		return doctors.map(DoctorResponse::from);
 	}
@@ -107,8 +80,8 @@ public class DoctorServiceImpl implements DoctorService {
 	 */
 	@Override
 	public List<DoctorResponse> getDoctorsByHospital(Long hospitalId) {
-
-		List<Doctor> doctors = doctorRepo.findByHospitalHospitalId(hospitalId);
+		hospitalProvider.getHospitalById(hospitalId);
+		List<Doctor> doctors = doctorProvider.getDoctorsByHospitalId(hospitalId);
 
 		return doctors.stream()
 			.map(DoctorResponse::from)
@@ -125,6 +98,7 @@ public class DoctorServiceImpl implements DoctorService {
 		List<DoctorSchedule> savedSchedules = new ArrayList<>();
 
 		for (DoctorScheduleRequest scheduleList : doctorScheduleRequest) {
+			doctorScheduleProvider.validateWithinHospitalSchedule(doctor, scheduleList);
 			DoctorSchedule schedule = DoctorSchedule.create(
 				doctor,
 				scheduleList.getDayOfWeek(),
@@ -154,7 +128,8 @@ public class DoctorServiceImpl implements DoctorService {
 	 */
 	@Override
 	public List<DoctorScheduleList> getDoctorSchedule(Long doctorId) {
-		List<DoctorSchedule> schedules = doctorScheduleRepo.findAllByDoctorDoctorId(doctorId);
+		doctorProvider.getDoctorById(doctorId);
+		List<DoctorSchedule> schedules = doctorScheduleProvider.getSchedulesByDoctorId(doctorId);
 
 		return schedules.stream()
 			.map(DoctorScheduleList::new)
@@ -166,23 +141,23 @@ public class DoctorServiceImpl implements DoctorService {
 	 *
 	 */
 	@Override
-	public DoctorScheduleRequest updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest) {
+	public void updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest) {
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
+
 		DoctorSchedule schedule = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
-		// 소속 검증
-		if (!schedule.getDoctor().getDoctorId().equals(doctor.getDoctorId())) {
-			throw new IllegalArgumentException("Schedule does not belong to the doctor");
-		}
 
-		schedule.updateDoctorSchedule(doctorScheduleRequest);
+		doctorProvider.validateScheduleBelongsToDoctor(schedule, doctor.getDoctorId());
 
-		return new DoctorScheduleRequest(
-			schedule.getDayOfWeek(),
-			schedule.getStartTime(),
-			schedule.getEndTime(),
-			schedule.getLunchStart(),
-			schedule.getLunchEnd()
-		);
+		doctorScheduleProvider.validateWithinHospitalSchedule(doctor, doctorScheduleRequest);
+
+		schedule.updateDoctorSchedule(
+			doctorScheduleRequest.getDayOfWeek(),
+			doctorScheduleRequest.getStartTime(),
+			doctorScheduleRequest.getEndTime(),
+			doctorScheduleRequest.getLunchStart(),
+			doctorScheduleRequest.getLunchEnd());
+
+
 	}
 
 	/**
@@ -191,16 +166,17 @@ public class DoctorServiceImpl implements DoctorService {
 	 */
 	@Override
 	public void deleteDoctorSchedule(Long doctorId, Long scheduleId) {
+
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
+
+
 		DoctorSchedule schedule = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
-		// 소속 검증
-		if (!schedule.getDoctor().getDoctorId().equals(doctor.getDoctorId())) {
-			throw new IllegalArgumentException("Schedule does not belong to the doctor");
-		}
 
-		doctorScheduleRepo.delete(schedule);
+		doctorProvider.validateScheduleBelongsToDoctor(schedule, doctor.getDoctorId());
 
 
+		doctorScheduleProvider.deleteDoctorSchedule(schedule);
 	}
+
 
 }
