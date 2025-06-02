@@ -1,5 +1,7 @@
 package com.ssginc8.docto.user.controller;
 
+import java.util.Objects;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
+import com.ssginc8.docto.user.service.dto.GetProviderId;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
@@ -29,6 +32,7 @@ import com.ssginc8.docto.user.service.dto.UserInfo;
 import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +44,20 @@ import lombok.extern.log4j.Log4j2;
 public class UserApiController {
 	private final UserService userService;
 	private final CookieUtil cookieUtil;
+
+	@GetMapping("/auth/session/provider-id")
+	public GetProviderId.Response getProviderId(HttpSession session) {
+		String providerId = (String)session.getAttribute("providerId");
+
+		if (Objects.isNull(providerId)) {
+			return null;
+		}
+
+		log.info("providerId : " + providerId);
+
+		return GetProviderId.Response.builder()
+			.providerId(providerId).build();
+	}
 
 	@GetMapping("/users/me")
 	public UserInfo.Response getMyInfo() {

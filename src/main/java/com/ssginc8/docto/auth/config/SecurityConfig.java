@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -46,6 +47,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
+			.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
 
 				.requestMatchers(
@@ -53,7 +55,10 @@ public class SecurityConfig {
 					"/api/v1/users/social",
 					"/api/v1/users/doctors", "/api/v1/users/check-email", "/api/v1/users/email/find",
 					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
-					"/api/v1/users/email/verify-code/confirm"
+					"/api/v1/users/email/verify-code/confirm", "/api/v1/auth/session/provider-id"
+				).permitAll()
+				.requestMatchers(
+					HttpMethod.POST, "/api/v1/patients"
 				).permitAll()
 
 				.requestMatchers(

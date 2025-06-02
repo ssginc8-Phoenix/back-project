@@ -1,5 +1,7 @@
 package com.ssginc8.docto.user.service.dto;
 
+import java.util.Objects;
+
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 
@@ -21,9 +23,13 @@ public class UserInfo {
 			this.profileImageUrl = profileImageUrl;
 		}
 
-		public static Response from(User user) {
+		public static Response from(User user, String defaultProfileUrl) {
+			if (Objects.nonNull(user.getProfileUrl())) {
+				defaultProfileUrl = user.getProfileUrl();
+			}
+
 			return new Response(user.getEmail(), user.getName(), user.getPhone(), user.getAddress(), user.getRole(),
-				user.getProfileUrl());
+				defaultProfileUrl);
 		}
 	}
 }

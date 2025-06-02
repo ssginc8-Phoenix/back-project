@@ -22,14 +22,18 @@ public class SocialSignup {
 
 		private MultipartFile profileImage;
 
+		@NotBlank(message = "주소는 비어있을 수 없습니다.")
+		private String address;
+
 		@NotBlank(message = "역할은 비어있을 수 없습니다.")
 		private String role;
 
 		@Builder
-		public Request(String providerId, String phone, MultipartFile profileImage, String role) {
+		public Request(String providerId, String phone, MultipartFile profileImage, String address, String role) {
 			this.providerId = providerId;
 			this.phone = phone;
 			this.profileImage = profileImage;
+			this.address = address;
 			this.role = role;
 		}
 	}
