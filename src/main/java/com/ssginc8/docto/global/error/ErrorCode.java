@@ -23,6 +23,9 @@ public enum ErrorCode {
 	EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "U_007", "이메일을 찾을 수 없습니다."),
 	SAME_AS_PREVIOUS_PASSWORD(HttpStatus.BAD_REQUEST, "U_008", "이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다."),
 
+	// Patient 관련 에러 (P_)
+	PATIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "환자 정보를 찾을 수 없습니다."),
+
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
 	EMAIL_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "M_002", "이메일 인증에 실패하였습니다."),
@@ -56,6 +59,7 @@ public enum ErrorCode {
 
 	// Doctor Schedule 관련 에러 (DS_)
 	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다.");
+
 
 
 	private final HttpStatus status;
