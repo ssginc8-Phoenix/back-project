@@ -61,7 +61,6 @@ public class ReviewController {
 	// 나의 리뷰 조회
 	@GetMapping("/users/me/reviews")
 	public ResponseEntity<Page<ReviewMyListResponse>> getMyReviews(
-		Authentication authentication,
 		Pageable pageable
 	) {// 서비스에 바로 UUID 전달해서 User 조회
 		User me = userService.getUserFromUuid();
