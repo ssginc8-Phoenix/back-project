@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ssginc8.docto.doctor.dto.DoctorSaveRequest;
-import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorResponse;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleList;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleRequest;
@@ -29,7 +28,7 @@ public interface DoctorService {
 	List<DoctorScheduleList> getDoctorSchedule(Long doctorId);
 
 	//의사스케쥴 수정
-	void updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest);
+	DoctorScheduleRequest updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest);
 
 	//의사스케쥴 삭제
 	void deleteDoctorSchedule(Long doctorId, Long scheduleId);

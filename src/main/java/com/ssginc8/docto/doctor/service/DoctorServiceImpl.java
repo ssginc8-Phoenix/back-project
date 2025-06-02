@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssginc8.docto.doctor.dto.DoctorSaveRequest;
-import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorResponse;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleList;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleRequest;
@@ -17,18 +16,12 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
-import com.ssginc8.docto.doctor.repo.DoctorRepo;
-import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
-import com.ssginc8.docto.hospital.repo.HospitalRepo;
 
-import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
-import com.ssginc8.docto.user.repo.UserRepo;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +46,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 
 		doctorProvider.validateUserIsDoctor(user);
+		doctorProvider.validateUserIsNotAlreadyDoctor(user);
 
 		Hospital hospital = hospitalProvider.getHospitalById(doctorSaveRequest.getHospitalId());
 
@@ -139,9 +133,10 @@ public class DoctorServiceImpl implements DoctorService {
 	/**
 	 * 의사 영업시간 수정
 	 *
+	 * @return
 	 */
 	@Override
-	public void updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest) {
+	public DoctorScheduleRequest updateDoctorSchedule(Long doctorId, Long scheduleId, DoctorScheduleRequest doctorScheduleRequest) {
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
 
 		DoctorSchedule schedule = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
@@ -157,7 +152,7 @@ public class DoctorServiceImpl implements DoctorService {
 			doctorScheduleRequest.getLunchStart(),
 			doctorScheduleRequest.getLunchEnd());
 
-
+		return doctorScheduleRequest;
 	}
 
 	/**

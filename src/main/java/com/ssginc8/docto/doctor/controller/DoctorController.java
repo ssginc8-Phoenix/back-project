@@ -36,8 +36,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DoctorController {
 	private final DoctorService doctorService;
-	private final DoctorScheduleRepo doctorScheduleRepo;
-	private final DoctorRepo doctorRepo;
+
 
 	/**
 	 * 의사 등록
@@ -93,13 +92,13 @@ public class DoctorController {
 	 * 요일, 영업 시작 시간, 종료 시간, 점심 시작 시간, 종료 시간
 	 */
 	@PatchMapping("/doctors/{doctorId}/schedules/{scheduleId}")
-	public ResponseEntity<Void> updateDoctorSchedule(
+	public ResponseEntity<DoctorScheduleRequest> updateDoctorSchedule(
 		@PathVariable Long doctorId,
 		@PathVariable Long scheduleId,
 		@RequestBody DoctorScheduleRequest doctorScheduleRequest
 	) {
-		doctorService.updateDoctorSchedule(doctorId, scheduleId, doctorScheduleRequest);
-		return ResponseEntity.noContent().build(); // 204 No Content
+		DoctorScheduleRequest response = doctorService.updateDoctorSchedule(doctorId, scheduleId, doctorScheduleRequest);
+		return ResponseEntity.ok(response); // 204 No Content
 	}
 
 

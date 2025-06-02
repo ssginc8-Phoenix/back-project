@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.repo.DoctorRepo;
+import com.ssginc8.docto.global.error.ErrorCode;
 import com.ssginc8.docto.global.error.exception.BusinessBaseException;
+import com.ssginc8.docto.global.error.exception.doctorException.DoctorAlreadyExistsException;
 import com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException;
 import com.ssginc8.docto.global.error.exception.doctorException.NotDoctorRoleException;
 import com.ssginc8.docto.global.error.exception.doctorException.ScheduleNotInDoctorException;
@@ -36,6 +38,11 @@ public class DoctorProvider {
 	public Doctor saveDoctor(Doctor doctor) {
 		doctorRepo.save(doctor);
 		return doctor;
+	}
+	public void validateUserIsNotAlreadyDoctor(User user) {
+		if (doctorRepo.existsByUser(user)) {
+			throw new DoctorAlreadyExistsException(ErrorCode.DOCTOR_ALREADY_EXISTS);
+		}
 	}
 
 
