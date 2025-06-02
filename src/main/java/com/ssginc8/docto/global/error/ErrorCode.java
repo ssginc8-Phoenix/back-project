@@ -35,7 +35,25 @@ public enum ErrorCode {
 
 	// File 관련 에러(F_)
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
-	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다.");
+	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
+
+
+	//Doctor 관련 에러(D_)
+	DOCTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "D_001", "해당 의사가 존재하지 않습니다."),
+	SCHEDULE_NOT_IN_DOCTOR(HttpStatus.BAD_REQUEST, "D_002", "해당 스케줄은 해당 의사에게 속하지 않습니다."),
+	USER_IS_NOT_DOCTOR(HttpStatus.BAD_REQUEST, "D_003", "해당 유저는 의사 역할이 아닙니다."),
+	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "D_004", "해당 요일의 의사 스케줄이 존재하지 않습니다."),
+	INVALID_DOCTOR_SCHEDULE_OUT_OF_HOURS(HttpStatus.BAD_REQUEST, "D_005", "예약 시간이 진료 시간 외입니다."),
+	INVALID_DOCTOR_SCHEDULE_LUNCH(HttpStatus.BAD_REQUEST, "D_006", "예약 시간이 점심 시간입니다."),
+	HOSPITAL_SCHEDULE_NOT_FOUND(HttpStatus.BAD_REQUEST, "D_007", "병원의 해당 요일 운영 시간이 존재하지 않습니다."),
+	INVALID_DOCTOR_SCHEDULE_TIME(HttpStatus.BAD_REQUEST, "D_008", "의사 스케줄이 병원 운영시간 범위를 벗어났습니다."),
+	DOCTOR_LUNCH_TIME_CONFLICT(HttpStatus.BAD_REQUEST, "D_009", "의사의 점심시간이 병원 점심시간 범위를 벗어났습니다."),
+	DOCTOR_ALREADY_EXISTS(HttpStatus.CONFLICT,"D_010", "이미 의사로 등록된 사용자입니다"),
+	//Hospital 관련 에러(H_)
+	HOSPITAL_NOT_FOUND(HttpStatus.NOT_FOUND, "H_001", "해당 병원은 존재하지 않습니다."),
+	SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "H_002", "스케줄을 찾을 수 없습니다."),
+	SCHEDULE_NOT_IN_HOSPITAL(HttpStatus.BAD_REQUEST, "H_003", "해당 스케줄은 병원에 속하지 않습니다."),
+	SCHEDULE_NOT_FOUND_BY_DAY(HttpStatus.NOT_FOUND, "H_004", "해당 요일에 대한 병원 스케줄이 존재하지 않습니다.");
 
 	private final HttpStatus status;
 	private final String code;
