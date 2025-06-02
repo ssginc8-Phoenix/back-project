@@ -33,13 +33,10 @@ public class HospitalRequest {
 
 	private String notice;
 
-	@NotNull(message = "사업자등록번호는 필수입니다.")
-	private String businessRegistrationNumber;
-
 	@NotNull(message = "서비스이름은 필수입니다.")
 	private List<String> serviceName;
 
-
+	private String businessRegistrationNumber;
 
 	private BigDecimal latitude;
 

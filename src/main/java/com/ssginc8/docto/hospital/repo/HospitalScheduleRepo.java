@@ -1,6 +1,8 @@
 package com.ssginc8.docto.hospital.repo;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,9 +12,12 @@ import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 public interface HospitalScheduleRepo extends JpaRepository<HospitalSchedule, Long > {
 
 
-	void deleteByHospitalHospitalId(Long hospitalId);
+	Optional<HospitalSchedule> findByHospitalHospitalIdAndDayOfWeek(Long hospitalId, DayOfWeek dayOfWeek);
+
 
 	List<HospitalSchedule> findByHospitalHospitalId(Long hospitalId);
 
-	void deleteByHospitalScheduleId(Long hospitalId);
+
+
+	void deleteAllByHospitalHospitalId(Long hospitalId);
 }

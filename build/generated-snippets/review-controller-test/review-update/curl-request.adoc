@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'http://localhost:8080/api/v1/reviews/119' -i -X PATCH \
+$ curl 'http://localhost:8080/api/v1/reviews/125' -i -X PATCH \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -d '{
   "updatedAt" : null,

@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ curl 'http://localhost:8080/api/v1/reviews/118/report' -i -X POST
+$ curl 'http://localhost:8080/api/v1/reviews/125/report' -i -X POST
 ----

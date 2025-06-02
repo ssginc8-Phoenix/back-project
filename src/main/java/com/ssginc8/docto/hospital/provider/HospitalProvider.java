@@ -1,10 +1,22 @@
 package com.ssginc8.docto.hospital.provider;
 
+import java.time.DayOfWeek;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.doctor.repo.DoctorRepo;
+import com.ssginc8.docto.global.error.ErrorCode;
+import com.ssginc8.docto.global.error.exception.BusinessBaseException;
+import com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException;
+import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFoundByDayException;
+import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFoundException;
+import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotInHospitalException;
+import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
@@ -26,27 +38,27 @@ public class HospitalProvider {
 	private final UserRepo userRepo;
 	private final HospitalScheduleRepo hospitalScheduleRepo;
 	private final ProvidedServiceRepo providedServiceRepo;
-
+	private final DoctorRepo doctorRepo;
 
 	@Transactional(readOnly = true)
 	public Hospital getHospitalById(Long hospitalId) {
-		return hospitalRepo.findById(hospitalId)
-			.orElseThrow(() -> new EntityNotFoundException("Hospital not found with id: " + hospitalId));
+		return hospitalRepo.findByHospitalIdAndDeletedAtIsNull(hospitalId)
+			.orElseThrow(HospitalNotFoundException::new);
 	}
 
 	public User getUserById(Long userId) {
 		return userRepo.findById(userId)
-			.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+			.orElseThrow(UserNotFoundException::new);
 	}
 
 	public HospitalSchedule getScheduleByIdOrThrow(Long scheduleId) {
 		return hospitalScheduleRepo.findById(scheduleId)
-			.orElseThrow(() -> new EntityNotFoundException("스케줄을 찾을 수 없습니다: " + scheduleId));
+			.orElseThrow(ScheduleNotFoundException::new);
 	}
 
 	public void validateScheduleBelongsToHospital(HospitalSchedule schedule, Hospital hospital) {
 		if (!schedule.getHospital().getHospitalId().equals(hospital.getHospitalId())) {
-			throw new IllegalArgumentException("해당 스케줄은 병원에 속하지 않습니다.");
+			throw new ScheduleNotInHospitalException();
 		}
 	}
 
@@ -61,6 +73,52 @@ public class HospitalProvider {
 
 	public void saveServices(List<ProvidedService> services) {
 		providedServiceRepo.saveAll(services);
+	}
+
+	// HospitalRepo 의존 제거
+	public Page<Hospital> findHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable) {
+		return hospitalRepo.findHospitalsWithinRadius(lat, lng, radius, pageable);
+	}
+
+
+
+	@Transactional
+	public void deleteByHospitalScheduleId(Long hospitalScheduleId) {
+		HospitalSchedule schedule = hospitalScheduleRepo.findById(hospitalScheduleId)
+			.orElseThrow(ScheduleNotFoundException::new);
+		hospitalScheduleRepo.delete(schedule);
+	}
+
+
+	public List<ProvidedService> findServicesByHospitalId(Long hospitalId) {
+		return providedServiceRepo.findByHospitalHospitalId(hospitalId);
+	}
+
+
+	public void deleteProvidedServicesByHospital(Hospital hospital) {
+		providedServiceRepo.deleteAllByHospital(hospital);
+	}
+	public void deleteByHospitalHospitalId(Long hospitalId) {
+	}
+
+
+
+	public Page<Hospital> findAll(Pageable pageable) {
+		return hospitalRepo.findAllByDeletedAtIsNull(pageable);
+	}
+
+	public List<HospitalSchedule> findSchedulesByHospitalId(Long hospitalId) {
+		return hospitalScheduleRepo.findByHospitalHospitalId(hospitalId);
+	}
+
+
+	public HospitalSchedule getScheduleByDay(Long hospitalId, DayOfWeek dayOfWeek) {
+		return hospitalScheduleRepo.findByHospitalHospitalIdAndDayOfWeek(hospitalId, dayOfWeek)
+			.orElseThrow(ScheduleNotFoundByDayException::new);
+	}
+
+	public void deleteByHospitalId(Long hospitalId) {
+		hospitalScheduleRepo.deleteAllByHospitalHospitalId(hospitalId);
 	}
 
 }

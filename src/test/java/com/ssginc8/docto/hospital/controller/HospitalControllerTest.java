@@ -45,6 +45,7 @@ import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
+import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
 
 @ActiveProfiles("prod")
@@ -79,7 +80,7 @@ public class HospitalControllerTest {
 	@DisplayName("병원 등록 API 테스트")
 	void saveHospitalTest() throws Exception {
 		HospitalRequest request = HospitalRequest.builder()
-			.userId(27L)
+			.userId(6L)
 			.name("삼성병원")
 			.address("서울특별시 강남구")
 			.phone("010-1234-5678")
@@ -115,7 +116,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 상세 조회 테스트")
 	void getHospitalById() throws Exception {
-		Long hospitalId = 44L;
+		Long hospitalId = 3L;
 
 		mockMvc.perform(get("/api/v1/hospitals/{hospitalId}", hospitalId))
 			.andExpect(status().isOk())
@@ -124,18 +125,17 @@ public class HospitalControllerTest {
 					parameterWithName("hospitalId").description("조회할 병원의 ID")
 				),
 				responseFields(
-					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
 					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
 					fieldWithPath("name").type(JsonFieldType.STRING).description("병원 이름"),
 					fieldWithPath("address").type(JsonFieldType.STRING).description("병원 주소"),
 					fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호"),
 					fieldWithPath("introduction").type(JsonFieldType.STRING).description("소개").optional(),
 					fieldWithPath("notice").type(JsonFieldType.STRING).description("공지사항").optional(),
-					fieldWithPath("businessRegistrationNumber").type(JsonFieldType.STRING).description("사업자등록번호"),
 					fieldWithPath("serviceNames").type(JsonFieldType.ARRAY).description("제공 서비스 목록"),
 					fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("위도"),
 					fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("경도"),
-					fieldWithPath("waiting").type(JsonFieldType.NUMBER).description("대기 인원 수")
+					fieldWithPath("waiting").type(JsonFieldType.NUMBER).optional() .description("대기 인원 수")
+
 				)
 			));
 	}
@@ -153,7 +153,7 @@ public class HospitalControllerTest {
 			.serviceNames(List.of("의사많음", "깔끔"))
 			.build();
 
-		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}", 44L)
+		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}", 3L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -177,7 +177,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 삭제")
 	void deleteHospital() throws Exception {
-		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}", 18L))
+		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}", 5L))
 			.andExpect(status().isNoContent())
 			.andDo(restDocs.document(
 				pathParameters(
@@ -216,7 +216,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 조회")
 	void getSchedules() throws Exception {
-		Long hospitalId = 22L;
+		Long hospitalId = 1L;
 
 		mockMvc.perform(get("/api/v1/hospitals/{hospitalId}/schedules", hospitalId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -239,7 +239,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 등록")
 	void saveSchedule() throws Exception {
-		Long hospitalId = 22L;
+		Long hospitalId = 3L;
 
 		List<HospitalScheduleRequest> schedules = List.of(
 			HospitalScheduleRequest.builder()
@@ -279,8 +279,8 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 삭제")
 	void deleteSchedule() throws Exception {
-		Long hospitalId = 22L;
-		Long scheduleId = 76L;
+		Long hospitalId = 3L;
+		Long scheduleId = 24L;
 
 		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}/schedules/{scheduleId}", hospitalId, scheduleId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -296,15 +296,15 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 수정")
 	void updateSchedule() throws Exception {
-		Long hospitalId = 22L;
-		Long scheduleId = 66L;
+		Long hospitalId = 3L;
+		Long scheduleId = 23L;
 
 		HospitalScheduleRequest scheduleRequest = HospitalScheduleRequest.builder()
 			.dayOfWeek(DayOfWeek.WEDNESDAY)
 			.openTime(LocalTime.parse("08:30"))
 			.closeTime(LocalTime.parse("17:30"))
-			.lunchStart(LocalTime.parse("12:30"))
-			.lunchEnd(LocalTime.parse("13:30"))
+			.lunchStart(LocalTime.parse("12:00"))
+			.lunchEnd(LocalTime.parse("13:00"))
 			.build();
 
 		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}/schedules/{scheduleId}", hospitalId, scheduleId)
@@ -329,9 +329,9 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 웨이팅 등록")
 	void saveHospitalWaiting() throws Exception {
-		Long hospitalId = 22L;
-		// 예: 웨이팅 수 5로 등록
-		Map<String, Long> request = Map.of("waiting", 5L);
+		Long hospitalId = 3L;
+
+		HospitalWaitingRequest request = new HospitalWaitingRequest(5L); // DTO 사용
 
 		mockMvc.perform(post("/api/v1/hospitals/{hospitalId}/waiting", hospitalId)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -344,16 +344,17 @@ public class HospitalControllerTest {
 				requestFields(
 					fieldWithPath("waiting").description("대기 인원 수")
 				),
-				responseBody()
-
+				responseFields(
+					fieldWithPath("waiting").description("등록된 대기 인원 수") // 혹은 필요 시 .type(JsonFieldType.NUMBER)
+				)
 			));
-
 	}
+
 
 	@Test
 	@DisplayName("병원 웨이팅 조회")
 	void getHospitalWaiting() throws Exception {
-		Long hospitalId = 22L;
+		Long hospitalId = 3L;
 
 		mockMvc.perform(get("/api/v1/hospitals/{hospitalId}/waiting", hospitalId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -369,7 +370,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 웨이팅 수정")
 	void updateHospitalWaiting() throws Exception {
-		Long hospitalId = 22L;
+		Long hospitalId = 3L;
 		Map<String, Long> request = Map.of("waiting", 3L);
 
 		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}/waiting", hospitalId)
@@ -389,7 +390,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원에서 리뷰 조회")
 	void getAllReviews() throws Exception {
-		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/hospitals/{hospitalId}/reviews", 2L)
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/hospitals/{hospitalId}/reviews", 1L)
 				.param("page", "0")
 				.param("size", "5"))
 			.andExpect(status().isOk())

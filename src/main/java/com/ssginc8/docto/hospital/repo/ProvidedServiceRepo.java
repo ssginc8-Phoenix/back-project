@@ -12,4 +12,6 @@ public interface ProvidedServiceRepo extends JpaRepository<ProvidedService, Long
 	List<ProvidedService> findByHospitalHospitalId(Long hospitalId);
 
 	void deleteByHospitalHospitalId(Long hospitalId);
+
+	void deleteAllByHospital(Hospital hospital);
 }
