@@ -1,12 +1,4 @@
 [source,json,options="nowrap"]
 ----
-[ {
-  "patientId" : 38,
-  "name" : "테스트유저1",
-  "residentRegistrationNumber" : "900101-1234567"
-}, {
-  "patientId" : 39,
-  "name" : "테스트유저2",
-  "residentRegistrationNumber" : "920202-2222222"
-} ]
+[ ]
 ----

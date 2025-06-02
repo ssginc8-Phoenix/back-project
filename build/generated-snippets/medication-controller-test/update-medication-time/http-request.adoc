@@ -1,11 +1,12 @@
 [source,http,options="nowrap"]
 ----
-PATCH /api/v1/medications/22 HTTP/1.1
+PATCH /api/v1/medications/42 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 55
+Content-Length: 86
 Host: localhost:8080
 
 {
-  "newTimeToTake" : "2025-05-22T19:36:47.6659871"
+  "newTimeToTake" : "23:30:34.8493821",
+  "newDays" : [ "WEDNESDAY", "FRIDAY" ]
 }
 ----

@@ -1,9 +1,10 @@
 [source,json,options="nowrap"]
 ----
 {
-  "patientGuardianId" : 1,
+  "userId" : 92,
   "medicationName" : "타이레놀",
-  "timeToTake" : "2025-05-22T18:36:47.3207318",
-  "days" : [ "MONDAY", "WEDNESDAY" ]
+  "timeToTake" : "22:30:34.6552595",
+  "days" : [ "MONDAY", "WEDNESDAY" ],
+  "patientGuardianId" : 1
 }
 ----
