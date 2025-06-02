@@ -2,8 +2,10 @@ package com.ssginc8.docto.medication.dto;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,19 +22,15 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class MedicationScheduleRequest {
 
-	private Long patientGuardianId;          // 환자-보호자 관계 ID
-	private String medicationName;           // 약 이름
-	private LocalDateTime timeToTake;        // 복용 시간
-	private List<DayOfWeek> days;            // 복용 요일 리스트
+	private Long userId;
+	private String medicationName;
+	private LocalTime timeToTake;
+	private List<DayOfWeek> days;
+	private Long patientGuardianId;
 
-	public MedicationScheduleRequest(Long patientGuardianId, String medicationName,
-		LocalDateTime timeToTake, List<DayOfWeek> days) {
-		this.patientGuardianId = patientGuardianId;
-		this.medicationName = medicationName;
-		this.timeToTake = timeToTake;
-		this.days = days;
-	}
+
 }

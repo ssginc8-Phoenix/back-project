@@ -1,6 +1,10 @@
 package com.ssginc8.docto.medication.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.user.entity.User;
 
 // guardian 완성 시 아래 import 사용 예정
 // import com.ssginc8.docto.guardian.entity.PatientGuardian;
@@ -26,21 +30,22 @@ public class MedicationInformation extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long medicationId;
 
-	// guardian 완성 시 주석 해제 예정
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_guardian_id", nullable = false)
-    private PatientGuardian patientGuardian;
-    */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 	@Column(name = "patient_guardian_id", nullable = false)
-	private Long patientGuardianId;
+	private Long patientGuardianId; // 보호자-환자 관계 ID
 
 	@Column(nullable = false, length = 100)
 	private String medicationName;
 
-	public static MedicationInformation create(Long patientGuardianId, String medicationName) {
+	@OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<MedicationAlertTime> alertTimes = new ArrayList<>();
+
+	public static MedicationInformation create(User user, Long patientGuardianId, String medicationName) {
 		MedicationInformation info = new MedicationInformation();
+		info.user = user;
 		info.patientGuardianId = patientGuardianId;
 		info.medicationName = medicationName;
 		return info;
