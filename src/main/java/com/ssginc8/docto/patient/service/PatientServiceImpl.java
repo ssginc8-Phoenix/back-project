@@ -25,7 +25,7 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	@Transactional
 	public Long createPatient(PatientRequest dto) {
-		User user = userProvider.createUserByEmail(String.valueOf(dto.getUserId()));
+		User user = userProvider.getUserById(dto.getUserId());
 		String encryptedRRN = encryptRRN(dto.getResidentRegistrationNumber());
 		Patient patient = Patient.create(user, encryptedRRN);
 		Patient savedPatient = patientProvider.savePatient(patient);
