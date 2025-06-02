@@ -1,0 +1,31 @@
+[source,json,options="nowrap"]
+----
+{
+  "content" : [ ],
+  "pageable" : {
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "last" : true,
+  "totalElements" : 0,
+  "totalPages" : 0,
+  "first" : true,
+  "size" : 5,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "sorted" : false,
+    "unsorted" : true
+  },
+  "numberOfElements" : 0,
+  "empty" : true
+}
+----

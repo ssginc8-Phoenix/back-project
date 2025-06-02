@@ -1,0 +1,16 @@
+[source,json,options="nowrap"]
+----
+{
+  "doctorInfos" : [ {
+    "email" : "doctor76@example.com",
+    "password" : "Fkdlej5115",
+    "name" : "홍누구",
+    "phone" : "010-1111-2222"
+  }, {
+    "email" : "doctor43@example.com",
+    "password" : "Fkdlej5115",
+    "name" : "김철수",
+    "phone" : "010-3333-4444"
+  } ]
+}
+----

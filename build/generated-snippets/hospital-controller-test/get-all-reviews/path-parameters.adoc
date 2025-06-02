@@ -1,0 +1,8 @@
+.+/api/v1/hospitals/{hospitalId}/reviews+
+|===
+|Parameter|Description
+
+|`+hospitalId+`
+|Required, 병원 ID
+
+|===

@@ -1,0 +1,11 @@
+[source,json,options="nowrap"]
+----
+{
+  "appointmentId" : 5,
+  "userId" : 5,
+  "hospitalId" : 2,
+  "doctorId" : 5,
+  "keywords" : [ "CLEAN_HOSPITAL", "FAST", "THOROUGH" ],
+  "contents" : "친절하고 전문적이었습니다."
+}
+----

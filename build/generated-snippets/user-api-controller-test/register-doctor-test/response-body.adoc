@@ -1,0 +1,6 @@
+[source,json,options="nowrap"]
+----
+{
+  "ids" : [ 99, 100 ]
+}
+----

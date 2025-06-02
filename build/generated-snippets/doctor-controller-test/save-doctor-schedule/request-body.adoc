@@ -1,0 +1,16 @@
+[source,json,options="nowrap"]
+----
+[ {
+  "dayOfWeek" : "MONDAY",
+  "startTime" : "09:00:00",
+  "endTime" : "18:00:00",
+  "lunchEnd" : "12:00:00",
+  "lunchStart" : "13:00:00"
+}, {
+  "dayOfWeek" : "TUESDAY",
+  "startTime" : "09:00:00",
+  "endTime" : "18:00:00",
+  "lunchEnd" : "12:00:00",
+  "lunchStart" : "13:00:00"
+} ]
+----

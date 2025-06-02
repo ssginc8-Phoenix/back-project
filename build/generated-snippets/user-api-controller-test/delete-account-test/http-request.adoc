@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+DELETE /api/v1/users/me HTTP/1.1
+Accept: application/json
+Host: localhost:8080
+Cookie: accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg3Nzc0NDIsImV4cCI6MTc0ODc3ODM0Miwic3ViIjoiMWQ5MTY4NzgtNjg0Ny00M2YyLThjMzctOWNiYTgzMDY1MTIzIiwicm9sZSI6IlJPTEVfU1lTVEVNX0FETUlOIn0.6eIBabmON7Sdh79IB829QF9kkXt5qzVTPwC9TsIhzfU; refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg3Nzc0NDIsImV4cCI6MTc0OTM4MjI0Miwic3ViIjoiMWQ5MTY4NzgtNjg0Ny00M2YyLThjMzctOWNiYTgzMDY1MTIzIn0.GVTfE5gy6eTiztwgZ1a5AWxKld6t0ho0a6FsvrYYNQ4
+
+----

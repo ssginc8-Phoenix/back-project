@@ -1,0 +1,10 @@
+[source,json,options="nowrap"]
+----
+{
+  "userId" : 92,
+  "medicationName" : "타이레놀",
+  "timeToTake" : "22:30:34.6552595",
+  "days" : [ "MONDAY", "WEDNESDAY" ],
+  "patientGuardianId" : 1
+}
+----

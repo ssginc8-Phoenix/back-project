@@ -1,0 +1,8 @@
+.+/api/v1/medications/{medicationId}/complete+
+|===
+|Parameter|Description
+
+|`+medicationId+`
+|약 ID
+
+|===

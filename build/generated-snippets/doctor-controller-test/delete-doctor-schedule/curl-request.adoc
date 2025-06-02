@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/doctors/9/schedules/4' -i -X DELETE
+----

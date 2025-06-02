@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+newTimeToTake+`
+|`+String+`
+|변경할 복약 시간 (HH:mm:ss 형식)
+
+|`+newDays[]+`
+|`+Array+`
+|변경할 요일 리스트 (예: MONDAY, WEDNESDAY)
+
+|===

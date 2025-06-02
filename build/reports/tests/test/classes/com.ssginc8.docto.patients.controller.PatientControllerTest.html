@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - PatientControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>PatientControllerTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.ssginc8.docto.patients.controller.html">com.ssginc8.docto.patients.controller</a> &gt; PatientControllerTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">3</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.018s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Failed tests</a>
+</li>
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="createPatient()"></a>
+<h3 class="failures">환자 등록</h3>
+<span class="code">
+<pre>java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="deletePatient()"></a>
+<h3 class="failures">환자 삭제 (소프트 삭제)</h3>
+<span class="code">
+<pre>java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="getAllPatients()"></a>
+<h3 class="failures">환자 전체 조회</h3>
+<span class="code">
+<pre>java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</pre>
+</span>
+</div>
+</div>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">환자 등록</td>
+<td class="failures">createPatient()</td>
+<td class="failures">0.004s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">환자 삭제 (소프트 삭제)</td>
+<td class="failures">deletePatient()</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">환자 전체 조회</td>
+<td class="failures">getAllPatients()</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2025-06-01T20:30:35.067+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.patients.controller.PatientControllerTest]: PatientControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-01T20:30:35.085+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.patients.controller.PatientControllerTest
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.100+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.13</a> at 2025. 6. 1. 오후 8:30:44</p>
+</div>
+</div>
+</body>
+</html>
