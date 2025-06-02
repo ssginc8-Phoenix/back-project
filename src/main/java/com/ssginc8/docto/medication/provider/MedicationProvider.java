@@ -27,6 +27,8 @@ public class MedicationProvider {
 	public Page<MedicationLog> getMedicationLogsByCurrentUser(Pageable pageable) {
 		User currentUser = userProvider.getCurrentUserFromToken();
 		return medicationLogRepo.findByMedication_User_UserIdAndDeletedAtIsNull(currentUser.getUserId(), pageable);
+
+		return null;
 	}
 
 	@Transactional(readOnly = true)

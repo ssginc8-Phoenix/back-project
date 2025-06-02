@@ -46,11 +46,11 @@ public interface AppointmentRepo
 		@Param("slotEnd") LocalDateTime slotEnd
 	);
 
+	/**
+	 * 로그인 한 유저의 예약 리스트 가져오기
+	 */
 	Page<Appointment> findByPatientGuardian_Patient_User_UserId(Long userId, Pageable pageable);
-
 	Page<Appointment> findByPatientGuardian_User_UserId(Long userId, Pageable pageable);
-
 	Page<Appointment> findByDoctor_User_UserId(Long userId, Pageable pageable);
-
 	Page<Appointment> findByHospital_User_UserId(Long userId, Pageable pageable);
 }

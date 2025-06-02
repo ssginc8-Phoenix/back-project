@@ -24,18 +24,27 @@ public class AppointmentProvider {
 
 	private final AppointmentRepo appointmentRepo;
 
+	/**
+	 * 어드민 예약 리스트 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentListByCondition(Pageable pageable, AppointmentSearchCondition condition) {
 
 		return appointmentRepo.findAllByCondition(condition, pageable);
 	}
 
+	/**
+	 * appointmentId로 Appointment 단건 조회
+	 */
 	@Transactional(readOnly = true)
 	public Appointment getAppointmentById(Long appointmentId) {
 		return appointmentRepo.findById(appointmentId)
 			.orElseThrow(AppointmentNotFoundException::new);
 	}
 
+	/**
+	 * 중복되는 Appointment 존재 여부 조회
+	 */
 	@Transactional(readOnly = true)
 	public boolean existsDuplicateAppointment(
 		PatientGuardian patientGuardian, Doctor doctor, LocalDateTime appointmentTime
@@ -44,36 +53,57 @@ public class AppointmentProvider {
 			patientGuardian, doctor, appointmentTime, AppointmentStatus.CANCELED);
 	}
 
+	/**
+	 * save Appointment
+	 */
 	@Transactional
 	public Appointment save(Appointment appointment) {
 		return appointmentRepo.save(appointment);
 	}
 
+	/**
+	 * 시간 범위 내 환자의 Appointment 존재 여부
+	 */
 	@Transactional(readOnly = true)
 	public boolean existsByPatientAndTimeRange(Long patientId, LocalDateTime start, LocalDateTime end) {
 		return appointmentRepo.existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(patientId, start, end);
 	}
 
+	/**
+	 * 30분 단위의 시간 슬롯 안의 Appointment Count
+	 */
 	@Transactional(readOnly = true)
 	public int countAppointmentsInSlot(Long doctorId, LocalDateTime slotStart, LocalDateTime slotEnd) {
 		return appointmentRepo.countAppointmentsInSlot(doctorId, slotStart, slotEnd);
 	}
 
+	/**
+	 * 환자의 Appointment 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByPatient(Long userId, Pageable pageable) {
 		return appointmentRepo.findByPatientGuardian_Patient_User_UserId(userId, pageable);
 	}
 
+	/**
+	 * 보호자의 Appointment 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByGuardian(Long userId, Pageable pageable) {
 		return appointmentRepo.findByPatientGuardian_User_UserId(userId, pageable);
 	}
 
+	/**
+	 * 의사의 Appointment 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByDoctor(Long userId, Pageable pageable) {
 		return appointmentRepo.findByDoctor_User_UserId(userId, pageable);
 	}
 
+	/**
+	 * 병원의 Appointment 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByHospital(Long userId, Pageable pageable) {
 		return appointmentRepo.findByHospital_User_UserId(userId, pageable);
