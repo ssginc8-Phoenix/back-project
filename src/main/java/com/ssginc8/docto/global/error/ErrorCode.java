@@ -44,7 +44,7 @@ public enum ErrorCode {
 	QNA_NOT_FOUND(HttpStatus.NOT_FOUND, "Q_001", "Q&A 게시글이 없습니다."),
 
 	// Comment 관련 에러(C_)
-	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C_001", "답변이 없습니다.");
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C_001", "답변이 없습니다."),
 
 	// Appointment 관련 에러 (A_)
 	APPOINTMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "A_001", "예약을 찾을 수 없습니다."),
@@ -58,6 +58,7 @@ public enum ErrorCode {
 	INVALID_STATUS_VALUE(HttpStatus.BAD_REQUEST, "A_009", "유효하지 않은 예약 상태입니다."),
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "A_010", "유효하지 않은 예약 타입입니다."),
 	INVALID_PAYMENT_VALUE(HttpStatus.BAD_REQUEST, "A_011", "유효하지 않은 결제 방법입니다."),
+	ROLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "A_012", "유효하지 않은 역할입니다."),
 
 	// Doctor 관련 에러 (D_)
 	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_001", "진료 가능 인원은 음수일 수 없습니다."),

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,7 @@ import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
+import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -29,7 +29,6 @@ import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
-import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.UserService;
@@ -89,7 +88,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable)
 					.map(AppointmentListResponse::fromEntity);
 			default:
-				throw new AccessDeniedException("해당 역할은 예약 조회 권한이 없습니다.");
+				throw new RoleNotFoundException();
 		}
 	}
 
