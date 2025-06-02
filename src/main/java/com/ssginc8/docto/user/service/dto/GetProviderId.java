@@ -1,8 +1,10 @@
 package com.ssginc8.docto.user.service.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 
-public class GetProvider {
+public class GetProviderId {
+	@Getter
 	public static class Response {
 		private final String providerId;
 

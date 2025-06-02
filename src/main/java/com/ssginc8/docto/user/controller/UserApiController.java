@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,7 @@ import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
-import com.ssginc8.docto.user.service.dto.GetProvider;
+import com.ssginc8.docto.user.service.dto.GetProviderId;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.ResetPassword;
 import com.ssginc8.docto.user.service.dto.SendVerifyCode;
@@ -47,14 +46,16 @@ public class UserApiController {
 	private final CookieUtil cookieUtil;
 
 	@GetMapping("/auth/session/provider-id")
-	public GetProvider.Response getProviderId(HttpSession session) {
+	public GetProviderId.Response getProviderId(HttpSession session) {
 		String providerId = (String)session.getAttribute("providerId");
 
 		if (Objects.isNull(providerId)) {
 			return null;
 		}
 
-		return GetProvider.Response.builder()
+		log.info("providerId : " + providerId);
+
+		return GetProviderId.Response.builder()
 			.providerId(providerId).build();
 	}
 
