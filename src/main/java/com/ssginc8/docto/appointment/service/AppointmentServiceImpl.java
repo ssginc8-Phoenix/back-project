@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,7 @@ import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
+import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -29,7 +29,6 @@ import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
-import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.UserService;
@@ -53,7 +52,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private final AppointmentValidator appointmentValidator;
 
-	/*
+	/**
 	 * 진료 예약 리스트 조회
 	 * 검색 필터링 조건: hospitalId, doctorId, patientGuardianId
 	 * 병원, 의사, 환자, 보호자 입장에서 검색 가능
@@ -66,6 +65,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointments.map(AppointmentListResponse::fromEntity);
 	}
 
+	/**
+	 * Token의 정보로 Appointment List 가져오기
+	 */
 	@Override
 	public Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable) {
 		// 1. 로그인한 사용자 가져오기
@@ -86,12 +88,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable)
 					.map(AppointmentListResponse::fromEntity);
 			default:
-				throw new AccessDeniedException("해당 역할은 예약 조회 권한이 없습니다.");
+				throw new RoleNotFoundException();
 		}
 	}
 
-	/*
-	 * 진료 예약 단건 조회
+	/**
+	 * 진료 예약의 단건 조회
 	 */
 	@Transactional(readOnly = true)
 	@Override
@@ -102,7 +104,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return AppointmentResponse.fromEntity(appointment, qaPost);
 	}
 
-	/*
+	/**
 	 * 진료 예약 접수
 	 * 접수 시 STATUS.REQUESTED
 	 * 병원 확인 후 승인 -> CONFIRMED => 이 과정은 updateAppointmentStatus로 관리
@@ -113,7 +115,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public void requestAppointment(AppointmentRequest request) {
 		// 1. 보호자 (user)와 환자 (patient) 조회
 		User guardian = userProvider.getUserById(request.getUserId());
-		Patient patient = patientProvider.getPatientById(request.getPatientId());
+		Patient patient = patientProvider.getActivePatient(request.getPatientId());
 		
 		// 2. 보호자-환자 관계 유효성 검사
 		PatientGuardian patientGuardian = patientGuardianProvider.validateAndGetPatientGuardian(guardian, patient);
@@ -162,7 +164,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		}
 	}
 
-	/*
+	/**
 	 * 진료 상태 업데이트
 	 */
 	@Transactional
@@ -179,7 +181,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
 
-	/*
+	/**
 	 * 재예약: 기존 예약에서 예약 시간 변경
 	 */
 	@Transactional

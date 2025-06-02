@@ -29,6 +29,9 @@ public class QAppointmentRepoImpl implements QAppointmentRepo {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
+	/**
+	 * Admin의 예약 리스트 조회 (조건 : 환자 혹은 보호자의 userId, hospitalId, doctorId)
+	 */
 	@Override
 	public Page<Appointment> findAllByCondition(AppointmentSearchCondition condition, Pageable pageable) {
 		QAppointment appointment = QAppointment.appointment;

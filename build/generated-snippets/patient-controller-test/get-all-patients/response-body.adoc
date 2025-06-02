@@ -1,40 +1,83 @@
 [source,json,options="nowrap"]
 ----
-[ {
-  "patientId" : 7,
-  "userId" : 2,
-  "residentRegistrationNumber" : "111111-1111111"
-}, {
-  "patientId" : 10,
-  "userId" : 4,
-  "residentRegistrationNumber" : "432123-2141524"
-}, {
-  "patientId" : 11,
-  "userId" : 5,
-  "residentRegistrationNumber" : "432123-2141524"
-}, {
-  "patientId" : 13,
-  "userId" : 6,
-  "residentRegistrationNumber" : "432123-2141524"
-}, {
-  "patientId" : 14,
-  "userId" : 1,
-  "residentRegistrationNumber" : "900101-1234567"
-}, {
-  "patientId" : 17,
-  "userId" : 7,
-  "residentRegistrationNumber" : "800101-1234567"
-}, {
-  "patientId" : 32,
-  "userId" : 8,
-  "residentRegistrationNumber" : "900101-1234567"
-}, {
-  "patientId" : 34,
-  "userId" : 9,
-  "residentRegistrationNumber" : "900101-1234567"
-}, {
-  "patientId" : 35,
-  "userId" : 10,
-  "residentRegistrationNumber" : "900101-1234567"
-} ]
+{
+  "content" : [ {
+    "patientId" : 2,
+    "userId" : 2,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 3,
+    "userId" : 3,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 4,
+    "userId" : 5,
+    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
+  }, {
+    "patientId" : 5,
+    "userId" : 6,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 7,
+    "userId" : 10,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 8,
+    "userId" : 12,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 9,
+    "userId" : 15,
+    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
+  }, {
+    "patientId" : 10,
+    "userId" : 16,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 12,
+    "userId" : 20,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 13,
+    "userId" : 22,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 14,
+    "userId" : 25,
+    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
+  }, {
+    "patientId" : 15,
+    "userId" : 26,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
+    "patientId" : 17,
+    "userId" : 30,
+    "residentRegistrationNumber" : "900101-1234567"
+  } ],
+  "pageable" : {
+    "pageNumber" : 0,
+    "pageSize" : 20,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "last" : true,
+  "totalElements" : 13,
+  "totalPages" : 1,
+  "first" : true,
+  "size" : 20,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "sorted" : false,
+    "unsorted" : true
+  },
+  "numberOfElements" : 13,
+  "empty" : false
+}
 ----

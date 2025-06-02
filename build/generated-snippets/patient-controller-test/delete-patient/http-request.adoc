@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-DELETE /api/v1/patients/34 HTTP/1.1
+DELETE /api/v1/patients/21 HTTP/1.1
 Host: localhost:8080
 
 ----

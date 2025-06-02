@@ -1,8 +1,4 @@
 [source,json,options="nowrap"]
 ----
-{
-  "patientId" : 37,
-  "userId" : 12,
-  "residentRegistrationNumber" : "010101-2345678"
-}
+24
 ----

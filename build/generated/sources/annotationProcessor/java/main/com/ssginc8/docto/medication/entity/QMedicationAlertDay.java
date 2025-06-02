@@ -20,13 +20,24 @@ public class QMedicationAlertDay extends EntityPathBase<MedicationAlertDay> {
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QMedicationAlertDay medicationAlertDay1 = new QMedicationAlertDay("medicationAlertDay1");
+    public static final QMedicationAlertDay medicationAlertDay = new QMedicationAlertDay("medicationAlertDay");
+
+    public final com.ssginc8.docto.global.base.QBaseTimeEntity _super = new com.ssginc8.docto.global.base.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final EnumPath<java.time.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", java.time.DayOfWeek.class);
 
-    public final NumberPath<Long> medicationAlertDay = createNumber("medicationAlertDay", Long.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
+    public final NumberPath<Long> medicationAlertDayId = createNumber("medicationAlertDayId", Long.class);
 
     public final QMedicationAlertTime medicationAlertTime;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QMedicationAlertDay(String variable) {
         this(MedicationAlertDay.class, forVariable(variable), INITS);

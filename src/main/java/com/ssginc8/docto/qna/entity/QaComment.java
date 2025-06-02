@@ -1,7 +1,5 @@
 package com.ssginc8.docto.qna.entity;
 
-
-
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;

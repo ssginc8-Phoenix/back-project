@@ -4,6 +4,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -69,6 +70,7 @@ public class AppointmentControllerTest {
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
+			.apply(springSecurity())
 			.alwaysDo(MockMvcResultHandlers.print())
 			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 방지
@@ -242,7 +244,7 @@ public class AppointmentControllerTest {
 	}
 
 	private Token makeTokenByHospitalAdmin() {
-		User user = User.createUserByEmail("mang112@naver.com", "Fkdlej5115",
+		User user = User.createUserByEmail("mang114@naver.com", "Fkdlej5115",
 			"맹구", "010-2222-2222", "어딘가", Role.HOSPITAL_ADMIN, null);
 
 		user = userRepo.save(user);

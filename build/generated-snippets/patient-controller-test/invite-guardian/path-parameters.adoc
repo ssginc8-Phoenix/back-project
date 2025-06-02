@@ -1,0 +1,8 @@
+.+/api/v1/guardians/{patientId}/invite+
+|===
+|Parameter|Description
+
+|`+patientId+`
+|환자 ID
+
+|===
