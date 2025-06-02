@@ -6,6 +6,7 @@ import com.ssginc8.docto.medication.repo.MedicationLogRepo;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.global.error.exception.medicationException.MedicationNotFoundException;
+import com.ssginc8.docto.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,10 +23,11 @@ public class MedicationProvider {
 	private final MedicationInformationRepo medicationInformationRepo;
 	private final MedicationLogRepo medicationLogRepo;
 	private final UserProvider userProvider;
+	private final UserServiceImpl userService;
 
 	@Transactional(readOnly = true)
 	public Page<MedicationLog> getMedicationLogsByCurrentUser(Pageable pageable) {
-		User currentUser = userProvider.getCurrentUserFromToken();
+		User currentUser = userService.getUserFromUuid();
 		return medicationLogRepo.findByMedication_User_UserIdAndDeletedAtIsNull(currentUser.getUserId(), pageable);
 	}
 
@@ -46,7 +48,7 @@ public class MedicationProvider {
 
 	@Transactional(readOnly = true)
 	public User getCurrentUserFromToken() {
-		return userProvider.getCurrentUserFromToken();
+		return userService.getUserFromUuid();
 	}
 
 	@Transactional(readOnly = true)
