@@ -2,6 +2,7 @@ package com.ssginc8.docto.guardian.service;
 
 import java.util.List;
 
+import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 
@@ -22,5 +23,9 @@ public interface GuardianService {
 
 	void deleteMapping(Long guardianId, Long patientId);
 
-	List<PatientSummaryResponse> getAllAcceptedMappings();
+	List<PatientSummaryResponse> getAllAcceptedMappings(Long guardianId);
+
+	GuardianInviteResponse inviteGuardian(Long patientId, String guardianEmail);
+
+
 }

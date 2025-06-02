@@ -1,0 +1,16 @@
+|===
+|Parameter|Description
+
+|`+name+`
+|사용자 이름
+
+|`+email+`
+|사용자 이메일
+
+|`+phone+`
+|휴대폰 번호
+
+|`+address+`
+|주소
+
+|===

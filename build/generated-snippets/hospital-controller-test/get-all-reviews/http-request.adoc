@@ -1,0 +1,6 @@
+[source,http,options="nowrap"]
+----
+GET /api/v1/hospitals/2/reviews?page=0&size=5 HTTP/1.1
+Host: localhost:8080
+
+----

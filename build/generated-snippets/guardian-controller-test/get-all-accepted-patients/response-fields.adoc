@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+[].patientId+`
+|`+Number+`
+|환자 식별자
+
+|`+[].name+`
+|`+String+`
+|환자 이름
+
+|`+[].residentRegistrationNumber+`
+|`+String+`
+|환자 주민등록번호
+
+|===

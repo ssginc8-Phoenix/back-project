@@ -1,0 +1,8 @@
+[source,json,options="nowrap"]
+----
+{
+  "password" : "1qa12a",
+  "email" : "avbv@naver.com",
+  "specialization" : "PSYCHIATRY"
+}
+----

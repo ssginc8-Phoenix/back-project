@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/doctors HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 249
+Host: localhost:8080
+
+{
+  "hospitalId" : 22,
+  "specialization" : "DERMATOLOGY",
+  "username" : "dr.jjh",
+  "password" : "asd123",
+  "email" : "jjh1@naver.com",
+  "login_type" : "EMAIL",
+  "role" : "DOCTOR",
+  "suspended" : false,
+  "uuid" : "asd123123111111"
+}
+----

@@ -26,6 +26,12 @@ public enum ErrorCode {
 	// Patient 관련 에러 (P_)
 	PATIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "환자 정보를 찾을 수 없습니다."),
 
+	// Guardian 관련 에러 (GDN_)
+	GUARDIAN_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_001", "보호자 요청 정보를 찾을 수 없습니다."),
+	GUARDIAN_MAPPING_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_002", "보호자-환자 매핑 정보를 찾을 수 없습니다."),
+	INVALID_INVITE_CODE(HttpStatus.BAD_REQUEST, "GDN_003", "유효하지 않은 초대 코드입니다."),
+	INVALID_GUARDIAN_STATUS(HttpStatus.BAD_REQUEST, "GDN_004", "유효하지 않은 보호자 상태입니다."),
+
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
 	EMAIL_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "M_002", "이메일 인증에 실패하였습니다."),

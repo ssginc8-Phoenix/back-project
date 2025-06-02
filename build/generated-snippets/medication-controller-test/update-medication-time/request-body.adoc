@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "newTimeToTake" : "23:30:34.8493821",
+  "newDays" : [ "WEDNESDAY", "FRIDAY" ]
+}
+----

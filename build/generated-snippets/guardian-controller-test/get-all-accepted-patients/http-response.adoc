@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 103
+
+[{"patientId":40,"name":"guardian-user","residentRegistrationNumber":"암호화된주민등록번호"}]
+----

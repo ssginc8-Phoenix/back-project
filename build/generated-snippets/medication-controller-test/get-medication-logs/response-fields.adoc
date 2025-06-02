@@ -1,0 +1,20 @@
+|===
+|Path|Type|Description
+
+|`+content[].medicationLogId+`
+|`+Number+`
+|복약 로그 ID
+
+|`+content[].medicationId+`
+|`+Number+`
+|약 ID
+
+|`+content[].status+`
+|`+String+`
+|복약 상태 (TAKEN, MISSED)
+
+|`+content[].timeToTake+`
+|`+String+`
+|복약 예정 시간
+
+|===

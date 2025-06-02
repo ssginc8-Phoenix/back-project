@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ssginc8.docto.patients.controller.PatientControllerTest" tests="3" skipped="0" failures="3" errors="0" timestamp="2025-06-01T11:30:35.088Z" hostname="WIN-OJI72659EU9" time="0.02">
+  <properties/>
+  <testcase name="환자 삭제 (소프트 삭제)" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.007">
+    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <testcase name="환자 전체 조회" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.007">
+    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <testcase name="환자 등록" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.004">
+    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
+	at java.base/java.lang.Enum.valueOf(Enum.java:273)
+	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
+	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
+	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <system-out><![CDATA[2025-06-01T20:30:35.067+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.patients.controller.PatientControllerTest]: PatientControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-01T20:30:35.085+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.patients.controller.PatientControllerTest
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.100+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

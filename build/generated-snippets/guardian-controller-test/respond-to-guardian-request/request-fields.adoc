@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+status+`
+|`+String+`
+|수락(ACCEPTED) 또는 거절(REJECTED) 상태
+
+|`+inviteCode+`
+|`+String+`
+|초대 코드
+
+|===
