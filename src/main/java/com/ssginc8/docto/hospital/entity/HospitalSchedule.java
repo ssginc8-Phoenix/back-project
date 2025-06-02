@@ -58,36 +58,33 @@ public class HospitalSchedule {
 	@Column(nullable = false, name = "lunch_end")
 	private LocalTime lunchEnd;
 
-	private HospitalSchedule(Hospital hospital, Long hospitalScheduleId, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime lunchStart, LocalTime lunchEnd ) {
 
-		this.hospitalScheduleId = hospitalScheduleId;
+
+	public HospitalSchedule(Hospital hospital, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime lunchStart, LocalTime lunchEnd) {
 		this.hospital = hospital;
 		this.dayOfWeek = dayOfWeek;
 		this.openTime = openTime;
 		this.closeTime = closeTime;
 		this.lunchStart = lunchStart;
 		this.lunchEnd = lunchEnd;
-
 	}
 
 	public static HospitalSchedule create(
 
 		Hospital hospital,
-		Long hospitalScheduleId,
 		DayOfWeek dayOfWeek,
 		LocalTime openTime,
 		LocalTime closeTime,
 		LocalTime lunchStart,
 		LocalTime lunchEnd) {
-		return new HospitalSchedule(hospital, hospitalScheduleId, dayOfWeek, openTime, closeTime, lunchStart, lunchEnd);
-	}
-	public void updateSchedule(HospitalScheduleRequest dto) {
-
-		this.dayOfWeek = dto.getDayOfWeek();
-		this.openTime = dto.getOpenTime();
-		this.closeTime = dto.getCloseTime();
-		this.lunchStart = dto.getLunchStart();
-		this.lunchEnd = dto.getLunchEnd();
+		return new HospitalSchedule(hospital,dayOfWeek, openTime, closeTime, lunchStart, lunchEnd);
 	}
 
+	public void updateSchedule(DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime lunchStart, LocalTime lunchEnd) {
+		this.dayOfWeek = dayOfWeek;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+		this.lunchStart = lunchStart;
+		this.lunchEnd = lunchEnd;
+	}
 }

@@ -3,6 +3,8 @@ package com.ssginc8.docto.hospital.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.ssginc8.docto.hospital.entity.Hospital;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +22,6 @@ public class HospitalResponse {
 
 	private Long hospitalId;
 
-	private Long userId;
-
 	private String name;
 
 	private String address;
@@ -38,9 +38,17 @@ public class HospitalResponse {
 
 	private Long waiting;
 
-	private String businessRegistrationNumber;
-
 	private List<String> serviceNames;
 
+	public HospitalResponse(Long hospitalId, String name) {
+		 this.hospitalId = hospitalId;
+		 this.name = name;
+	}
 
+	public HospitalResponse(Hospital hospital) {
+		this.hospitalId = hospital.getHospitalId();
+		this.name = hospital.getName();
+		this.latitude = hospital.getLatitude();
+		this.longitude = hospital.getLongitude();
+	}
 }

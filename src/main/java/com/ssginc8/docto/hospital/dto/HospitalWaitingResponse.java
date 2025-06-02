@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 
-public class HospitalWaiting {
+public class HospitalWaitingResponse {
 
 
 
