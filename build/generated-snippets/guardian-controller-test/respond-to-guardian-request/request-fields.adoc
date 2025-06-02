@@ -3,10 +3,10 @@
 
 |`+status+`
 |`+String+`
-|변경할 권한 상태(ACCEPTED/REJECTED)
+|수락(ACCEPTED) 또는 거절(REJECTED) 상태
 
 |`+inviteCode+`
 |`+String+`
-|초대코드 (User.uuid)
+|초대 코드
 
 |===

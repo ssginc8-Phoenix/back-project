@@ -1,7 +1,4 @@
 [source,json,options="nowrap"]
 ----
-{
-  "status" : "ACCEPTED",
-  "inviteCode" : "test-invite-014"
-}
+{"status":"ACCEPTED","inviteCode":"test-invite-code"}
 ----

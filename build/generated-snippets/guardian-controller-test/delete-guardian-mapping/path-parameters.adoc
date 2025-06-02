@@ -3,9 +3,9 @@
 |Parameter|Description
 
 |`+userId+`
-|보호자(유저) 식별자
+|보호자 유저 ID
 
 |`+patientId+`
-|환자 식별자
+|환자 ID
 
 |===

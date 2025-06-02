@@ -3,6 +3,6 @@
 |Parameter|Description
 
 |`+requestId+`
-|보호자 요청 식별자
+|보호자 권한 요청 ID
 
 |===

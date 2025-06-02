@@ -1,11 +1,5 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 500 Internal Server Error
-Content-Type: application/json;charset=UTF-8
-Content-Length: 79
+HTTP/1.1 200 OK
 
-{
-  "message" : "서버 에러가 발생했습니다.",
-  "code" : "G_002"
-}
 ----
