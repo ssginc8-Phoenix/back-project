@@ -25,6 +25,7 @@ public enum ErrorCode {
 
 	// Patient 관련 에러 (P_)
 	PATIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "환자 정보를 찾을 수 없습니다."),
+	ENCRYPTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "G_004", "개인정보 암호화에 실패했습니다."),
 
 	// Guardian 관련 에러 (GDN_)
 	GUARDIAN_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_001", "보호자 요청 정보를 찾을 수 없습니다."),
@@ -57,6 +58,8 @@ public enum ErrorCode {
 	INVALID_DOCTOR_SCHEDULE_TIME(HttpStatus.BAD_REQUEST, "D_008", "의사 스케줄이 병원 운영시간 범위를 벗어났습니다."),
 	DOCTOR_LUNCH_TIME_CONFLICT(HttpStatus.BAD_REQUEST, "D_009", "의사의 점심시간이 병원 점심시간 범위를 벗어났습니다."),
 	DOCTOR_ALREADY_EXISTS(HttpStatus.CONFLICT,"D_010", "이미 의사로 등록된 사용자입니다"),
+	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_011", "진료 가능 인원은 음수일 수 없습니다."),
+	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_012", "해당 시간에는 이미 예약이 가득 찼습니다."),
   
 	//Hospital 관련 에러(H_)
 	HOSPITAL_NOT_FOUND(HttpStatus.NOT_FOUND, "H_001", "해당 병원은 존재하지 않습니다."),
@@ -84,17 +87,10 @@ public enum ErrorCode {
 	INVALID_PAYMENT_VALUE(HttpStatus.BAD_REQUEST, "A_011", "유효하지 않은 결제 방법입니다."),
 	ROLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "A_012", "유효하지 않은 역할입니다."),
 
-	// Doctor 관련 에러 (D_)
-	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_001", "진료 가능 인원은 음수일 수 없습니다."),
-	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_002", "해당 시간에는 이미 예약이 가득 찼습니다."),
-
-	// Doctor Schedule 관련 에러 (DS_)
-	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다."),
-
 	// Medication 관련 에러 (MD_)
 	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),
 	MEDICATION_ALERT_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_002", "복약 시간을 찾을 수 없습니다."),
-	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다.");
+	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다."),
   
   // Review 관련 에러(R_)
 	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다.");

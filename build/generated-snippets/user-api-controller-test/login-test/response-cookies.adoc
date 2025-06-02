@@ -1,0 +1,10 @@
+|===
+|Name|Description
+
+|`+accessToken+`
+|Access 토큰 쿠키
+
+|`+refreshToken+`
+|Refresh 토큰 쿠키
+
+|===

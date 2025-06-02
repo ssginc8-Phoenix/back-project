@@ -1,14 +1,11 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
+HTTP/1.1 404 Not Found
 Content-Type: application/json;charset=UTF-8
-Content-Length: 177
+Content-Length: 73
 
 {
-  "qnaPostId" : 14,
-  "appointmentId" : 5,
-  "content" : "수정된 내용",
-  "createdAt" : "2025-06-01T01:39:33.396761",
-  "updatedAt" : "2025-06-01T01:39:33.396761"
+  "message" : "Q&A 게시글이 없습니다.",
+  "code" : "Q_001"
 }
 ----

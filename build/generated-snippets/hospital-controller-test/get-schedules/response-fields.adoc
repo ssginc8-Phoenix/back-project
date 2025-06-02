@@ -1,0 +1,28 @@
+|===
+|Path|Type|Description
+
+|`+[].hospitalScheduleId+`
+|`+Number+`
+|스케줄 ID
+
+|`+[].dayOfWeek+`
+|`+String+`
+|요일
+
+|`+[].openTime+`
+|`+String+`
+|영업 시작 시간
+
+|`+[].closeTime+`
+|`+String+`
+|영업 종료 시간
+
+|`+[].lunchStart+`
+|`+String+`
+|점심 시작 시간
+
+|`+[].lunchEnd+`
+|`+String+`
+|점심 종료 시간
+
+|===

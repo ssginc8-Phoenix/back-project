@@ -1,40 +1,7 @@
 [source,json,options="nowrap"]
 ----
 {
-  "content" : [ {
-    "reviewId" : 125,
-    "hospitalId" : 2,
-    "hospitalName" : "Testhospital",
-    "contents" : "업데이트된 리뷰 내용입니다.",
-    "createdAt" : "2025-06-01T02:13:56.27591",
-    "updatedAt" : "2025-06-01T02:16:46.098494",
-    "reportCount" : 1,
-    "keywords" : [ "THOROUGH", "WANT_RETURN" ]
-  } ],
-  "pageable" : {
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "sort" : {
-      "empty" : true,
-      "unsorted" : true,
-      "sorted" : false
-    },
-    "offset" : 0,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "last" : true,
-  "totalPages" : 1,
-  "totalElements" : 1,
-  "size" : 5,
-  "number" : 0,
-  "sort" : {
-    "empty" : true,
-    "unsorted" : true,
-    "sorted" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
+  "message" : "�씤利앹씠 �븘�슂�빀�땲�떎.",
+  "code" : "T_003"
 }
 ----

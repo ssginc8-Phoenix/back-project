@@ -1,35 +1,11 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
+HTTP/1.1 404 Not Found
 Content-Type: application/json;charset=UTF-8
-Content-Length: 500
+Content-Length: 86
 
 {
-  "content" : [ ],
-  "pageable" : {
-    "pageNumber" : 0,
-    "pageSize" : 10,
-    "sort" : {
-      "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
-    },
-    "offset" : 0,
-    "paged" : true,
-    "unpaged" : false
-  },
-  "last" : true,
-  "totalElements" : 0,
-  "totalPages" : 0,
-  "first" : true,
-  "size" : 10,
-  "number" : 0,
-  "sort" : {
-    "empty" : true,
-    "sorted" : false,
-    "unsorted" : true
-  },
-  "numberOfElements" : 0,
-  "empty" : true
+  "message" : "해당 병원은 존재하지 않습니다.",
+  "code" : "H_001"
 }
 ----

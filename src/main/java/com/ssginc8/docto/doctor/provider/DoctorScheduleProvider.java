@@ -22,12 +22,7 @@ import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorSch
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
-import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
-import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentInLunchTimeException;
-import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentOutOfWorkingHoursException;
-import com.ssginc8.docto.global.error.exception.doctorScheduleException.DoctorScheduleNotFoundException;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Component

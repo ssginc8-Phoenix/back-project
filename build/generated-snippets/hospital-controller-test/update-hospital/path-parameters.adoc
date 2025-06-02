@@ -1,0 +1,8 @@
+.+/api/v1/hospitals/{hospitalId}+
+|===
+|Parameter|Description
+
+|`+hospitalId+`
+|병원 ID
+
+|===

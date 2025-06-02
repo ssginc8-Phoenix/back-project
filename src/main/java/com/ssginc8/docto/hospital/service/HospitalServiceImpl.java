@@ -186,7 +186,7 @@ public class HospitalServiceImpl implements HospitalService {
 
 		// 4. 의사 삭제
 		for (Doctor doctor : doctors) {
-			doctor.softDelete();
+			doctor.delete();
 		}
 
 		// 5. 병원의 서비스 삭제

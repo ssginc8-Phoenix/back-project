@@ -1,50 +1,325 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ssginc8.docto.patients.controller.PatientControllerTest" tests="3" skipped="0" failures="3" errors="0" timestamp="2025-06-01T11:30:35.088Z" hostname="WIN-OJI72659EU9" time="0.02">
+<testsuite name="com.ssginc8.docto.patients.controller.PatientControllerTest" tests="4" skipped="0" failures="2" errors="0" timestamp="2025-06-02T07:33:48.471Z" hostname="SOOMIN" time="0.211">
   <properties/>
-  <testcase name="환자 삭제 (소프트 삭제)" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.007">
-    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
-	at java.base/java.lang.Enum.valueOf(Enum.java:273)
-	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
-	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
-	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+  <testcase name="보호자 초대" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.008">
+    <failure message="org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_user_pkey&quot; 고유 제약 조건을 위반함&#10;  Detail: (user_id)=(5) 키가 이미 있습니다.] [insert into tbl_user (address,created_at,deleted_at,email,is_suspended,login_type,name,password,penalty,phone,file_id,provider_id,role,suspended_at,suspension_expires_at,updated_at,uuid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into tbl_user (address,created_at,deleted_at,email,is_suspended,login_type,name,password,penalty,phone,file_id,provider_id,role,suspended_at,suspension_expires_at,updated_at,uuid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; constraint [null]" type="org.springframework.dao.DataIntegrityViolationException">org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_user_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (user_id)=(5) 키가 이미 있습니다.] [insert into tbl_user (address,created_at,deleted_at,email,is_suspended,login_type,name,password,penalty,phone,file_id,provider_id,role,suspended_at,suspension_expires_at,updated_at,uuid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into tbl_user (address,created_at,deleted_at,email,is_suspended,login_type,name,password,penalty,phone,file_id,provider_id,role,suspended_at,suspension_expires_at,updated_at,uuid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at app//org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at app//org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy180.save(Unknown Source)
+	at app//com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:88)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_user_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (user_id)=(5) 키가 이미 있습니다.] [insert into tbl_user (address,created_at,deleted_at,email,is_suspended,login_type,name,password,penalty,phone,file_id,provider_id,role,suspended_at,suspension_expires_at,updated_at,uuid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.id.insert.GetGeneratedKeysDelegate.performMutation(GetGeneratedKeysDelegate.java:116)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:47)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.doStaticInserts(InsertCoordinatorStandard.java:194)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.coordinateInsert(InsertCoordinatorStandard.java:132)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.insert(InsertCoordinatorStandard.java:95)
+	at app//org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:85)
+	at app//org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682)
+	at app//org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293)
+	at app//org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274)
+	at app//org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:393)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:307)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:223)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761)
+	at app//org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.14/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at app//org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy171.persist(Unknown Source)
+	at app//org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:636)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.14/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at app//org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at app//org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515)
+	at app//org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284)
+	at app//org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:731)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174)
+	at app//org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: 오류: 중복된 키 값이 &quot;tbl_user_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (user_id)=(5) 키가 이미 있습니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 59 more
 </failure>
   </testcase>
-  <testcase name="환자 전체 조회" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.007">
-    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
-	at java.base/java.lang.Enum.valueOf(Enum.java:273)
-	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
-	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
-	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+  <testcase name="환자 삭제 (소프트 삭제)" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.031">
+    <failure message="org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_patient_pkey&quot; 고유 제약 조건을 위반함&#10;  Detail: (patient_id)=(1) 키가 이미 있습니다.] [insert into tbl_patient (created_at,deleted_at,resident_registration_number,updated_at,user_id) values (?,?,?,?,?)]; SQL [insert into tbl_patient (created_at,deleted_at,resident_registration_number,updated_at,user_id) values (?,?,?,?,?)]; constraint [null]" type="org.springframework.dao.DataIntegrityViolationException">org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_patient_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (patient_id)=(1) 키가 이미 있습니다.] [insert into tbl_patient (created_at,deleted_at,resident_registration_number,updated_at,user_id) values (?,?,?,?,?)]; SQL [insert into tbl_patient (created_at,deleted_at,resident_registration_number,updated_at,user_id) values (?,?,?,?,?)]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at app//org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at app//org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy181.save(Unknown Source)
+	at app//com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:92)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: 중복된 키 값이 &quot;tbl_patient_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (patient_id)=(1) 키가 이미 있습니다.] [insert into tbl_patient (created_at,deleted_at,resident_registration_number,updated_at,user_id) values (?,?,?,?,?)]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.id.insert.GetGeneratedKeysDelegate.performMutation(GetGeneratedKeysDelegate.java:116)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:47)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.doStaticInserts(InsertCoordinatorStandard.java:194)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.coordinateInsert(InsertCoordinatorStandard.java:132)
+	at app//org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.insert(InsertCoordinatorStandard.java:95)
+	at app//org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:85)
+	at app//org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682)
+	at app//org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293)
+	at app//org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274)
+	at app//org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:393)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:307)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:223)
+	at app//org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79)
+	at app//org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761)
+	at app//org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.14/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at app//org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy171.persist(Unknown Source)
+	at app//org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:636)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.14/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.14/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at app//org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at app//org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at app//org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515)
+	at app//org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284)
+	at app//org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:731)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174)
+	at app//org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: 오류: 중복된 키 값이 &quot;tbl_patient_pkey&quot; 고유 제약 조건을 위반함
+  Detail: (patient_id)=(1) 키가 이미 있습니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 59 more
 </failure>
   </testcase>
-  <testcase name="환자 등록" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.004">
-    <failure message="java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No enum constant com.ssginc8.docto.user.entity.LoginType.테스트유저
-	at java.base/java.lang.Enum.valueOf(Enum.java:273)
-	at com.ssginc8.docto.user.entity.LoginType.valueOf(LoginType.java:3)
-	at com.ssginc8.docto.user.entity.User.createUser(User.java:201)
-	at com.ssginc8.docto.patients.controller.PatientControllerTest.setUp(PatientControllerTest.java:71)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-</failure>
-  </testcase>
-  <system-out><![CDATA[2025-06-01T20:30:35.067+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.patients.controller.PatientControllerTest]: PatientControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-01T20:30:35.085+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.patients.controller.PatientControllerTest
-2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:35.090+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
-2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:35.099+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:35.100+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:35.106+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+  <testcase name="환자 전체 조회" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.051"/>
+  <testcase name="환자 등록" classname="com.ssginc8.docto.patients.controller.PatientControllerTest" time="0.118"/>
+  <system-out><![CDATA[2025-06-02T16:33:48.429+09:00  INFO 18716 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.patients.controller.PatientControllerTest]: PatientControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-02T16:33:48.469+09:00  INFO 18716 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.patients.controller.PatientControllerTest
+2025-06-02T16:33:48.473+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.473+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.473+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-02T16:33:48.476+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23505
+2025-06-02T16:33:48.476+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: 중복된 키 값이 "tbl_user_pkey" 고유 제약 조건을 위반함
+  Detail: (user_id)=(5) 키가 이미 있습니다.
+2025-06-02T16:33:48.482+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.482+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.482+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_patient
+        (created_at, deleted_at, resident_registration_number, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-06-02T16:33:48.507+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23505
+2025-06-02T16:33:48.507+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: 중복된 키 값이 "tbl_patient_pkey" 고유 제약 조건을 위반함
+  Detail: (patient_id)=(1) 키가 이미 있습니다.
+2025-06-02T16:33:48.515+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.515+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.516+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_patient
+        (created_at, deleted_at, resident_registration_number, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        p1_0.patient_id,
+        p1_0.created_at,
+        p1_0.deleted_at,
+        p1_0.resident_registration_number,
+        p1_0.updated_at,
+        p1_0.user_id 
+    from
+        tbl_patient p1_0 
+    where
+        p1_0.deleted_at is null 
+    fetch
+        first ? rows only
+2025-06-02T16:33:48.566+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.566+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.567+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_patient
+        (created_at, deleted_at, resident_registration_number, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tbl_user
+        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.deleted_at,
+        u1_0.email,
+        u1_0.is_suspended,
+        u1_0.login_type,
+        u1_0.name,
+        u1_0.password,
+        u1_0.penalty,
+        u1_0.phone,
+        u1_0.file_id,
+        u1_0.provider_id,
+        u1_0.role,
+        u1_0.suspended_at,
+        u1_0.suspension_expires_at,
+        u1_0.updated_at,
+        u1_0.uuid 
+    from
+        tbl_user u1_0 
+    where
+        u1_0.user_id=?
+Hibernate: 
+    insert 
+    into
+        tbl_patient
+        (created_at, deleted_at, resident_registration_number, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

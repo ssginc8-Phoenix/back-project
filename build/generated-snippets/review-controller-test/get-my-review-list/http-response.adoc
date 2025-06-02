@@ -17,8 +17,8 @@ Content-Length: 498
     "pageSize" : 5,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
     "offset" : 0,
     "unpaged" : false,
@@ -31,8 +31,8 @@ Content-Length: 498
   "number" : 0,
   "sort" : {
     "empty" : true,
-    "sorted" : false,
-    "unsorted" : true
+    "unsorted" : true,
+    "sorted" : false
   },
   "first" : true,
   "numberOfElements" : 0,

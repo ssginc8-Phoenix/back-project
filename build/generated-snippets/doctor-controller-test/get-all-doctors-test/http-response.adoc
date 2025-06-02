@@ -2,34 +2,39 @@
 ----
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 500
+Content-Length: 647
 
 {
-  "content" : [ ],
+  "content" : [ {
+    "doctorId" : 1,
+    "specialization" : "CARDIOLOGY",
+    "username" : "한민상",
+    "hospitalName" : "강남헬스케어병원"
+  } ],
   "pageable" : {
     "pageNumber" : 0,
     "pageSize" : 10,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
     "offset" : 0,
-    "paged" : true,
-    "unpaged" : false
+    "unpaged" : false,
+    "paged" : true
   },
   "last" : true,
-  "totalElements" : 0,
-  "totalPages" : 0,
-  "first" : true,
+  "totalPages" : 1,
+  "totalElements" : 1,
   "size" : 10,
   "number" : 0,
   "sort" : {
     "empty" : true,
-    "sorted" : false,
-    "unsorted" : true
+    "unsorted" : true,
+    "sorted" : false
   },
-  "numberOfElements" : 0,
-  "empty" : true
+  "first" : true,
+  "numberOfElements" : 1,
+  "empty" : false
 }
 ----

@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-GET /api/v1/hospitals/44 HTTP/1.1
+GET /api/v1/hospitals/1 HTTP/1.1
 Host: localhost:8080
 
 ----

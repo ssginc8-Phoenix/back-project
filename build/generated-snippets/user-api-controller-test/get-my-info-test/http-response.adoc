@@ -11,7 +11,7 @@ X-Frame-Options: DENY
 Content-Length: 174
 
 {
-  "email" : "dong112@naver.com",
+  "email" : "dong123@naver.com",
   "name" : "짱구",
   "phone" : "010-1111-1111",
   "address" : "어딘가",

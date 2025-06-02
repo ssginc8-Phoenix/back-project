@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">10</div>
+<div class="counter">11</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.443s</div>
+<div class="counter">0.442s</div>
 <p>duration</p>
 </div>
 </td>
@@ -51,7 +51,7 @@
 </td>
 <td>
 <div class="infoBox failures" id="successRate">
-<div class="percent">23%</div>
+<div class="percent">15%</div>
 <p>successful</p>
 </div>
 </td>
@@ -79,7 +79,7 @@
 <a name="deleteHospital()"></a>
 <h3 class="failures">병원 삭제</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
@@ -92,15 +92,31 @@
 </span>
 </div>
 <div class="test">
-<a name="getHospitalById()"></a>
-<h3 class="failures">병원 상세 조회 테스트</h3>
+<a name="getAllReviews()"></a>
+<h3 class="failures">병원에서 리뷰 조회</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalById(HospitalControllerTest.java:121)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getAllReviews(HospitalControllerTest.java:396)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="getHospitalById()"></a>
+<h3 class="failures">병원 상세 조회 테스트</h3>
+<span class="code">
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalById(HospitalControllerTest.java:122)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
@@ -111,12 +127,12 @@
 <a name="getHospitalWaiting()"></a>
 <h3 class="failures">병원 웨이팅 조회</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalWaiting(HospitalControllerTest.java:360)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalWaiting(HospitalControllerTest.java:361)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
@@ -127,17 +143,15 @@
 <a name="getSchedules()"></a>
 <h3 class="failures">병원 영업시간 조회</h3>
 <span class="code">
-<pre>org.springframework.restdocs.snippet.SnippetException: Fields with the following paths were not found in the payload: [[].hospitalScheduleId, [].dayOfWeek, [].openTime, [].closeTime, [].lunchStart, [].lunchEnd]
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.validateFieldDocumentation(AbstractFieldsSnippet.java:218)
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.createModel(AbstractFieldsSnippet.java:160)
-	at app//org.springframework.restdocs.snippet.TemplatedSnippet.document(TemplatedSnippet.java:78)
-	at app//org.springframework.restdocs.generate.RestDocumentationGenerator.handle(RestDocumentationGenerator.java:191)
-	at app//org.springframework.restdocs.mockmvc.RestDocumentationResultHandler$1.handle(RestDocumentationResultHandler.java:77)
-	at app//org.springframework.test.web.servlet.MockMvc$1.andDo(MockMvc.java:219)
-	at app//com.ssginc8.docto.hospital.controller.HospitalControllerTest.getSchedules(HospitalControllerTest.java:224)
-	at java.base@17.0.13/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getSchedules(HospitalControllerTest.java:223)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </pre>
 </span>
 </div>
@@ -145,12 +159,12 @@
 <a name="saveHospitalTest()"></a>
 <h3 class="failures">병원 등록 API 테스트</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.saveHospitalTest(HospitalControllerTest.java:97)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.saveHospitalTest(HospitalControllerTest.java:98)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
@@ -161,7 +175,7 @@
 <a name="saveHospitalWaiting()"></a>
 <h3 class="failures">병원 웨이팅 등록</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
@@ -177,7 +191,7 @@
 <a name="saveSchedule()"></a>
 <h3 class="failures">병원 영업시간 등록</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
@@ -193,7 +207,7 @@
 <a name="updateHospital()"></a>
 <h3 class="failures">병원 정보 수정</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
@@ -209,12 +223,12 @@
 <a name="updateHospitalWaiting()"></a>
 <h3 class="failures">병원 웨이팅 수정</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.updateHospitalWaiting(HospitalControllerTest.java:378)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.updateHospitalWaiting(HospitalControllerTest.java:379)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
@@ -225,7 +239,7 @@
 <a name="updateSchedule()"></a>
 <h3 class="failures">병원 영업시간 수정</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;500&gt;
+<pre>java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
@@ -252,79 +266,79 @@
 <tr>
 <td class="failures">병원 삭제</td>
 <td class="failures">deleteHospital()</td>
-<td class="failures">0.033s</td>
+<td class="failures">0.022s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="success">병원 영업시간 삭제</td>
 <td class="success">deleteSchedule()</td>
-<td class="success">0.029s</td>
+<td class="success">0.040s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">병원 전체 리스트 조회 (어드민)</td>
 <td class="success">getAllHospitals()</td>
-<td class="success">0.041s</td>
+<td class="success">0.029s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="success">병원에서 리뷰 조회</td>
-<td class="success">getAllReviews()</td>
-<td class="success">0.036s</td>
-<td class="success">passed</td>
+<td class="failures">병원에서 리뷰 조회</td>
+<td class="failures">getAllReviews()</td>
+<td class="failures">0.033s</td>
+<td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 상세 조회 테스트</td>
 <td class="failures">getHospitalById()</td>
-<td class="failures">0.033s</td>
+<td class="failures">0.027s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 웨이팅 조회</td>
 <td class="failures">getHospitalWaiting()</td>
-<td class="failures">0.028s</td>
+<td class="failures">0.030s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 영업시간 조회</td>
 <td class="failures">getSchedules()</td>
-<td class="failures">0.046s</td>
+<td class="failures">0.029s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 등록 API 테스트</td>
 <td class="failures">saveHospitalTest()</td>
-<td class="failures">0.049s</td>
+<td class="failures">0.062s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 웨이팅 등록</td>
 <td class="failures">saveHospitalWaiting()</td>
-<td class="failures">0.029s</td>
+<td class="failures">0.035s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 영업시간 등록</td>
 <td class="failures">saveSchedule()</td>
-<td class="failures">0.028s</td>
+<td class="failures">0.031s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 정보 수정</td>
 <td class="failures">updateHospital()</td>
-<td class="failures">0.033s</td>
+<td class="failures">0.037s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 웨이팅 수정</td>
 <td class="failures">updateHospitalWaiting()</td>
-<td class="failures">0.027s</td>
+<td class="failures">0.035s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">병원 영업시간 수정</td>
 <td class="failures">updateSchedule()</td>
-<td class="failures">0.031s</td>
+<td class="failures">0.032s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
@@ -332,36 +346,38 @@
 <div class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-06-01T20:30:33.996+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.hospital.controller.HospitalControllerTest]: HospitalControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-01T20:30:34.019+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.hospital.controller.HospitalControllerTest
-2025-06-01T20:30:34.023+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.023+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.024+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+<pre>2025-06-02T16:33:47.765+09:00  INFO 18716 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.hospital.controller.HospitalControllerTest]: HospitalControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-02T16:33:47.808+09:00  INFO 18716 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.hospital.controller.HospitalControllerTest
+2025-06-02T16:33:47.813+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.813+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.813+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
-        r1_0.review_id,
-        r1_0.appointment_id,
-        r1_0.contents,
-        r1_0.created_at,
-        r1_0.deleted_at,
-        r1_0.doctor_id,
-        r1_0.hospital_id,
-        r1_0.report_count,
-        r1_0.updated_at,
-        r1_0.user_id 
+        h1_0.hospital_id,
+        h1_0.address,
+        h1_0.business_registration_number,
+        h1_0.created_at,
+        h1_0.deleted_at,
+        h1_0.introduction,
+        h1_0.latitude,
+        h1_0.longitude,
+        h1_0.name,
+        h1_0.notice,
+        h1_0.phone,
+        h1_0.updated_at,
+        h1_0.user_id,
+        h1_0.waiting 
     from
-        tbl_review r1_0 
-    join
         tbl_hospital h1_0 
-            on h1_0.hospital_id=r1_0.hospital_id 
     where
         h1_0.hospital_id=? 
-    fetch
-        first ? rows only
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.821+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.821+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/hospitals/2/reviews
+      Request URI = /api/v1/hospitals/1/reviews
        Parameters = {page=[0], size=[5]}
           Headers = []
              Body = null
@@ -376,7 +392,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = null
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -387,17 +403,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 200
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;content&quot;:[],&quot;pageable&quot;:{&quot;pageNumber&quot;:0,&quot;pageSize&quot;:5,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;offset&quot;:0,&quot;paged&quot;:true,&quot;unpaged&quot;:false},&quot;last&quot;:true,&quot;totalElements&quot;:0,&quot;totalPages&quot;:0,&quot;first&quot;:true,&quot;size&quot;:5,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;numberOfElements&quot;:0,&quot;empty&quot;:true}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.061+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.062+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.063+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:47.846+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.846+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.847+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -417,13 +433,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.072+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.072+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.861+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.862+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = PATCH
-      Request URI = /api/v1/hospitals/22/waiting
+      Request URI = /api/v1/hospitals/1/waiting
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;13&quot;]
              Body = {&quot;waiting&quot;:3}
@@ -431,14 +448,14 @@ MockHttpServletRequest:
 
 Handler:
              Type = com.ssginc8.docto.hospital.controller.HospitalController
-           Method = com.ssginc8.docto.hospital.controller.HospitalController#updateHospitalWaiting(Long, HospitalWaiting)
+           Method = com.ssginc8.docto.hospital.controller.HospitalController#updateHospitalWaiting(Long, HospitalWaitingRequest)
 
 Async:
     Async started = false
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -449,17 +466,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.088+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.088+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.089+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:47.882+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.882+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.882+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -479,13 +496,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.100+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.100+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.895+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.895+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = POST
-      Request URI = /api/v1/hospitals/22/schedules
+      Request URI = /api/v1/hospitals/1/schedules
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;230&quot;]
              Body = [{&quot;dayOfWeek&quot;:&quot;MONDAY&quot;,&quot;openTime&quot;:&quot;09:00:00&quot;,&quot;closeTime&quot;:&quot;18:00:00&quot;,&quot;lunchStart&quot;:&quot;12:00:00&quot;,&quot;lunchEnd&quot;:&quot;13:00:00&quot;},{&quot;dayOfWeek&quot;:&quot;TUESDAY&quot;,&quot;openTime&quot;:&quot;09:00:00&quot;,&quot;closeTime&quot;:&quot;18:00:00&quot;,&quot;lunchStart&quot;:&quot;12:00:00&quot;,&quot;lunchEnd&quot;:&quot;13:00:00&quot;}]
@@ -500,7 +518,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -511,17 +529,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.117+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.117+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.118+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:47.914+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.914+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.915+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -541,13 +559,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.125+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.125+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.921+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.921+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/hospitals/44
+      Request URI = /api/v1/hospitals/1
        Parameters = {}
           Headers = []
              Body = null
@@ -562,7 +581,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -573,37 +592,44 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.151+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.151+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.152+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:47.943+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.943+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.944+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
-        hs1_0.hospital_schedule_id,
-        hs1_0.close_time,
-        hs1_0.day_of_week,
-        hs1_0.hospital_id,
-        hs1_0.lunch_end,
-        hs1_0.lunch_start,
-        hs1_0.open_time 
+        h1_0.hospital_id,
+        h1_0.address,
+        h1_0.business_registration_number,
+        h1_0.created_at,
+        h1_0.deleted_at,
+        h1_0.introduction,
+        h1_0.latitude,
+        h1_0.longitude,
+        h1_0.name,
+        h1_0.notice,
+        h1_0.phone,
+        h1_0.updated_at,
+        h1_0.user_id,
+        h1_0.waiting 
     from
-        tbl_hospital_schedule hs1_0 
-    left join
         tbl_hospital h1_0 
-            on h1_0.hospital_id=hs1_0.hospital_id 
     where
-        h1_0.hospital_id=?
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.951+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.951+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/hospitals/22/schedules
+      Request URI = /api/v1/hospitals/1/schedules
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
              Body = null
@@ -618,7 +644,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = null
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -629,17 +655,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 200
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = []
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.198+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.199+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.200+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:47.972+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:47.973+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:47.973+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -659,16 +685,17 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.211+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.211+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:47.980+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:47.981+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = PATCH
-      Request URI = /api/v1/hospitals/22/schedules/66
+      Request URI = /api/v1/hospitals/1/schedules/2
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;116&quot;]
-             Body = {&quot;dayOfWeek&quot;:&quot;WEDNESDAY&quot;,&quot;openTime&quot;:&quot;08:30:00&quot;,&quot;closeTime&quot;:&quot;17:30:00&quot;,&quot;lunchStart&quot;:&quot;12:30:00&quot;,&quot;lunchEnd&quot;:&quot;13:30:00&quot;}
+             Body = {&quot;dayOfWeek&quot;:&quot;WEDNESDAY&quot;,&quot;openTime&quot;:&quot;08:30:00&quot;,&quot;closeTime&quot;:&quot;17:30:00&quot;,&quot;lunchStart&quot;:&quot;12:00:00&quot;,&quot;lunchEnd&quot;:&quot;13:00:00&quot;}
     Session Attrs = {}
 
 Handler:
@@ -680,7 +707,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -691,17 +718,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.230+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.230+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.231+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:48.006+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.006+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.006+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -721,16 +748,17 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.241+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.242+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:48.017+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:48.017+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = PATCH
-      Request URI = /api/v1/hospitals/44
+      Request URI = /api/v1/hospitals/1
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;267&quot;]
-             Body = {&quot;name&quot;:&quot;5월병원&quot;,&quot;address&quot;:&quot;서울특별시 강남구&quot;,&quot;phone&quot;:&quot;010-1234-5678&quot;,&quot;introduction&quot;:&quot;최신 장비를 갖춘 병원입니다.&quot;,&quot;notice&quot;:&quot;공휴일은 휴진입니다.&quot;,&quot;businessRegistrationNumber&quot;:&quot;123-45-67890&quot;,&quot;serviceNames&quot;:[&quot;의사많음&quot;,&quot;깔끔&quot;]}
+             Body = {&quot;name&quot;:&quot;5월병원&quot;,&quot;address&quot;:&quot;서울특별시 강남구&quot;,&quot;phone&quot;:&quot;010-1234-5678&quot;,&quot;introduction&quot;:&quot;최신 장비를 갖춘 병원입니다.&quot;,&quot;notice&quot;:&quot;공휴일은 휴진입니다.&quot;,&quot;serviceNames&quot;:[&quot;의사많음&quot;,&quot;깔끔&quot;],&quot;businessRegistrationNumber&quot;:&quot;123-45-67890&quot;}
     Session Attrs = {}
 
 Handler:
@@ -742,7 +770,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -753,17 +781,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.266+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.266+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.267+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:48.043+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.043+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.044+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         u1_0.user_id,
@@ -788,15 +816,15 @@ Hibernate:
         tbl_user u1_0 
     where
         u1_0.user_id=?
-2025-06-01T20:30:34.291+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.291+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+2025-06-02T16:33:48.082+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:48.082+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=유저를 찾을 수 없습니다., code=U_001)
 
 MockHttpServletRequest:
       HTTP Method = POST
       Request URI = /api/v1/hospitals
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;347&quot;]
-             Body = {&quot;userId&quot;:27,&quot;name&quot;:&quot;삼성병원&quot;,&quot;address&quot;:&quot;서울특별시 강남구&quot;,&quot;phone&quot;:&quot;010-1234-5678&quot;,&quot;introduction&quot;:&quot;최신 장비를 갖춘 병원입니다.&quot;,&quot;notice&quot;:&quot;공휴일은 휴진입니다.&quot;,&quot;businessRegistrationNumber&quot;:&quot;123-45-67890&quot;,&quot;serviceName&quot;:[&quot;주차 가능&quot;,&quot;야간 진료&quot;,&quot;여의사 진료&quot;],&quot;latitude&quot;:37.5665,&quot;longitude&quot;:126.9780}
+             Body = {&quot;userId&quot;:17,&quot;name&quot;:&quot;삼성병원&quot;,&quot;address&quot;:&quot;서울특별시 강남구&quot;,&quot;phone&quot;:&quot;010-1234-5678&quot;,&quot;introduction&quot;:&quot;최신 장비를 갖춘 병원입니다.&quot;,&quot;notice&quot;:&quot;공휴일은 휴진입니다.&quot;,&quot;serviceName&quot;:[&quot;주차 가능&quot;,&quot;야간 진료&quot;,&quot;여의사 진료&quot;],&quot;businessRegistrationNumber&quot;:&quot;123-45-67890&quot;,&quot;latitude&quot;:37.5665,&quot;longitude&quot;:126.9780}
     Session Attrs = {}
 
 Handler:
@@ -808,7 +836,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.userException.UserNotFoundException
 
 ModelAndView:
         View name = null
@@ -819,17 +847,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;유저를 찾을 수 없습니다.&quot;,&quot;code&quot;:&quot;U_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.314+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.314+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.315+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:48.106+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.107+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.107+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -849,13 +877,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.320+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.320+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:48.120+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:48.120+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = POST
-      Request URI = /api/v1/hospitals/22/waiting
+      Request URI = /api/v1/hospitals/1/waiting
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;13&quot;]
              Body = {&quot;waiting&quot;:5}
@@ -863,14 +892,14 @@ MockHttpServletRequest:
 
 Handler:
              Type = com.ssginc8.docto.hospital.controller.HospitalController
-           Method = com.ssginc8.docto.hospital.controller.HospitalController#saveHospitalWaiting(Long, Map)
+           Method = com.ssginc8.docto.hospital.controller.HospitalController#saveHospitalWaiting(Long, HospitalWaitingRequest)
 
 Async:
     Async started = false
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -881,17 +910,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.343+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.343+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.343+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2025-06-02T16:33:48.143+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.143+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.144+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -911,13 +940,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.348+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.348+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:48.149+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:48.149+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/hospitals/22/waiting
+      Request URI = /api/v1/hospitals/1/waiting
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
              Body = null
@@ -932,7 +962,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -943,17 +973,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.372+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.372+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.373+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:48.173+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.173+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.174+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         hs1_0.hospital_schedule_id,
@@ -967,10 +997,16 @@ Hibernate:
         tbl_hospital_schedule hs1_0 
     where
         hs1_0.hospital_schedule_id=?
+Hibernate: 
+    delete 
+    from
+        tbl_hospital_schedule 
+    where
+        hospital_schedule_id=?
 
 MockHttpServletRequest:
       HTTP Method = DELETE
-      Request URI = /api/v1/hospitals/22/schedules/76
+      Request URI = /api/v1/hospitals/1/schedules/2
        Parameters = {}
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
              Body = null
@@ -1004,9 +1040,9 @@ MockHttpServletResponse:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.402+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.403+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.404+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:48.213+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.213+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.214+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -1025,8 +1061,8 @@ Hibernate:
         h1_0.waiting 
     from
         tbl_hospital h1_0 
-    offset
-        ? rows 
+    where
+        h1_0.deleted_at is null 
     fetch
         first ? rows only
 
@@ -1062,13 +1098,13 @@ MockHttpServletResponse:
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;content&quot;:[],&quot;pageable&quot;:{&quot;pageNumber&quot;:0,&quot;pageSize&quot;:10,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;offset&quot;:0,&quot;paged&quot;:true,&quot;unpaged&quot;:false},&quot;last&quot;:true,&quot;totalElements&quot;:0,&quot;totalPages&quot;:0,&quot;first&quot;:true,&quot;size&quot;:10,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;numberOfElements&quot;:0,&quot;empty&quot;:true}
+             Body = {&quot;content&quot;:[],&quot;pageable&quot;:{&quot;pageNumber&quot;:0,&quot;pageSize&quot;:10,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;offset&quot;:0,&quot;unpaged&quot;:false,&quot;paged&quot;:true},&quot;last&quot;:true,&quot;totalPages&quot;:0,&quot;totalElements&quot;:0,&quot;size&quot;:10,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;first&quot;:true,&quot;numberOfElements&quot;:0,&quot;empty&quot;:true}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:34.446+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.446+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.448+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2025-06-02T16:33:48.242+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.242+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.243+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -1088,13 +1124,14 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:34.455+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:34.455+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:48.247+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:48.247+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = DELETE
-      Request URI = /api/v1/hospitals/18
+      Request URI = /api/v1/hospitals/1
        Parameters = {}
           Headers = []
              Body = null
@@ -1109,7 +1146,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -1120,11 +1157,11 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
      Content type = application/json;charset=UTF-8
-             Body = {&quot;message&quot;:&quot;서버 에러가 발생했습니다.&quot;,&quot;code&quot;:&quot;G_002&quot;}
+             Body = {&quot;message&quot;:&quot;해당 병원은 존재하지 않습니다.&quot;,&quot;code&quot;:&quot;H_001&quot;}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
@@ -1134,10 +1171,9 @@ MockHttpServletResponse:
 <div class="tab">
 <h2>Standard error</h2>
 <span class="code">
-<pre>jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+<pre>com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1150,7 +1186,7 @@ MockHttpServletResponse:
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospitalWaiting(HospitalServiceImpl.java:359)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getReviews(HospitalServiceImpl.java:379)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1162,8 +1198,8 @@ MockHttpServletResponse:
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.updateHospitalWaiting(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospitalWaiting(HospitalController.java:188)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.getReviews(&lt;generated&gt;)
+	at com.ssginc8.docto.hospital.controller.HospitalController.getAllReviews(HospitalController.java:200)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1177,7 +1213,9 @@ MockHttpServletResponse:
 	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
 	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:888)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:527)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
 	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72)
 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
 	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165)
@@ -1186,7 +1224,7 @@ MockHttpServletResponse:
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.updateHospitalWaiting(HospitalControllerTest.java:375)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getAllReviews(HospitalControllerTest.java:393)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1272,10 +1310,9 @@ MockHttpServletResponse:
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1288,7 +1325,144 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveSchedules(HospitalServiceImpl.java:249)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospitalWaiting(HospitalServiceImpl.java:365)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.updateHospitalWaiting(&lt;generated&gt;)
+	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospitalWaiting(HospitalController.java:193)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:888)
+	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
+	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.updateHospitalWaiting(HospitalControllerTest.java:376)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:124)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:121)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveSchedules(HospitalServiceImpl.java:245)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1301,7 +1475,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.saveSchedules(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.saveSchedules(HospitalController.java:115)
+	at com.ssginc8.docto.hospital.controller.HospitalController.saveSchedules(HospitalController.java:119)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1412,10 +1586,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1428,7 +1601,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getHospitalId(HospitalServiceImpl.java:78)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getHospitalId(HospitalServiceImpl.java:63)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1441,7 +1614,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.getHospitalId(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.getHospitalsId(HospitalController.java:49)
+	at com.ssginc8.docto.hospital.controller.HospitalController.getHospitalsId(HospitalController.java:53)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1466,7 +1639,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalById(HospitalControllerTest.java:120)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalById(HospitalControllerTest.java:121)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1552,10 +1725,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1568,7 +1740,146 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospitalSchedule(HospitalServiceImpl.java:301)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getSchedules(HospitalServiceImpl.java:276)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.getSchedules(&lt;generated&gt;)
+	at com.ssginc8.docto.hospital.controller.HospitalController.getSchedules(HospitalController.java:105)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:527)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
+	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getSchedules(HospitalControllerTest.java:221)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:124)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:121)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospitalSchedule(HospitalServiceImpl.java:300)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1581,7 +1892,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.updateHospitalSchedule(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospitalSchedule(HospitalController.java:151)
+	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospitalSchedule(HospitalController.java:156)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1690,10 +2001,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1706,7 +2016,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospital(HospitalServiceImpl.java:156)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.updateHospital(HospitalServiceImpl.java:142)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1719,7 +2029,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.updateHospital(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospital(HospitalController.java:71)
+	at com.ssginc8.docto.hospital.controller.HospitalController.updateHospital(HospitalController.java:75)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1828,10 +2138,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 44
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: User not found with id: 27
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getUserById$1(HospitalProvider.java:39)
+com.ssginc8.docto.global.error.exception.userException.UserNotFoundException: 유저를 찾을 수 없습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getUserById(HospitalProvider.java:39)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getUserById(HospitalProvider.java:51)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1839,7 +2148,7 @@ jakarta.persistence.EntityNotFoundException: User not found with id: 27
 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:724)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getUserById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveHospital(HospitalServiceImpl.java:113)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveHospital(HospitalServiceImpl.java:99)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1852,7 +2161,7 @@ jakarta.persistence.EntityNotFoundException: User not found with id: 27
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.saveHospital(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.registerHospital(HospitalController.java:58)
+	at com.ssginc8.docto.hospital.controller.HospitalController.registerHospital(HospitalController.java:62)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1877,7 +2186,7 @@ jakarta.persistence.EntityNotFoundException: User not found with id: 27
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.saveHospitalTest(HospitalControllerTest.java:94)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.saveHospitalTest(HospitalControllerTest.java:95)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1963,10 +2272,9 @@ jakarta.persistence.EntityNotFoundException: User not found with id: 27
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1979,7 +2287,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveHospitalWaiting(HospitalServiceImpl.java:329)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.saveHospitalWaiting(HospitalServiceImpl.java:335)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1992,7 +2300,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.saveHospitalWaiting(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.saveHospitalWaiting(HospitalController.java:165)
+	at com.ssginc8.docto.hospital.controller.HospitalController.saveHospitalWaiting(HospitalController.java:169)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2103,10 +2411,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2119,7 +2426,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getHospitalWaiting(HospitalServiceImpl.java:346)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.getHospitalWaiting(HospitalServiceImpl.java:352)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2132,7 +2439,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.getHospitalWaiting(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.getHospitalWaiting(HospitalController.java:175)
+	at com.ssginc8.docto.hospital.controller.HospitalController.getHospitalWaiting(HospitalController.java:180)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2157,7 +2464,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalWaiting(HospitalControllerTest.java:358)
+	at com.ssginc8.docto.hospital.controller.HospitalControllerTest.getHospitalWaiting(HospitalControllerTest.java:359)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2243,10 +2550,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 18
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.lambda$getHospitalById$0(HospitalProvider.java:34)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:34)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2259,7 +2565,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 18
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.deleteHospital(HospitalServiceImpl.java:184)
+	at com.ssginc8.docto.hospital.service.HospitalServiceImpl.deleteHospital(HospitalServiceImpl.java:177)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2272,7 +2578,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 18
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.hospital.service.HospitalServiceImpl$$SpringCGLIB$$0.deleteHospital(&lt;generated&gt;)
-	at com.ssginc8.docto.hospital.controller.HospitalController.deleteHospital(HospitalController.java:81)
+	at com.ssginc8.docto.hospital.controller.HospitalController.deleteHospital(HospitalController.java:85)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -2394,7 +2700,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 18
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 8.13</a> at 2025. 6. 1. 오후 8:30:44</p>
+<a href="https://www.gradle.org">Gradle 8.13</a> at 2025. 6. 2. 오후 4:33:54</p>
 </div>
 </div>
 </body>

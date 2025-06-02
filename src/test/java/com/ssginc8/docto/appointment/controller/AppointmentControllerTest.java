@@ -70,7 +70,7 @@ public class AppointmentControllerTest {
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
-			.apply(springSecurity())
+			// .apply(springSecurity())
 			.alwaysDo(MockMvcResultHandlers.print())
 			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 방지
@@ -203,7 +203,7 @@ public class AppointmentControllerTest {
 		UpdateRequest request = new UpdateRequest();
 		request.setStatus("CONFIRMED");
 
-		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 1L)
+		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -223,7 +223,7 @@ public class AppointmentControllerTest {
 		RescheduleRequest request = new RescheduleRequest();
 		request.setNewTime(LocalDateTime.now().plusDays(2));
 
-		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 2L)
+		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())

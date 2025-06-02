@@ -1,41 +1,17 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Content-Length: 720
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 69
 
 {
-  "content" : [ {
-    "reviewId" : 125,
-    "contents" : "친절하고 전문적이었습니다.",
-    "createdAt" : "2025-06-01T02:13:56.27591",
-    "reportCount" : 0,
-    "keywords" : [ "FAST", "THOROUGH", "CLEAN_HOSPITAL" ]
-  } ],
-  "pageable" : {
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "sort" : {
-      "empty" : true,
-      "unsorted" : true,
-      "sorted" : false
-    },
-    "offset" : 0,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalPages" : 1,
-  "last" : true,
-  "totalElements" : 1,
-  "size" : 5,
-  "number" : 0,
-  "sort" : {
-    "empty" : true,
-    "unsorted" : true,
-    "sorted" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
+  "message" : "인증이 필요합니다.",
+  "code" : "T_003"
 }
 ----

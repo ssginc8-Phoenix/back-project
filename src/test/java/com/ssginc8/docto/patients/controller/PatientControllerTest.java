@@ -46,15 +46,21 @@ import java.util.Map;
 @Import(RestDocsConfig.class)
 public class PatientControllerTest {
 
-	@Autowired protected RestDocumentationResultHandler restDocs;
+	@Autowired
+	protected RestDocumentationResultHandler restDocs;
 	private MockMvc mockMvc;
 
-	@Autowired private WebApplicationContext context;
-	@Autowired private ObjectMapper objectMapper;
+	@Autowired
+	private WebApplicationContext context;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-	@Autowired private EntityManager em;
-	@Autowired private PatientRepo patientRepo;
-	@Autowired private UserRepo userRepo;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private PatientRepo patientRepo;
+	@Autowired
+	private UserRepo userRepo;
 
 	private Long savedPatientId;
 	private Long testUserId;
@@ -134,31 +140,36 @@ public class PatientControllerTest {
 	@Test
 	@DisplayName("환자 전체 조회")
 	void getAllPatients() throws Exception {
-		responseFields(
-			fieldWithPath("content[].patientId").description("환자 ID"),
-			fieldWithPath("content[].userId").description("유저 ID"),
-			fieldWithPath("content[].residentRegistrationNumber").description("주민등록번호"),
-			fieldWithPath("pageable.sort.empty").ignored(),
-			fieldWithPath("pageable.sort.sorted").ignored(),
-			fieldWithPath("pageable.sort.unsorted").ignored(),
-			fieldWithPath("pageable.offset").ignored(),
-			fieldWithPath("pageable.pageNumber").ignored(),
-			fieldWithPath("pageable.pageSize").ignored(),
-			fieldWithPath("pageable.paged").ignored(),
-			fieldWithPath("pageable.unpaged").ignored(),
-			fieldWithPath("sort.empty").ignored(),
-			fieldWithPath("sort.sorted").ignored(),
-			fieldWithPath("sort.unsorted").ignored(),
-			fieldWithPath("totalPages").ignored(),
-			fieldWithPath("totalElements").ignored(),
-			fieldWithPath("last").ignored(),
-			fieldWithPath("size").ignored(),
-			fieldWithPath("number").ignored(),
-			fieldWithPath("first").ignored(),
-			fieldWithPath("numberOfElements").ignored(),
-			fieldWithPath("empty").ignored()
-		);
+		mockMvc.perform(get("/api/v1/admin/patients"))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				responseFields(
+					fieldWithPath("content[].patientId").description("환자 ID"),
+					fieldWithPath("content[].userId").description("유저 ID"),
+					fieldWithPath("content[].residentRegistrationNumber").description("주민등록번호"),
+					fieldWithPath("pageable.sort.empty").ignored(),
+					fieldWithPath("pageable.sort.sorted").ignored(),
+					fieldWithPath("pageable.sort.unsorted").ignored(),
+					fieldWithPath("pageable.offset").ignored(),
+					fieldWithPath("pageable.pageNumber").ignored(),
+					fieldWithPath("pageable.pageSize").ignored(),
+					fieldWithPath("pageable.paged").ignored(),
+					fieldWithPath("pageable.unpaged").ignored(),
+					fieldWithPath("sort.empty").ignored(),
+					fieldWithPath("sort.sorted").ignored(),
+					fieldWithPath("sort.unsorted").ignored(),
+					fieldWithPath("totalPages").ignored(),
+					fieldWithPath("totalElements").ignored(),
+					fieldWithPath("last").ignored(),
+					fieldWithPath("size").ignored(),
+					fieldWithPath("number").ignored(),
+					fieldWithPath("first").ignored(),
+					fieldWithPath("numberOfElements").ignored(),
+					fieldWithPath("empty").ignored()
+				)
+			));
 	}
+
 
 	@Test
 	@DisplayName("환자 삭제 (소프트 삭제)")
@@ -191,6 +202,5 @@ public class PatientControllerTest {
 					fieldWithPath("inviteCode").description("초대 코드")
 				)
 			));
-
 	}
 }

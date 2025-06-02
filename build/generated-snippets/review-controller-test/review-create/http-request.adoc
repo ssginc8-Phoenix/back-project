@@ -2,12 +2,12 @@
 ----
 POST /api/v1/reviews HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 200
+Content-Length: 201
 Host: localhost:8080
 
 {
   "appointmentId" : 5,
-  "userId" : 5,
+  "userId" : 22,
   "hospitalId" : 2,
   "doctorId" : 5,
   "keywords" : [ "CLEAN_HOSPITAL", "FAST", "THOROUGH" ],

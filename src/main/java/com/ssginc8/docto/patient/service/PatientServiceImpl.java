@@ -1,5 +1,6 @@
 package com.ssginc8.docto.patient.service;
 
+import com.ssginc8.docto.global.error.exception.patientException.RRNEncryptionFailedException;
 import com.ssginc8.docto.patient.dto.PatientRequest;
 import com.ssginc8.docto.patient.dto.PatientResponse;
 import com.ssginc8.docto.patient.entity.Patient;
@@ -56,7 +57,7 @@ public class PatientServiceImpl implements PatientService {
 			}
 			return hexString.toString();
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Error encrypting RRN", e);
+			throw new RRNEncryptionFailedException();
 		}
 	}
 }

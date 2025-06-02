@@ -2,7 +2,7 @@
 ----
 {
   "updatedAt" : null,
-  "contents" : "업데이트된 리뷰 내용입니다.",
+  "contents" : "�뾽�뜲�씠�듃�맂 由щ럭 �궡�슜�엯�땲�떎.",
   "keywords" : [ "WANT_RETURN", "THOROUGH" ]
 }
 ----

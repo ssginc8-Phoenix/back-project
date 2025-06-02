@@ -1,6 +1,6 @@
 [source,json,options="nowrap"]
 ----
 {
-  "ids" : [ 99, 100 ]
+  "ids" : [ 15, 16 ]
 }
 ----

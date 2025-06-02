@@ -6,7 +6,7 @@
   "phone" : "010-1234-5678",
   "introduction" : "최신 장비를 갖춘 병원입니다.",
   "notice" : "공휴일은 휴진입니다.",
-  "businessRegistrationNumber" : "123-45-67890",
-  "serviceNames" : [ "의사많음", "깔끔" ]
+  "serviceNames" : [ "의사많음", "깔끔" ],
+  "businessRegistrationNumber" : "123-45-67890"
 }
 ----

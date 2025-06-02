@@ -1,0 +1,8 @@
+|===
+|Path|Type|Description
+
+|`+waiting+`
+|`+Number+`
+|수정할 대기 인원 수
+
+|===

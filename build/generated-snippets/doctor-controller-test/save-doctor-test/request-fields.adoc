@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+hospitalId+`
+|`+Number+`
+|병원 ID
+
+|`+specialization+`
+|`+String+`
+|전공 과목
+
+|`+userId+`
+|`+Number+`
+|사용자 ID
+
+|===

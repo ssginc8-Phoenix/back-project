@@ -1,0 +1,11 @@
+.+/api/v1/doctors/{doctorId}/schedules/{scheduleId}+
+|===
+|Parameter|Description
+
+|`+doctorId+`
+|의사 ID
+
+|`+scheduleId+`
+|삭제할 스케줄 ID
+
+|===

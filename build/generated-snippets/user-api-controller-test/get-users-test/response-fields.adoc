@@ -1,0 +1,96 @@
+|===
+|Path|Type|Description
+
+|`+content[].email+`
+|`+String+`
+|사용자 이메일
+
+|`+content[].name+`
+|`+String+`
+|사용자 이름
+
+|`+content[].role+`
+|`+String+`
+|사용자 역할
+
+|`+content[].profileImageUrl+`
+|`+String+`
+|프로필 이미지 URL
+
+|`+pageable.pageNumber+`
+|`+Number+`
+|현재 페이지 번호
+
+|`+pageable.pageSize+`
+|`+Number+`
+|페이지당 항목 수
+
+|`+pageable.offset+`
+|`+Number+`
+|데이터 시작 offset
+
+|`+pageable.paged+`
+|`+Boolean+`
+|페이징 여부
+
+|`+pageable.unpaged+`
+|`+Boolean+`
+|페이징되지 않음 여부
+
+|`+pageable.sort.empty+`
+|`+Boolean+`
+|정렬 정보 비어 있음 여부
+
+|`+pageable.sort.sorted+`
+|`+Boolean+`
+|정렬됨 여부
+
+|`+pageable.sort.unsorted+`
+|`+Boolean+`
+|정렬되지 않음 여부
+
+|`+sort.empty+`
+|`+Boolean+`
+|정렬 정보 비어 있음 여부
+
+|`+sort.sorted+`
+|`+Boolean+`
+|정렬됨 여부
+
+|`+sort.unsorted+`
+|`+Boolean+`
+|정렬되지 않음 여부
+
+|`+last+`
+|`+Boolean+`
+|마지막 페이지 여부
+
+|`+totalPages+`
+|`+Number+`
+|전체 페이지 수
+
+|`+totalElements+`
+|`+Number+`
+|전체 데이터 수
+
+|`+size+`
+|`+Number+`
+|페이지 크기
+
+|`+number+`
+|`+Number+`
+|현재 페이지 번호
+
+|`+first+`
+|`+Boolean+`
+|첫 번째 페이지 여부
+
+|`+numberOfElements+`
+|`+Number+`
+|현재 페이지 데이터 수
+
+|`+empty+`
+|`+Boolean+`
+|현재 페이지가 비었는지 여부
+
+|===

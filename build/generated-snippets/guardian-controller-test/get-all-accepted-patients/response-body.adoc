@@ -1,4 +1,4 @@
 [source,json,options="nowrap"]
 ----
-[{"patientId":40,"name":"guardian-user","residentRegistrationNumber":"암호화된주민등록번호"}]
+[{"patientId":8,"name":"guardian-user","residentRegistrationNumber":"암호화된주민등록번호"}]
 ----

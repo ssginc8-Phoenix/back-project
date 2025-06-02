@@ -1,14 +1,8 @@
 [source,json,options="nowrap"]
 ----
 {
-  "hospitalId" : 22,
+  "hospitalId" : 1,
   "specialization" : "DERMATOLOGY",
-  "username" : "dr.jjh",
-  "password" : "asd123",
-  "email" : "jjh1@naver.com",
-  "login_type" : "EMAIL",
-  "role" : "DOCTOR",
-  "suspended" : false,
-  "uuid" : "asd123123111111"
+  "userId" : 29
 }
 ----

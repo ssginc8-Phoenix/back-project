@@ -6,12 +6,6 @@ $ echo '[ {
   "endTime" : "18:00:00",
   "lunchEnd" : "12:00:00",
   "lunchStart" : "13:00:00"
-}, {
-  "dayOfWeek" : "TUESDAY",
-  "startTime" : "09:00:00",
-  "endTime" : "18:00:00",
-  "lunchEnd" : "12:00:00",
-  "lunchStart" : "13:00:00"
-} ]' | http POST 'http://localhost:8080/api/v1/doctors/9/schedules' \
+} ]' | http POST 'http://localhost:8080/api/v1/doctors/3/schedules' \
     'Content-Type:application/json;charset=UTF-8'
 ----

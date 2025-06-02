@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">5</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.554s</div>
+<div class="counter">0.115s</div>
 <p>duration</p>
 </div>
 </td>
@@ -50,8 +50,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
 <p>successful</p>
 </div>
 </td>
@@ -61,12 +61,363 @@
 <div class="tab-container">
 <ul class="tabLinks">
 <li>
+<a href="#">Failed tests</a>
+</li>
+<li>
 <a href="#">Tests</a>
 </li>
 <li>
 <a href="#">Standard output</a>
 </li>
 </ul>
+<div class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="completeMedication()"></a>
+<h3 class="failures">복약 완료 처리</h3>
+<span class="code">
+<pre>org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]; SQL [delete from tbl_patient_guardian where patient_guardian_id=?]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:795)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:758)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:698)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:416)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy182.deleteAll(Unknown Source)
+	at app//com.ssginc8.docto.medication.controller.MedicationControllerTest.setUp(MedicationControllerTest.java:83)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:279)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at app//org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at app//org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at app//org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at app//org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at app//org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at app//org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at app//org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at app//org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:562)
+	... 16 more
+Caused by: org.postgresql.util.PSQLException: 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 36 more
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="deleteMedicationSchedule()"></a>
+<h3 class="failures">복약 스케줄 삭제</h3>
+<span class="code">
+<pre>org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]; SQL [delete from tbl_patient_guardian where patient_guardian_id=?]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:795)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:758)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:698)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:416)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy182.deleteAll(Unknown Source)
+	at app//com.ssginc8.docto.medication.controller.MedicationControllerTest.setUp(MedicationControllerTest.java:83)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:279)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at app//org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at app//org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at app//org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at app//org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at app//org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at app//org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at app//org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at app//org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:562)
+	... 16 more
+Caused by: org.postgresql.util.PSQLException: 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 36 more
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="getMedicationLogs()"></a>
+<h3 class="failures">복약 로그 조회</h3>
+<span class="code">
+<pre>org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]; SQL [delete from tbl_patient_guardian where patient_guardian_id=?]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:795)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:758)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:698)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:416)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy182.deleteAll(Unknown Source)
+	at app//com.ssginc8.docto.medication.controller.MedicationControllerTest.setUp(MedicationControllerTest.java:83)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:279)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at app//org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at app//org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at app//org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at app//org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at app//org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at app//org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at app//org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at app//org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:562)
+	... 16 more
+Caused by: org.postgresql.util.PSQLException: 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 36 more
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="registerMedication()"></a>
+<h3 class="failures">복약 스케줄 등록</h3>
+<span class="code">
+<pre>org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]; SQL [delete from tbl_patient_guardian where patient_guardian_id=?]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:795)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:758)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:698)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:416)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy182.deleteAll(Unknown Source)
+	at app//com.ssginc8.docto.medication.controller.MedicationControllerTest.setUp(MedicationControllerTest.java:83)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:279)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at app//org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at app//org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at app//org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at app//org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at app//org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at app//org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at app//org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at app//org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:562)
+	... 16 more
+Caused by: org.postgresql.util.PSQLException: 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 36 more
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="updateMedicationTime()"></a>
+<h3 class="failures">복약 시간 수정</h3>
+<span class="code">
+<pre>org.springframework.dao.DataIntegrityViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]; SQL [delete from tbl_patient_guardian where patient_guardian_id=?]; constraint [null]
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:294)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at app//org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:795)
+	at app//org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:758)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:698)
+	at app//org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:416)
+	at app//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
+	at app//org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at app//org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at app/jdk.proxy3/jdk.proxy3.$Proxy182.deleteAll(Unknown Source)
+	at app//com.ssginc8.docto.medication.controller.MedicationControllerTest.setUp(MedicationControllerTest.java:83)
+	at java.base@17.0.14/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base@17.0.14/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.] [delete from tbl_patient_guardian where patient_guardian_id=?]
+	at app//org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:97)
+	at app//org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at app//org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at app//org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at app//org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:279)
+	at app//org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at app//org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at app//org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at app//org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at app//org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at app//org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at app//org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at app//org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at app//org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at app//org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at app//org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at app//org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at app//org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	at app//org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:562)
+	... 16 more
+Caused by: org.postgresql.util.PSQLException: 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+	at app//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420)
+	at app//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372)
+	at app//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517)
+	at app//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+	at app//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+	at app//com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at app//com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at app//org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 36 more
+</pre>
+</span>
+</div>
+</div>
 <div class="tab">
 <h2>Tests</h2>
 <table>
@@ -79,45 +430,45 @@
 </tr>
 </thead>
 <tr>
-<td class="success">복약 완료 처리</td>
-<td class="success">completeMedication()</td>
-<td class="success">0.100s</td>
-<td class="success">passed</td>
+<td class="failures">복약 완료 처리</td>
+<td class="failures">completeMedication()</td>
+<td class="failures">0.022s</td>
+<td class="failures">failed</td>
 </tr>
 <tr>
-<td class="success">복약 스케줄 삭제</td>
-<td class="success">deleteMedicationSchedule()</td>
-<td class="success">0.058s</td>
-<td class="success">passed</td>
+<td class="failures">복약 스케줄 삭제</td>
+<td class="failures">deleteMedicationSchedule()</td>
+<td class="failures">0.021s</td>
+<td class="failures">failed</td>
 </tr>
 <tr>
-<td class="success">복약 로그 조회</td>
-<td class="success">getMedicationLogs()</td>
-<td class="success">0.125s</td>
-<td class="success">passed</td>
+<td class="failures">복약 로그 조회</td>
+<td class="failures">getMedicationLogs()</td>
+<td class="failures">0.022s</td>
+<td class="failures">failed</td>
 </tr>
 <tr>
-<td class="success">복약 스케줄 등록</td>
-<td class="success">registerMedication()</td>
-<td class="success">0.189s</td>
-<td class="success">passed</td>
+<td class="failures">복약 스케줄 등록</td>
+<td class="failures">registerMedication()</td>
+<td class="failures">0.030s</td>
+<td class="failures">failed</td>
 </tr>
 <tr>
-<td class="success">복약 시간 수정</td>
-<td class="success">updateMedicationTime()</td>
-<td class="success">0.082s</td>
-<td class="success">passed</td>
+<td class="failures">복약 시간 수정</td>
+<td class="failures">updateMedicationTime()</td>
+<td class="failures">0.020s</td>
+<td class="failures">failed</td>
 </tr>
 </table>
 </div>
 <div class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-06-01T20:30:34.478+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.medication.controller.MedicationControllerTest]: MedicationControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-01T20:30:34.504+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.medication.controller.MedicationControllerTest
-2025-06-01T20:30:34.512+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.512+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.513+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+<pre>2025-06-02T16:33:48.265+09:00  INFO 18716 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.medication.controller.MedicationControllerTest]: MedicationControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-02T16:33:48.307+09:00  INFO 18716 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.medication.controller.MedicationControllerTest
+2025-06-02T16:33:48.310+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.310+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.311+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         ml1_0.medication_log_id,
@@ -131,12 +482,6 @@ Hibernate:
     from
         tbl_medication_log ml1_0
 Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
     select
         mad1_0.medication_alert_day_id,
         mad1_0.created_at,
@@ -146,18 +491,6 @@ Hibernate:
         mad1_0.updated_at 
     from
         tbl_medication_alert_day mad1_0
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
 Hibernate: 
     select
         mat1_0.medication_alert_time_id,
@@ -170,24 +503,6 @@ Hibernate:
         tbl_medication_alert_time mat1_0
 Hibernate: 
     select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    select
         mi1_0.medication_id,
         mi1_0.created_at,
         mi1_0.deleted_at,
@@ -197,24 +512,6 @@ Hibernate:
         mi1_0.user_id 
     from
         tbl_medication_information mi1_0
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
 Hibernate: 
     select
         pg1_0.patient_guardian_id,
@@ -230,140 +527,17 @@ Hibernate:
     from
         tbl_patient_guardian pg1_0
 Hibernate: 
-    select
-        p1_0.patient_id,
-        p1_0.created_at,
-        p1_0.deleted_at,
-        p1_0.resident_registration_number,
-        p1_0.updated_at,
-        p1_0.user_id 
-    from
-        tbl_patient p1_0
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0
-Hibernate: 
     delete 
     from
-        tbl_user 
+        tbl_patient_guardian 
     where
-        user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0 
-    where
-        u1_0.user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-2025-06-01T20:30:34.701+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.702+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.702+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+        patient_guardian_id=?
+2025-06-02T16:33:48.333+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23503
+2025-06-02T16:33:48.333+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+2025-06-02T16:33:48.343+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.343+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.344+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         ml1_0.medication_log_id,
@@ -377,12 +551,6 @@ Hibernate:
     from
         tbl_medication_log ml1_0
 Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
     select
         mad1_0.medication_alert_day_id,
         mad1_0.created_at,
@@ -392,30 +560,6 @@ Hibernate:
         mad1_0.updated_at 
     from
         tbl_medication_alert_day mad1_0
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
 Hibernate: 
     select
         mat1_0.medication_alert_time_id,
@@ -428,42 +572,6 @@ Hibernate:
         tbl_medication_alert_time mat1_0
 Hibernate: 
     select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    select
         mi1_0.medication_id,
         mi1_0.created_at,
         mi1_0.deleted_at,
@@ -473,42 +581,6 @@ Hibernate:
         mi1_0.user_id 
     from
         tbl_medication_information mi1_0
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
 Hibernate: 
     select
         pg1_0.patient_guardian_id,
@@ -524,121 +596,17 @@ Hibernate:
     from
         tbl_patient_guardian pg1_0
 Hibernate: 
-    select
-        p1_0.patient_id,
-        p1_0.created_at,
-        p1_0.deleted_at,
-        p1_0.resident_registration_number,
-        p1_0.updated_at,
-        p1_0.user_id 
-    from
-        tbl_patient p1_0
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0
-Hibernate: 
     delete 
     from
-        tbl_user 
+        tbl_patient_guardian 
     where
-        user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    select
-        mi1_0.medication_id,
-        mi1_0.created_at,
-        mi1_0.deleted_at,
-        mi1_0.medication_name,
-        mi1_0.patient_guardian_id,
-        mi1_0.updated_at,
-        mi1_0.user_id 
-    from
-        tbl_medication_information mi1_0 
-    where
-        mi1_0.medication_id=? 
-        and mi1_0.deleted_at is null
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-2025-06-01T20:30:34.802+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.802+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.803+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+        patient_guardian_id=?
+2025-06-02T16:33:48.359+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23503
+2025-06-02T16:33:48.359+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+2025-06-02T16:33:48.365+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.365+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.365+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         ml1_0.medication_log_id,
@@ -652,18 +620,6 @@ Hibernate:
     from
         tbl_medication_log ml1_0
 Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
     select
         mad1_0.medication_alert_day_id,
         mad1_0.created_at,
@@ -673,18 +629,6 @@ Hibernate:
         mad1_0.updated_at 
     from
         tbl_medication_alert_day mad1_0
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
 Hibernate: 
     select
         mat1_0.medication_alert_time_id,
@@ -697,24 +641,6 @@ Hibernate:
         tbl_medication_alert_time mat1_0
 Hibernate: 
     select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    select
         mi1_0.medication_id,
         mi1_0.created_at,
         mi1_0.deleted_at,
@@ -724,24 +650,6 @@ Hibernate:
         mi1_0.user_id 
     from
         tbl_medication_information mi1_0
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
 Hibernate: 
     select
         pg1_0.patient_guardian_id,
@@ -757,163 +665,17 @@ Hibernate:
     from
         tbl_patient_guardian pg1_0
 Hibernate: 
-    select
-        p1_0.patient_id,
-        p1_0.created_at,
-        p1_0.deleted_at,
-        p1_0.resident_registration_number,
-        p1_0.updated_at,
-        p1_0.user_id 
-    from
-        tbl_patient p1_0
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0
-Hibernate: 
     delete 
     from
-        tbl_user 
+        tbl_patient_guardian 
     where
-        user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    select
-        mi1_0.medication_id,
-        mi1_0.created_at,
-        mi1_0.deleted_at,
-        mi1_0.medication_name,
-        mi1_0.patient_guardian_id,
-        mi1_0.updated_at,
-        mi1_0.user_id 
-    from
-        tbl_medication_information mi1_0 
-    where
-        mi1_0.medication_id=? 
-        and mi1_0.deleted_at is null
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    update
-        tbl_medication_alert_time 
-    set
-        created_at=?,
-        deleted_at=?,
-        medication_id=?,
-        time_to_take=?,
-        updated_at=? 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-2025-06-01T20:30:34.884+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.884+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.885+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+        patient_guardian_id=?
+2025-06-02T16:33:48.378+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23503
+2025-06-02T16:33:48.378+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+2025-06-02T16:33:48.386+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.386+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.387+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         ml1_0.medication_log_id,
@@ -927,12 +689,6 @@ Hibernate:
     from
         tbl_medication_log ml1_0
 Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
     select
         mad1_0.medication_alert_day_id,
         mad1_0.created_at,
@@ -942,18 +698,6 @@ Hibernate:
         mad1_0.updated_at 
     from
         tbl_medication_alert_day mad1_0
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
 Hibernate: 
     select
         mat1_0.medication_alert_time_id,
@@ -966,24 +710,6 @@ Hibernate:
         tbl_medication_alert_time mat1_0
 Hibernate: 
     select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    select
         mi1_0.medication_id,
         mi1_0.created_at,
         mi1_0.deleted_at,
@@ -993,24 +719,6 @@ Hibernate:
         mi1_0.user_id 
     from
         tbl_medication_information mi1_0
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
 Hibernate: 
     select
         pg1_0.patient_guardian_id,
@@ -1026,114 +734,17 @@ Hibernate:
     from
         tbl_patient_guardian pg1_0
 Hibernate: 
-    select
-        p1_0.patient_id,
-        p1_0.created_at,
-        p1_0.deleted_at,
-        p1_0.resident_registration_number,
-        p1_0.updated_at,
-        p1_0.user_id 
-    from
-        tbl_patient p1_0
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0
-Hibernate: 
     delete 
     from
-        tbl_user 
+        tbl_patient_guardian 
     where
-        user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    select
-        mi1_0.medication_id,
-        mi1_0.created_at,
-        mi1_0.deleted_at,
-        mi1_0.medication_name,
-        mi1_0.patient_guardian_id,
-        mi1_0.updated_at,
-        mi1_0.user_id 
-    from
-        tbl_medication_information mi1_0 
-    where
-        mi1_0.medication_id=? 
-        and mi1_0.deleted_at is null
-Hibernate: 
-    update
-        tbl_medication_information 
-    set
-        created_at=?,
-        deleted_at=?,
-        medication_name=?,
-        patient_guardian_id=?,
-        updated_at=?,
-        user_id=? 
-    where
-        medication_id=?
-2025-06-01T20:30:34.948+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:34.948+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:34.948+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+        patient_guardian_id=?
+2025-06-02T16:33:48.401+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23503
+2025-06-02T16:33:48.401+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
+2025-06-02T16:33:48.414+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:48.414+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:48.414+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         ml1_0.medication_log_id,
@@ -1147,12 +758,6 @@ Hibernate:
     from
         tbl_medication_log ml1_0
 Hibernate: 
-    delete 
-    from
-        tbl_medication_log 
-    where
-        medication_log_id=?
-Hibernate: 
     select
         mad1_0.medication_alert_day_id,
         mad1_0.created_at,
@@ -1162,18 +767,6 @@ Hibernate:
         mad1_0.updated_at 
     from
         tbl_medication_alert_day mad1_0
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_day 
-    where
-        medication_alert_day_id=?
 Hibernate: 
     select
         mat1_0.medication_alert_time_id,
@@ -1186,24 +779,6 @@ Hibernate:
         tbl_medication_alert_time mat1_0
 Hibernate: 
     select
-        ad1_0.medication_alert_time_id,
-        ad1_0.medication_alert_day_id,
-        ad1_0.created_at,
-        ad1_0.day_of_week,
-        ad1_0.deleted_at,
-        ad1_0.updated_at 
-    from
-        tbl_medication_alert_day ad1_0 
-    where
-        ad1_0.medication_alert_time_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_alert_time 
-    where
-        medication_alert_time_id=?
-Hibernate: 
-    select
         mi1_0.medication_id,
         mi1_0.created_at,
         mi1_0.deleted_at,
@@ -1213,24 +788,6 @@ Hibernate:
         mi1_0.user_id 
     from
         tbl_medication_information mi1_0
-Hibernate: 
-    select
-        at1_0.medication_id,
-        at1_0.medication_alert_time_id,
-        at1_0.created_at,
-        at1_0.deleted_at,
-        at1_0.time_to_take,
-        at1_0.updated_at 
-    from
-        tbl_medication_alert_time at1_0 
-    where
-        at1_0.medication_id=?
-Hibernate: 
-    delete 
-    from
-        tbl_medication_information 
-    where
-        medication_id=?
 Hibernate: 
     select
         pg1_0.patient_guardian_id,
@@ -1246,137 +803,14 @@ Hibernate:
     from
         tbl_patient_guardian pg1_0
 Hibernate: 
-    select
-        p1_0.patient_id,
-        p1_0.created_at,
-        p1_0.deleted_at,
-        p1_0.resident_registration_number,
-        p1_0.updated_at,
-        p1_0.user_id 
-    from
-        tbl_patient p1_0
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0
-Hibernate: 
     delete 
     from
-        tbl_user 
+        tbl_patient_guardian 
     where
-        user_id=?
-Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_information
-        (created_at, deleted_at, medication_name, patient_guardian_id, updated_at, user_id) 
-    values
-        (?, ?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_time
-        (created_at, deleted_at, medication_id, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_alert_day
-        (created_at, day_of_week, deleted_at, medication_alert_time_id, updated_at) 
-    values
-        (?, ?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        tbl_medication_log
-        (created_at, deleted_at, medication_id, medication_alert_time_id, status, time_to_take, updated_at) 
-    values
-        (?, ?, ?, ?, ?, ?, ?)
-2025-06-01T20:30:35.012+09:00 TRACE 1856 --- [    Test worker] w.c.HttpSessionSecurityContextRepository : No HttpSession currently exists
-2025-06-01T20:30:35.012+09:00 TRACE 1856 --- [    Test worker] w.c.HttpSessionSecurityContextRepository : Created SecurityContextImpl [Null authentication]
-2025-06-01T20:30:35.017+09:00 TRACE 1856 --- [    Test worker] .s.s.w.c.SupplierDeferredSecurityContext : Created SecurityContextImpl [Null authentication]
-2025-06-01T20:30:35.018+09:00 DEBUG 1856 --- [    Test worker] w.c.HttpSessionSecurityContextRepository : Created HttpSession as SecurityContext is non-default
-2025-06-01T20:30:35.019+09:00 DEBUG 1856 --- [    Test worker] w.c.HttpSessionSecurityContextRepository : Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=test-uuid-1234, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=null, Granted Authorities=[ROLE_USER]]] to HttpSession [org.springframework.mock.web.MockHttpSession@ae4c757]
-Hibernate: 
-    select
-        u1_0.user_id,
-        u1_0.address,
-        u1_0.created_at,
-        u1_0.deleted_at,
-        u1_0.email,
-        u1_0.is_suspended,
-        u1_0.login_type,
-        u1_0.name,
-        u1_0.password,
-        u1_0.penalty,
-        u1_0.phone,
-        u1_0.file_id,
-        u1_0.provider_id,
-        u1_0.role,
-        u1_0.suspended_at,
-        u1_0.suspension_expires_at,
-        u1_0.updated_at,
-        u1_0.uuid 
-    from
-        tbl_user u1_0 
-    where
-        u1_0.uuid=?
-Hibernate: 
-    select
-        ml1_0.medication_log_id,
-        ml1_0.created_at,
-        ml1_0.deleted_at,
-        ml1_0.medication_id,
-        ml1_0.medication_alert_time_id,
-        ml1_0.status,
-        ml1_0.time_to_take,
-        ml1_0.updated_at 
-    from
-        tbl_medication_log ml1_0 
-    left join
-        tbl_medication_information m1_0 
-            on m1_0.medication_id=ml1_0.medication_id 
-    left join
-        tbl_user u1_0 
-            on u1_0.user_id=m1_0.user_id 
-    where
-        u1_0.user_id=? 
-        and ml1_0.deleted_at is null 
-    fetch
-        first ? rows only
+        patient_guardian_id=?
+2025-06-02T16:33:48.424+09:00  WARN 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23503
+2025-06-02T16:33:48.424+09:00 ERROR 18716 --- [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : 오류: &quot;tbl_patient_guardian&quot; 테이블의 자료 갱신, 삭제 작업이 &quot;fk6pdhcoqjbodmx3krkc6apt59e&quot; 참조키(foreign key) 제약 조건 - &quot;tbl_appointment&quot; 테이블 - 을 위반했습니다
+  Detail: (patient_guardian_id)=(1) 키가 &quot;tbl_appointment&quot; 테이블에서 여전히 참조됩니다.
 </pre>
 </span>
 </div>
@@ -1388,7 +822,7 @@ Hibernate:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 8.13</a> at 2025. 6. 1. 오후 8:30:44</p>
+<a href="https://www.gradle.org">Gradle 8.13</a> at 2025. 6. 2. 오후 4:33:54</p>
 </div>
 </div>
 </body>

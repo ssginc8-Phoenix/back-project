@@ -1,44 +1,17 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Content-Length: 820
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 69
 
 {
-  "content" : [ {
-    "reviewId" : 125,
-    "hospitalId" : 2,
-    "hospitalName" : "Testhospital",
-    "contents" : "업데이트된 리뷰 내용입니다.",
-    "createdAt" : "2025-06-01T02:13:56.27591",
-    "updatedAt" : "2025-06-01T02:16:46.098494",
-    "reportCount" : 1,
-    "keywords" : [ "THOROUGH", "WANT_RETURN" ]
-  } ],
-  "pageable" : {
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "sort" : {
-      "empty" : true,
-      "unsorted" : true,
-      "sorted" : false
-    },
-    "offset" : 0,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "last" : true,
-  "totalPages" : 1,
-  "totalElements" : 1,
-  "size" : 5,
-  "number" : 0,
-  "sort" : {
-    "empty" : true,
-    "unsorted" : true,
-    "sorted" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
+  "message" : "인증이 필요합니다.",
+  "code" : "T_003"
 }
 ----

@@ -1,0 +1,32 @@
+|===
+|Path|Type|Description
+
+|`+name+`
+|`+String+`
+|병원 이름
+
+|`+address+`
+|`+String+`
+|병원 주소
+
+|`+phone+`
+|`+String+`
+|전화번호
+
+|`+introduction+`
+|`+String+`
+|소개
+
+|`+notice+`
+|`+String+`
+|공지사항
+
+|`+businessRegistrationNumber+`
+|`+String+`
+|사업자등록번호
+
+|`+serviceNames+`
+|`+Array+`
+|제공 서비스 목록
+
+|===

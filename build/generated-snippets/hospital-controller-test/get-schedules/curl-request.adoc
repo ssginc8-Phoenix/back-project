@@ -1,5 +1,5 @@
 [source,bash]
 ----
-$ curl 'http://localhost:8080/api/v1/hospitals/22/schedules' -i -X GET \
+$ curl 'http://localhost:8080/api/v1/hospitals/1/schedules' -i -X GET \
     -H 'Content-Type: application/json;charset=UTF-8'
 ----

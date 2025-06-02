@@ -54,6 +54,7 @@ public class Doctor extends BaseTimeEntity {
 	public Doctor(Hospital hospital, Specialization specialization, User user) {
 		this.hospital = hospital;
 		this.specialization = specialization;
+		this.user = user;
 		this.capacityPerHalfHour = 0L;
 	}
 

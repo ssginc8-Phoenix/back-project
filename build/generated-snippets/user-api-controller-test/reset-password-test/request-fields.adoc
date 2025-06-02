@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+email+`
+|`+String+`
+|사용자의 이메일 주소
+
+|`+password+`
+|`+String+`
+|새 비밀번호
+
+|===

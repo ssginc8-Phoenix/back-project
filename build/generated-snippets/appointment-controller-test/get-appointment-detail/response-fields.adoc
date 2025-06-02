@@ -1,0 +1,60 @@
+|===
+|Path|Type|Description
+
+|`+appointmentId+`
+|`+Number+`
+|예약 ID
+
+|`+hospitalId+`
+|`+Number+`
+|병원 ID
+
+|`+doctorId+`
+|`+Number+`
+|의사 ID
+
+|`+patientGuardianId+`
+|`+Number+`
+|보호자 ID
+
+|`+hospitalName+`
+|`+String+`
+|병원명
+
+|`+doctorName+`
+|`+String+`
+|의사 이름
+
+|`+patientName+`
+|`+String+`
+|환자 이름
+
+|`+symptom+`
+|`+String+`
+|증상
+
+|`+question+`
+|`+String+`
+|추가 질문
+
+|`+appointmentTime+`
+|`+String+`
+|예약 시간 (ISO-8601 형식)
+
+|`+appointmentType+`
+|`+String+`
+|예약 유형 (SCHEDULED, IMMEDIATE, TELEMEDICINE)
+
+|`+paymentType+`
+|`+String+`
+|결제 방식 (예: ONSITE, ONLINE 등)
+
+|`+status+`
+|`+String+`
+|예약 상태 (REQUESTED, CONFIRMED, COMPLETED, CANCELLED)
+
+|`+createdAt+`
+|`+String+`
+|예약 생성 시간 (ISO-8601 형식)
+
+|===

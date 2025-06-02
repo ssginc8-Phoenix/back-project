@@ -1,11 +1,11 @@
 [source,http,options="nowrap"]
 ----
-POST /api/v1/guardians/20/invite HTTP/1.1
+POST /api/v1/guardians/5/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 61
 Host: localhost:8080
 
 {
-  "guardianEmail" : "guardian1748682152823@example.com"
+  "guardianEmail" : "guardian1748845516437@example.com"
 }
 ----

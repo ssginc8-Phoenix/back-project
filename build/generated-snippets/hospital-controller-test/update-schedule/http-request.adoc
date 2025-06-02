@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-PATCH /api/v1/hospitals/22/schedules/66 HTTP/1.1
+PATCH /api/v1/hospitals/1/schedules/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 148
 Host: localhost:8080
@@ -9,7 +9,7 @@ Host: localhost:8080
   "dayOfWeek" : "WEDNESDAY",
   "openTime" : "08:30:00",
   "closeTime" : "17:30:00",
-  "lunchStart" : "12:30:00",
-  "lunchEnd" : "13:30:00"
+  "lunchStart" : "12:00:00",
+  "lunchEnd" : "13:00:00"
 }
 ----

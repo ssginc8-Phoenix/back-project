@@ -1,14 +1,14 @@
 [source,bash]
 ----
 $ echo '{
-  "userId" : 27,
+  "userId" : 17,
   "name" : "삼성병원",
   "address" : "서울특별시 강남구",
   "phone" : "010-1234-5678",
   "introduction" : "최신 장비를 갖춘 병원입니다.",
   "notice" : "공휴일은 휴진입니다.",
-  "businessRegistrationNumber" : "123-45-67890",
   "serviceName" : [ "주차 가능", "야간 진료", "여의사 진료" ],
+  "businessRegistrationNumber" : "123-45-67890",
   "latitude" : 37.5665,
   "longitude" : 126.978
 }' | http POST 'http://localhost:8080/api/v1/hospitals' \

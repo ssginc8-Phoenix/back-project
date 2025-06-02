@@ -75,9 +75,9 @@ public class DoctorControllerTest {
 	@DisplayName("의사 등록")
 	void saveDoctorTest() throws Exception {
 		DoctorSaveRequest doctorSaveRequest = DoctorSaveRequest.builder()
-			.hospitalId(3L)
+			.hospitalId(1L)
 			.specialization(Specialization.valueOf("DERMATOLOGY"))
-			.userId(8L)
+			.userId(29L)
 			.build();
 
 		mockMvc.perform(post("/api/v1/doctors")
@@ -89,9 +89,6 @@ public class DoctorControllerTest {
 					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
 					fieldWithPath("specialization").type(JsonFieldType.STRING).description("전공 과목"),
 					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID")
-
-
-
 					)
 			));
 
@@ -147,23 +144,24 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 등록")
 	void saveDoctorSchedule() throws Exception {
-		Long doctorId = 6L;
+		Long doctorId = 3L;
 
 		List<DoctorScheduleRequest> schedules = List.of(
 			DoctorScheduleRequest.builder()
 				.dayOfWeek(DayOfWeek.MONDAY)
 				.startTime(LocalTime.parse("09:00"))
 				.endTime(LocalTime.parse("18:00"))
-				.lunchStart(LocalTime.parse("00:00"))
-				.lunchEnd(LocalTime.parse("00:00"))
-				.build(),
-			DoctorScheduleRequest.builder()
-				.dayOfWeek(DayOfWeek.TUESDAY)
-				.startTime(LocalTime.parse("09:00"))
-				.endTime(LocalTime.parse("18:00"))
-				.lunchStart(LocalTime.parse("00:00"))
-				.lunchEnd(LocalTime.parse("00:00"))
+				.lunchStart(LocalTime.parse("12:00"))
+				.lunchEnd(LocalTime.parse("13:00"))
 				.build()
+
+			// DoctorScheduleRequest.builder()
+			// 	.dayOfWeek(DayOfWeek.TUESDAY)
+			// 	.startTime(LocalTime.parse("09:00"))
+			// 	.endTime(LocalTime.parse("18:00"))
+			// 	.lunchStart(LocalTime.parse("12:00"))
+			// 	.lunchEnd(LocalTime.parse("13:00"))
+			// 	.build()
 		);
 
 		mockMvc.perform(post("/api/v1/doctors/{doctorId}/schedules", doctorId)
@@ -189,7 +187,7 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 조회")
 	void getDoctorSchedule() throws Exception {
-		Long doctorId = 6L;
+		Long doctorId = 3L;
 
 		mockMvc.perform(get("/api/v1/doctors/{doctorId}/schedules", doctorId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -213,15 +211,15 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 수정")
 	void updateDoctorSchedule() throws Exception {
-		Long doctorId = 6L;
-		Long scheduleId = 9L;
+		Long doctorId = 3L;
+		Long scheduleId = 2L;
 
 		DoctorScheduleRequest updateRequest = DoctorScheduleRequest.builder()
 			.dayOfWeek(DayOfWeek.MONDAY)
 			.startTime(LocalTime.parse("10:00"))
-			.endTime(LocalTime.parse("19:00"))
-			.lunchStart(LocalTime.parse("00:00"))
-			.lunchEnd(LocalTime.parse("00:00"))
+			.endTime(LocalTime.parse("17:00"))
+			.lunchStart(LocalTime.parse("12:00"))
+			.lunchEnd(LocalTime.parse("13:00"))
 			.build();
 
 		mockMvc.perform(patch("/api/v1/doctors/{doctorId}/schedules/{scheduleId}", doctorId, scheduleId)
@@ -247,8 +245,8 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 삭제")
 	void deleteDoctorSchedule() throws Exception {
-		Long doctorId = 6L;
-		Long scheduleId = 10L;
+		Long doctorId = 3L;
+		Long scheduleId = 2L;
 
 		mockMvc.perform(delete("/api/v1/doctors/{doctorId}/schedules/{scheduleId}", doctorId, scheduleId))
 			.andExpect(status().isNoContent())

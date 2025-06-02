@@ -20,6 +20,5 @@ public class DoctorSaveRequest {
 		this.hospitalId = hospitalId;
 		this.specialization = specialization;
 		this.userId = userId;
-
 	}
 }

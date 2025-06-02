@@ -6,7 +6,7 @@ Content-Length: 73
 Host: localhost:8080
 
 {
-  "userId" : 44,
+  "userId" : 11,
   "residentRegistrationNumber" : "010101-2345678"
 }
 ----

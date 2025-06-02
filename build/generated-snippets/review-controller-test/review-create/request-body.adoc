@@ -2,7 +2,7 @@
 ----
 {
   "appointmentId" : 5,
-  "userId" : 5,
+  "userId" : 22,
   "hospitalId" : 2,
   "doctorId" : 5,
   "keywords" : [ "CLEAN_HOSPITAL", "FAST", "THOROUGH" ],

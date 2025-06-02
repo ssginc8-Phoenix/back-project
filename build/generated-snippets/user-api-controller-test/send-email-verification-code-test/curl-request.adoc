@@ -1,0 +1,8 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/users/email/verify-code/send' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -d '{
+  "email" : "udevel@naver.com"
+}'
+----

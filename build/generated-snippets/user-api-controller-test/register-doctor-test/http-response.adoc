@@ -8,9 +8,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 27
+Content-Length: 26
 
 {
-  "ids" : [ 99, 100 ]
+  "ids" : [ 15, 16 ]
 }
 ----

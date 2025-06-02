@@ -1,3 +1,7 @@
-[source,options="nowrap"]
+[source,json,options="nowrap"]
 ----
+{
+  "message" : "�씤利앹씠 �븘�슂�빀�땲�떎.",
+  "code" : "T_003"
+}
 ----

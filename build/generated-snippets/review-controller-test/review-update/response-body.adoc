@@ -1,10 +1,7 @@
 [source,json,options="nowrap"]
 ----
 {
-  "reviewId" : 125,
-  "contents" : "업데이트된 리뷰 내용입니다.",
-  "createdAt" : "2025-06-01T02:13:56.27591",
-  "updatedAt" : "2025-06-01T02:16:46.098494",
-  "keywords" : [ "THOROUGH", "WANT_RETURN" ]
+  "message" : "�씤利앹씠 �븘�슂�빀�땲�떎.",
+  "code" : "T_003"
 }
 ----

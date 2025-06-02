@@ -1,0 +1,44 @@
+|===
+|Path|Type|Description
+
+|`+hospitalId+`
+|`+Number+`
+|병원 ID
+
+|`+name+`
+|`+String+`
+|병원 이름
+
+|`+address+`
+|`+String+`
+|병원 주소
+
+|`+phone+`
+|`+String+`
+|전화번호
+
+|`+introduction+`
+|`+String+`
+|소개
+
+|`+notice+`
+|`+String+`
+|공지사항
+
+|`+serviceNames+`
+|`+Array+`
+|제공 서비스 목록
+
+|`+latitude+`
+|`+Number+`
+|위도
+
+|`+longitude+`
+|`+Number+`
+|경도
+
+|`+waiting+`
+|`+Number+`
+|대기 인원 수
+
+|===

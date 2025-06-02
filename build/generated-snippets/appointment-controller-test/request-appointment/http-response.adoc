@@ -2,10 +2,10 @@
 ----
 HTTP/1.1 404 Not Found
 Content-Type: application/json;charset=UTF-8
-Content-Length: 77
+Content-Length: 86
 
 {
-  "message" : "유저를 찾을 수 없습니다.",
-  "code" : "U_001"
+  "message" : "해당 병원은 존재하지 않습니다.",
+  "code" : "H_001"
 }
 ----

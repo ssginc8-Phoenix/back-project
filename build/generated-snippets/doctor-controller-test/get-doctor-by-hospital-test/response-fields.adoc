@@ -1,0 +1,20 @@
+|===
+|Path|Type|Description
+
+|`+[].doctorId+`
+|`+Number+`
+|의사 ID
+
+|`+[].specialization+`
+|`+String+`
+|전공
+
+|`+[].username+`
+|`+String+`
+|의사 이름
+
+|`+[].hospitalName+`
+|`+String+`
+|병원 이름
+
+|===

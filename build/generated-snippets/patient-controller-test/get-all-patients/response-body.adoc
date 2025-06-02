@@ -2,56 +2,12 @@
 ----
 {
   "content" : [ {
+    "patientId" : 1,
+    "userId" : 1,
+    "residentRegistrationNumber" : "900101-1234567"
+  }, {
     "patientId" : 2,
-    "userId" : 2,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 3,
-    "userId" : 3,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 4,
-    "userId" : 5,
-    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
-  }, {
-    "patientId" : 5,
-    "userId" : 6,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 7,
-    "userId" : 10,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 8,
-    "userId" : 12,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 9,
-    "userId" : 15,
-    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
-  }, {
-    "patientId" : 10,
-    "userId" : 16,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 12,
-    "userId" : 20,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 13,
-    "userId" : 22,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 14,
-    "userId" : 25,
-    "residentRegistrationNumber" : "2658886df639f1032509cd68eb823d7eb1372f86654d6a8d1c1d4501df5a3061"
-  }, {
-    "patientId" : 15,
-    "userId" : 26,
-    "residentRegistrationNumber" : "900101-1234567"
-  }, {
-    "patientId" : 17,
-    "userId" : 30,
+    "userId" : 7,
     "residentRegistrationNumber" : "900101-1234567"
   } ],
   "pageable" : {
@@ -59,25 +15,25 @@
     "pageSize" : 20,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
     "offset" : 0,
-    "paged" : true,
-    "unpaged" : false
+    "unpaged" : false,
+    "paged" : true
   },
   "last" : true,
-  "totalElements" : 13,
   "totalPages" : 1,
-  "first" : true,
+  "totalElements" : 2,
   "size" : 20,
   "number" : 0,
   "sort" : {
     "empty" : true,
-    "sorted" : false,
-    "unsorted" : true
+    "unsorted" : true,
+    "sorted" : false
   },
-  "numberOfElements" : 13,
+  "first" : true,
+  "numberOfElements" : 2,
   "empty" : false
 }
 ----

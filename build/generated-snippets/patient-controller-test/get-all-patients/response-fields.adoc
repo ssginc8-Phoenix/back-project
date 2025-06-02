@@ -1,15 +1,15 @@
 |===
 |Path|Type|Description
 
-|`+[].patientId+`
+|`+content[].patientId+`
 |`+Number+`
 |환자 ID
 
-|`+[].userId+`
+|`+content[].userId+`
 |`+Number+`
 |유저 ID
 
-|`+[].residentRegistrationNumber+`
+|`+content[].residentRegistrationNumber+`
 |`+String+`
 |주민등록번호
 

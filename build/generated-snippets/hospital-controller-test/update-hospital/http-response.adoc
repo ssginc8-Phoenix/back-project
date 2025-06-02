@@ -1,11 +1,11 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 404 Not Found
 Content-Type: application/json;charset=UTF-8
-Content-Length: 79
+Content-Length: 86
 
 {
-  "message" : "서버 에러가 발생했습니다.",
-  "code" : "G_002"
+  "message" : "해당 병원은 존재하지 않습니다.",
+  "code" : "H_001"
 }
 ----

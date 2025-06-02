@@ -80,7 +80,7 @@ public class HospitalControllerTest {
 	@DisplayName("병원 등록 API 테스트")
 	void saveHospitalTest() throws Exception {
 		HospitalRequest request = HospitalRequest.builder()
-			.userId(6L)
+			.userId(17L)
 			.name("삼성병원")
 			.address("서울특별시 강남구")
 			.phone("010-1234-5678")
@@ -116,7 +116,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 상세 조회 테스트")
 	void getHospitalById() throws Exception {
-		Long hospitalId = 3L;
+		Long hospitalId = 1L;
 
 		mockMvc.perform(get("/api/v1/hospitals/{hospitalId}", hospitalId))
 			.andExpect(status().isOk())
@@ -153,7 +153,7 @@ public class HospitalControllerTest {
 			.serviceNames(List.of("의사많음", "깔끔"))
 			.build();
 
-		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}", 3L)
+		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -177,7 +177,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 삭제")
 	void deleteHospital() throws Exception {
-		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}", 5L))
+		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}", 1L))
 			.andExpect(status().isNoContent())
 			.andDo(restDocs.document(
 				pathParameters(
@@ -239,7 +239,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 등록")
 	void saveSchedule() throws Exception {
-		Long hospitalId = 3L;
+		Long hospitalId = 1L;
 
 		List<HospitalScheduleRequest> schedules = List.of(
 			HospitalScheduleRequest.builder()
@@ -279,8 +279,8 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 삭제")
 	void deleteSchedule() throws Exception {
-		Long hospitalId = 3L;
-		Long scheduleId = 24L;
+		Long hospitalId = 1L;
+		Long scheduleId = 2L;
 
 		mockMvc.perform(delete("/api/v1/hospitals/{hospitalId}/schedules/{scheduleId}", hospitalId, scheduleId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -296,8 +296,8 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 영업시간 수정")
 	void updateSchedule() throws Exception {
-		Long hospitalId = 3L;
-		Long scheduleId = 23L;
+		Long hospitalId = 1L;
+		Long scheduleId = 2L;
 
 		HospitalScheduleRequest scheduleRequest = HospitalScheduleRequest.builder()
 			.dayOfWeek(DayOfWeek.WEDNESDAY)
@@ -329,7 +329,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 웨이팅 등록")
 	void saveHospitalWaiting() throws Exception {
-		Long hospitalId = 3L;
+		Long hospitalId = 1L;
 
 		HospitalWaitingRequest request = new HospitalWaitingRequest(5L); // DTO 사용
 
@@ -354,7 +354,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 웨이팅 조회")
 	void getHospitalWaiting() throws Exception {
-		Long hospitalId = 3L;
+		Long hospitalId = 1L;
 
 		mockMvc.perform(get("/api/v1/hospitals/{hospitalId}/waiting", hospitalId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -370,7 +370,7 @@ public class HospitalControllerTest {
 	@Test
 	@DisplayName("병원 웨이팅 수정")
 	void updateHospitalWaiting() throws Exception {
-		Long hospitalId = 3L;
+		Long hospitalId = 1L;
 		Map<String, Long> request = Map.of("waiting", 3L);
 
 		mockMvc.perform(patch("/api/v1/hospitals/{hospitalId}/waiting", hospitalId)
@@ -414,7 +414,4 @@ public class HospitalControllerTest {
 				)
 			));
 	}
-
-
-
 }

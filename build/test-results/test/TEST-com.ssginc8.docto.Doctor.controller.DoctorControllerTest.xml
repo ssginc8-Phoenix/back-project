@@ -1,101 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" tests="8" skipped="0" failures="7" errors="0" timestamp="2025-06-01T11:30:32.389Z" hostname="WIN-OJI72659EU9" time="1.026">
+<testsuite name="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" tests="7" skipped="0" failures="6" errors="0" timestamp="2025-06-02T07:33:43.248Z" hostname="SOOMIN" time="0.906">
   <properties/>
-  <testcase name="의사 영업시간 수정" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.402">
-    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+  <testcase name="의사 영업시간 수정" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.397">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorSchedule(DoctorControllerTest.java:289)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorSchedule(DoctorControllerTest.java:228)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </failure>
   </testcase>
-  <testcase name="의사 영업시간 삭제" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.059">
-    <failure message="java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;500&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;500&gt;
+  <testcase name="의사 영업시간 삭제" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.035">
+    <failure message="java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;204&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.deleteDoctorSchedule(DoctorControllerTest.java:320)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.deleteDoctorSchedule(DoctorControllerTest.java:252)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </failure>
   </testcase>
-  <testcase name="의사 영업시간 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.229">
-    <failure message="org.springframework.restdocs.snippet.SnippetException: Fields with the following paths were not found in the payload: [[].scheduleId, [].doctorId, [].dayOfWeek, [].startTime, [].endTime, [].lunchStart, [].lunchEnd]" type="org.springframework.restdocs.snippet.SnippetException">org.springframework.restdocs.snippet.SnippetException: Fields with the following paths were not found in the payload: [[].scheduleId, [].doctorId, [].dayOfWeek, [].startTime, [].endTime, [].lunchStart, [].lunchEnd]
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.validateFieldDocumentation(AbstractFieldsSnippet.java:218)
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.createModel(AbstractFieldsSnippet.java:160)
-	at app//org.springframework.restdocs.snippet.TemplatedSnippet.document(TemplatedSnippet.java:78)
-	at app//org.springframework.restdocs.generate.RestDocumentationGenerator.handle(RestDocumentationGenerator.java:191)
-	at app//org.springframework.restdocs.mockmvc.RestDocumentationResultHandler$1.handle(RestDocumentationResultHandler.java:77)
-	at app//org.springframework.test.web.servlet.MockMvc$1.andDo(MockMvc.java:219)
-	at app//com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorSchedule(DoctorControllerTest.java:256)
-	at java.base@17.0.13/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
-</failure>
-  </testcase>
-  <testcase name="의사 영업시간 등록" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.045">
-    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+  <testcase name="의사 영업시간 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.037">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorSchedule(DoctorControllerTest.java:231)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorSchedule(DoctorControllerTest.java:194)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </failure>
   </testcase>
-  <testcase name="의사 전체 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.072"/>
-  <testcase name="의사 등록" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.13">
-    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+  <testcase name="의사 영업시간 등록" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.047">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorTest(DoctorControllerTest.java:92)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorSchedule(DoctorControllerTest.java:170)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </failure>
   </testcase>
-  <testcase name="병원에 속한 의사 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.044">
-    <failure message="org.springframework.restdocs.snippet.SnippetException: The following parts of the payload were not documented:&#13;&#10;{&#13;&#10;  &quot;content&quot; : [ ]&#13;&#10;}&#13;&#10;Fields with the following paths were not found in the payload: [content[].doctorId, content[].specialization, content[].username, content[].hospitalId]" type="org.springframework.restdocs.snippet.SnippetException">org.springframework.restdocs.snippet.SnippetException: The following parts of the payload were not documented:
-{
-  &quot;content&quot; : [ ]
-}
-Fields with the following paths were not found in the payload: [content[].doctorId, content[].specialization, content[].username, content[].hospitalId]
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.validateFieldDocumentation(AbstractFieldsSnippet.java:218)
-	at app//org.springframework.restdocs.payload.AbstractFieldsSnippet.createModel(AbstractFieldsSnippet.java:160)
-	at app//org.springframework.restdocs.snippet.TemplatedSnippet.document(TemplatedSnippet.java:78)
-	at app//org.springframework.restdocs.generate.RestDocumentationGenerator.handle(RestDocumentationGenerator.java:191)
-	at app//org.springframework.restdocs.mockmvc.RestDocumentationResultHandler$1.handle(RestDocumentationResultHandler.java:77)
-	at app//org.springframework.test.web.servlet.MockMvc$1.andDo(MockMvc.java:219)
-	at app//com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorByHospitalTest(DoctorControllerTest.java:175)
-	at java.base@17.0.13/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base@17.0.13/java.util.ArrayList.forEach(ArrayList.java:1511)
-</failure>
-  </testcase>
-  <testcase name="의사 정보 수정" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.036">
-    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;500&gt;
+  <testcase name="의사 전체 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.286"/>
+  <testcase name="의사 등록" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.043">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorTest(DoctorControllerTest.java:124)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorTest(DoctorControllerTest.java:86)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 </failure>
   </testcase>
-  <system-out><![CDATA[2025-06-01T20:30:29.978+09:00  INFO 1856 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.Doctor.controller.DoctorControllerTest]: DoctorControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-01T20:30:30.013+09:00  INFO 1856 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.Doctor.controller.DoctorControllerTest
+  <testcase name="병원에 속한 의사 조회" classname="com.ssginc8.docto.Doctor.controller.DoctorControllerTest" time="0.055">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorByHospitalTest(DoctorControllerTest.java:128)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <system-out><![CDATA[2025-06-02T16:33:40.007+09:00  INFO 18716 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ssginc8.docto.Doctor.controller.DoctorControllerTest]: DoctorControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-02T16:33:40.062+09:00  INFO 18716 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ssginc8.docto.DoctoApplication for test class com.ssginc8.docto.Doctor.controller.DoctorControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -106,41 +86,41 @@ Fields with the following paths were not found in the payload: [content[].doctor
 
  :: Spring Boot ::                (v3.4.5)
 
-2025-06-01T20:30:30.048+09:00  INFO 1856 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Starting DoctorControllerTest using Java 17.0.13 with PID 1856 (started by pizza in C:\backend_project)
-2025-06-01T20:30:30.048+09:00 DEBUG 1856 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Running with Spring Boot v3.4.5, Spring v6.2.6
-2025-06-01T20:30:30.048+09:00  INFO 1856 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : The following 1 profile is active: "prod"
-2025-06-01T20:30:30.302+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2025-06-01T20:30:30.302+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-06-01T20:30:30.362+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 18 JPA repository interfaces.
-2025-06-01T20:30:30.367+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2025-06-01T20:30:30.367+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2025-06-01T20:30:30.382+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.appointment.repo.AppointmentRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.auth.jwt.repository.RefreshTokenRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.doctor.repo.DoctorRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.doctor.repo.DoctorScheduleRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.file.repository.FileRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.guardian.repo.PatientGuardianRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.HospitalRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.HospitalScheduleRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.ProvidedServiceRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationAlertDayRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationAlertTimeRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationInformationRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationLogRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.383+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.patient.repo.PatientRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.384+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.qna.repo.CommentRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.384+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.qna.repo.QaPostRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.384+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.review.repository.ReviewRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.384+09:00  INFO 1856 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.user.repo.UserRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2025-06-01T20:30:30.384+09:00  INFO 1856 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
-2025-06-01T20:30:30.494+09:00  INFO 1856 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-06-01T20:30:30.496+09:00  INFO 1856 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-06-01T20:30:30.510+09:00  INFO 1856 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-06-01T20:30:30.511+09:00  INFO 1856 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2025-06-01T20:30:30.570+09:00  INFO 1856 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@7bf185b4
-2025-06-01T20:30:30.570+09:00  INFO 1856 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2025-06-01T20:30:30.577+09:00  WARN 1856 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-06-01T20:30:30.578+09:00  INFO 1856 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-06-02T16:33:40.115+09:00  INFO 18716 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Starting DoctorControllerTest using Java 17.0.14 with PID 18716 (started by o3o_1 in C:\Spharos Academy\docto-back-cs)
+2025-06-02T16:33:40.116+09:00 DEBUG 18716 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Running with Spring Boot v3.4.5, Spring v6.2.6
+2025-06-02T16:33:40.117+09:00  INFO 18716 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : The following 1 profile is active: "prod"
+2025-06-02T16:33:40.595+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-02T16:33:40.596+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02T16:33:40.752+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 155 ms. Found 18 JPA repository interfaces.
+2025-06-02T16:33:40.756+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-02T16:33:40.756+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-02T16:33:40.800+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.appointment.repo.AppointmentRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.801+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.auth.jwt.repository.RefreshTokenRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.801+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.doctor.repo.DoctorRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.doctor.repo.DoctorScheduleRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.file.repository.FileRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.guardian.repo.PatientGuardianRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.HospitalRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.HospitalScheduleRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.802+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.hospital.repo.ProvidedServiceRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationAlertDayRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationAlertTimeRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationInformationRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.medication.repo.MedicationLogRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.patient.repo.PatientRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.qna.repo.CommentRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.qna.repo.QaPostRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.803+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.review.repository.ReviewRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.805+09:00  INFO 18716 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssginc8.docto.user.repo.UserRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-02T16:33:40.805+09:00  INFO 18716 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 0 Redis repository interfaces.
+2025-06-02T16:33:40.969+09:00  INFO 18716 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02T16:33:40.978+09:00  INFO 18716 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-02T16:33:41.000+09:00  INFO 18716 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02T16:33:41.001+09:00  INFO 18716 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-06-02T16:33:41.208+09:00  INFO 18716 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@30b43d5d
+2025-06-02T16:33:41.209+09:00  INFO 18716 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-06-02T16:33:41.218+09:00  WARN 18716 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-02T16:33:41.220+09:00  INFO 18716 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
 	Database driver: undefined/unknown
 	Database version: 17.5
@@ -148,15 +128,15 @@ Fields with the following paths were not found in the payload: [content[].doctor
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-06-01T20:30:30.814+09:00  INFO 1856 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-06-01T20:30:31.852+09:00  INFO 1856 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-06-01T20:30:32.191+09:00 TRACE 1856 --- [    Test worker] eGlobalAuthenticationAutowiredConfigurer : Eagerly initializing {securityConfig=com.ssginc8.docto.auth.config.SecurityConfig$$SpringCGLIB$$0@3fddabba}
-2025-06-01T20:30:32.192+09:00  INFO 1856 --- [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailService
-2025-06-01T20:30:32.285+09:00 DEBUG 1856 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, OAuth2AuthorizationRequestRedirectFilter, OAuth2LoginAuthenticationFilter, TokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
-2025-06-01T20:30:32.388+09:00  INFO 1856 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Started DoctorControllerTest in 2.37 seconds (process running for 15.39)
-2025-06-01T20:30:32.465+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:32.466+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:32.467+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:41.479+09:00  INFO 18716 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02T16:33:42.686+09:00  INFO 18716 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02T16:33:43.035+09:00 TRACE 18716 --- [    Test worker] eGlobalAuthenticationAutowiredConfigurer : Eagerly initializing {securityConfig=com.ssginc8.docto.auth.config.SecurityConfig$$SpringCGLIB$$0@2befecc}
+2025-06-02T16:33:43.036+09:00  INFO 18716 --- [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailService
+2025-06-02T16:33:43.135+09:00 DEBUG 18716 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, OAuth2AuthorizationRequestRedirectFilter, OAuth2LoginAuthenticationFilter, TokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-02T16:33:43.243+09:00  INFO 18716 --- [    Test worker] c.s.d.D.controller.DoctorControllerTest  : Started DoctorControllerTest in 3.177 seconds (process running for 20.649)
+2025-06-02T16:33:43.335+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:43.335+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:43.336+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         d1_0.doctor_id,
@@ -171,15 +151,15 @@ Hibernate:
         tbl_doctor d1_0 
     where
         d1_0.doctor_id=?
-2025-06-01T20:30:32.690+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:32.692+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+2025-06-02T16:33:43.549+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:43.554+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 의사가 존재하지 않습니다., code=D_001)
 
 MockHttpServletRequest:
       HTTP Method = PATCH
-      Request URI = /api/v1/doctors/9/schedules/4
+      Request URI = /api/v1/doctors/3/schedules/2
        Parameters = {}
           Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"112"]
-             Body = {"dayOfWeek":"MONDAY","startTime":"10:00:00","endTime":"19:00:00","lunchEnd":"13:00:00","lunchStart":"14:00:00"}
+             Body = {"dayOfWeek":"MONDAY","startTime":"10:00:00","endTime":"17:00:00","lunchEnd":"12:00:00","lunchStart":"13:00:00"}
     Session Attrs = {}
 
 Handler:
@@ -191,7 +171,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = java.lang.IllegalArgumentException
+             Type = com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException
 
 ModelAndView:
         View name = null
@@ -202,17 +182,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = {"message":"서버 에러가 발생했습니다.","code":"G_002"}
+             Body = {"message":"해당 의사가 존재하지 않습니다.","code":"D_001"}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:32.801+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:32.801+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:32.803+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2025-06-02T16:33:43.650+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:43.650+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:43.651+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
 Hibernate: 
     select
         d1_0.doctor_id,
@@ -227,12 +207,12 @@ Hibernate:
         tbl_doctor d1_0 
     where
         d1_0.doctor_id=?
-2025-06-01T20:30:32.824+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:32.825+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+2025-06-02T16:33:43.658+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:43.658+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 의사가 존재하지 않습니다., code=D_001)
 
 MockHttpServletRequest:
       HTTP Method = DELETE
-      Request URI = /api/v1/doctors/9/schedules/4
+      Request URI = /api/v1/doctors/3/schedules/2
        Parameters = {}
           Headers = []
              Body = null
@@ -247,7 +227,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
+             Type = com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException
 
 ModelAndView:
         View name = null
@@ -258,40 +238,37 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = {"message":"서버 에러가 발생했습니다.","code":"G_002"}
+             Body = {"message":"해당 의사가 존재하지 않습니다.","code":"D_001"}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:32.858+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:32.858+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:32.860+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2025-06-02T16:33:43.686+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:43.687+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:43.688+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
-        ds1_0.schedule_id,
-        ds1_0.created_at,
-        ds1_0.day_of_week,
-        ds1_0.deleted_at,
-        ds1_0.doctor_id,
-        ds1_0.end_time,
-        ds1_0.lunch_end,
-        ds1_0.lunch_start,
-        ds1_0.start_time,
-        ds1_0.updated_at 
+        d1_0.doctor_id,
+        d1_0.capacity_per_half_hour,
+        d1_0.created_at,
+        d1_0.deleted_at,
+        d1_0.hospital_id,
+        d1_0.specialization,
+        d1_0.updated_at,
+        d1_0.user_id 
     from
-        tbl_doctor_schedule ds1_0 
-    left join
         tbl_doctor d1_0 
-            on d1_0.doctor_id=ds1_0.doctor_id 
     where
         d1_0.doctor_id=?
+2025-06-02T16:33:43.695+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:43.695+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 의사가 존재하지 않습니다., code=D_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/doctors/9/schedules
+      Request URI = /api/v1/doctors/3/schedules
        Parameters = {}
           Headers = [Content-Type:"application/json;charset=UTF-8"]
              Body = null
@@ -306,7 +283,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = null
+             Type = com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException
 
 ModelAndView:
         View name = null
@@ -317,17 +294,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 200
+           Status = 404
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = []
+             Body = {"message":"해당 의사가 존재하지 않습니다.","code":"D_001"}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:33.087+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:33.087+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:33.088+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:43.727+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:43.727+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:43.728+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         d1_0.doctor_id,
@@ -342,15 +319,15 @@ Hibernate:
         tbl_doctor d1_0 
     where
         d1_0.doctor_id=?
-2025-06-01T20:30:33.103+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:33.103+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
+2025-06-02T16:33:43.741+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:43.742+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 의사가 존재하지 않습니다., code=D_001)
 
 MockHttpServletRequest:
       HTTP Method = POST
-      Request URI = /api/v1/doctors/9/schedules
+      Request URI = /api/v1/doctors/3/schedules
        Parameters = {}
-          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"228"]
-             Body = [{"dayOfWeek":"MONDAY","startTime":"09:00:00","endTime":"18:00:00","lunchEnd":"12:00:00","lunchStart":"13:00:00"},{"dayOfWeek":"TUESDAY","startTime":"09:00:00","endTime":"18:00:00","lunchEnd":"12:00:00","lunchStart":"13:00:00"}]
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"114"]
+             Body = [{"dayOfWeek":"MONDAY","startTime":"09:00:00","endTime":"18:00:00","lunchEnd":"12:00:00","lunchStart":"13:00:00"}]
     Session Attrs = {}
 
 Handler:
@@ -362,7 +339,7 @@ Async:
      Async result = null
 
 Resolved Exception:
-             Type = java.lang.IllegalArgumentException
+             Type = com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException
 
 ModelAndView:
         View name = null
@@ -373,17 +350,17 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 500
+           Status = 404
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = {"message":"서버 에러가 발생했습니다.","code":"G_002"}
+             Body = {"message":"해당 의사가 존재하지 않습니다.","code":"D_001"}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:33.133+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:33.133+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:33.134+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:43.774+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:43.774+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:43.775+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         d1_0.doctor_id,
@@ -396,18 +373,62 @@ Hibernate:
         d1_0.user_id 
     from
         tbl_doctor d1_0 
-    offset
-        ? rows 
+    where
+        d1_0.deleted_at is null 
     fetch
         first ? rows only
-2025-06-01T20:30:33.159+09:00  WARN 1856 --- [    Test worker] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+Hibernate: 
+    select
+        h1_0.hospital_id,
+        h1_0.address,
+        h1_0.business_registration_number,
+        h1_0.created_at,
+        h1_0.deleted_at,
+        h1_0.introduction,
+        h1_0.latitude,
+        h1_0.longitude,
+        h1_0.name,
+        h1_0.notice,
+        h1_0.phone,
+        h1_0.updated_at,
+        h1_0.user_id,
+        h1_0.waiting 
+    from
+        tbl_hospital h1_0 
+    where
+        h1_0.hospital_id=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.deleted_at,
+        u1_0.email,
+        u1_0.is_suspended,
+        u1_0.login_type,
+        u1_0.name,
+        u1_0.password,
+        u1_0.penalty,
+        u1_0.phone,
+        u1_0.file_id,
+        u1_0.provider_id,
+        u1_0.role,
+        u1_0.suspended_at,
+        u1_0.suspension_expires_at,
+        u1_0.updated_at,
+        u1_0.uuid 
+    from
+        tbl_user u1_0 
+    where
+        u1_0.user_id=?
+2025-06-02T16:33:43.999+09:00  WARN 18716 --- [    Test worker] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
 	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
 	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
 
 
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /api/v1/doctors
+      Request URI = /api/v1/admin/doctors
        Parameters = {page=[0], size=[10]}
           Headers = []
              Body = null
@@ -437,20 +458,79 @@ MockHttpServletResponse:
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = {"content":[],"pageable":{"pageNumber":0,"pageSize":10,"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"paged":true,"unpaged":false},"last":true,"totalElements":0,"totalPages":0,"first":true,"size":10,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":0,"empty":true}
+             Body = {"content":[{"doctorId":1,"specialization":"CARDIOLOGY","username":"한민상","hospitalName":"강남헬스케어병원"}],"pageable":{"pageNumber":0,"pageSize":10,"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"unpaged":false,"paged":true},"last":true,"totalPages":1,"totalElements":1,"size":10,"number":0,"sort":{"empty":true,"unsorted":true,"sorted":false},"first":true,"numberOfElements":1,"empty":false}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-2025-06-01T20:30:33.204+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:33.204+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:33.205+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-06-02T16:33:44.059+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:44.059+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:44.060+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
-    insert 
-    into
-        tbl_user
-        (address, created_at, deleted_at, email, is_suspended, login_type, name, password, penalty, phone, file_id, provider_id, role, suspended_at, suspension_expires_at, updated_at, uuid) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    select
+        u1_0.user_id,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.deleted_at,
+        u1_0.email,
+        u1_0.is_suspended,
+        u1_0.login_type,
+        u1_0.name,
+        u1_0.password,
+        u1_0.penalty,
+        u1_0.phone,
+        u1_0.file_id,
+        u1_0.provider_id,
+        u1_0.role,
+        u1_0.suspended_at,
+        u1_0.suspension_expires_at,
+        u1_0.updated_at,
+        u1_0.uuid 
+    from
+        tbl_user u1_0 
+    where
+        u1_0.user_id=?
+2025-06-02T16:33:44.075+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:44.075+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=유저를 찾을 수 없습니다., code=U_001)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/v1/doctors
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"59"]
+             Body = {"hospitalId":1,"specialization":"DERMATOLOGY","userId":29}
+    Session Attrs = {}
+
+Handler:
+             Type = com.ssginc8.docto.doctor.controller.DoctorController
+           Method = com.ssginc8.docto.doctor.controller.DoctorController#createDoctor(DoctorSaveRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.ssginc8.docto.global.error.exception.userException.UserNotFoundException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 404
+    Error message = null
+          Headers = [Content-Type:"application/json;charset=UTF-8"]
+     Content type = application/json;charset=UTF-8
+             Body = {"message":"유저를 찾을 수 없습니다.","code":"U_001"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-06-02T16:33:44.103+09:00  INFO 18716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-02T16:33:44.103+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-02T16:33:44.104+09:00  INFO 18716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
 Hibernate: 
     select
         h1_0.hospital_id,
@@ -470,84 +550,29 @@ Hibernate:
     from
         tbl_hospital h1_0 
     where
-        h1_0.hospital_id=?
-2025-06-01T20:30:33.314+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:33.315+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
-
-MockHttpServletRequest:
-      HTTP Method = POST
-      Request URI = /api/v1/doctors
-       Parameters = {}
-          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"193"]
-             Body = {"hospitalId":22,"specialization":"DERMATOLOGY","username":"dr.jjh","password":"asd123","email":"jjh1@naver.com","login_type":"EMAIL","role":"DOCTOR","suspended":false,"uuid":"asd123123111111"}
-    Session Attrs = {}
-
-Handler:
-             Type = com.ssginc8.docto.doctor.controller.DoctorController
-           Method = com.ssginc8.docto.doctor.controller.DoctorController#createDoctor(DoctorSaveRequest)
-
-Async:
-    Async started = false
-     Async result = null
-
-Resolved Exception:
-             Type = jakarta.persistence.EntityNotFoundException
-
-ModelAndView:
-        View name = null
-             View = null
-            Model = null
-
-FlashMap:
-       Attributes = null
-
-MockHttpServletResponse:
-           Status = 500
-    Error message = null
-          Headers = [Content-Type:"application/json;charset=UTF-8"]
-     Content type = application/json;charset=UTF-8
-             Body = {"message":"서버 에러가 발생했습니다.","code":"G_002"}
-    Forwarded URL = null
-   Redirected URL = null
-          Cookies = []
-2025-06-01T20:30:33.337+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:33.337+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:33.338+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-Hibernate: 
-    select
-        d1_0.doctor_id,
-        d1_0.capacity_per_half_hour,
-        d1_0.created_at,
-        d1_0.deleted_at,
-        d1_0.hospital_id,
-        d1_0.specialization,
-        d1_0.updated_at,
-        d1_0.user_id 
-    from
-        tbl_doctor d1_0 
-    offset
-        ? rows 
-    fetch
-        first ? rows only
+        h1_0.hospital_id=? 
+        and h1_0.deleted_at is null
+2025-06-02T16:33:44.134+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
+2025-06-02T16:33:44.134+09:00  INFO 18716 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=해당 병원은 존재하지 않습니다., code=H_001)
 
 MockHttpServletRequest:
       HTTP Method = GET
       Request URI = /api/v1/doctors
-       Parameters = {hospitalId=[22], page=[0], size=[10]}
+       Parameters = {hospitalId=[1]}
           Headers = [Content-Type:"application/json;charset=UTF-8"]
              Body = null
     Session Attrs = {}
 
 Handler:
              Type = com.ssginc8.docto.doctor.controller.DoctorController
-           Method = com.ssginc8.docto.doctor.controller.DoctorController#getAllDoctors(Pageable)
+           Method = com.ssginc8.docto.doctor.controller.DoctorController#getDoctorsByHospital(Long)
 
 Async:
     Async started = false
      Async result = null
 
 Resolved Exception:
-             Type = null
+             Type = com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException
 
 ModelAndView:
         View name = null
@@ -558,75 +583,18 @@ FlashMap:
        Attributes = null
 
 MockHttpServletResponse:
-           Status = 200
+           Status = 404
     Error message = null
           Headers = [Content-Type:"application/json;charset=UTF-8"]
      Content type = application/json;charset=UTF-8
-             Body = {"content":[],"pageable":{"pageNumber":0,"pageSize":10,"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"paged":true,"unpaged":false},"last":true,"totalElements":0,"totalPages":0,"first":true,"size":10,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":0,"empty":true}
-    Forwarded URL = null
-   Redirected URL = null
-          Cookies = []
-2025-06-01T20:30:33.382+09:00  INFO 1856 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-01T20:30:33.382+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-01T20:30:33.383+09:00  INFO 1856 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-Hibernate: 
-    select
-        d1_0.doctor_id,
-        d1_0.capacity_per_half_hour,
-        d1_0.created_at,
-        d1_0.deleted_at,
-        d1_0.hospital_id,
-        d1_0.specialization,
-        d1_0.updated_at,
-        d1_0.user_id 
-    from
-        tbl_doctor d1_0 
-    where
-        d1_0.doctor_id=?
-2025-06-01T20:30:33.392+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : =============================================
-2025-06-01T20:30:33.392+09:00  INFO 1856 --- [    Test worker] c.s.d.g.error.GlobalExceptionHandler     : ErrorResponse(message=서버 에러가 발생했습니다., code=G_002)
-
-MockHttpServletRequest:
-      HTTP Method = PATCH
-      Request URI = /api/v1/doctors/9
-       Parameters = {}
-          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"76"]
-             Body = {"password":"1qa12a","email":"avbv@naver.com","specialization":"PSYCHIATRY"}
-    Session Attrs = {}
-
-Handler:
-             Type = com.ssginc8.docto.doctor.controller.DoctorController
-           Method = com.ssginc8.docto.doctor.controller.DoctorController#updateDoctor(Long, DoctorUpdateRequest)
-
-Async:
-    Async started = false
-     Async result = null
-
-Resolved Exception:
-             Type = java.lang.IllegalArgumentException
-
-ModelAndView:
-        View name = null
-             View = null
-            Model = null
-
-FlashMap:
-       Attributes = null
-
-MockHttpServletResponse:
-           Status = 500
-    Error message = null
-          Headers = [Content-Type:"application/json;charset=UTF-8"]
-     Content type = application/json;charset=UTF-8
-             Body = {"message":"서버 에러가 발생했습니다.","code":"G_002"}
+             Body = {"message":"해당 병원은 존재하지 않습니다.","code":"H_001"}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
 ]]></system-out>
-  <system-err><![CDATA[java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. id = 9
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.lambda$getDoctorById$0(DoctorProvider.java:20)
+  <system-err><![CDATA[com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException: 해당 의사가 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:19)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:36)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -639,7 +607,7 @@ MockHttpServletResponse:
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.doctor.provider.DoctorProvider$$SpringCGLIB$$0.getDoctorById(<generated>)
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.updateDoctorSchedule(DoctorServiceImpl.java:170)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.updateDoctorSchedule(DoctorServiceImpl.java:138)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -652,7 +620,7 @@ MockHttpServletResponse:
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.updateDoctorSchedule(<generated>)
-	at com.ssginc8.docto.doctor.controller.DoctorController.updateDoctorSchedule(DoctorController.java:112)
+	at com.ssginc8.docto.doctor.controller.DoctorController.updateDoctorSchedule(DoctorController.java:100)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -675,7 +643,7 @@ MockHttpServletResponse:
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorSchedule(DoctorControllerTest.java:286)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorSchedule(DoctorControllerTest.java:225)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -761,10 +729,35 @@ MockHttpServletResponse:
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Doctor not found with id: 9
-	at com.ssginc8.docto.doctor.controller.DoctorController.lambda$deleteDoctorSchedule$0(DoctorController.java:127)
+com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException: 해당 의사가 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.doctor.controller.DoctorController.deleteDoctorSchedule(DoctorController.java:127)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:36)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider$$SpringCGLIB$$0.getDoctorById(<generated>)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.deleteDoctorSchedule(DoctorServiceImpl.java:163)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.deleteDoctorSchedule(<generated>)
+	at com.ssginc8.docto.doctor.controller.DoctorController.deleteDoctorSchedule(DoctorController.java:116)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -789,7 +782,7 @@ jakarta.persistence.EntityNotFoundException: Doctor not found with id: 9
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.deleteDoctorSchedule(DoctorControllerTest.java:319)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.deleteDoctorSchedule(DoctorControllerTest.java:251)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -875,10 +868,9 @@ jakarta.persistence.EntityNotFoundException: Doctor not found with id: 9
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. id = 9
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.lambda$getDoctorById$0(DoctorProvider.java:20)
+com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException: 해당 의사가 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:19)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:36)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -891,7 +883,146 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.doctor.provider.DoctorProvider$$SpringCGLIB$$0.getDoctorById(<generated>)
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.saveDoctorSchedule(DoctorServiceImpl.java:124)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.getDoctorSchedule(DoctorServiceImpl.java:123)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.getDoctorSchedule(<generated>)
+	at com.ssginc8.docto.doctor.controller.DoctorController.getDoctorSchedules(DoctorController.java:86)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:527)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
+	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
+	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorSchedule(DoctorControllerTest.java:192)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:124)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:121)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+com.ssginc8.docto.global.error.exception.doctorException.DoctorNotFoundException: 해당 의사가 존재하지 않습니다.
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:36)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.doctor.provider.DoctorProvider$$SpringCGLIB$$0.getDoctorById(<generated>)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.saveDoctorSchedule(DoctorServiceImpl.java:89)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -904,7 +1035,7 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.saveDoctorSchedule(<generated>)
-	at com.ssginc8.docto.doctor.controller.DoctorController.saveDoctorSchedules(DoctorController.java:88)
+	at com.ssginc8.docto.doctor.controller.DoctorController.saveDoctorSchedules(DoctorController.java:76)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -929,7 +1060,7 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorSchedule(DoctorControllerTest.java:228)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorSchedule(DoctorControllerTest.java:167)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1015,10 +1146,22 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.lambda$saveDoctor$0(DoctorServiceImpl.java:66)
+com.ssginc8.docto.global.error.exception.userException.UserNotFoundException: 유저를 찾을 수 없습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.saveDoctor(DoctorServiceImpl.java:66)
+	at com.ssginc8.docto.user.provider.UserProvider.getUserById(UserProvider.java:28)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.ssginc8.docto.user.provider.UserProvider$$SpringCGLIB$$0.getUserById(<generated>)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.saveDoctor(DoctorServiceImpl.java:45)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1031,7 +1174,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
 	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.saveDoctor(<generated>)
-	at com.ssginc8.docto.doctor.controller.DoctorController.createDoctor(DoctorController.java:48)
+	at com.ssginc8.docto.doctor.controller.DoctorController.createDoctor(DoctorController.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1056,7 +1199,7 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorTest(DoctorControllerTest.java:89)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.saveDoctorTest(DoctorControllerTest.java:83)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1142,10 +1285,9 @@ jakarta.persistence.EntityNotFoundException: Hospital not found with id: 22
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. id = 9
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.lambda$getDoctorById$0(DoctorProvider.java:20)
+com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException: 해당 병원은 존재하지 않습니다.
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.ssginc8.docto.doctor.provider.DoctorProvider.getDoctorById(DoctorProvider.java:19)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider.getHospitalById(HospitalProvider.java:46)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1157,8 +1299,8 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.ssginc8.docto.doctor.provider.DoctorProvider$$SpringCGLIB$$0.getDoctorById(<generated>)
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.updateDoctor(DoctorServiceImpl.java:83)
+	at com.ssginc8.docto.hospital.provider.HospitalProvider$$SpringCGLIB$$0.getHospitalById(<generated>)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl.getDoctorsByHospital(DoctorServiceImpl.java:75)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1170,8 +1312,8 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.updateDoctor(<generated>)
-	at com.ssginc8.docto.doctor.controller.DoctorController.updateDoctor(DoctorController.java:59)
+	at com.ssginc8.docto.doctor.service.DoctorServiceImpl$$SpringCGLIB$$0.getDoctorsByHospital(<generated>)
+	at com.ssginc8.docto.doctor.controller.DoctorController.getDoctorsByHospital(DoctorController.java:65)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1185,7 +1327,9 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
 	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:888)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:527)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
 	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72)
 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
 	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165)
@@ -1194,7 +1338,7 @@ java.lang.IllegalArgumentException: 해당 의사가 존재하지 않습니다. 
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
 	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132)
 	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201)
-	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.updateDoctorTest(DoctorControllerTest.java:121)
+	at com.ssginc8.docto.Doctor.controller.DoctorControllerTest.getDoctorByHospitalTest(DoctorControllerTest.java:125)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-POST /api/v1/hospitals/22/schedules HTTP/1.1
+POST /api/v1/hospitals/1/schedules HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 297
 Host: localhost:8080

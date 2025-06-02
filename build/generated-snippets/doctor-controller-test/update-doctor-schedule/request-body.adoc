@@ -3,8 +3,8 @@
 {
   "dayOfWeek" : "MONDAY",
   "startTime" : "10:00:00",
-  "endTime" : "19:00:00",
-  "lunchEnd" : "13:00:00",
-  "lunchStart" : "14:00:00"
+  "endTime" : "17:00:00",
+  "lunchEnd" : "12:00:00",
+  "lunchStart" : "13:00:00"
 }
 ----

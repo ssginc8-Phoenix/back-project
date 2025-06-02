@@ -451,7 +451,7 @@ public class UserApiControllerTest {
 	}
 
 	private Token makeTokenBySystemAdmin() {
-		User user = User.createUserByEmail("dong112@naver.com", "Fkdlej5115",
+		User user = User.createUserByEmail("dong123@naver.com", "Fkdlej5115",
 			"짱구", "010-1111-1111", "어딘가", Role.SYSTEM_ADMIN, null);
 
 		user = userRepo.save(user);
@@ -460,7 +460,7 @@ public class UserApiControllerTest {
 	}
 
 	private Token makeTokenByHospitalAdmin() {
-		User user = User.createUserByEmail("mang112@naver.com", "Fkdlej5115",
+		User user = User.createUserByEmail("mang123@naver.com", "Fkdlej5115",
 			"맹구", "010-2222-2222", "어딘가", Role.HOSPITAL_ADMIN, null);
 
 		user = userRepo.save(user);

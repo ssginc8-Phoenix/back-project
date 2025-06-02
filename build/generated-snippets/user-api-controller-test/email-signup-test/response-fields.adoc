@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|생성된 사용자 ID
+
+|`+role+`
+|`+String+`
+|사용자 역할
+
+|===

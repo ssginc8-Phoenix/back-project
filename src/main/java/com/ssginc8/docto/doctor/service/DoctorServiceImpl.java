@@ -44,12 +44,10 @@ public class DoctorServiceImpl implements DoctorService {
 
 		User user = userProvider.getUserById(doctorSaveRequest.getUserId());
 
-
 		doctorProvider.validateUserIsDoctor(user);
 		doctorProvider.validateUserIsNotAlreadyDoctor(user);
 
 		Hospital hospital = hospitalProvider.getHospitalById(doctorSaveRequest.getHospitalId());
-
 
 		Doctor doctor = Doctor.create(hospital, doctorSaveRequest.getSpecialization(),user);
 

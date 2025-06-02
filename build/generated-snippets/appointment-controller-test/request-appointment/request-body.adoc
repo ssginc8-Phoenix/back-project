@@ -7,7 +7,7 @@
   "patientId" : 1,
   "symptom" : "기침과 열",
   "question" : "감기일까요?",
-  "appointmentTime" : "2025-06-02T20:30:33.6173459",
+  "appointmentTime" : "2025-06-03T16:33:44.3412326",
   "appointmentType" : "SCHEDULED",
   "paymentType" : "ONSITE"
 }

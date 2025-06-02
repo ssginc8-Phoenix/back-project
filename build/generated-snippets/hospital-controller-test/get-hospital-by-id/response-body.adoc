@@ -1,7 +1,7 @@
 [source,json,options="nowrap"]
 ----
 {
-  "message" : "서버 에러가 발생했습니다.",
-  "code" : "G_002"
+  "message" : "해당 병원은 존재하지 않습니다.",
+  "code" : "H_001"
 }
 ----

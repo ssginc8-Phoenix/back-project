@@ -1,11 +1,11 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 404 Not Found
+HTTP/1.1 409 Conflict
 Content-Type: application/json;charset=UTF-8
-Content-Length: 77
+Content-Length: 100
 
 {
-  "message" : "예약을 찾을 수 없습니다.",
-  "code" : "A_001"
+  "message" : "취소된 예약은 상태를 변경할 수 없습니다.",
+  "code" : "A_008"
 }
 ----
