@@ -1,0 +1,8 @@
+.+/api/v1/qnas/{qnaId}/comments+
+|===
+|Parameter|Description
+
+|`+qnaId+`
+|Q&A 게시글 ID
+
+|===

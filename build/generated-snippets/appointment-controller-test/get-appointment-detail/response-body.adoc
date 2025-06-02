@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "message" : "예약을 찾을 수 없습니다.",
+  "code" : "A_001"
+}
+----

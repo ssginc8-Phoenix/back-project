@@ -1,7 +1,10 @@
 package com.ssginc8.docto.doctor.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.global.error.exception.doctorException.NegativeCapacityException;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.repo.UserRepo;
@@ -26,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_doctor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicUpdate
 public class Doctor extends BaseTimeEntity {
 
 	@Id
@@ -44,11 +48,15 @@ public class Doctor extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Specialization specialization;
 
+	@Column(nullable = false)
+	private Long capacityPerHalfHour;
+
 	private Doctor(Hospital hospital, User user, Specialization specialization) {
 
 		this.hospital = hospital;
 		this.user = user;
 		this.specialization = specialization;
+		this.capacityPerHalfHour = 0L;
 	}
 
 
@@ -71,5 +79,13 @@ public class Doctor extends BaseTimeEntity {
 		if (dto.getSpecialization() != null) {
 			this.specialization = dto.getSpecialization();  // 직접 필드 접근
 		}
+	}
+
+	public void changeCapacityPerHalfHour(Long capacityPerHalfHour) {
+		if (capacityPerHalfHour < 0) {
+			throw new NegativeCapacityException();
+		}
+
+		this.capacityPerHalfHour = capacityPerHalfHour;
 	}
 }

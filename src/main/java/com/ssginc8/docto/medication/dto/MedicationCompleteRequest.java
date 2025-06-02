@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MedicationCompleteRequest {
-
-	private MedicationStatus status; // 복용 상태
+	private MedicationStatus status; // TAKEN or MISSED
 }

@@ -3,12 +3,14 @@ package com.ssginc8.docto.medication.controller;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,16 +31,20 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssginc8.docto.guardian.repo.PatientGuardianRepo;
 import com.ssginc8.docto.medication.dto.*;
 import com.ssginc8.docto.medication.entity.*;
 import com.ssginc8.docto.medication.repo.*;
+import com.ssginc8.docto.patient.repo.PatientRepo;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
+import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 
 @ActiveProfiles("prod")
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
 @Import(RestDocsConfig.class)
-public class MedicationControllerTest {
+class MedicationControllerTest {
 
 	@Autowired protected RestDocumentationResultHandler restDocs;
 
@@ -50,31 +57,52 @@ public class MedicationControllerTest {
 	@Autowired private MedicationAlertTimeRepo medicationAlertTimeRepo;
 	@Autowired private MedicationAlertDayRepo medicationAlertDayRepo;
 	@Autowired private MedicationLogRepo medicationLogRepo;
+	@Autowired private PatientRepo patientRepo;
+	@Autowired private PatientGuardianRepo patientGuardianRepo;
 
 	private Long savedMedicationId;
+	@Autowired
+	private UserRepo userRepo;
+	private Long savedUserId;
+	private String savedUserUuid;
 
 	@BeforeEach
-	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
+	void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
 			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true))
 			.build();
 
-		// 1. 기존 데이터 제거 (외래키 제약 순서로)
+		// 데이터 초기화
 		medicationLogRepo.deleteAll();
 		medicationAlertDayRepo.deleteAll();
 		medicationAlertTimeRepo.deleteAll();
 		medicationInformationRepo.deleteAll();
 
-		// 2. 테스트용 데이터 삽입
+		patientGuardianRepo.deleteAll();
+		patientRepo.deleteAll();
+		userRepo.deleteAll();
+
+		// 고정 UUID
+		String fixedUuid = "test-uuid-12345";
+
+		String randomEmail = "test" + UUID.randomUUID().toString() + "@example.com";
+
+		// 테스트 데이터 삽입
+		User user = userRepo.save(
+			User.createUser("test", "password", randomEmail, "EMAIL", "GUARDIAN", false, fixedUuid)
+		);
+		savedUserId = user.getUserId();
+		savedUserUuid = user.getUuid();
+
 		MedicationInformation info = medicationInformationRepo.save(
-			MedicationInformation.create(1L, "타이레놀")
+			MedicationInformation.create(user, 1L, "타이레놀") // 🔥 patientGuardianId 추가
 		);
 		savedMedicationId = info.getMedicationId();
 
 		MedicationAlertTime alertTime = medicationAlertTimeRepo.save(
-			MedicationAlertTime.create(info, LocalDateTime.now().plusHours(1))
+			MedicationAlertTime.create(info, LocalTime.now().plusHours(1))
 		);
 
 		medicationAlertDayRepo.saveAll(List.of(
@@ -82,21 +110,17 @@ public class MedicationControllerTest {
 			MedicationAlertDay.create(alertTime, DayOfWeek.TUESDAY)
 		));
 
-		// 3. 복약 로그 삽입 (복약 로그 조회 테스트용)
 		medicationLogRepo.save(
-			MedicationLog.create(alertTime, info, MedicationStatus.TAKEN, alertTime.getTimeToTake())
+			MedicationLog.create(alertTime, info, MedicationStatus.TAKEN, alertTime.getTimeToTake().atDate(java.time.LocalDate.now()))
 		);
 	}
 
 	@Test
 	@DisplayName("복약 스케줄 등록")
 	void registerMedication() throws Exception {
-		MedicationScheduleRequest request = MedicationScheduleRequest.builder()
-			.patientGuardianId(1L)
-			.medicationName("타이레놀")
-			.timeToTake(LocalDateTime.now().plusHours(2))
-			.days(List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY))
-			.build();
+		MedicationScheduleRequest request = new MedicationScheduleRequest(savedUserId,
+			"타이레놀", LocalTime.now().plusHours(2),
+			List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY), 1L);
 
 		mockMvc.perform(post("/api/v1/medications")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -104,38 +128,58 @@ public class MedicationControllerTest {
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
 				requestFields(
-					fieldWithPath("patientGuardianId").description("환자-보호자 관계 ID"),
+					fieldWithPath("userId").description("환자 ID"),
 					fieldWithPath("medicationName").description("약 이름"),
-					fieldWithPath("timeToTake").description("복약 시간 (ISO-8601 형식)"),
-					fieldWithPath("days").description("복약 요일 리스트 (예: MONDAY, WEDNESDAY)")
+					fieldWithPath("timeToTake").description("복약 시간 (HH:mm:ss 형식)"),
+					fieldWithPath("days[]").description("복약 요일 리스트 (예: MONDAY, WEDNESDAY)"),
+					fieldWithPath("patientGuardianId").description("보호자 ID")
 				)
 			));
 	}
 
 	@Test
+	@WithMockUser(username = "test-uuid-12345", roles = {"USER"})
 	@DisplayName("복약 로그 조회")
 	void getMedicationLogs() throws Exception {
-		mockMvc.perform(get("/api/v1/medications/patients/{userId}", 1L))
+		mockMvc.perform(get("/api/v1/medications/me/logs")
+				.with(user("test-uuid-1234")) // UUID를 직접 Authentication의 name에 세팅
+				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
-				pathParameters(
-					parameterWithName("userId").description("보호자 ID (또는 patientGuardianId)")
-				),
 				responseFields(
-					fieldWithPath("[].medicationLogId").description("복약 로그 ID"),
-					fieldWithPath("[].medicationId").description("약 ID"),
-					fieldWithPath("[].status").description("복약 상태 (TAKEN, MISSED)"),
-					fieldWithPath("[].timeToTake").description("복약 시간")
+					fieldWithPath("content[].medicationLogId").description("복약 로그 ID"),
+					fieldWithPath("content[].medicationId").description("약 ID"),
+					fieldWithPath("content[].status").description("복약 상태 (TAKEN, MISSED)"),
+					fieldWithPath("content[].timeToTake").description("복약 예정 시간"),
+					// pageable 하위 필드
+					fieldWithPath("pageable.pageNumber").ignored(),
+					fieldWithPath("pageable.pageSize").ignored(),
+					fieldWithPath("pageable.offset").ignored(),
+					fieldWithPath("pageable.paged").ignored(),
+					fieldWithPath("pageable.unpaged").ignored(),
+					fieldWithPath("pageable.sort.empty").ignored(),
+					fieldWithPath("pageable.sort.sorted").ignored(),
+					fieldWithPath("pageable.sort.unsorted").ignored(),
+					fieldWithPath("totalElements").ignored(),
+					fieldWithPath("totalPages").ignored(),
+					fieldWithPath("size").ignored(),
+					fieldWithPath("number").ignored(),
+					fieldWithPath("sort.empty").ignored(),
+					fieldWithPath("sort.sorted").ignored(),
+					fieldWithPath("sort.unsorted").ignored(),
+					fieldWithPath("first").ignored(),
+					fieldWithPath("last").ignored(),
+					fieldWithPath("numberOfElements").ignored(),
+					fieldWithPath("empty").ignored()
 				)
 			));
+
 	}
 
 	@Test
 	@DisplayName("복약 완료 처리")
 	void completeMedication() throws Exception {
-		MedicationCompleteRequest request = MedicationCompleteRequest.builder()
-			.status(MedicationStatus.TAKEN)
-			.build();
+		MedicationCompleteRequest request = new MedicationCompleteRequest(MedicationStatus.TAKEN);
 
 		mockMvc.perform(patch("/api/v1/medications/{medicationId}/complete", savedMedicationId)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +199,8 @@ public class MedicationControllerTest {
 	@DisplayName("복약 시간 수정")
 	void updateMedicationTime() throws Exception {
 		MedicationUpdateRequest request = MedicationUpdateRequest.builder()
-			.newTimeToTake(LocalDateTime.now().plusHours(3))
+			.newTimeToTake(LocalTime.now().plusHours(3))
+			.newDays(List.of(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY))
 			.build();
 
 		mockMvc.perform(patch("/api/v1/medications/{medicationId}", savedMedicationId)
@@ -167,7 +212,8 @@ public class MedicationControllerTest {
 					parameterWithName("medicationId").description("약 ID")
 				),
 				requestFields(
-					fieldWithPath("newTimeToTake").description("변경할 복약 시간 (ISO-8601 형식)")
+					fieldWithPath("newTimeToTake").description("변경할 복약 시간 (HH:mm:ss 형식)"),
+					fieldWithPath("newDays[]").description("변경할 요일 리스트 (예: MONDAY, WEDNESDAY)")
 				)
 			));
 	}

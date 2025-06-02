@@ -1,0 +1,8 @@
+.+/api/v1/patients/{patientId}+
+|===
+|Parameter|Description
+
+|`+patientId+`
+|삭제할 환자 ID
+
+|===

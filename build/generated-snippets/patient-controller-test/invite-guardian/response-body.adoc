@@ -1,0 +1,6 @@
+[source,json,options="nowrap"]
+----
+{
+  "inviteCode" : "inv-20-37-20250531-d37dc6"
+}
+----

@@ -4,13 +4,13 @@ import com.ssginc8.docto.patient.dto.PatientRequest;
 import com.ssginc8.docto.patient.dto.PatientResponse;
 import com.ssginc8.docto.patient.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * 환자 관련 API를 처리하는 컨트롤러
+ * 환자 관련 API 컨트롤러
  */
 @RestController
 @RequiredArgsConstructor
@@ -23,20 +23,12 @@ public class PatientController {
 	 * 환자 등록 API
 	 */
 	@PostMapping
-	public ResponseEntity<PatientResponse> create(@RequestBody PatientRequest dto) {
+	public ResponseEntity<Long> create(@RequestBody PatientRequest dto) {
 		return ResponseEntity.ok(patientService.createPatient(dto));
 	}
 
 	/**
-	 * 모든 환자 조회 API
-	 */
-	@GetMapping
-	public ResponseEntity<List<PatientResponse>> getAll() {
-		return ResponseEntity.ok(patientService.getAllPatients());
-	}
-
-	/**
-	 * 환자 삭제 API (소프트 삭제)
+	 * 환자 삭제 API (soft delete)
 	 */
 	@DeleteMapping("/{patientId}")
 	public ResponseEntity<Void> delete(@PathVariable Long patientId) {
