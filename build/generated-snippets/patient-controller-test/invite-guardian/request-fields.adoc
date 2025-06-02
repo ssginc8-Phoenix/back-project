@@ -1,0 +1,8 @@
+|===
+|Path|Type|Description
+
+|`+guardianEmail+`
+|`+String+`
+|초대할 보호자 이메일
+
+|===

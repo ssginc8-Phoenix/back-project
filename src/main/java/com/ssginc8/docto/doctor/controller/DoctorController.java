@@ -141,5 +141,14 @@ public class DoctorController {
 		return ResponseEntity.noContent().build(); // 204 No Content 반환
 	}
 
+	/**
+	 * 의사가 30분 당 받을 수 있는 최대 환자 수 수정
+	 * capacityPerHalfHour
+	 */
+	@PatchMapping("/{doctorId}/capacity")
+	public ResponseEntity<Void> updateCapacityPerHalfHour(@PathVariable Long doctorId, @RequestBody Long capacityPerHalfHour) {
+		return ResponseEntity.noContent().build();
+	}
+
 
 }

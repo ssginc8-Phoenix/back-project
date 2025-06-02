@@ -1,12 +1,9 @@
 package com.ssginc8.docto.qna.service;
 
-import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
-import com.ssginc8.docto.qna.entity.QaPost;
 
 public interface QaPostService {
-
 
 	// 게시글 생성
 	QaPostResponse createQaPost(QaPostCreateRequest request);

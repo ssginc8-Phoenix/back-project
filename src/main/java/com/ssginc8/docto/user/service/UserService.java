@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ssginc8.docto.user.entity.Role;
+import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
@@ -43,4 +44,6 @@ public interface UserService {
 	void updateInfo(UpdateUser.Request request);
 
 	void deleteAccount();
+
+	User getUserFromUuid();
 }

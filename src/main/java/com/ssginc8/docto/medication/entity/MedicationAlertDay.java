@@ -2,6 +2,8 @@ package com.ssginc8.docto.medication.entity;
 
 import java.time.DayOfWeek;
 
+import com.ssginc8.docto.global.base.BaseTimeEntity;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,11 +18,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_medication_alert_day")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MedicationAlertDay {
+public class MedicationAlertDay extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long medicationAlertDay;
+	private Long medicationAlertDayId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "medication_alert_time_id", nullable = false)

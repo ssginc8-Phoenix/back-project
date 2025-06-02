@@ -1,6 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "email" : "user111@naver.com"
-}
-----

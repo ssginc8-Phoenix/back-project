@@ -115,4 +115,9 @@ public class PatientGuardian extends BaseTimeEntity {
 		this.status = newStatus;
 		this.respondedAt = LocalDateTime.now();
 	}
+
+	public void updateInviteCode(String inviteCode) {
+		this.inviteCode = inviteCode;
+	}
+
 }

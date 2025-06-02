@@ -24,6 +24,8 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public final com.ssginc8.docto.global.base.QBaseTimeEntity _super = new com.ssginc8.docto.global.base.QBaseTimeEntity(this);
 
+    public final NumberPath<Long> capacityPerHalfHour = createNumber("capacityPerHalfHour", Long.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
