@@ -3,6 +3,7 @@ package com.ssginc8.docto.qna.provider;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.global.error.exception.commentException.CommentNotFoundException;
 import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.qna.repo.CommentRepo;
 
@@ -21,8 +22,7 @@ public class CommentProvider {
 	@Transactional(readOnly = true)
 	public QaComment getById(Long commentId) {
 		return commentRepo.findById(commentId)
-			.orElseThrow(() ->
-				new IllegalArgumentException("댓글이 없습니다. id=" + commentId)
+			.orElseThrow((CommentNotFoundException::new)
 			);
 	}
 

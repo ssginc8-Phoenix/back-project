@@ -5,7 +5,7 @@ import com.ssginc8.docto.qna.dto.QaPostResponse;
 
 public interface QaPostService {
 
-	//예약에 연결된 새 게시글 생성
+	// 게시글 생성
 	QaPostResponse createQaPost(QaPostCreateRequest request);
 
 	// 기존 게시글 수정

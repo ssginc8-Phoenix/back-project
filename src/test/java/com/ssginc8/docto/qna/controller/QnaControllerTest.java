@@ -31,6 +31,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,7 +39,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-
+@ActiveProfiles("prod")
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
 @Import(RestDocsConfig.class)
@@ -69,14 +70,14 @@ public class QnaControllerTest {
 	@Test
 	@DisplayName("게시물 생성")
 	void createQaPost() throws Exception {
-		QaPostCreateRequest request = new QaPostCreateRequest(3L, "문의 내용 예시");
+		QaPostCreateRequest request = new QaPostCreateRequest(5L, "문의 내용 예시");
 		mockMvc.perform(post("/api/v1/qnas")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.qnaPostId").isNumber())
-			.andExpect(jsonPath("$.appointmentId").value(3))
+			.andExpect(jsonPath("$.appointmentId").value(5))
 			.andExpect(jsonPath("$.content").value("문의 내용 예시"))
 			.andDo(restDocs.document(
 				requestFields(
@@ -97,7 +98,7 @@ public class QnaControllerTest {
 	@Test
 	@DisplayName("게시글 상세 조회")
 	void getQaPost() throws Exception {
-		mockMvc.perform(get("/api/v1/qnas/{qnaId}", 12L)
+		mockMvc.perform(get("/api/v1/qnas/{qnaId}", 14L)
 				.accept(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(status().isOk())
@@ -124,13 +125,13 @@ public class QnaControllerTest {
 
 		QaPostUpdateRequest req = new QaPostUpdateRequest( "수정된 내용");
 
-		mockMvc.perform(patch("/api/v1/qnas/{qnaId}", 12L)
+		mockMvc.perform(patch("/api/v1/qnas/{qnaId}", 14L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(req))
 			)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.qnaPostId").value(12))
-			.andExpect(jsonPath("$.appointmentId").value(3))
+			.andExpect(jsonPath("$.qnaPostId").value(14))
+			.andExpect(jsonPath("$.appointmentId").value(5))
 			.andExpect(jsonPath("$.content").value("수정된 내용"))
 			.andDo(restDocs.document(
 				pathParameters(

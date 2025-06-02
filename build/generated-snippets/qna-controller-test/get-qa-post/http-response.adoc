@@ -1,0 +1,14 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 181
+
+{
+  "qnaPostId" : 14,
+  "appointmentId" : 5,
+  "content" : "문의 내용 예시",
+  "createdAt" : "2025-06-01T01:39:33.396761",
+  "updatedAt" : "2025-06-01T01:39:33.396761"
+}
+----

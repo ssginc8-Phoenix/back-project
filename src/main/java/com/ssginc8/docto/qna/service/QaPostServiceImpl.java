@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
@@ -13,6 +14,7 @@ import com.ssginc8.docto.qna.provider.QaPostProvider;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QaPostServiceImpl implements QaPostService{
 
@@ -33,15 +35,27 @@ public class QaPostServiceImpl implements QaPostService{
 		return QaPostResponse.fromEntity(saved);
 	}
 
+
 	// 게시글 수정
 	@Override
 	@Transactional
 	public QaPostResponse updateQaPost(Long qnaId, String content) {
+		// 1. 기존 게시글 조회
 		QaPost existing = qaPostProvider.getById(qnaId);
-		existing.setContent(content);
-		QaPost saved = qaPostProvider.save(existing);
-		return QaPostResponse.fromEntity(saved);
+
+		// 2. 연관된 Appointment에서 상태 조회
+		AppointmentStatus status = existing.getAppointment().getStatus();
+
+		// 3. 상태가 REQUESTED 또는 CONFIRMED일 때만 수정
+		if (status == AppointmentStatus.REQUESTED || status == AppointmentStatus.CONFIRMED)
+		 existing.setContent(content);
+		 QaPost saved = qaPostProvider.save(existing);
+
+		 return QaPostResponse.fromEntity(saved);
+
 	}
+
+
 
 	// 게시글 조회
 	@Override
@@ -54,6 +68,8 @@ public class QaPostServiceImpl implements QaPostService{
 	@Override
 	@Transactional
 	public void deleteQaPost(Long qnaId) {
-		qaPostProvider.deleteById(qnaId);
+		QaPost qaPost = qaPostProvider.getById(qnaId);
+		qaPost.delete();
+		qaPostProvider.save(qaPost);
 	}
 }

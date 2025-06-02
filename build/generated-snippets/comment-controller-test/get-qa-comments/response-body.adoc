@@ -1,0 +1,4 @@
+[source,json,options="nowrap"]
+----
+[{"commentId":18,"qnaPostId":14,"content":"수정된 답변 내용","createdAt":"2025-06-01T01:43:05.073086","updatedAt":"2025-06-01T01:49:13.423711"}]
+----
