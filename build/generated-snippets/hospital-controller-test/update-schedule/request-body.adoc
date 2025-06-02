@@ -1,0 +1,10 @@
+[source,json,options="nowrap"]
+----
+{
+  "dayOfWeek" : "WEDNESDAY",
+  "openTime" : "08:30:00",
+  "closeTime" : "17:30:00",
+  "lunchStart" : "12:30:00",
+  "lunchEnd" : "13:30:00"
+}
+----

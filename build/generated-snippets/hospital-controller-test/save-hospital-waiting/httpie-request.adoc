@@ -1,0 +1,7 @@
+[source,bash]
+----
+$ echo '{
+  "waiting" : 5
+}' | http POST 'http://localhost:8080/api/v1/hospitals/22/waiting' \
+    'Content-Type:application/json;charset=UTF-8'
+----

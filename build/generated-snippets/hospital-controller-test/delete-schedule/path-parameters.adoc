@@ -1,0 +1,11 @@
+.+/api/v1/hospitals/{hospitalId}/schedules/{scheduleId}+
+|===
+|Parameter|Description
+
+|`+hospitalId+`
+|병원 ID
+
+|`+scheduleId+`
+|스케줄 ID
+
+|===

@@ -1,0 +1,11 @@
+[source,bash]
+----
+$ echo '{
+  "dayOfWeek" : "MONDAY",
+  "startTime" : "10:00:00",
+  "endTime" : "19:00:00",
+  "lunchEnd" : "13:00:00",
+  "lunchStart" : "14:00:00"
+}' | http PATCH 'http://localhost:8080/api/v1/doctors/9/schedules/4' \
+    'Content-Type:application/json;charset=UTF-8'
+----

@@ -1,0 +1,16 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/reviews HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 200
+Host: localhost:8080
+
+{
+  "appointmentId" : 5,
+  "userId" : 5,
+  "hospitalId" : 2,
+  "doctorId" : 5,
+  "keywords" : [ "CLEAN_HOSPITAL", "FAST", "THOROUGH" ],
+  "contents" : "친절하고 전문적이었습니다."
+}
+----

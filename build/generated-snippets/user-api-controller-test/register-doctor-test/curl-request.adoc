@@ -1,0 +1,20 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/users/doctors' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -H 'Accept: application/json' \
+    --cookie 'accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg3Nzc0NDIsImV4cCI6MTc0ODc3ODM0Miwic3ViIjoiYzcxZjczNTMtNjEyZS00NTRjLTgyNzEtYmNhOTZlNDAzZDc4Iiwicm9sZSI6IlJPTEVfSE9TUElUQUxfQURNSU4ifQ.-y7v1AOa3XR9HR3FjwoJU3Z38TOqxHoN7GBY9mgqNvQ;refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg3Nzc0NDIsImV4cCI6MTc0OTM4MjI0Miwic3ViIjoiYzcxZjczNTMtNjEyZS00NTRjLTgyNzEtYmNhOTZlNDAzZDc4In0.nopeTaokD60Jd1Vez_uHhNHF8xPqiONmNQ2YEnY2fwI' \
+    -d '{
+  "doctorInfos" : [ {
+    "email" : "doctor76@example.com",
+    "password" : "Fkdlej5115",
+    "name" : "홍누구",
+    "phone" : "010-1111-2222"
+  }, {
+    "email" : "doctor43@example.com",
+    "password" : "Fkdlej5115",
+    "name" : "김철수",
+    "phone" : "010-3333-4444"
+  } ]
+}'
+----
