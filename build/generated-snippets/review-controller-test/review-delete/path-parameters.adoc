@@ -1,0 +1,8 @@
+.+/api/v1/reviews/{reviewId}+
+|===
+|Parameter|Description
+
+|`+reviewId+`
+|삭제할 리뷰 ID
+
+|===

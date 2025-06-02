@@ -1,6 +1,8 @@
 package com.ssginc8.docto.medication.dto;
 
-import java.time.LocalDateTime;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +20,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MedicationUpdateRequest {
 
-	private LocalDateTime newTimeToTake; // 수정할 복약 시간
+	private LocalTime newTimeToTake; // 수정할 복약 시간
+	private List<DayOfWeek> newDays; // 수정할 요일 리스트
 }

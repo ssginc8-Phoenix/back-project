@@ -2,6 +2,7 @@ package com.ssginc8.docto.medication.dto;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.ssginc8.docto.medication.entity.MedicationAlertTime;
@@ -22,21 +23,18 @@ import lombok.Getter;
 @Getter
 public class MedicationScheduleResponse {
 
-	private final Long medicationId;          // 약 ID
-	private final String medicationName;      // 약 이름
-	private final LocalDateTime timeToTake;   // 복약 시간
-	private final List<DayOfWeek> days;       // 요일 리스트
+	private final Long medicationId;
+	private final String medicationName;
+	private final LocalTime timeToTake;
+	private final List<DayOfWeek> days;
 
-	public MedicationScheduleResponse(Long medicationId, String medicationName, LocalDateTime timeToTake, List<DayOfWeek> days) {
+	public MedicationScheduleResponse(Long medicationId, String medicationName, LocalTime timeToTake, List<DayOfWeek> days) {
 		this.medicationId = medicationId;
 		this.medicationName = medicationName;
 		this.timeToTake = timeToTake;
 		this.days = days;
 	}
 
-	/**
-	 * MedicationInformation + MedicationAlertTime + 요일 → DTO로 변환
-	 */
 	public static MedicationScheduleResponse from(MedicationInformation info, MedicationAlertTime time, List<DayOfWeek> days) {
 		return new MedicationScheduleResponse(
 			info.getMedicationId(),

@@ -1,0 +1,53 @@
+= DOCTO API 문서
+Author: 불4조
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 복약
+
+=== 복약 스케줄 등록
+
+복약 스케줄을 등록하는 API.
+
+include::{snippets}/medication-controller-test/register-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/register-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/register-medication/http-response.adoc[]
+
+=== 복약 로그 조회
+
+로그인된 사용자의 복약 로그를 조회하는 API.
+
+- 쿠키에 `accessToken`, `refreshToken`을 포함해야 함.
+
+include::{snippets}/medication-controller-test/get-medication-logs/http-request.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/http-response.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/response-fields.adoc[]
+
+=== 복약 완료 처리
+
+특정 복약 스케줄을 완료(TAKEN) 처리하는 API.
+
+include::{snippets}/medication-controller-test/complete-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/http-response.adoc[]
+
+=== 복약 시간 수정
+
+특정 복약 스케줄의 복약 시간을 수정하는 API.
+
+include::{snippets}/medication-controller-test/update-medication-time/http-request.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/request-fields.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/http-response.adoc[]
+
+=== 복약 스케줄 삭제
+
+특정 복약 스케줄을 삭제하는 API.
+
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-request.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-response.adoc[]

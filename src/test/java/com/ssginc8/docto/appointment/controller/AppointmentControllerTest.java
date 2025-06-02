@@ -4,6 +4,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,7 +33,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
+import com.ssginc8.docto.auth.jwt.dto.Token;
+import com.ssginc8.docto.auth.jwt.dto.TokenType;
+import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
+import com.ssginc8.docto.user.entity.Role;
+import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
+
+import jakarta.servlet.http.Cookie;
 
 @ActiveProfiles("prod")
 @ExtendWith(RestDocumentationExtension.class)
@@ -51,14 +60,22 @@ public class AppointmentControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private TokenProvider tokenProvider;
+
+	@Autowired
+	private UserRepo userRepo;
+
 	@BeforeEach
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
+			.apply(springSecurity())
 			.alwaysDo(MockMvcResultHandlers.print())
 			.alwaysDo(restDocs)
 			.addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 방지
 			.build();
+
 	}
 
 	@Test
@@ -163,6 +180,22 @@ public class AppointmentControllerTest {
 			));
 	}
 
+	@Test
+	@DisplayName("내 예약 리스트 조회")
+	void getMyAppointmentList() throws Exception {
+
+		Token token = makeTokenByHospitalAdmin();
+
+		mockMvc.perform(get("/api/v1/users/me/appointments")
+				.cookie(
+					new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+					new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+				))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+
+			));
+	}
 
 	@Test
 	@DisplayName("예약 상태 변경")
@@ -170,7 +203,7 @@ public class AppointmentControllerTest {
 		UpdateRequest request = new UpdateRequest();
 		request.setStatus("CONFIRMED");
 
-		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 6L)
+		mockMvc.perform(patch("/api/v1/appointments/{appointmentId}/status", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -190,7 +223,7 @@ public class AppointmentControllerTest {
 		RescheduleRequest request = new RescheduleRequest();
 		request.setNewTime(LocalDateTime.now().plusDays(2));
 
-		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 6L)
+		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -208,5 +241,14 @@ public class AppointmentControllerTest {
 						)
 				)
 			));
+	}
+
+	private Token makeTokenByHospitalAdmin() {
+		User user = User.createUserByEmail("mang114@naver.com", "Fkdlej5115",
+			"맹구", "010-2222-2222", "어딘가", Role.HOSPITAL_ADMIN, null);
+
+		user = userRepo.save(user);
+
+		return tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
 	}
 }

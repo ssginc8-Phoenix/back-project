@@ -1,0 +1,33 @@
+= DOCTO API 문서
+Author: 불4조
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:sectnums:
+:icons: font
+
+== 환자 등록
+
+include::{snippets}/patient-controller-test/create-patient/http-request.adoc[]
+include::{snippets}/patient-controller-test/create-patient/request-fields.adoc[]
+include::{snippets}/patient-controller-test/create-patient/http-response.adoc[]
+
+== 환자 전체 조회
+
+include::{snippets}/patient-controller-test/get-all-patients/http-request.adoc[]
+include::{snippets}/patient-controller-test/get-all-patients/response-fields.adoc[]
+include::{snippets}/patient-controller-test/get-all-patients/http-response.adoc[]
+
+== 환자 삭제
+
+include::{snippets}/patient-controller-test/delete-patient/http-request.adoc[]
+include::{snippets}/patient-controller-test/delete-patient/path-parameters.adoc[]
+include::{snippets}/patient-controller-test/delete-patient/http-response.adoc[]
+
+== 보호자 초대
+
+include::{snippets}/patient-controller-test/invite-guardian/http-request.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/path-parameters.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/request-fields.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/response-fields.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/http-response.adoc[]

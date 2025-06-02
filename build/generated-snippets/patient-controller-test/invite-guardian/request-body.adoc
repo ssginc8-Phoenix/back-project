@@ -1,0 +1,6 @@
+[source,json,options="nowrap"]
+----
+{
+  "guardianEmail" : "guardian1748682152823@example.com"
+}
+----

@@ -22,7 +22,13 @@ public class QMedicationLog extends EntityPathBase<MedicationLog> {
 
     public static final QMedicationLog medicationLog = new QMedicationLog("medicationLog");
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    public final com.ssginc8.docto.global.base.QBaseTimeEntity _super = new com.ssginc8.docto.global.base.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
     public final QMedicationInformation medication;
 
@@ -34,7 +40,8 @@ public class QMedicationLog extends EntityPathBase<MedicationLog> {
 
     public final DateTimePath<java.time.LocalDateTime> timeToTake = createDateTime("timeToTake", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QMedicationLog(String variable) {
         this(MedicationLog.class, forVariable(variable), INITS);
@@ -54,7 +61,7 @@ public class QMedicationLog extends EntityPathBase<MedicationLog> {
 
     public QMedicationLog(Class<? extends MedicationLog> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.medication = inits.isInitialized("medication") ? new QMedicationInformation(forProperty("medication")) : null;
+        this.medication = inits.isInitialized("medication") ? new QMedicationInformation(forProperty("medication"), inits.get("medication")) : null;
         this.medicationAlertTime = inits.isInitialized("medicationAlertTime") ? new QMedicationAlertTime(forProperty("medicationAlertTime"), inits.get("medicationAlertTime")) : null;
     }
 

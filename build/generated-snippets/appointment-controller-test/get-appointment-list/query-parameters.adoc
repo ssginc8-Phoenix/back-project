@@ -1,0 +1,19 @@
+|===
+|Parameter|Description
+
+|`+userId+`
+|Optional, 유저 ID
+
+|`+hospitalId+`
+|Optional, 병원 ID
+
+|`+doctorId+`
+|Optional, 의사 ID
+
+|`+page+`
+|Optional, 페이지 번호 (0부터 시작)
+
+|`+size+`
+|Optional, 페이지당 항목 수
+
+|===

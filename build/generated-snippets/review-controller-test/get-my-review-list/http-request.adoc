@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+GET /api/v1/users/me/reviews?page=0&size=5 HTTP/1.1
+Accept: application/json
+Host: localhost:8080
+Cookie: accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4MjkxMjIsImV4cCI6MTc0ODgzMDAyMiwic3ViIjoiMzc1NThiNjgtMzc4My00ZjE2LTlhZmEtMDlkOWFjNGY4Y2Q2Iiwicm9sZSI6IlJPTEVfUEFUSUVOVCJ9.r5ZGHbENtR6mtwxOakK_8VNfJlN0Q9Yubh2XypXHtNk; refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4MjkxMjIsImV4cCI6MTc0OTQzMzkyMiwic3ViIjoiMzc1NThiNjgtMzc4My00ZjE2LTlhZmEtMDlkOWFjNGY4Y2Q2In0.9cOKRdzb0JFoO3kSb6SVaw5GcxuciBB8CZA8h9jwMLc
+
+----

@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/patients HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 73
+Host: localhost:8080
+
+{
+  "userId" : 44,
+  "residentRegistrationNumber" : "010101-2345678"
+}
+----

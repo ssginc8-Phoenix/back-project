@@ -1,0 +1,7 @@
+[source,json,options="nowrap"]
+----
+{
+  "userId" : 44,
+  "residentRegistrationNumber" : "010101-2345678"
+}
+----

@@ -19,34 +19,40 @@ import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
 import com.ssginc8.docto.appointment.service.AppointmentService;
+import com.ssginc8.docto.user.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/appointments")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
+	private final UserService userService;
 
-	/* ✅ 진료 예약 접수
-	*	URL: /api/v1/appointments
-	*	Method: POST
-	*	BODY: AppointmentRequest
-	*/
-	@PostMapping()
-	public ResponseEntity<AppointmentResponse> requestAppointment(@RequestBody AppointmentRequest request) {
+	/**
+	 * ✅ 진료 예약 접수
+	 * URL : /api/v1/appointments
+	 * Method : POST
+	 * Body: AppointmentRequest
+	 */
+	@PostMapping("/appointments")
+	public ResponseEntity<Void> requestAppointment(@RequestBody @Valid AppointmentRequest request) {
+		appointmentService.requestAppointment(request);
 
-		return ResponseEntity.ok(appointmentService.requestAppointment(request));
+		return ResponseEntity.ok().build();
 	}
 
 
-	/* ✅ 진료 예약 상태 업데이트
-	 *	URL: /api/v1/appointments/{appointmentId}/status
-	 *	Method: PATCH
-	 *	BODY: 변화시킬려는 상태 str
+	/**
+	 * ✅ 진료 예약 상태 업데이트
+	 * URL: /api/v1/appointments/{appointmentId}/status
+	 * Method: PATCH
+	 * BODY: 변화시킬려는 상태 str
 	 */
-	@PatchMapping("/{appointmentId}/status")
+	@PatchMapping("/appointments/{appointmentId}/status")
 	public ResponseEntity<AppointmentResponse> updateAppointmentStatus(
 		@PathVariable Long appointmentId,
 		@RequestBody UpdateRequest request) {
@@ -54,11 +60,12 @@ public class AppointmentController {
 		return ResponseEntity.ok(appointmentService.updateAppointmentStatus(appointmentId, request.getStatus()));
 	}
 
-	/* ✅ 재예약
-	 *	URL: /api/v1/appointments/{appointmentId}/reschedule
-	 *	Method: POST
+	/**
+	 * ✅ 재예약
+	 * URL: /api/v1/appointments/{appointmentId}/reschedule
+	 * Method: POST
 	 */
-	@PostMapping("/{appointmentId}/reschedule")
+	@PostMapping("/appointments/{appointmentId}/reschedule")
 	public ResponseEntity<AppointmentResponse> rescheduleAppointment(
 		@PathVariable Long appointmentId,
 		@RequestBody RescheduleRequest request) {
@@ -67,11 +74,12 @@ public class AppointmentController {
 	}
 
 
-	/* ✅ 예약 리스트 조회
-		URL: /api/v1/appointments (ex: /api/v1/appointments?userId=1&page=0&size=10)
-		Method: GET
-	*/
-	@GetMapping
+	/**
+	 * ✅ 예약 리스트 조회
+	 * URL: /api/v1/admin/appointments (ex: /api/v1/admin/appointments?userId=1&page=0&size=10)
+	 * Method: GET
+	 */
+	@GetMapping("/admin/appointments")
 	public ResponseEntity<Page<AppointmentListResponse>> getAppointmentList(
 		Pageable pageable,
 		@ModelAttribute AppointmentSearchCondition condition
@@ -81,13 +89,24 @@ public class AppointmentController {
 		return ResponseEntity.ok(response);
 	}
 
-	/* ✅ 예약 상세 내역 조회
-		URL: /api/v1/appointments/{appointmentId}
-		Method: GET
-	*/
-	@GetMapping("/{appointmentId}")
+	/**
+	 * ✅ 예약 리스트 조회 (로그인한 유저의)
+	 * URL: /users/me/appointments
+	 * Method: GET
+	 */
+	@GetMapping("/users/me/appointments")
+	public ResponseEntity<Page<AppointmentListResponse>> getMyAppointmentList(Pageable pageable) {
+		Page<AppointmentListResponse> response = appointmentService.getAppointmentsByLoginUser(pageable);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * ✅ 예약 상세 내역 조회
+	 * URL: /api/v1/appointments/{appointmentId}
+	 * Method: GET
+	 */
+	@GetMapping("/appointments/{appointmentId}")
 	public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable Long appointmentId) {
 		return ResponseEntity.ok(appointmentService.getAppointmentDetail(appointmentId));
 	}
-
 }

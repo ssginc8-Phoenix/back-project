@@ -23,6 +23,9 @@ public enum ErrorCode {
 	EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "U_007", "이메일을 찾을 수 없습니다."),
 	SAME_AS_PREVIOUS_PASSWORD(HttpStatus.BAD_REQUEST, "U_008", "이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다."),
 
+	// Patient 관련 에러 (P_)
+	PATIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "환자 정보를 찾을 수 없습니다."),
+
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
 	EMAIL_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "M_002", "이메일 인증에 실패하였습니다."),
@@ -37,7 +40,6 @@ public enum ErrorCode {
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
 	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
 
-
 	//Doctor 관련 에러(D_)
 	DOCTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "D_001", "해당 의사가 존재하지 않습니다."),
 	SCHEDULE_NOT_IN_DOCTOR(HttpStatus.BAD_REQUEST, "D_002", "해당 스케줄은 해당 의사에게 속하지 않습니다."),
@@ -49,11 +51,47 @@ public enum ErrorCode {
 	INVALID_DOCTOR_SCHEDULE_TIME(HttpStatus.BAD_REQUEST, "D_008", "의사 스케줄이 병원 운영시간 범위를 벗어났습니다."),
 	DOCTOR_LUNCH_TIME_CONFLICT(HttpStatus.BAD_REQUEST, "D_009", "의사의 점심시간이 병원 점심시간 범위를 벗어났습니다."),
 	DOCTOR_ALREADY_EXISTS(HttpStatus.CONFLICT,"D_010", "이미 의사로 등록된 사용자입니다"),
+  
 	//Hospital 관련 에러(H_)
 	HOSPITAL_NOT_FOUND(HttpStatus.NOT_FOUND, "H_001", "해당 병원은 존재하지 않습니다."),
 	SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "H_002", "스케줄을 찾을 수 없습니다."),
 	SCHEDULE_NOT_IN_HOSPITAL(HttpStatus.BAD_REQUEST, "H_003", "해당 스케줄은 병원에 속하지 않습니다."),
-	SCHEDULE_NOT_FOUND_BY_DAY(HttpStatus.NOT_FOUND, "H_004", "해당 요일에 대한 병원 스케줄이 존재하지 않습니다.");
+	SCHEDULE_NOT_FOUND_BY_DAY(HttpStatus.NOT_FOUND, "H_004", "해당 요일에 대한 병원 스케줄이 존재하지 않습니다."),
+  
+	// QNA 관련 에러(Q_)
+	QNA_NOT_FOUND(HttpStatus.NOT_FOUND, "Q_001", "Q&A 게시글이 없습니다."),
+
+	// Comment 관련 에러(C_)
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C_001", "답변이 없습니다."),
+
+	// Appointment 관련 에러 (A_)
+	APPOINTMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "A_001", "예약을 찾을 수 없습니다."),
+	INVALID_APPOINTMENT_TIME(HttpStatus.BAD_REQUEST, "A_002", "과거 시간으로 예약할 수 없습니다."),
+	DUPLICATE_APPOINTMENT(HttpStatus.CONFLICT, "A_003", "이미 해당 시간에 예약이 존재합니다."),
+	APPOINTMENT_OUT_OF_WORKING_HOURS(HttpStatus.BAD_REQUEST, "A_004", "예약 시간이 진료 시간 외입니다."),
+	APPOINTMENT_IN_LUNCH_TIME(HttpStatus.BAD_REQUEST, "A_005", "예약 시간이 점심 시간입니다."),
+	APPOINTMENT_DUPLICATE_TIME_WINDOW(HttpStatus.CONFLICT, "A_006", "동일 환자의 30분 내 중복 예약은 허용되지 않습니다."),
+	APPOINTMENT_COMPLETED_MODIFICATION_NOT_ALLOWED(HttpStatus.CONFLICT, "A_007", "진료가 완료된 예약은 상태를 변경할 수 없습니다."),
+	APPOINTMENT_CANCELED_MODIFICATION_NOT_ALLOWED(HttpStatus.CONFLICT, "A_008", "취소된 예약은 상태를 변경할 수 없습니다."),
+	INVALID_STATUS_VALUE(HttpStatus.BAD_REQUEST, "A_009", "유효하지 않은 예약 상태입니다."),
+	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "A_010", "유효하지 않은 예약 타입입니다."),
+	INVALID_PAYMENT_VALUE(HttpStatus.BAD_REQUEST, "A_011", "유효하지 않은 결제 방법입니다."),
+	ROLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "A_012", "유효하지 않은 역할입니다."),
+
+	// Doctor 관련 에러 (D_)
+	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_001", "진료 가능 인원은 음수일 수 없습니다."),
+	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_002", "해당 시간에는 이미 예약이 가득 찼습니다."),
+
+	// Doctor Schedule 관련 에러 (DS_)
+	DOCTOR_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS_001", "의사의 스케쥴이 존재하지 않습니다."),
+
+	// Medication 관련 에러 (MD_)
+	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),
+	MEDICATION_ALERT_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_002", "복약 시간을 찾을 수 없습니다."),
+	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다.");
+  
+  // Review 관련 에러(R_)
+	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;

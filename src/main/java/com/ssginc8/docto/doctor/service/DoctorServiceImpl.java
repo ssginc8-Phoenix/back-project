@@ -163,15 +163,19 @@ public class DoctorServiceImpl implements DoctorService {
 	public void deleteDoctorSchedule(Long doctorId, Long scheduleId) {
 
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
-
-
 		DoctorSchedule schedule = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
 
 		doctorProvider.validateScheduleBelongsToDoctor(schedule, doctor.getDoctorId());
-
-
+    
 		doctorScheduleProvider.deleteDoctorSchedule(schedule);
 	}
 
-
+	/**
+	 * 의사가 30분 당 받을 수 있는 최대 환자 수 수정
+	 */
+	@Override
+	public void updateCapacityPerHalfHour(Long doctorId, Long capacityPerHalfHour) {
+		Doctor doctor = doctorProvider.getDoctorById(doctorId);
+		doctor.changeCapacityPerHalfHour(capacityPerHalfHour);
+	}
 }

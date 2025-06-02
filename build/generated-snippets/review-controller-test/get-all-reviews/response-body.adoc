@@ -1,0 +1,37 @@
+[source,json,options="nowrap"]
+----
+{
+  "content" : [ {
+    "reviewId" : 125,
+    "contents" : "친절하고 전문적이었습니다.",
+    "createdAt" : "2025-06-01T02:13:56.27591",
+    "reportCount" : 0,
+    "keywords" : [ "FAST", "THOROUGH", "CLEAN_HOSPITAL" ]
+  } ],
+  "pageable" : {
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "sort" : {
+      "empty" : true,
+      "unsorted" : true,
+      "sorted" : false
+    },
+    "offset" : 0,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalPages" : 1,
+  "last" : true,
+  "totalElements" : 1,
+  "size" : 5,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "unsorted" : true,
+    "sorted" : false
+  },
+  "numberOfElements" : 1,
+  "first" : true,
+  "empty" : false
+}
+----

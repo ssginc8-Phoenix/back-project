@@ -1,5 +1,7 @@
 package com.ssginc8.docto.doctor.provider;
 
+import static com.ssginc8.docto.global.error.ErrorCode.*;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,6 +23,9 @@ import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.hospital.repo.HospitalScheduleRepo;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentInLunchTimeException;
+import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentOutOfWorkingHoursException;
+import com.ssginc8.docto.global.error.exception.doctorScheduleException.DoctorScheduleNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +36,6 @@ public class DoctorScheduleProvider {
 
 	private final DoctorScheduleRepo doctorScheduleRepo;
 	private final HospitalProvider hospitalProvider;
-
 
 
 	public void validateDoctorSchedule(Doctor doctor, LocalDateTime appointmentTime) {
@@ -91,5 +95,10 @@ public class DoctorScheduleProvider {
 	public void deleteByDoctorId(Long doctorId) {
 		List<DoctorSchedule> schedules = doctorScheduleRepo.findAllByDoctorDoctorId(doctorId);
 		doctorScheduleRepo.deleteAll(schedules);
+	}
+
+	public DoctorSchedule getScheduleByDoctorAndDay(Doctor doctor, DayOfWeek dayOfWeek) {
+		return doctorScheduleRepo.findByDoctorAndDayOfWeek(doctor, dayOfWeek)
+			.orElseThrow();
 	}
 }

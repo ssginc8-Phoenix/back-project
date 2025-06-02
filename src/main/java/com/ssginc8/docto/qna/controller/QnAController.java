@@ -1,12 +1,9 @@
 package com.ssginc8.docto.qna.controller;
 
 
-import com.ssginc8.docto.appointment.entity.Appointment;
-import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.dto.QaPostUpdateRequest;
-import com.ssginc8.docto.qna.entity.QaPost;
 import com.ssginc8.docto.qna.service.QaPostService;
 
 import jakarta.validation.Valid;
@@ -20,16 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class QnAController {
 
 	private final QaPostService qaPostService;
-	private final AppointmentRepo appointmentRepo;
 
-	// 게시글 작성
+	// 게시글 생성
 	@PostMapping
 	public ResponseEntity<QaPostResponse> createQaPost(
 		@RequestBody @Valid QaPostCreateRequest request
-	) {Appointment appointment = appointmentRepo.getReferenceById(request.getAppointmentId());
-		QaPost saved = qaPostService.createQaPost(appointment, request.getContent());
-
-		return ResponseEntity.ok(QaPostResponse.fromEntity(saved));
+	) {
+		QaPostResponse response = qaPostService.createQaPost(request);
+		return ResponseEntity.ok(response);
 	}
 
 
