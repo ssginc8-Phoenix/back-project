@@ -162,14 +162,14 @@ public class HospitalController {
 	 *
 	 */
 	@PostMapping("/hospitals/{hospitalId}/waiting")
-	public ResponseEntity<Long> saveHospitalWaiting(
+	public ResponseEntity<HospitalWaitingResponse> saveHospitalWaiting(
 		@PathVariable Long hospitalId,
-		@RequestBody Map<String, Long> request
+		@RequestBody HospitalWaitingRequest request
 	) {
-		Long waiting = request.get("waiting");
-		hospitalService.saveHospitalWaiting(hospitalId, new HospitalWaitingRequest(waiting));
-		return ResponseEntity.ok(waiting);
+		hospitalService.saveHospitalWaiting(hospitalId, request);
+		return ResponseEntity.ok(new HospitalWaitingResponse(request.getWaiting()));
 	}
+
 
 	/**
 	 * 병원 웨이팅 조회
