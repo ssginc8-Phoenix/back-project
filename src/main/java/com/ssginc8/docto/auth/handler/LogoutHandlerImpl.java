@@ -9,6 +9,7 @@ import com.ssginc8.docto.auth.jwt.dto.TokenType;
 import com.ssginc8.docto.auth.jwt.provider.RefreshTokenProvider;
 import com.ssginc8.docto.util.CookieUtil;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,11 @@ public class LogoutHandlerImpl implements LogoutHandler {
 		String refreshToken = cookieUtil.getToken(request, TokenType.REFRESH_TOKEN.getTokenType());
 
 		refreshTokenProvider.deleteRefreshToken(refreshToken);
+
+		Cookie accessTokenCookie = cookieUtil.createCookie(TokenType.ACCESS_TOKEN.getTokenType(), null, 0);
+		response.addCookie(accessTokenCookie);
+
+		Cookie refreshTokenCookie = cookieUtil.createCookie(TokenType.REFRESH_TOKEN.getTokenType(), null, 0);
+		response.addCookie(refreshTokenCookie);
 	}
 }
