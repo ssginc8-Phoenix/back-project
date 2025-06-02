@@ -13,12 +13,13 @@ import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
-import com.ssginc8.docto.hospital.dto.HospitalWaiting;
+import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
+import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
 
 public interface HospitalService {
 
 		//위치정보 조회
-		//Page<HospitalNameDTO> getHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable);
+		Page<HospitalResponse> getHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable);
 
 		//병원 정보
 		Long saveHospital(HospitalRequest HospitalRequest);
@@ -36,7 +37,7 @@ public interface HospitalService {
 		Page<HospitalResponse> getHospitals(Pageable pageable);
 
 		//영업시간 등록
-		List<HospitalScheduleRequest> saveSchedules(Long hospitalId, List<HospitalScheduleRequest> schedules);
+		void saveSchedules(Long hospitalId, List<HospitalScheduleRequest> schedules);
 
 		//영업시간 조회
 		List<HospitalScheduleResponse> getSchedules(Long hospitalId);
@@ -48,13 +49,13 @@ public interface HospitalService {
 		void deleteHospitalSchedules(Long hospitalScheduleId);
 
 		//병원 웨이팅 등록
-		Long saveHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting);
+		Long saveHospitalWaiting(Long hospitalId, HospitalWaitingRequest hospitalWaitingRequest);
 
 		//병원 웨이팅 조회
 		Long getHospitalWaiting(Long hospitalId);
 
 		//병원 웨이팅 수정
-		Long updateHospitalWaiting(Long hospitalId, HospitalWaiting hospitalWaiting);
+		void updateHospitalWaiting(Long hospitalId, HospitalWaitingRequest hospitalWaiting);
 
 		Page<HospitalReviewResponse> getReviews(Long hospitalId, Pageable pageable);
 }

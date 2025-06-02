@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ssginc8.docto.doctor.dto.DoctorSaveRequest;
-import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorResponse;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleList;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleRequest;
@@ -15,9 +14,6 @@ public interface DoctorService {
 
 	//의사 등록
 	Long saveDoctor(DoctorSaveRequest doctorSaveRequest);
-
-	//의사 정보 수정
-	DoctorUpdateRequest updateDoctor(Long doctorId, DoctorUpdateRequest doctorUpdateRequest);
 
 	//의사 전체 조회
 	Page<DoctorResponse> getDoctors(Pageable pageable);

@@ -71,12 +71,17 @@ public class DoctorSchedule extends BaseTimeEntity {
 		LocalTime lunchEnd) {
 		return new DoctorSchedule(doctor, dayOfWeek, startTime, endTime, lunchStart, lunchEnd);
 	}
-	public void updateDoctorSchedule(DoctorScheduleRequest request) {
-		this.dayOfWeek = request.getDayOfWeek();
-		this.startTime = request.getStartTime();
-		this.endTime = request.getEndTime();
-		this.lunchStart = request.getLunchStart();
-		this.lunchEnd = request.getLunchEnd();
+	public void updateDoctorSchedule(
+		DayOfWeek dayOfWeek,
+		LocalTime startTime,
+		LocalTime endTime,
+		LocalTime lunchStart,
+		LocalTime lunchEnd) {
 
+		this.dayOfWeek = dayOfWeek;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.lunchStart = lunchStart;
+		this.lunchEnd = lunchEnd;
 	}
 }

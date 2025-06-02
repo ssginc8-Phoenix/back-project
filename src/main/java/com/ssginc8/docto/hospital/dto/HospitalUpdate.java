@@ -24,8 +24,8 @@ public class HospitalUpdate {
 	private String phone;
 	private String introduction;
 	private String notice;
-	private String businessRegistrationNumber;
 	private List<String> serviceNames;
+	private String businessRegistrationNumber;
 
 
 

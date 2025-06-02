@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,16 +16,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
+import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
-import com.ssginc8.docto.hospital.dto.HospitalWaiting;
+import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
+import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
 import com.ssginc8.docto.hospital.service.HospitalService;
-import com.ssginc8.docto.review.dto.ReviewAllListResponse;
 import com.ssginc8.docto.review.service.ReviewService;
 
 import jakarta.validation.Valid;
@@ -116,16 +120,17 @@ public class HospitalController {
 		return ResponseEntity.ok().build();
 	}
 
-	// @GetMapping("/hospitals")
-	// public ResponseEntity<Page<HospitalNameDTO>> findHospitalsWithinRadius(//page로 바꾸기
-	// 	@RequestParam("lat") double lat,
-	// 	@RequestParam("lng") double lng,
-	// 	@RequestParam("radius") double radius,
-	// 	@PageableDefault(size = 10, sort = "name") Pageable pageable) {
-	//
-	// 	Page<HospitalNameDTO> page = hospitalService.getHospitalsWithinRadius(lat, lng, radius, pageable);
-	// 	return ResponseEntity.ok(page);
-	// }
+	@CrossOrigin(origins = "http://localhost:5173")
+	@GetMapping("/hospitals")
+	public ResponseEntity<Page<HospitalResponse>> findHospitalsWithinRadius(
+		@RequestParam("lat") double lat,
+		@RequestParam("lng") double lng,
+		@RequestParam("radius") double radius,
+		@PageableDefault(size = 10, sort = "name") Pageable pageable) {
+
+		Page<HospitalResponse> page = hospitalService.getHospitalsWithinRadius(lat, lng, radius, pageable);
+		return ResponseEntity.ok(page);
+	}
 
 	/**
 	 * 병원 스케쥴 삭제
@@ -157,14 +162,14 @@ public class HospitalController {
 	 *
 	 */
 	@PostMapping("/hospitals/{hospitalId}/waiting")
-	public ResponseEntity<Long> saveHospitalWaiting(
+	public ResponseEntity<HospitalWaitingResponse> saveHospitalWaiting(
 		@PathVariable Long hospitalId,
-		@RequestBody Map<String, Long> request
+		@RequestBody HospitalWaitingRequest request
 	) {
-		Long waiting = request.get("waiting");
-		hospitalService.saveHospitalWaiting(hospitalId, new HospitalWaiting(waiting));
-		return ResponseEntity.ok(waiting);
+		hospitalService.saveHospitalWaiting(hospitalId, request);
+		return ResponseEntity.ok(new HospitalWaitingResponse(request.getWaiting()));
 	}
+
 
 	/**
 	 * 병원 웨이팅 조회
@@ -183,7 +188,7 @@ public class HospitalController {
 	@PatchMapping("/hospitals/{hospitalId}/waiting")
 	public ResponseEntity<Long> updateHospitalWaiting(
 		@PathVariable Long hospitalId,
-		@RequestBody HospitalWaiting hospitalWaiting
+		@RequestBody HospitalWaitingRequest hospitalWaiting
 	) {
 		hospitalService.updateHospitalWaiting(hospitalId, hospitalWaiting);
 		return ResponseEntity.noContent().build();
@@ -191,8 +196,8 @@ public class HospitalController {
 
 	// 한 병원에 대한 리뷰 조회
 	@GetMapping("/hospitals/{hospitalId}/reviews")
-	public ResponseEntity<Page<ReviewAllListResponse>> getAllReviews(@PathVariable Long hospitalId, Pageable pageable
-	) {Page<ReviewAllListResponse> page = reviewService.getAllReviews(hospitalId,pageable);
+	public ResponseEntity<Page<HospitalReviewResponse>> getAllReviews(@PathVariable Long hospitalId, Pageable pageable
+	) {Page<HospitalReviewResponse> page = hospitalService.getReviews(hospitalId,pageable);
 		return ResponseEntity.ok(page);
 	}
 

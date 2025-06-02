@@ -75,15 +75,9 @@ public class DoctorControllerTest {
 	@DisplayName("의사 등록")
 	void saveDoctorTest() throws Exception {
 		DoctorSaveRequest doctorSaveRequest = DoctorSaveRequest.builder()
-			.hospitalId(22L)
+			.hospitalId(3L)
 			.specialization(Specialization.valueOf("DERMATOLOGY"))
-			.username("dr.jjh")
-			.password("asd123")
-			.email("jjh1@naver.com")
-			.login_type("EMAIL")
-			.role("DOCTOR")
-			.suspended(false)
-			.uuid("asd123123111111")
+			.userId(8L)
 			.build();
 
 		mockMvc.perform(post("/api/v1/doctors")
@@ -92,15 +86,9 @@ public class DoctorControllerTest {
 			.andExpect(status().isOk()) // 실제 상황에 따라 isCreated() 등으로 변경 가능
 			.andDo(restDocs.document(
 				requestFields(
-					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원ID"),
-					fieldWithPath("specialization").type(JsonFieldType.STRING).description("전공"),
-					fieldWithPath("username").type(JsonFieldType.STRING).description("이름"),
-					fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-					fieldWithPath("email").type(JsonFieldType.STRING).optional().description("이메일"),
-					fieldWithPath("login_type").type(JsonFieldType.STRING).optional().description("로그인타입"),
-					fieldWithPath("role").type(JsonFieldType.STRING).description("역할"),
-					fieldWithPath("suspended").type(JsonFieldType.BOOLEAN).description("정지 여부"),
-					fieldWithPath("uuid").type(JsonFieldType.STRING).optional().description("UUID")
+					fieldWithPath("hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
+					fieldWithPath("specialization").type(JsonFieldType.STRING).description("전공 과목"),
+					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID")
 
 
 
@@ -109,38 +97,11 @@ public class DoctorControllerTest {
 
 	}
 
-	@Test
-	@DisplayName("의사 정보 수정")
-	void updateDoctorTest() throws Exception {
-		DoctorUpdateRequest doctorUpdateRequest = DoctorUpdateRequest.builder()
-			.email("avbv@naver.com")
-			.password("1qa12a")
-			.specialization(Specialization.valueOf("PSYCHIATRY"))
-			.build();
-
-		mockMvc.perform(patch("/api/v1/doctors/{doctorId}",9L)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(doctorUpdateRequest)))
-			.andExpect(status().isOk()) // 실제 상황에 따라 isCreated() 등으로 변경 가능
-			.andDo(restDocs.document(
-				pathParameters(
-					parameterWithName("doctorId").description("의사 ID")
-				),
-				requestFields(
-					fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-					fieldWithPath("email").type(JsonFieldType.STRING).optional().description("이메일"),
-					fieldWithPath("specialization").type(JsonFieldType.STRING).description("전공")
-
-
-
-				)
-			));
-	}
 
 	@Test
 	@DisplayName("의사 전체 조회")
 	void getAllDoctorsTest() throws Exception {
-		mockMvc.perform(get("/api/v1/doctors")
+		mockMvc.perform(get("/api/v1/admin/doctors")
 				.param("page", "0")
 				.param("size", "10"))
 			.andExpect(status().isOk())
@@ -164,64 +125,44 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("병원에 속한 의사 조회")
 	void getDoctorByHospitalTest() throws Exception {
-		Long hospitalId = 22L;
-
 		mockMvc.perform(get("/api/v1/doctors")
-				.param("hospitalId", String.valueOf(hospitalId))
-				.param("page", "0")
-				.param("size", "10")
+				.param("hospitalId", "1")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
 				queryParameters(
-					parameterWithName("hospitalId").description("병원 ID"),
-					parameterWithName("page").optional().description("페이지 번호 (0부터 시작)").attributes(
-						key("defaultValue").value("0")),
-					parameterWithName("size").optional().description("페이지당 항목 수").attributes(
-						key("defaultValue").value("20"))
+					parameterWithName("hospitalId").description("병원 ID")
 				),
 				responseFields(
-					fieldWithPath("content[].doctorId").type(JsonFieldType.NUMBER).description("의사 ID"),
-					fieldWithPath("content[].specialization").type(JsonFieldType.STRING).description("전공"),
-					fieldWithPath("content[].username").type(JsonFieldType.STRING).description("의사 이름"),
-					fieldWithPath("content[].hospitalId").type(JsonFieldType.NUMBER).description("병원 ID"),
-
-					// 페이징 정보
-					subsectionWithPath("pageable").ignored(),
-					fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
-					fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("전체 요소 수"),
-					fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
-					fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지당 항목 수"),
-					fieldWithPath("number").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-					fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 조건 없음 여부"),
-					fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬됨 여부"),
-					fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬되지 않음 여부"),
-					fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-					fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지 요소 수"),
-					fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("페이지가 비어 있는지 여부")
+					fieldWithPath("[].doctorId").type(JsonFieldType.NUMBER).description("의사 ID"),
+					fieldWithPath("[].specialization").type(JsonFieldType.STRING).description("전공"),
+					fieldWithPath("[].username").type(JsonFieldType.STRING).description("의사 이름"),
+					fieldWithPath("[].hospitalName").type(JsonFieldType.STRING).description("병원 이름")
 				)
 			));
 	}
 
+
+
 	@Test
 	@DisplayName("의사 영업시간 등록")
 	void saveDoctorSchedule() throws Exception {
-		Long doctorId = 9L;
+		Long doctorId = 6L;
 
 		List<DoctorScheduleRequest> schedules = List.of(
 			DoctorScheduleRequest.builder()
 				.dayOfWeek(DayOfWeek.MONDAY)
 				.startTime(LocalTime.parse("09:00"))
 				.endTime(LocalTime.parse("18:00"))
-				.lunchStart(LocalTime.parse("12:00"))
-				.lunchEnd(LocalTime.parse("13:00"))
+				.lunchStart(LocalTime.parse("00:00"))
+				.lunchEnd(LocalTime.parse("00:00"))
 				.build(),
 			DoctorScheduleRequest.builder()
 				.dayOfWeek(DayOfWeek.TUESDAY)
 				.startTime(LocalTime.parse("09:00"))
 				.endTime(LocalTime.parse("18:00"))
-				.lunchStart(LocalTime.parse("12:00"))
-				.lunchEnd(LocalTime.parse("13:00"))
+				.lunchStart(LocalTime.parse("00:00"))
+				.lunchEnd(LocalTime.parse("00:00"))
 				.build()
 		);
 
@@ -248,7 +189,7 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 조회")
 	void getDoctorSchedule() throws Exception {
-		Long doctorId = 9L;
+		Long doctorId = 6L;
 
 		mockMvc.perform(get("/api/v1/doctors/{doctorId}/schedules", doctorId)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -272,15 +213,15 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 수정")
 	void updateDoctorSchedule() throws Exception {
-		Long doctorId = 9L;
-		Long scheduleId = 4L;
+		Long doctorId = 6L;
+		Long scheduleId = 9L;
 
 		DoctorScheduleRequest updateRequest = DoctorScheduleRequest.builder()
 			.dayOfWeek(DayOfWeek.MONDAY)
 			.startTime(LocalTime.parse("10:00"))
 			.endTime(LocalTime.parse("19:00"))
-			.lunchStart(LocalTime.parse("13:00"))
-			.lunchEnd(LocalTime.parse("14:00"))
+			.lunchStart(LocalTime.parse("00:00"))
+			.lunchEnd(LocalTime.parse("00:00"))
 			.build();
 
 		mockMvc.perform(patch("/api/v1/doctors/{doctorId}/schedules/{scheduleId}", doctorId, scheduleId)
@@ -298,13 +239,6 @@ public class DoctorControllerTest {
 					fieldWithPath("endTime").description("영업 종료 시간"),
 					fieldWithPath("lunchStart").description("점심 시작 시간"),
 					fieldWithPath("lunchEnd").description("점심 종료 시간")
-				),
-				responseFields(
-					fieldWithPath("dayOfWeek").description("요일"),
-					fieldWithPath("startTime").description("영업 시작 시간"),
-					fieldWithPath("endTime").description("영업 종료 시간"),
-					fieldWithPath("lunchStart").description("점심 시작 시간"),
-					fieldWithPath("lunchEnd").description("점심 종료 시간")
 				)
 			));
 	}
@@ -313,8 +247,8 @@ public class DoctorControllerTest {
 	@Test
 	@DisplayName("의사 영업시간 삭제")
 	void deleteDoctorSchedule() throws Exception {
-		Long doctorId = 9L;
-		Long scheduleId = 4L;
+		Long doctorId = 6L;
+		Long scheduleId = 10L;
 
 		mockMvc.perform(delete("/api/v1/doctors/{doctorId}/schedules/{scheduleId}", doctorId, scheduleId))
 			.andExpect(status().isNoContent())
