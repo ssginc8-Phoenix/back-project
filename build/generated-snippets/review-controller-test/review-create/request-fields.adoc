@@ -1,0 +1,28 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|리뷰 작성자 유저 ID
+
+|`+hospitalId+`
+|`+Number+`
+|병원 ID
+
+|`+doctorId+`
+|`+Number+`
+|의사 ID
+
+|`+appointmentId+`
+|`+Number+`
+|예약 ID
+
+|`+keywords[]+`
+|`+Array+`
+|키워드 목록 (3~8개)
+
+|`+contents+`
+|`+String+`
+|리뷰 내용 (최대 1000자)
+
+|===

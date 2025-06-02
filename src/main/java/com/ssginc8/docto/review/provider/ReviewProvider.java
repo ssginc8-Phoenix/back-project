@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.global.error.exception.reviewException.ReviewNotFoundException;
 import com.ssginc8.docto.review.entity.Review;
 import com.ssginc8.docto.review.repository.ReviewRepo;
 
@@ -20,17 +21,23 @@ public class ReviewProvider {
 
 
 
-	//내가 쓴 리뷰 조회
+	// 내가 쓴 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getMyReviews(Long userId, Pageable pageable) {
 		return reviewRepo.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
 	}
 
 
-	//병원에서 전체 리뷰 조회
+	// 병원 전체 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getHospitalReviews(Long hospitalId, Pageable pageable) {
 		return reviewRepo.findByHospitalHospitalId(hospitalId, pageable);
+	}
+
+	// admin 전체 리뷰 조회
+	@Transactional(readOnly = true)
+	public Page<Review> getAllReviews(Pageable pageable) {
+		return reviewRepo.findAll(pageable);
 	}
 
 
@@ -39,7 +46,7 @@ public class ReviewProvider {
 	@Transactional(readOnly = true)
 	public Review getById(Long reviewId) {
 		return reviewRepo.findWithGraphByReviewId(reviewId)
-			.orElseThrow(() -> new IllegalArgumentException("리뷰가 없습니다. id=" + reviewId));
+			.orElseThrow(ReviewNotFoundException::new);
 	}
 
 
@@ -56,19 +63,9 @@ public class ReviewProvider {
 	@Transactional
 	public void deleteByReviewId(Long reviewId) {
 		Review review = reviewRepo.findWithGraphByReviewId(reviewId)
-			.orElseThrow(() -> new IllegalArgumentException("리뷰가 없습니다. id=" + reviewId));
+			.orElseThrow(ReviewNotFoundException::new);
 		review.getKeywords().clear();
 	}
-
-	//리뷰 삭제
-	@Transactional
-	public void deleteById(Long reviewId) {
-		reviewRepo.deleteById(reviewId);
-	}
-
-
-
-
 
 
 }

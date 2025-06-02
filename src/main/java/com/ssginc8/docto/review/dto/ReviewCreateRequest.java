@@ -16,7 +16,7 @@ public class ReviewCreateRequest {
 	private Long hospitalId;
 	private Long doctorId;
 
-	@NotEmpty(message = "키워드를 최소 3개 이상 선택해야 합니다.")
+	@NotBlank(message = "키워드를 최소 3개 이상 선택해야 합니다.")
 	@Size(min = 3, max = 8, message = "키워드는 3~8개 사이로 선택 가능합니다.")
 	private List<String> keywords;
 
