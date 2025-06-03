@@ -69,15 +69,15 @@ public class UserApiController {
 		userService.checkEmail(email);
 	}
 
-	@GetMapping("/users/email/find")
-	public FindEmail.Response findEmail(@RequestBody FindEmail.Request request) {
-		return userService.findEmail(request);
-	}
-
 	@GetMapping("/admin/users")
 	public Page<AdminUserList.Response> getUsers(@RequestParam(value = "role", required = false) Role role,
 		Pageable pageable) {
 		return userService.getUsers(role, pageable);
+	}
+
+	@PostMapping("/users/email/find")
+	public FindEmail.Response findEmail(@RequestBody FindEmail.Request request) {
+		return userService.findEmail(request);
 	}
 
 	@PostMapping("/users/register")
