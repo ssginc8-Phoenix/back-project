@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
-	private final UserService userService;
 
 	/**
 	 * ✅ 진료 예약 접수
