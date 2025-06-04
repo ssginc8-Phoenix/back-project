@@ -94,6 +94,6 @@ public class DoctorScheduleProvider {
 
 	public DoctorSchedule getScheduleByDoctorAndDay(Doctor doctor, DayOfWeek dayOfWeek) {
 		return doctorScheduleRepo.findByDoctorAndDayOfWeek(doctor, dayOfWeek)
-			.orElseThrow();
+			.orElseThrow(DoctorScheduleNotFoundException::new);
 	}
 }

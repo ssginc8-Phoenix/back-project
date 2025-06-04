@@ -1,6 +1,8 @@
 package com.ssginc8.docto.appointment.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,14 +13,17 @@ import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
+import com.ssginc8.docto.appointment.dto.TimeSlotDto;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.entity.AppointmentType;
 import com.ssginc8.docto.appointment.entity.PaymentType;
 import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
+import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
@@ -32,6 +37,7 @@ import com.ssginc8.docto.qna.service.QaPostService;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.UserService;
+import com.ssginc8.docto.util.TimeSlotUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +51,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private final PatientGuardianProvider patientGuardianProvider;
 	private final HospitalProvider hospitalProvider;
 	private final DoctorProvider doctorProvider;
+	private final DoctorScheduleProvider doctorScheduleProvider;
 	private final QaPostProvider qaPostProvider;
 
 	private final QaPostService qaPostService;
@@ -208,5 +215,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(newAppointment);
 		return AppointmentResponse.fromEntity(newAppointment, qaContent);
+	}
+
+	@Override
+	public List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, LocalDate date) {
+		Doctor doctor = doctorProvider.getDoctorById(doctorId);
+		DoctorSchedule schedule = doctorScheduleProvider.getScheduleByDoctorAndDay(doctor, date.getDayOfWeek());
+
+		LocalDateTime baseDate = date.atStartOfDay();
+
+		return TimeSlotUtil.getTimeSlotsWithAvailability(
+			schedule, doctor, baseDate, appointmentProvider
+		);
 	}
 }

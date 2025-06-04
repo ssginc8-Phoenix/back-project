@@ -35,10 +35,12 @@ public class DoctorProvider {
 		return doctorRepo.findById(doctorId)
 			.orElseThrow(DoctorNotFoundException::new);
 	}
+
 	public Doctor saveDoctor(Doctor doctor) {
 		doctorRepo.save(doctor);
 		return doctor;
 	}
+
 	public void validateUserIsNotAlreadyDoctor(User user) {
 		if (doctorRepo.existsByUser(user)) {
 			throw new DoctorAlreadyExistsException(ErrorCode.DOCTOR_ALREADY_EXISTS);

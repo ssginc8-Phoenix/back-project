@@ -1,6 +1,8 @@
 package com.ssginc8.docto.appointment.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +11,7 @@ import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
+import com.ssginc8.docto.appointment.dto.TimeSlotDto;
 import com.ssginc8.docto.user.entity.Role;
 
 public interface AppointmentService {
@@ -34,4 +37,5 @@ public interface AppointmentService {
 	// 재예약 (예약 시간만 변경)
 	AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime);
 
+	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, LocalDate date);
 }

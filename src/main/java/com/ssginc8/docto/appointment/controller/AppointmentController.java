@@ -1,7 +1,11 @@
 package com.ssginc8.docto.appointment.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
@@ -17,6 +22,7 @@ import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.dto.RescheduleRequest;
+import com.ssginc8.docto.appointment.dto.TimeSlotDto;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
 import com.ssginc8.docto.appointment.service.AppointmentService;
 import com.ssginc8.docto.user.service.UserService;
@@ -107,5 +113,19 @@ public class AppointmentController {
 	@GetMapping("/appointments/{appointmentId}")
 	public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable Long appointmentId) {
 		return ResponseEntity.ok(appointmentService.getAppointmentDetail(appointmentId));
+	}
+
+	/**
+	 * ✅ 예약 상세 내역 조회
+	 * URL: /api/v1/appointments/{appointmentId}
+	 * Method: GET
+	 */
+	@GetMapping("/appointments/available-time-slots")
+	public ResponseEntity<List<TimeSlotDto>> getAvailableTimeSlots(
+		@RequestParam Long doctorId,
+		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
+		List<TimeSlotDto> slots = appointmentService.getAvailableTimeSlots(doctorId, date);
+		return ResponseEntity.ok(slots);
 	}
 }
