@@ -127,7 +127,7 @@ public class UserApiControllerTest {
 			.phone("010-1234-5678")
 			.build();
 
-		mockMvc.perform(get("/api/v1/users/email/find")
+		mockMvc.perform(post("/api/v1/users/email/find")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
