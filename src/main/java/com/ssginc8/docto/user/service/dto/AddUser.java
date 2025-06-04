@@ -6,6 +6,7 @@ import com.ssginc8.docto.user.entity.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ public class AddUser {
 	@Getter
 	@Setter
 	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@ToString
 	public static class Request {
 		@Email(message = "이메일 형식에 맞지 않습니다.")
