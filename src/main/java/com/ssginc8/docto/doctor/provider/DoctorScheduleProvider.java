@@ -44,7 +44,7 @@ public class DoctorScheduleProvider {
 			throw new InvalidDoctorScheduleOutOfHoursException();
 		}
 
-		if (!time.isBefore(schedule.getLunchStart()) && !time.isAfter(schedule.getLunchEnd())) {
+		if (!time.isBefore(schedule.getLunchStart()) && time.isAfter(schedule.getLunchEnd())) {
 			throw new InvalidDoctorScheduleLunchException();
 		}
 	}
