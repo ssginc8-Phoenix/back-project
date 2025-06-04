@@ -6,7 +6,7 @@ import com.ssginc8.docto.global.error.exception.appointmentException.InvalidType
 
 public enum AppointmentType {
 
-	SCHEDULED, IMMEDIATE, TELEMEDICINE;
+	SCHEDULED, IMMEDIATE;
 
 	public static AppointmentType from(String input) {
 		return Arrays.stream(values())
