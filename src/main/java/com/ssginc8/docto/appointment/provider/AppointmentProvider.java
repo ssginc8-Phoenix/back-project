@@ -82,7 +82,7 @@ public class AppointmentProvider {
 	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByPatient(Long userId, Pageable pageable) {
-		return appointmentRepo.findByPatientGuardian_Patient_User_UserId(userId, pageable);
+		return appointmentRepo.findByPatientGuardian_Patient_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class AppointmentProvider {
 	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByGuardian(Long userId, Pageable pageable) {
-		return appointmentRepo.findByPatientGuardian_User_UserId(userId, pageable);
+		return appointmentRepo.findByPatientGuardian_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class AppointmentProvider {
 	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByDoctor(Long userId, Pageable pageable) {
-		return appointmentRepo.findByDoctor_User_UserId(userId, pageable);
+		return appointmentRepo.findByDoctor_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 	}
 
 	/**
@@ -106,6 +106,6 @@ public class AppointmentProvider {
 	 */
 	@Transactional(readOnly = true)
 	public Page<Appointment> getAppointmentsByHospital(Long userId, Pageable pageable) {
-		return appointmentRepo.findByHospital_User_UserId(userId, pageable);
+		return appointmentRepo.findByHospital_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 	}
 }
