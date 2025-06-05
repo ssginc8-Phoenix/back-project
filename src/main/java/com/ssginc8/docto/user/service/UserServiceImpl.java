@@ -24,6 +24,7 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.file.service.dto.UpdateFile;
 import com.ssginc8.docto.file.service.dto.UploadFile;
+import com.ssginc8.docto.global.error.exception.userException.UserMismatchException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.global.event.EmailSendEvent;
 import com.ssginc8.docto.global.util.CodeGenerator;
@@ -36,6 +37,7 @@ import com.ssginc8.docto.user.repo.UserSearchRepoImpl;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.CheckPassword;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
@@ -221,6 +223,15 @@ public class UserServiceImpl implements UserService {
 		userValidator.validatePassword(user.getPassword(), request.getPassword());
 
 		user.updatePassword(bCryptPasswordEncoder.encode(request.getPassword()));
+	}
+
+	@Override
+	public void checkPassword(CheckPassword.Request request) {
+		User currentUser = getUserFromUuid();
+		User targetUser = userProvider.getUserById(request.getUserId());
+
+		userValidator.validateOwnership(currentUser.getUserId(), targetUser.getUserId());
+		userValidator.isPasswordMatch(request.getPassword(), currentUser.getPassword());
 	}
 
 	@Transactional
