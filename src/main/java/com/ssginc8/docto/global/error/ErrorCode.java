@@ -22,6 +22,7 @@ public enum ErrorCode {
 	INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "U_006", "비밀번호가 일치하지 않습니다."),
 	EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "U_007", "이메일을 찾을 수 없습니다."),
 	SAME_AS_PREVIOUS_PASSWORD(HttpStatus.BAD_REQUEST, "U_008", "이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다."),
+	USER_MISMATCH(HttpStatus.UNAUTHORIZED, "U_009", "요청한 유저 정보가 일치하지 않습니다."),
 
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
