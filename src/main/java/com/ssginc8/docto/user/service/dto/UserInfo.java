@@ -7,6 +7,7 @@ import com.ssginc8.docto.user.entity.User;
 
 public class UserInfo {
 	public static class Response {
+		public Long userId;
 		public String email;
 		public String name;
 		public String phone;
@@ -14,7 +15,8 @@ public class UserInfo {
 		public Role role;
 		public String profileImageUrl;
 
-		private Response(String email, String name, String phone, String address, Role role, String profileImageUrl) {
+		private Response(Long userId, String email, String name, String phone, String address, Role role, String profileImageUrl) {
+			this.userId = userId;
 			this.email = email;
 			this.name = name;
 			this.phone = phone;
@@ -28,7 +30,7 @@ public class UserInfo {
 				defaultProfileUrl = user.getProfileUrl();
 			}
 
-			return new Response(user.getEmail(), user.getName(), user.getPhone(), user.getAddress(), user.getRole(),
+			return new Response(user.getUserId(), user.getEmail(), user.getName(), user.getPhone(), user.getAddress(), user.getRole(),
 				defaultProfileUrl);
 		}
 	}
