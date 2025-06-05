@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidInviteCodeException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidGuardianStatusException;
+import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
@@ -83,7 +84,7 @@ public class GuardianServiceImpl implements GuardianService {
 			.map(pg -> PatientSummaryResponse.of(
 				pg.getPatient().getPatientId(),
 				pg.getPatient().getUser().getName(),
-				pg.getPatient().getResidentRegistrationNumber()
+				decryptRRN(pg.getPatient().getResidentRegistrationNumber()) // 복호화된 주민등록번호
 			))
 			.collect(Collectors.toList());
 	}
@@ -106,5 +107,9 @@ public class GuardianServiceImpl implements GuardianService {
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("해시 생성 중 오류 발생", e);
 		}
+	}
+
+	private String decryptRRN(String encryptedRRN) {
+		return AESUtil.decrypt(encryptedRRN);
 	}
 }

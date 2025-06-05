@@ -1,5 +1,6 @@
 package com.ssginc8.docto.patient.dto;
 
+import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.patient.entity.Patient;
 
 import lombok.Builder;
@@ -28,7 +29,7 @@ public class PatientResponse {
 		return new PatientResponse(
 			patient.getPatientId(),
 			patient.getUser().getUserId(),
-			patient.getResidentRegistrationNumber()
+			AESUtil.decrypt(patient.getResidentRegistrationNumber())
 		);
 	}
 }
