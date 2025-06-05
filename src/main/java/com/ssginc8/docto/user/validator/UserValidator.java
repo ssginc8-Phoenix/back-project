@@ -13,6 +13,7 @@ import com.ssginc8.docto.global.error.exception.userException.PasswordHasSequenc
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooShortException;
 import com.ssginc8.docto.global.error.exception.userException.PasswordTooSimpleException;
 import com.ssginc8.docto.global.error.exception.userException.SameAsPreviousPasswordException;
+import com.ssginc8.docto.global.error.exception.userException.UserMismatchException;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.dto.AddUser;
@@ -31,8 +32,8 @@ public class UserValidator {
 		checkPassword(request.getPassword());
 	}
 
-	public void isPasswordMatch(String storedPassword, String inputPassword) {
-		if (!bCryptPasswordEncoder.matches(storedPassword, inputPassword)) {
+	public void isPasswordMatch(String inputPassword, String storedPassword) {
+		if (!bCryptPasswordEncoder.matches(inputPassword, storedPassword)) {
 			throw new InvalidPasswordException();
 		}
 	}
@@ -63,6 +64,12 @@ public class UserValidator {
 				return;
 			}
 			throw new DuplicateEmailException();
+		}
+	}
+
+	public void validateOwnership(Long currentUserId, Long targerUserId) {
+		if (!Objects.equals(currentUserId, targerUserId)) {
+			throw new UserMismatchException();
 		}
 	}
 

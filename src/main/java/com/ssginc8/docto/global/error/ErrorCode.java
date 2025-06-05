@@ -22,6 +22,7 @@ public enum ErrorCode {
 	INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "U_006", "비밀번호가 일치하지 않습니다."),
 	EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "U_007", "이메일을 찾을 수 없습니다."),
 	SAME_AS_PREVIOUS_PASSWORD(HttpStatus.BAD_REQUEST, "U_008", "이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다."),
+	USER_MISMATCH(HttpStatus.UNAUTHORIZED, "U_009", "요청한 유저 정보가 일치하지 않습니다."),
 
 	// Patient 관련 에러 (P_)
 	PATIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "환자 정보를 찾을 수 없습니다."),
