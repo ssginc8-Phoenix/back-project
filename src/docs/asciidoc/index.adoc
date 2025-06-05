@@ -105,11 +105,21 @@ include::{snippets}/user-api-controller-test/confirm-email-verification-code-tes
 
 === 비밀번호 재설정
 
-인증된 사용자가 새 비밀번호로 비밀번호를 재설정하는 AP
+인증된 사용자가 새 비밀번호로 비밀번호를 재설정하는 API
 
 include::{snippets}/user-api-controller-test/reset-password-test/http-request.adoc[]
 include::{snippets}/user-api-controller-test/reset-password-test/request-fields.adoc[]
 include::{snippets}/user-api-controller-test/reset-password-test/http-response.adoc[]
+
+=== 비밀번호 확인
+
+인증된 사용자가 자신의 비밀번호를 확인하는 API
+사용자는 자신의 userId와 비밀번호를 입력해야하며, 서버는 비밀번호가 맞는지 검증한다.
+
+include::{snippets}/user-api-controller-test/check-password-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/check-password-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/check-password-test/http-response.adoc[]
+
 
 === 회원 정보 수정
 

@@ -23,6 +23,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,8 +40,11 @@ import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.restdocs.RestDocsConfig;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.repo.UserRepo;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
+import com.ssginc8.docto.user.service.dto.AddUser;
+import com.ssginc8.docto.user.service.dto.CheckPassword;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
 import com.ssginc8.docto.user.service.dto.ResetPassword;
@@ -70,6 +74,9 @@ public class UserApiControllerTest {
 	@Autowired
 	private UserRepo userRepo;
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	@BeforeEach
 	public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context)
@@ -94,6 +101,7 @@ public class UserApiControllerTest {
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
 				responseFields(
+					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 아이디"),
 					fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
 					fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
 					fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호"),
@@ -386,6 +394,38 @@ public class UserApiControllerTest {
 				requestFields(
 					fieldWithPath("email").type(JsonFieldType.STRING).description("사용자의 이메일 주소"),
 					fieldWithPath("password").type(JsonFieldType.STRING).description("새 비밀번호")
+				)
+			));
+	}
+
+	@DisplayName("비밀번호 확인 API 테스트")
+	@Test
+	void checkPasswordTest() throws Exception {
+		User user = User.createUserByEmail("test@test.com", bCryptPasswordEncoder.encode("Fkdlej5115"), "test", "01011111111", "부산", Role.GUARDIAN,
+			null);
+
+		user = userRepo.save(user);
+
+		CheckPassword.Request request = new CheckPassword.Request();
+		ReflectionTestUtils.setField(request, "userId", user.getUserId());
+		ReflectionTestUtils.setField(request, "password", "Fkdlej5115");
+
+		Token token = tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
+
+		mockMvc.perform(
+				post("/api/v1/users/check-password")
+					.cookie(
+						new Cookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken()),
+						new Cookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken())
+					)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(request))
+			)
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				requestFields(
+					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 아이디"),
+					fieldWithPath("password").type(JsonFieldType.STRING).description("유저의 비밀번호")
 				)
 			));
 	}
