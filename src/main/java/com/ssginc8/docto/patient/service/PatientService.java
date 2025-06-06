@@ -11,4 +11,7 @@ public interface PatientService {
 	Page<PatientResponse> getAllPatients(Pageable pageable);
 
 	void deletePatient(Long patientId);
+
+	PatientResponse getPatientByUserId(Long userId);
+
 }

@@ -31,6 +31,14 @@ public class GuardianController {
 		return ResponseEntity.ok().build();
 	}
 
+	@PatchMapping("/respond")
+	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+	public ResponseEntity<Void> respondByInviteCode(
+		@RequestBody GuardianStatusRequest request) {
+		guardianService.updateStatusByInviteCode(request.getInviteCode(), request.getStatus());
+		return ResponseEntity.ok().build();
+	}
+
 	@DeleteMapping("/{userId}/patients/{patientId}")
 	public ResponseEntity<Void> deleteMapping(@PathVariable Long userId, @PathVariable Long patientId) {
 		guardianService.deleteMapping(userId, patientId);

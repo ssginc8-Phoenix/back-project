@@ -34,4 +34,10 @@ public class GuardianProvider {
 	public List<PatientGuardian> getAllAcceptedMappings(Long guardianId) {
 		return patientGuardianRepo.findAcceptedPatientsByUserId(guardianId);
 	}
+
+	public PatientGuardian findByInviteCode(String inviteCode) {
+		return patientGuardianRepo.findByInviteCode(inviteCode)
+			.orElseThrow(() -> new GuardianRequestNotFoundException());
+	}
+
 }

@@ -1,5 +1,8 @@
 package com.ssginc8.docto.guardian.provider;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,4 +33,25 @@ public class PatientGuardianProvider {
 			.filter(pg -> pg.getStatus() == Status.ACCEPTED) // 수락된 상태만
 			.orElseThrow(GuardianMappingNotFoundException::new); // 보호자-환자 매핑 없으면 에러
 	}
+	@Transactional(readOnly = true)
+	public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
+		return patientGuardianRepo.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED);
+	}
+
+	public Optional<PatientGuardian> findByUserAndPatient(User guardian, Patient patient) {
+		return patientGuardianRepo.findByUserAndPatient(guardian, patient);
+	}
+
+	@Transactional(readOnly = true)
+	public Optional<PatientGuardian> findPendingOrAcceptedMapping(User guardian, Patient patient) {
+		return patientGuardianRepo.findByUserAndPatient(guardian, patient)
+			.filter(pg -> pg.getDeletedAt() == null) // 논리 삭제 안 된 것만
+			.filter(pg -> pg.getStatus() == Status.PENDING || pg.getStatus() == Status.ACCEPTED); // 초대 대기 중 또는 수락된 보호자
+	}
+
+	public PatientGuardian findPendingMapping(User guardian, Patient patient) {
+		return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
+			.orElse(null); // 없으면 null
+	}
+
 }

@@ -3,6 +3,7 @@ package com.ssginc8.docto.guardian.service;
 import java.util.List;
 
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
+import com.ssginc8.docto.guardian.dto.GuardianResponse;
 import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 
@@ -27,5 +28,9 @@ public interface GuardianService {
 
 	GuardianInviteResponse inviteGuardian(Long patientId, String guardianEmail);
 
+	// 🔥 보호자 목록 조회
+	List<GuardianResponse> getGuardiansByPatientId(Long patientId);
+
+	void updateStatusByInviteCode(String inviteCode, String status);
 
 }

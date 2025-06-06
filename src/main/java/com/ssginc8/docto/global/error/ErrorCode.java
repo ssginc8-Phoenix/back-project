@@ -32,6 +32,7 @@ public enum ErrorCode {
 	GUARDIAN_MAPPING_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_002", "보호자-환자 매핑 정보를 찾을 수 없습니다."),
 	INVALID_INVITE_CODE(HttpStatus.BAD_REQUEST, "GDN_003", "유효하지 않은 초대 코드입니다."),
 	INVALID_GUARDIAN_STATUS(HttpStatus.BAD_REQUEST, "GDN_004", "유효하지 않은 보호자 상태입니다."),
+	GUARDIAN_ALREADY_EXISTS(HttpStatus.CONFLICT, "GDN_005", "이미 초대된 보호자입니다."),
 
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
