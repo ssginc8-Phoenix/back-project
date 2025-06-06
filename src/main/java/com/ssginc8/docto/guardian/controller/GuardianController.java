@@ -32,7 +32,7 @@ public class GuardianController {
 	}
 
 	@PatchMapping("/respond")
-	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+	// @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 	public ResponseEntity<Void> respondByInviteCode(
 		@RequestBody GuardianStatusRequest request) {
 		guardianService.updateStatusByInviteCode(request.getInviteCode(), request.getStatus());
