@@ -72,6 +72,9 @@ public class SecurityConfig {
 					"/api/v1/medications/*/complete"
 				).hasRole("PATIENT")
 
+				// .requestMatchers(HttpMethod.POST, "/api/v1/guardians/{patientId}/invite").hasRole("PATIENT")
+				// .requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
+
 				.requestMatchers(
 					"/api/v1/patients/**", "/api/v1/guardians/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews",
 					"/api/v1/qnas/**", "/api/v1/medications/**"
