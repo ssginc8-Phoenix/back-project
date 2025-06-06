@@ -8,6 +8,7 @@ import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.CheckPassword;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.Login;
@@ -41,9 +42,11 @@ public interface UserService {
 
 	void resetPassword(ResetPassword.Request request);
 
+	void checkPassword(CheckPassword.Request request);
+
 	void updateInfo(UpdateUser.Request request);
 
 	void deleteAccount();
 
-	User getUserFromUuid();
+	public User getUserFromUuid();
 }

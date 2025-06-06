@@ -20,6 +20,7 @@ import com.ssginc8.docto.user.service.UserService;
 import com.ssginc8.docto.user.service.dto.AddDoctorList;
 import com.ssginc8.docto.user.service.dto.AddUser;
 import com.ssginc8.docto.user.service.dto.AdminUserList;
+import com.ssginc8.docto.user.service.dto.CheckPassword;
 import com.ssginc8.docto.user.service.dto.EmailVerification;
 import com.ssginc8.docto.user.service.dto.FindEmail;
 import com.ssginc8.docto.user.service.dto.GetProviderId;
@@ -129,6 +130,11 @@ public class UserApiController {
 		userService.resetPassword(request);
 
 		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/users/check-password")
+	public void checkPassword(@RequestBody CheckPassword.Request request) {
+		userService.checkPassword(request);
 	}
 
 	@PatchMapping("/users/me")
