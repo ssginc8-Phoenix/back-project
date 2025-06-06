@@ -39,6 +39,13 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public PatientResponse getPatientByUserId(Long userId) {
+		Patient patient = patientProvider.getPatientByUserId(userId);
+		return PatientResponse.from(patient);
+	}
+
+	@Override
 	@Transactional
 	public void deletePatient(Long patientId) {
 		Patient patient = patientProvider.getActivePatient(patientId);

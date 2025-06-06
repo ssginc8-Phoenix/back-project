@@ -30,4 +30,10 @@ public class PatientProvider {
 	public Patient savePatient(Patient patient) {
 		return patientRepo.save(patient);
 	}
+
+	@Transactional(readOnly = true)
+	public Patient getPatientByUserId(Long userId) {
+		return patientRepo.findByUser_UserIdAndDeletedAtIsNull(userId)
+			.orElseThrow(PatientNotFoundException::new);
+	}
 }

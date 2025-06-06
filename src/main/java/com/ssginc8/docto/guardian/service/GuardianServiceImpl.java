@@ -7,15 +7,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.global.error.exception.guardianException.GuardianAlreadyExistsException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidInviteCodeException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidGuardianStatusException;
 import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
+import com.ssginc8.docto.guardian.dto.GuardianResponse;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
@@ -43,14 +46,42 @@ public class GuardianServiceImpl implements GuardianService {
 		Patient patient = patientProvider.getActivePatient(patientId);
 		User guardian = userProvider.loadUserByEmailOrException(guardianEmail);
 
+		Optional<PatientGuardian> existing = patientGuardianProvider.findPendingOrAcceptedMapping(guardian, patient);
+
+		if (existing.isPresent()) {
+			PatientGuardian pg = existing.get();
+			if (pg.getStatus() == Status.PENDING) {
+				// 이미 PENDING이면 초대코드만 갱신
+				String inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
+				pg.updateInviteCode(inviteCode);
+				return new GuardianInviteResponse(inviteCode);
+			} else {
+				// ACCEPTED인 보호자는 다시 초대 못함
+				throw new GuardianAlreadyExistsException();
+			}
+		}
+
+		// 없으면 새로 초대
 		String inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
-
-		PatientGuardian pg = PatientGuardian.create(guardian, patient, LocalDateTime.now());
-		pg.updateInviteCode(inviteCode);
-
-		patientGuardianProvider.save(pg);
+		PatientGuardian newPg = PatientGuardian.create(guardian, patient, LocalDateTime.now());
+		newPg.updateInviteCode(inviteCode);
+		patientGuardianProvider.save(newPg);
 
 		return new GuardianInviteResponse(inviteCode);
+	}
+
+	@Override
+	public void updateStatusByInviteCode(String inviteCode, String statusStr) {
+		PatientGuardian pg = guardianProvider.findByInviteCode(inviteCode);
+
+		Status newStatus;
+		try {
+			newStatus = Status.valueOf(statusStr);
+		} catch (IllegalArgumentException e) {
+			throw new InvalidGuardianStatusException();
+		}
+
+		pg.updateStatus(newStatus);
 	}
 
 	@Override
@@ -86,6 +117,14 @@ public class GuardianServiceImpl implements GuardianService {
 				pg.getPatient().getUser().getName(),
 				decryptRRN(pg.getPatient().getResidentRegistrationNumber()) // 복호화된 주민등록번호
 			))
+			.collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<GuardianResponse> getGuardiansByPatientId(Long patientId) {
+		return patientGuardianProvider.getAllAcceptedGuardiansByPatientId(patientId).stream()
+			.map(pg -> GuardianResponse.from(pg.getUser().getName()))
 			.collect(Collectors.toList());
 	}
 

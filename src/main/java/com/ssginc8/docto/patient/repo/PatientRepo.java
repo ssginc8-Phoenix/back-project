@@ -11,4 +11,7 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
 	Optional<Patient> findByPatientIdAndDeletedAtIsNull(Long patientId);
 
 	Page<Patient> findByDeletedAtIsNull(Pageable pageable);
+
+	Optional<Patient> findByUser_UserIdAndDeletedAtIsNull(Long userId);
+
 }
