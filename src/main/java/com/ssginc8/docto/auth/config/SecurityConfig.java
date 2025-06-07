@@ -1,5 +1,7 @@
 package com.ssginc8.docto.auth.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +18,9 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ssginc8.docto.auth.handler.CustomAccessDeniedHandler;
 import com.ssginc8.docto.auth.handler.CustomAuthenticationEntryPoint;
@@ -47,8 +52,11 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
-			.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
+			.cors(Customizer.withDefaults())
+			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
+
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 				.requestMatchers(
 					"/static/**", "/docs/index.html", "/api/v1/auth/**", "/api/v1/users/register",
@@ -81,6 +89,7 @@ public class SecurityConfig {
 					"/api/v1/qnas/**", "/api/v1/medications/**", "/api/v1/calendar/guardian"
 				).hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasRole("GUARDIAN")
 
 				.requestMatchers(
 					"/api/v1/hospitals/**", "/api/v1/doctors/**", "/api/v1/calendar/hospital"
@@ -130,5 +139,18 @@ public class SecurityConfig {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // 프론트 주소 명시
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }
