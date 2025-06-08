@@ -62,14 +62,14 @@ public class SecurityConfig {
 				).permitAll()
 
 				.requestMatchers(
-					"/api/v1/users/me", "/api/v1/calendar/**", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
+					"/api/v1/users/me", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
 					"/api/v1/users/check-password"
 				).authenticated()// 로그인 한 사용자만 접근 가능
 				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**", "/api/v1/doctors/**",
 					"/api/v1/appointments/**", "/api/v1/reviews", "/api/v1/qnas/**").authenticated()
 
 				.requestMatchers(
-					"/api/v1/patients/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
+					"/api/v1/patients/**", "/api/v1/calendar/patient", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
 					"/api/v1/medications/*/complete"
 				).hasRole("PATIENT")
 
