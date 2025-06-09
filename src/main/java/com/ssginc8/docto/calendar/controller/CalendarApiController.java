@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.calendar.service.CalendarService;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
+import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
 import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
 
@@ -29,8 +30,8 @@ public class CalendarApiController {
 	}
 
 	@GetMapping("/doctor")
-	public GuardianCalendar.Response getDoctorCalendar(@ModelAttribute CalendarRequest request) {
-		return null;
+	public DoctorCalendar.Response getDoctorCalendar(@ModelAttribute CalendarRequest request) {
+		return calendarService.getDoctorCalendars(request);
 	}
 
 	@GetMapping("/hospital")

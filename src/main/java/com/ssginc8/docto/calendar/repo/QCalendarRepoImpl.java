@@ -6,20 +6,24 @@ import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssginc8.docto.appointment.entity.QAppointment;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
+import com.ssginc8.docto.doctor.entity.QDoctor;
 import com.ssginc8.docto.guardian.entity.QPatientGuardian;
 import com.ssginc8.docto.hospital.entity.QHospital;
 import com.ssginc8.docto.medication.entity.QMedicationAlertDay;
 import com.ssginc8.docto.medication.entity.QMedicationAlertTime;
 import com.ssginc8.docto.medication.entity.QMedicationInformation;
 import com.ssginc8.docto.patient.entity.QPatient;
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -54,20 +58,29 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		QPatientGuardian patientGuardian = QPatientGuardian.patientGuardian;
 		QAppointment appointment = QAppointment.appointment;
 		QHospital hospital = QHospital.hospital;
+		QDoctor doctor = QDoctor.doctor;
 
-		log.info(request.getStartDateTime());
-		log.info(request.getEndDateTime());
-
-		List<Tuple> tuples = queryFactory
+		JPAQuery<Tuple> query = queryFactory
 			.select(appointment.appointmentId, hospital.name, appointment.appointmentTime)
 			.from(appointment)
-			.join(appointment.hospital, hospital)
-			.join(appointment.patientGuardian, patientGuardian)
-			.join(patientGuardian.patient, patient)
-			.where(appointment.deletedAt.isNull(), patient.user.eq(user),
-				appointment.appointmentTime.goe(request.getStartDateTime()),
-				appointment.appointmentTime.lt(request.getEndDateTime()))
-			.fetch();
+			.join(appointment.hospital, hospital);
+
+		if (Objects.equals(user.getRole(), Role.PATIENT)) {
+			query
+				.join(appointment.patientGuardian, patientGuardian)
+				.join(patientGuardian.patient, patient)
+				.where(patient.user.eq(user));
+		} else if (Objects.equals(user.getRole(), Role.DOCTOR)) {
+			query
+				.join(appointment.doctor, doctor)
+				.where(doctor.user.eq(user));
+		}
+
+		query.where(appointment.deletedAt.isNull(),
+			appointment.appointmentTime.goe(request.getStartDateTime()),
+			appointment.appointmentTime.lt(request.getEndDateTime()));
+
+		List<Tuple> tuples = query.fetch();
 
 		log.info(tuples.toString());
 

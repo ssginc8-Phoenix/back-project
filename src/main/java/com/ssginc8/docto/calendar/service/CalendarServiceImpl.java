@@ -60,18 +60,13 @@ public class CalendarServiceImpl implements CalendarService {
 	@Transactional(readOnly = true)
 	@Override
 	public DoctorCalendar.Response getDoctorCalendars(CalendarRequest request) {
-		// 유저 정보 가져오기
+		User user = userService.getUserFromUuid();
 
-		// 의사의 예약 정보 가져오기 -> request 날짜 이용
+		List<CalendarItem> calendarItems = CalendarItem.toAppointmentList(
+			calendarProvider.getAppointmentInformation(user, request));
 
-		// 예약 정보 null이면 null 반환
-
-		// List<CalendarItem> 깡통 생성
-
-		// UserCalendar.CalendarItem 채우고 위 깡통에 집어넣기
-
-		// 위 리스트 다 채우면 CalendarItemList 만들기 -> Response에 담기
-
-		return null;
+		return DoctorCalendar.Response.builder()
+			.calendarItems(calendarItems)
+			.build();
 	}
 }
