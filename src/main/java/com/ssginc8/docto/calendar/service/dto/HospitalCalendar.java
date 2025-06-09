@@ -50,7 +50,7 @@ public class HospitalCalendar {
 			.calendarItemLists(groupedByDoctor.entrySet().stream()
 				.map(entry -> HospitalCalendar.CalendarItemList.builder()
 					.name(entry.getKey())
-					.calendarItems(CalendarItem.toAppointmentList(entry.getValue()))
+					.calendarItems(CalendarItem.fromAppointmentTuples(entry.getValue()))
 					.build())
 				.toList())
 			.build();
