@@ -40,7 +40,7 @@ public class MedicationInformation extends BaseTimeEntity {
 	@Column(nullable = false, length = 100)
 	private String medicationName;
 
-	@OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<MedicationAlertTime> alertTimes = new ArrayList<>();
 
 	public static MedicationInformation create(User user, Long patientGuardianId, String medicationName) {

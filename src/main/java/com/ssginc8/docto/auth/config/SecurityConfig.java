@@ -70,14 +70,14 @@ public class SecurityConfig {
 				).permitAll()
 
 				.requestMatchers(
-					"/api/v1/users/me", "/api/v1/calendar/**", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
+					"/api/v1/users/me", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
 					"/api/v1/users/check-password"
 				).authenticated()// 로그인 한 사용자만 접근 가능
 				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**", "/api/v1/doctors/**",
 					"/api/v1/appointments/**", "/api/v1/reviews", "/api/v1/qnas/**").authenticated()
 
 				.requestMatchers(
-					"/api/v1/patients/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
+					"/api/v1/patients/**", "/api/v1/calendar/patient", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
 					"/api/v1/medications/*/complete"
 				).hasRole("PATIENT")
 
@@ -85,18 +85,19 @@ public class SecurityConfig {
 				// .requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
 
 				.requestMatchers(
-					"/api/v1/hospitals/**", "/api/v1/doctors/**"
-				).hasRole("HOSPITAL_ADMIN")
-
-				.requestMatchers(
 					"/api/v1/patients/**", "/api/v1/guardians/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews",
-					"/api/v1/qnas/**", "/api/v1/medications/**"
+					"/api/v1/qnas/**", "/api/v1/medications/**", "/api/v1/calendar/guardian"
 				).hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
+
+				.requestMatchers(
+					"/api/v1/hospitals/**", "/api/v1/doctors/**", "/api/v1/calendar/hospital"
+				).hasRole("HOSPITAL_ADMIN")
+                             
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasAnyRole("HOSPITAL_ADMIN", "GUARDIAN")
 
 				.requestMatchers(
-					"/api/v1/doctors/**", "/api/v1/qnas/*/comments/*"
+					"/api/v1/doctors/**", "/api/v1/qnas/*/comments/*", "/api/v1/calendar/doctor"
 				).hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**").hasRole("DOCTOR")
 
