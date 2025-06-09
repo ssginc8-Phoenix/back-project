@@ -7,7 +7,6 @@ public class CheckPassword {
 	@Getter
 	@NoArgsConstructor
 	public static class Request {
-		private Long userId;
 		private String password;
 	}
 }
