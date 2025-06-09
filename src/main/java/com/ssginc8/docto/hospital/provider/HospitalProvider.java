@@ -17,6 +17,7 @@ import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFou
 import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFoundException;
 import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotInHospitalException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
+import com.ssginc8.docto.hospital.dto.HospitalResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
@@ -40,6 +41,15 @@ public class HospitalProvider {
 	private final ProvidedServiceRepo providedServiceRepo;
 	private final DoctorRepo doctorRepo;
 
+
+
+
+
+
+	public Page<Hospital> searchHospitalsWithoutLocation(String query, Pageable pageable) {
+		return hospitalRepo.searchHospitalsWithoutLocation(query, pageable);
+	}
+
 	@Transactional(readOnly = true)
 	public Hospital getHospitalById(Long hospitalId) {
 		return hospitalRepo.findByHospitalIdAndDeletedAtIsNull(hospitalId)
@@ -54,6 +64,22 @@ public class HospitalProvider {
 	public HospitalSchedule getScheduleByIdOrThrow(Long scheduleId) {
 		return hospitalScheduleRepo.findById(scheduleId)
 			.orElseThrow(ScheduleNotFoundException::new);
+	}
+
+	public HospitalResponse getHospitalByAdminId(Long userId) {
+		Hospital hospital = hospitalRepo.findByUserUserId(userId)
+			.orElseThrow(HospitalNotFoundException::new);
+
+		// 1) 서비스 리스트 조회 (서비스 이름만 뽑기)
+		List<String> serviceNames = providedServiceRepo.findServiceNamesByHospitalId(hospital.getHospitalId());
+
+		// 2) HospitalResponse 생성
+		HospitalResponse res = HospitalResponse.from(hospital);
+
+		// 3) 서비스 이름 리스트 세팅
+		res.setServiceNames(serviceNames);
+
+		return res;
 	}
 
 	public void validateScheduleBelongsToHospital(HospitalSchedule schedule, Hospital hospital) {
@@ -76,8 +102,8 @@ public class HospitalProvider {
 	}
 
 	// HospitalRepo 의존 제거
-	public Page<Hospital> findHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable) {
-		return hospitalRepo.findHospitalsWithinRadius(lat, lng, radius, pageable);
+	public Page<Hospital> findHospitalsWithinRadius(double lat, double lng, double radius, String query, Pageable pageable) {
+		return hospitalRepo.findHospitalsWithinRadius(lat, lng, radius,query,  pageable);
 	}
 
 
@@ -99,6 +125,7 @@ public class HospitalProvider {
 		providedServiceRepo.deleteAllByHospital(hospital);
 	}
 	public void deleteByHospitalHospitalId(Long hospitalId) {
+		providedServiceRepo.deleteByHospitalHospitalId(hospitalId);
 	}
 
 
@@ -120,5 +147,6 @@ public class HospitalProvider {
 	public void deleteByHospitalId(Long hospitalId) {
 		hospitalScheduleRepo.deleteAllByHospitalHospitalId(hospitalId);
 	}
+
 
 }

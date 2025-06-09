@@ -1,6 +1,8 @@
 package com.ssginc8.docto.appointment.provider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -17,9 +19,11 @@ import com.ssginc8.docto.global.error.exception.appointmentException.Appointment
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class AppointmentProvider {
 
 	private final AppointmentRepo appointmentRepo;
@@ -105,7 +109,19 @@ public class AppointmentProvider {
 	 * 병원의 Appointment 조회
 	 */
 	@Transactional(readOnly = true)
-	public Page<Appointment> getAppointmentsByHospital(Long userId, Pageable pageable) {
-		return appointmentRepo.findByHospital_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
+	public Page<Appointment> getAppointmentsByHospital(Long userId, Pageable pageable, LocalDate date) {
+		if (date != null) {
+			// 00:00 ~ 23:59 까지 범위로 조회
+			LocalDateTime startOfDay = date.atStartOfDay();
+			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+			log.info("날짜 별 appointment List 호출됨");
+
+			return appointmentRepo.findByHospital_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
+				userId, startOfDay, endOfDay, pageable
+			);
+		} else {
+			return appointmentRepo.findByHospital_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
+		}
 	}
 }

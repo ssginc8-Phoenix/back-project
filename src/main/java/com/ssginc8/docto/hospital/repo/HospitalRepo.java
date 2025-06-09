@@ -28,6 +28,7 @@ public interface HospitalRepo extends JpaRepository<Hospital, Long> {
             sin(radians(:lat)) * sin(radians(h.latitude))
         )
     ) <= :radius
+    AND (:query IS NULL OR h.name LIKE CONCAT('%', :query, '%'))
     """,
 		countQuery = """
     SELECT count(*) FROM tbl_hospital h
@@ -38,16 +39,32 @@ public interface HospitalRepo extends JpaRepository<Hospital, Long> {
             sin(radians(:lat)) * sin(radians(h.latitude))
         )
     ) <= :radius
+    AND (:query IS NULL OR h.name LIKE CONCAT('%', :query, '%'))
     """,
 		nativeQuery = true)
 	Page<Hospital> findHospitalsWithinRadius(
 		@Param("lat") double lat,
 		@Param("lng") double lng,
 		@Param("radius") double radius,
+		@Param("query") String query,
 		Pageable pageable
 	);
 
 	Page<Hospital> findAllByDeletedAtIsNull(Pageable pageable);
 
 	Optional<Hospital> findByHospitalIdAndDeletedAtIsNull(Long hospitalId);
+
+	@Query("""
+    SELECT h FROM Hospital h
+    WHERE h.deletedAt IS NULL
+    AND (:query IS NOT NULL AND h.name LIKE %:query%)
+    ORDER BY h.name ASC
+""")
+	Page<Hospital> searchHospitalsWithoutLocation(
+		@Param("query") String query,
+		Pageable pageable
+	);
+
+	Optional<Hospital> findByUserUserId(Long userId);
+
 }

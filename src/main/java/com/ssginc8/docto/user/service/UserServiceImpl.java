@@ -228,9 +228,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void checkPassword(CheckPassword.Request request) {
 		User currentUser = getUserFromUuid();
-		User targetUser = userProvider.getUserById(request.getUserId());
 
-		userValidator.validateOwnership(currentUser.getUserId(), targetUser.getUserId());
 		userValidator.isPasswordMatch(request.getPassword(), currentUser.getPassword());
 	}
 

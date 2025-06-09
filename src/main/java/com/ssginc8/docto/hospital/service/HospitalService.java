@@ -13,13 +13,14 @@ import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
-import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
+import com.ssginc8.docto.hospital.entity.Hospital;
 
 public interface HospitalService {
 
 		//위치정보 조회
-		Page<HospitalResponse> getHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable);
+		Page<HospitalResponse> getHospitalsWithinRadius(double lat, double lng, double radius, String query,
+			 Pageable pageable);
 
 		//병원 정보
 		Long saveHospital(HospitalRequest HospitalRequest);
@@ -57,6 +58,13 @@ public interface HospitalService {
 		//병원 웨이팅 수정
 		void updateHospitalWaiting(Long hospitalId, HospitalWaitingRequest hospitalWaiting);
 
+		// 병원 리뷰
 		Page<HospitalReviewResponse> getReviews(Long hospitalId, Pageable pageable);
+
+		// 병원 검색
+		Page<Hospital> searchHospitals(String query, Pageable pageable);
+
+		// 로그인 사용자의 병원 정보 얻기
+		HospitalResponse getHospitalByAdminId(Long userId);
 }
 

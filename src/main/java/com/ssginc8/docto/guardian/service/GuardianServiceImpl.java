@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.global.error.exception.guardianException.GuardianAlreadyExistsException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidInviteCodeException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidGuardianStatusException;
+import com.ssginc8.docto.global.event.EmailSendEvent;
 import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianResponse;
@@ -40,6 +42,7 @@ public class GuardianServiceImpl implements GuardianService {
 	private final PatientGuardianProvider patientGuardianProvider;
 	private final PatientProvider patientProvider;
 	private final UserProvider userProvider;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@Override
 	public GuardianInviteResponse inviteGuardian(Long patientId, String guardianEmail) {
@@ -48,24 +51,27 @@ public class GuardianServiceImpl implements GuardianService {
 
 		Optional<PatientGuardian> existing = patientGuardianProvider.findPendingOrAcceptedMapping(guardian, patient);
 
+		String inviteCode;
 		if (existing.isPresent()) {
 			PatientGuardian pg = existing.get();
 			if (pg.getStatus() == Status.PENDING) {
 				// 이미 PENDING이면 초대코드만 갱신
-				String inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
+				inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
 				pg.updateInviteCode(inviteCode);
-				return new GuardianInviteResponse(inviteCode);
 			} else {
 				// ACCEPTED인 보호자는 다시 초대 못함
 				throw new GuardianAlreadyExistsException();
 			}
+		} else {
+			// 없으면 새로 초대
+			inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
+			PatientGuardian newPg = PatientGuardian.create(guardian, patient, LocalDateTime.now());
+			newPg.updateInviteCode(inviteCode);
+			patientGuardianProvider.save(newPg);
 		}
 
-		// 없으면 새로 초대
-		String inviteCode = generateInviteCode(patient.getPatientId(), guardian.getUserId());
-		PatientGuardian newPg = PatientGuardian.create(guardian, patient, LocalDateTime.now());
-		newPg.updateInviteCode(inviteCode);
-		patientGuardianProvider.save(newPg);
+		// 🔥 이메일 발송 이벤트 추가
+		eventPublisher.publishEvent(EmailSendEvent.guardianInvite(guardianEmail, inviteCode));
 
 		return new GuardianInviteResponse(inviteCode);
 	}
