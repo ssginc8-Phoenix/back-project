@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +28,11 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
+import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.service.HospitalService;
 import com.ssginc8.docto.review.service.ReviewService;
+import com.ssginc8.docto.user.service.UserService;
+import com.ssginc8.docto.user.service.dto.UserInfo;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +46,36 @@ public class HospitalController {
 
 	private final HospitalService hospitalService;
 	private final ReviewService reviewService;
+	private final UserService userService;
+
+
+
+	/**
+	 * 로그인 사용자의 병워 정보
+	 *
+	 */
+	@GetMapping("/hospitals/me")
+	public ResponseEntity<HospitalResponse> getMyHospitalInfo() {
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long userId = userInfo.userId;  // UserInfo.Response 에 ID 필드가 있다고 가정
+		HospitalResponse hospital = hospitalService.getHospitalByAdminId(userId);
+		return ResponseEntity.ok(hospital);
+	}
+
+	/**
+	 * 병원 검색(전체 모드)
+	 *
+	 */
+	@GetMapping("/hospitals/search")
+	public ResponseEntity<Page<HospitalResponse>> searchHospitals(
+		@RequestParam(required = false) String query,
+		@PageableDefault(size = 10, sort = "name") Pageable pageable
+	) {
+		Page<Hospital> hospitals = hospitalService.searchHospitals(query, pageable);
+		Page<HospitalResponse> response = hospitals.map(HospitalResponse::from);
+		return ResponseEntity.ok(response);
+	}
+
 
 	/**
 	 * 병원아이디에 대한 상세 조회
@@ -67,6 +101,7 @@ public class HospitalController {
 	 * 병원 정보 수정
 	 *
 	 */
+	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 	@PatchMapping("/hospitals/{hospitalId}")
 	public ResponseEntity<Long> updateHospital(
 		@PathVariable Long hospitalId,
@@ -119,16 +154,21 @@ public class HospitalController {
 		hospitalService.saveSchedules(hospitalId, schedules);
 		return ResponseEntity.ok().build();
 	}
-
+	/**
+	 * 병원 위치 기반 검색(내 주변)
+	 */
 	@CrossOrigin(origins = "http://localhost:5173")
 	@GetMapping("/hospitals")
 	public ResponseEntity<Page<HospitalResponse>> findHospitalsWithinRadius(
 		@RequestParam("lat") double lat,
 		@RequestParam("lng") double lng,
 		@RequestParam("radius") double radius,
+		@RequestParam(value = "query", required = false) String query,
 		@PageableDefault(size = 10, sort = "name") Pageable pageable) {
 
-		Page<HospitalResponse> page = hospitalService.getHospitalsWithinRadius(lat, lng, radius, pageable);
+		Page<HospitalResponse> page = hospitalService.getHospitalsWithinRadius(
+			lat, lng, radius, query,pageable
+		);
 		return ResponseEntity.ok(page);
 	}
 
@@ -146,6 +186,7 @@ public class HospitalController {
 	 * 병원 영업시간 수정
 	 *
 	 */
+	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 	@PatchMapping("/hospitals/{hospitalId}/schedules/{scheduleId}")
 	public ResponseEntity<Void> updateHospitalSchedule(
 		@PathVariable Long hospitalId,
