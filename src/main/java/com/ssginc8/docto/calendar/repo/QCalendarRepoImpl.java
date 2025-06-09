@@ -32,7 +32,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Tuple> getMedicationInformation(User user) {
+	public List<Tuple> fetchMedicationsByPatient(User patient) {
 		QMedicationInformation information = QMedicationInformation.medicationInformation;
 		QMedicationAlertTime alertTime = QMedicationAlertTime.medicationAlertTime;
 		QMedicationAlertDay alertDay = QMedicationAlertDay.medicationAlertDay;
@@ -42,40 +42,29 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.from(information)
 			.join(information.alertTimes, alertTime)
 			.join(alertTime.alertDays, alertDay)
-			.where(information.user.eq(user), information.deletedAt.isNull())
+			.where(information.user.eq(patient), information.deletedAt.isNull())
 			.fetch();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Tuple> getAppointment(User user, CalendarRequest request) {
+	public List<Tuple> fetchAppointmentsByPatient(User user, CalendarRequest request) {
 		QPatient patient = QPatient.patient;
 		QPatientGuardian patientGuardian = QPatientGuardian.patientGuardian;
 		QAppointment appointment = QAppointment.appointment;
 		QHospital hospital = QHospital.hospital;
 		QDoctor doctor = QDoctor.doctor;
 
-		JPAQuery<Tuple> query = queryFactory
+		return queryFactory
 			.select(appointment.appointmentId, hospital.name, appointment.appointmentTime)
 			.from(appointment)
-			.join(appointment.hospital, hospital);
-
-		if (Objects.equals(user.getRole(), Role.PATIENT)) {
-			query
-				.join(appointment.patientGuardian, patientGuardian)
-				.join(patientGuardian.patient, patient)
-				.where(patient.user.eq(user));
-		} else if (Objects.equals(user.getRole(), Role.DOCTOR)) {
-			query
-				.join(appointment.doctor, doctor)
-				.where(doctor.user.eq(user));
-		}
-
-		query.where(appointment.deletedAt.isNull(),
-			appointment.appointmentTime.goe(request.getStartDateTime()),
-			appointment.appointmentTime.lt(request.getEndDateTime()));
-
-		return query.fetch();
+			.join(appointment.hospital, hospital)
+			.join(appointment.patientGuardian, patientGuardian)
+			.join(patientGuardian.patient, patient)
+			.where(patient.user.eq(user))
+			.where(appointment.deletedAt.isNull(),
+				appointment.appointmentTime.goe(request.getStartDateTime()),
+				appointment.appointmentTime.lt(request.getEndDateTime())).fetch();
 	}
 
 	@Override

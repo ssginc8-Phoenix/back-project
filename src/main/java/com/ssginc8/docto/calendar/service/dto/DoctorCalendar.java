@@ -13,7 +13,7 @@ public class DoctorCalendar {
 		private final List<CalendarItem> calendarItems;
 
 		@Builder
-		public Response(List<CalendarItem> calendarItems) {
+		private Response(List<CalendarItem> calendarItems) {
 			this.calendarItems = calendarItems;
 		}
 	}

@@ -2,6 +2,8 @@ package com.ssginc8.docto.calendar.service.dto;
 
 import java.util.List;
 
+import com.querydsl.core.Tuple;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,9 +13,15 @@ public class PatientCalendar {
 		private final List<CalendarItem> calendarItems;
 
 		@Builder
-		public Response(List<CalendarItem> calendarItems) {
+		private Response(List<CalendarItem> calendarItems) {
 			this.calendarItems = calendarItems;
 		}
+	}
+
+	public static Response toResponse(List<Tuple> appointmentTuples, List<Tuple> medicationTuples, CalendarRequest request) {
+		return Response.builder()
+			.calendarItems(CalendarItem.toList(medicationTuples, appointmentTuples, request))
+			.build();
 	}
 
 }

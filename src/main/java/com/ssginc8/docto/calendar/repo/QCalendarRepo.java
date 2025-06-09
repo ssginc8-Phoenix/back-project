@@ -7,9 +7,9 @@ import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.user.entity.User;
 
 public interface QCalendarRepo {
-	List<Tuple> getMedicationInformation(User user);
+	List<Tuple> fetchMedicationsByPatient(User patient);
 
-	List<Tuple> getAppointment(User user, CalendarRequest request);
+	List<Tuple> fetchAppointmentsByPatient(User patient, CalendarRequest request);
 
 	List<Tuple> fetchMedicationsByGuardian(User guardian);
 

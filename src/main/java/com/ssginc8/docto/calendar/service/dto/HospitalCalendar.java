@@ -30,7 +30,7 @@ public class HospitalCalendar {
 		private final List<CalendarItemList> calendarItemLists;
 
 		@Builder
-		public Response(List<CalendarItemList> calendarItemLists) {
+		private Response(List<CalendarItemList> calendarItemLists) {
 			this.calendarItemLists = calendarItemLists;
 		}
 	}
