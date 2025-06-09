@@ -1,10 +1,5 @@
 package com.ssginc8.docto.calendar.repo;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -106,6 +101,24 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 				appointment.appointmentTime.goe(request.getStartDateTime()),
 				appointment.appointmentTime.lt(request.getEndDateTime()))
 			.orderBy(appointment.appointmentTime.asc())
+			.fetch();
+	}
+
+	@Override
+	public List<Tuple> fetchAppointmentsByDoctor(User doctor, CalendarRequest request) {
+		QAppointment qAppointment = QAppointment.appointment;
+		QHospital qHospital = QHospital.hospital;
+		QDoctor qDoctor = QDoctor.doctor;
+
+		return queryFactory
+			.select(qAppointment.appointmentId, qHospital.name, qAppointment.appointmentTime)
+			.from(qAppointment)
+			.join(qAppointment.hospital, qHospital)
+			.join(qAppointment.doctor, qDoctor)
+			.where(qDoctor.user.eq(doctor))
+			.where(qAppointment.deletedAt.isNull(),
+				qAppointment.appointmentTime.goe(request.getStartDateTime()),
+				qAppointment.appointmentTime.lt(request.getEndDateTime()))
 			.fetch();
 	}
 
