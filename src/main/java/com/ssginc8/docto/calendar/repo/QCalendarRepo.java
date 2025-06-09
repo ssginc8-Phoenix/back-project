@@ -11,6 +11,10 @@ public interface QCalendarRepo {
 
 	List<Tuple> getAppointment(User user, CalendarRequest request);
 
+	List<Tuple> fetchMedicationsByGuardian(User guardian);
+
+	List<Tuple> fetchAppointmentsByGuardian(User guardian, CalendarRequest request);
+
 	List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request);
 
 	List<Tuple> fetchAppointmentsByDoctor(User doctor, CalendarRequest request);

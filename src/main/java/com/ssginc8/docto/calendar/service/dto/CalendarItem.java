@@ -37,9 +37,9 @@ public class CalendarItem {
 		return new CalendarItem(date, time, title, relatedId, ItemType.APPOINTMENT);
 	}
 
-	public static List<CalendarItem> toCalendarItems(List<Tuple> medications, List<Tuple> appointments, CalendarRequest request) {
-		List<CalendarItem> calendarItems = toMedicationList(request, medications);
-		calendarItems.addAll(toAppointmentList(appointments));
+	public static List<CalendarItem> toList(List<Tuple> medicationTuples, List<Tuple> appointmentTuples, CalendarRequest request) {
+		List<CalendarItem> calendarItems = toMedicationList(request, medicationTuples);
+		calendarItems.addAll(toAppointmentList(appointmentTuples));
 
 		calendarItems.sort(Comparator
 			.comparing(CalendarItem::getDate)

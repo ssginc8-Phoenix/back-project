@@ -24,6 +24,14 @@ public class CalendarProvider {
 		return qCalendarRepo.getAppointment(user, request);
 	}
 
+	public List<Tuple> fetchMedicationsByGuardian(User guardian) {
+		return qCalendarRepo.fetchMedicationsByGuardian(guardian);
+	}
+
+	public List<Tuple> fetchAppointmentsByGuardian(User guardian, CalendarRequest request) {
+		return qCalendarRepo.fetchAppointmentsByGuardian(guardian, request);
+	}
+
 	public List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request) {
 		return qCalendarRepo.fetchAppointmentsByHospitalAdmin(hospitalAdmin, request);
 	}

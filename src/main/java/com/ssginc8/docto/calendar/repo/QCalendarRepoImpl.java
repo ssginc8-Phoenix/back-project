@@ -37,17 +37,13 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		QMedicationAlertTime alertTime = QMedicationAlertTime.medicationAlertTime;
 		QMedicationAlertDay alertDay = QMedicationAlertDay.medicationAlertDay;
 
-		List<Tuple> tuples = queryFactory
+		return queryFactory
 			.select(information.medicationId, information.medicationName, alertTime.timeToTake, alertDay.dayOfWeek)
 			.from(information)
 			.join(information.alertTimes, alertTime)
 			.join(alertTime.alertDays, alertDay)
 			.where(information.user.eq(user), information.deletedAt.isNull())
 			.fetch();
-
-		log.info(tuples);
-
-		return tuples;
 	}
 
 	@Override
@@ -79,28 +75,64 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			appointment.appointmentTime.goe(request.getStartDateTime()),
 			appointment.appointmentTime.lt(request.getEndDateTime()));
 
-		List<Tuple> tuples = query.fetch();
+		return query.fetch();
+	}
 
-		log.info(tuples.toString());
+	@Override
+	public List<Tuple> fetchMedicationsByGuardian(User guardian) {
+		QMedicationInformation qMedicationInformation = QMedicationInformation.medicationInformation;
+		QMedicationAlertTime qMedicationAlertTime = QMedicationAlertTime.medicationAlertTime;
+		QMedicationAlertDay qMedicationAlertDay = QMedicationAlertDay.medicationAlertDay;
+		QPatientGuardian qPatientGuardian = QPatientGuardian.patientGuardian;
+		QPatient qPatient = QPatient.patient;
 
-		return tuples;
+		return queryFactory
+			.select(qMedicationInformation.medicationId, qMedicationInformation.medicationName,
+				qMedicationAlertTime.timeToTake, qMedicationAlertDay.dayOfWeek, qPatient.user.name)
+			.from(qMedicationInformation)
+			.join(qMedicationInformation.alertTimes, qMedicationAlertTime)
+			.join(qMedicationAlertTime.alertDays, qMedicationAlertDay)
+			.join(qPatientGuardian).on(qMedicationInformation.patientGuardianId.eq(qPatientGuardian.patientGuardianId))
+			.join(qPatientGuardian.patient, qPatient)
+			.where(qPatientGuardian.user.eq(guardian), qMedicationInformation.deletedAt.isNull())
+			.fetch();
+	}
+
+	@Override
+	public List<Tuple> fetchAppointmentsByGuardian(User guardian, CalendarRequest request) {
+		QPatient qPatient = QPatient.patient;
+		QPatientGuardian qPatientGuardian = QPatientGuardian.patientGuardian;
+		QAppointment qAppointment = QAppointment.appointment;
+		QHospital qHospital = QHospital.hospital;
+
+		return queryFactory
+			.select(qAppointment.appointmentId, qHospital.name, qAppointment.appointmentTime, qPatient.user.name)
+			.from(qAppointment)
+			.join(qAppointment.hospital, qHospital)
+			.join(qAppointment.patientGuardian, qPatientGuardian)
+			.join(qPatientGuardian.patient, qPatient)
+			.where(qPatientGuardian.user.eq(guardian), qAppointment.deletedAt.isNull(),
+				qAppointment.appointmentTime.goe(request.getStartDateTime()),
+				qAppointment.appointmentTime.lt(request.getEndDateTime()))
+			.orderBy(qAppointment.appointmentTime.asc())
+			.fetch();
 	}
 
 	@Override
 	public List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request) {
-		QHospital hospital = QHospital.hospital;
-		QDoctor doctor = QDoctor.doctor;
-		QAppointment appointment = QAppointment.appointment;
+		QHospital qHospital = QHospital.hospital;
+		QDoctor qDoctor = QDoctor.doctor;
+		QAppointment qAppointment = QAppointment.appointment;
 
 		return queryFactory
-			.select(appointment.appointmentId, hospital.name, appointment.appointmentTime, doctor.user.name)
-			.from(appointment)
-			.join(appointment.doctor, doctor)
-			.join(appointment.hospital, hospital)
-			.where(appointment.deletedAt.isNull(), hospital.user.eq(hospitalAdmin),
-				appointment.appointmentTime.goe(request.getStartDateTime()),
-				appointment.appointmentTime.lt(request.getEndDateTime()))
-			.orderBy(appointment.appointmentTime.asc())
+			.select(qAppointment.appointmentId, qHospital.name, qAppointment.appointmentTime, qDoctor.user.name)
+			.from(qAppointment)
+			.join(qAppointment.doctor, qDoctor)
+			.join(qAppointment.hospital, qHospital)
+			.where(qAppointment.deletedAt.isNull(), qHospital.user.eq(hospitalAdmin),
+				qAppointment.appointmentTime.goe(request.getStartDateTime()),
+				qAppointment.appointmentTime.lt(request.getEndDateTime()))
+			.orderBy(qAppointment.appointmentTime.asc())
 			.fetch();
 	}
 
@@ -119,6 +151,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.where(qAppointment.deletedAt.isNull(),
 				qAppointment.appointmentTime.goe(request.getStartDateTime()),
 				qAppointment.appointmentTime.lt(request.getEndDateTime()))
+			.orderBy(qAppointment.appointmentTime.asc())
 			.fetch();
 	}
 
