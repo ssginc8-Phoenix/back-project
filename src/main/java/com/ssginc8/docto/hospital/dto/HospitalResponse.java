@@ -1,6 +1,7 @@
 package com.ssginc8.docto.hospital.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -36,19 +37,42 @@ public class HospitalResponse {
 
 	private String notice;
 
+	private String businessRegistrationNumber;
+
 	private Long waiting;
 
 	private List<String> serviceNames;
 
-	public HospitalResponse(Long hospitalId, String name) {
-		 this.hospitalId = hospitalId;
-		 this.name = name;
-	}
+	private List<HospitalScheduleResponse> schedules;
+
+
 
 	public HospitalResponse(Hospital hospital) {
 		this.hospitalId = hospital.getHospitalId();
+		this.address = hospital.getAddress();
 		this.name = hospital.getName();
 		this.latitude = hospital.getLatitude();
 		this.longitude = hospital.getLongitude();
+		this.phone = hospital.getPhone();
+		this.notice = hospital.getNotice();
+		this.introduction = hospital.getIntroduction();
+		this.serviceNames = new ArrayList<>();
+		this.schedules = new ArrayList<>();
+		this.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
+	}
+	public static HospitalResponse from(Hospital hospital) {
+		HospitalResponse res = new HospitalResponse();
+		res.hospitalId = hospital.getHospitalId();
+		res.name = hospital.getName();
+		res.address = hospital.getAddress();
+		res.latitude = hospital.getLatitude();
+		res.longitude = hospital.getLongitude();
+		res.phone = hospital.getPhone();
+		res.introduction = hospital.getIntroduction();
+		res.notice = hospital.getNotice();
+		res.waiting = hospital.getWaiting();
+		res.serviceNames = new ArrayList<>();
+		res.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
+		return res;
 	}
 }

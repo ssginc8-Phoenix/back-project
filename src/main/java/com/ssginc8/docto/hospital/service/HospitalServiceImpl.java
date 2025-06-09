@@ -22,7 +22,6 @@ import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
-import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
@@ -43,14 +42,41 @@ public class HospitalServiceImpl implements HospitalService {
 	private final DoctorProvider doctorProvider;
 	private final DoctorScheduleProvider doctorScheduleProvider;
 
+
+
+
+
+	/**
+	 *  로그인 사용자의 병원 정보 얻기
+	 */
+	@Override
+	public HospitalResponse getHospitalByAdminId(Long userId) {
+
+		return hospitalProvider.getHospitalByAdminId(userId);
+	}
+
+	/**
+	 *  병원 검색
+	 */
+	@Override
+	public Page<Hospital> searchHospitals(String query, Pageable pageable) {
+		return hospitalProvider.searchHospitalsWithoutLocation(query, pageable);
+	}
+
+
 	/**
 	 *  위치기반 병원 리스트 조회
 	 */
 	@Override
-	public Page<HospitalResponse> getHospitalsWithinRadius(double lat, double lng, double radius, Pageable pageable) {
-		Page<Hospital> hospitals = hospitalProvider.findHospitalsWithinRadius(lat, lng, radius, pageable);
-		return hospitals.map(HospitalResponse::new);
+	public Page<HospitalResponse> getHospitalsWithinRadius(
+		double lat, double lng, double radius, String query, Pageable pageable) {
+
+		Page<Hospital> hospitals = hospitalProvider.findHospitalsWithinRadius(
+			lat, lng, radius, query, pageable
+		);
+		return hospitals.map(HospitalResponse::from);
 	}
+
 
 
 	/**
@@ -66,11 +92,11 @@ public class HospitalServiceImpl implements HospitalService {
 		List<ProvidedService> services = hospitalProvider.findServicesByHospitalId(hospitalId);
 
 		// 서비스 이름들을 콤마로 연결
-		String serviceNames = (services == null || services.isEmpty())
-			? null
+		List<String> serviceNames = (services == null || services.isEmpty())
+			? Collections.emptyList()
 			: services.stream()
 			.map(ProvidedService::getServiceName)
-			.collect(Collectors.joining(", "));
+			.collect(Collectors.toList());
 
 		return HospitalResponse.builder()
 			.hospitalId(hospital.getHospitalId())
@@ -82,9 +108,9 @@ public class HospitalServiceImpl implements HospitalService {
 			.introduction(hospital.getIntroduction())
 			.notice(hospital.getNotice())
 			.waiting(hospital.getWaiting())
-			// serviceNames가 null이면 빈 리스트로 대체
-			.serviceNames(serviceNames == null ? Collections.emptyList() : Collections.singletonList(serviceNames))
+			.serviceNames(serviceNames)  // 개별 서비스 이름 리스트로 넣음
 			.build();
+
 	}
 
 
@@ -106,8 +132,8 @@ public class HospitalServiceImpl implements HospitalService {
 			hospitalRequest.getPhone(),
 			hospitalRequest.getIntroduction(),
 			hospitalRequest.getBusinessRegistrationNumber(),
-			hospitalRequest.getLongitude(),
 			hospitalRequest.getLatitude(),
+			hospitalRequest.getLongitude(),
 			hospitalRequest.getNotice()
 		);
 
