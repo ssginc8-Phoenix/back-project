@@ -75,7 +75,7 @@ public class AppointmentController {
 		@PathVariable Long appointmentId,
 		@RequestBody RescheduleRequest request) {
 
-		return ResponseEntity.ok(appointmentService.rescheduleAppointment(appointmentId, request.getNewTime()));
+		return ResponseEntity.ok(appointmentService.rescheduleAppointment(appointmentId, request.getNewTimeAsLocalDateTime()));
 	}
 
 
@@ -100,8 +100,11 @@ public class AppointmentController {
 	 * Method: GET
 	 */
 	@GetMapping("/users/me/appointments")
-	public ResponseEntity<Page<AppointmentListResponse>> getMyAppointmentList(Pageable pageable) {
-		Page<AppointmentListResponse> response = appointmentService.getAppointmentsByLoginUser(pageable);
+	public ResponseEntity<Page<AppointmentListResponse>> getMyAppointmentList(
+		Pageable pageable,
+		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
+		Page<AppointmentListResponse> response = appointmentService.getAppointmentsByLoginUser(pageable, date);
 		return ResponseEntity.ok(response);
 	}
 
