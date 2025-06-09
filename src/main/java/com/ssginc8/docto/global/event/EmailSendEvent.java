@@ -25,4 +25,13 @@ public class EmailSendEvent {
 			EventType.EMAIL_VERIFICATION
 		);
 	}
+
+	public static EmailSendEvent guardianInvite(String email, String inviteCode) {
+		return new EmailSendEvent(
+			email,
+			"닥투 보호자 초대 안내 메일입니다.",
+			inviteCode, // 🔥 초대코드가 본문
+			EventType.GUARDIAN_INVITE
+		);
+	}
 }
