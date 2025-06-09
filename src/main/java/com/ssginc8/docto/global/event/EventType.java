@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum EventType {
-	EMAIL_VERIFICATION("이메일 인증");
+	EMAIL_VERIFICATION("이메일 인증"),
+	GUARDIAN_INVITE("보호자 초대 안내");
 
 	private final String description;
 }
