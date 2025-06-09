@@ -10,4 +10,6 @@ public interface QCalendarRepo {
 	List<Tuple> getMedicationInformation(User user);
 
 	List<Tuple> getAppointment(User user, CalendarRequest request);
+
+	List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request);
 }
