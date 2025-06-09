@@ -91,4 +91,22 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		return tuples;
 	}
 
+	@Override
+	public List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request) {
+		QHospital hospital = QHospital.hospital;
+		QDoctor doctor = QDoctor.doctor;
+		QAppointment appointment = QAppointment.appointment;
+
+		return queryFactory
+			.select(appointment.appointmentId, hospital.name, appointment.appointmentTime, doctor.user.name)
+			.from(appointment)
+			.join(appointment.doctor, doctor)
+			.join(appointment.hospital, hospital)
+			.where(appointment.deletedAt.isNull(), hospital.user.eq(hospitalAdmin),
+				appointment.appointmentTime.goe(request.getStartDateTime()),
+				appointment.appointmentTime.lt(request.getEndDateTime()))
+			.orderBy(appointment.appointmentTime.asc())
+			.fetch();
+	}
+
 }

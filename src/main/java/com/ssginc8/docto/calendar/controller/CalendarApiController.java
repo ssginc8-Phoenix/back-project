@@ -9,6 +9,7 @@ import com.ssginc8.docto.calendar.service.CalendarService;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
 import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
+import com.ssginc8.docto.calendar.service.dto.HospitalCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class CalendarApiController {
 	}
 
 	@GetMapping("/hospital")
-	public GuardianCalendar.Response getHospitalCalendar(@ModelAttribute CalendarRequest request) {
-		return null;
+	public HospitalCalendar.Response getHospitalCalendar(@ModelAttribute CalendarRequest request) {
+		return calendarService.getHospitalCalendars(request);
 	}
 }
