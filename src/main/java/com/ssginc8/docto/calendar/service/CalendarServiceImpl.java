@@ -7,13 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
 import com.ssginc8.docto.calendar.provider.CalendarProvider;
-import com.ssginc8.docto.calendar.service.dto.CalendarItem;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
 import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
 import com.ssginc8.docto.calendar.service.dto.HospitalCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
-import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 

@@ -1,13 +1,11 @@
 package com.ssginc8.docto.calendar.repo;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssginc8.docto.appointment.entity.QAppointment;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
@@ -18,7 +16,6 @@ import com.ssginc8.docto.medication.entity.QMedicationAlertDay;
 import com.ssginc8.docto.medication.entity.QMedicationAlertTime;
 import com.ssginc8.docto.medication.entity.QMedicationInformation;
 import com.ssginc8.docto.patient.entity.QPatient;
-import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
