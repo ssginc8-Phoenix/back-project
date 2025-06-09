@@ -20,7 +20,7 @@ public class DoctorCalendar {
 
 	public static Response toResponse(List<Tuple> tuples) {
 		return Response.builder()
-			.calendarItems(CalendarItem.toAppointmentList(tuples))
+			.calendarItems(CalendarItem.fromAppointmentTuples(tuples))
 			.build();
 	}
 }

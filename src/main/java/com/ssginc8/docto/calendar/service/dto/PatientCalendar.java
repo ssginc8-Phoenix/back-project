@@ -20,7 +20,7 @@ public class PatientCalendar {
 
 	public static Response toResponse(List<Tuple> appointmentTuples, List<Tuple> medicationTuples, CalendarRequest request) {
 		return Response.builder()
-			.calendarItems(CalendarItem.toList(medicationTuples, appointmentTuples, request))
+			.calendarItems(CalendarItem.mergeAndSort(medicationTuples, appointmentTuples, request))
 			.build();
 	}
 

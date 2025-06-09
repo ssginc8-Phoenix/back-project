@@ -41,13 +41,13 @@ public class GuardianCalendar {
 
 		Map<String, List<Tuple>> appointmentsByPatient = groupTuplesByPatientName(appointmentTuples, APPOINTMENT_PATIENT_NAME_INDEX);
 		for (Map.Entry<String, List<Tuple>> entry : appointmentsByPatient.entrySet()) {
-			patientCalendarMap.put(entry.getKey(), CalendarItem.toAppointmentList(entry.getValue()));
+			patientCalendarMap.put(entry.getKey(), CalendarItem.fromAppointmentTuples(entry.getValue()));
 		}
 
 		Map<String, List<Tuple>> medicationsByPatient = groupTuplesByPatientName(medicationTuples, MEDICATION_PATIENT_NAME_INDEX);
 		for (Map.Entry<String, List<Tuple>> entry : medicationsByPatient.entrySet()) {
 			String patientName = entry.getKey();
-			List<CalendarItem> calendarItems = CalendarItem.toMedicationList(request, entry.getValue());
+			List<CalendarItem> calendarItems = CalendarItem.fromMedicationTuples(entry.getValue(), request);
 
 			if (patientCalendarMap.containsKey(patientName)) {
 				patientCalendarMap.get(patientName)
