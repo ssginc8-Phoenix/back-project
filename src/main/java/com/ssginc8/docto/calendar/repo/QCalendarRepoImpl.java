@@ -42,13 +42,17 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		QMedicationAlertTime alertTime = QMedicationAlertTime.medicationAlertTime;
 		QMedicationAlertDay alertDay = QMedicationAlertDay.medicationAlertDay;
 
-		return queryFactory
+		List<Tuple> tuples = queryFactory
 			.select(information.medicationId, information.medicationName, alertTime.timeToTake, alertDay.dayOfWeek)
 			.from(information)
 			.join(information.alertTimes, alertTime)
 			.join(alertTime.alertDays, alertDay)
 			.where(information.user.eq(user), information.deletedAt.isNull())
 			.fetch();
+
+		log.info(tuples);
+
+		return tuples;
 	}
 
 	@Override

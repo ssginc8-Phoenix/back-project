@@ -27,6 +27,10 @@ public class PatientGuardianProvider {
 		return patientGuardianRepo.save(patientGuardian);
 	}
 
+	public List<PatientGuardian> getPatientGuardianListByGuardian(User user) {
+		return patientGuardianRepo.findAllByUser(user);
+	}
+
 	public PatientGuardian validateAndGetPatientGuardian(User guardian, Patient patient) {
 		return patientGuardianRepo.findByUserAndPatient(guardian, patient)
 			.filter(pg -> pg.getDeletedAt() == null) // 논리삭제 제외

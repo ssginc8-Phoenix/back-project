@@ -1,5 +1,6 @@
 package com.ssginc8.docto.calendar.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,8 +10,11 @@ import com.ssginc8.docto.calendar.provider.CalendarProvider;
 import com.ssginc8.docto.calendar.service.dto.CalendarItem;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
+import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
 import com.ssginc8.docto.calendar.service.dto.HospitalCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 
@@ -21,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class CalendarServiceImpl implements CalendarService {
 	private final UserService userService;
 	private final CalendarProvider calendarProvider;
+	private final PatientGuardianProvider patientGuardianProvider;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -34,6 +39,35 @@ public class CalendarServiceImpl implements CalendarService {
 
 		return PatientCalendar.Response.builder()
 			.calendarItems(calendarItems)
+			.build();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public GuardianCalendar.Response getGuardianCalendars(CalendarRequest request) {
+		User user = userService.getUserFromUuid();
+
+		List<GuardianCalendar.CalendarItemList> calendarItemLists = new ArrayList<>();
+
+		List<PatientGuardian> patientGuardians = patientGuardianProvider.getPatientGuardianListByGuardian(user);
+
+		for (PatientGuardian patientGuardian : patientGuardians) {
+			List<CalendarItem> calendarItems = CalendarItem.toCalendarItems(
+				calendarProvider.getMedicationInformation(patientGuardian.getPatient().getUser()),
+				calendarProvider.getAppointmentInformation(patientGuardian.getPatient().getUser(), request),
+				request);
+
+			GuardianCalendar.CalendarItemList calendarItemList = GuardianCalendar.CalendarItemList.builder()
+				.name(patientGuardian.getPatient().getUser().getName())
+				.calendarItems(calendarItems)
+				.build();
+
+			calendarItemLists.add(calendarItemList);
+		}
+
+		return GuardianCalendar.Response
+			.builder()
+			.calendarItemLists(calendarItemLists)
 			.build();
 	}
 
