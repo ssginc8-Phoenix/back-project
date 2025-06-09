@@ -76,4 +76,14 @@ public interface AppointmentRepo
 		"patientGuardian.patient.user"
 	})
 	Page<Appointment> findByHospital_User_UserIdOrderByAppointmentTimeAsc(Long userId, Pageable pageable);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByHospital_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
+		Long userId, LocalDateTime start, LocalDateTime end, Pageable pageable
+	);
+
 }

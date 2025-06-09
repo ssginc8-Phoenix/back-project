@@ -76,7 +76,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	 * Token의 정보로 Appointment List 가져오기
 	 */
 	@Override
-	public Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable) {
+	public Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable, LocalDate date) {
 		// 1. 로그인한 사용자 가져오기
 		User loginUser = userService.getUserFromUuid();
 
@@ -92,7 +92,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 				return appointmentProvider.getAppointmentsByDoctor(loginUser.getUserId(), pageable)
 					.map(AppointmentListResponse::fromEntity);
 			case HOSPITAL_ADMIN:
-				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable)
+				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable, date)
 					.map(AppointmentListResponse::fromEntity);
 			default:
 				throw new RoleNotFoundException();

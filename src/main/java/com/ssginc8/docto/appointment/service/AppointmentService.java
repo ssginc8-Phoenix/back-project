@@ -22,7 +22,7 @@ public interface AppointmentService {
 	/**
 	 * Token의 정보로 Appointment List 가져오기
 	 */
-	Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable);
+	Page<AppointmentListResponse> getAppointmentsByLoginUser(Pageable pageable, LocalDate date);
 
 
 	// 예약 상세 조회
