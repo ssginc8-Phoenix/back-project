@@ -44,4 +44,8 @@ public class CalendarProvider {
 	public List<PatientGuardian> fetchAcceptedGuardiansByGuardianUser(User guardianUser) {
 		return qCalendarRepo.fetchAcceptedGuardiansByGuardianUser(guardianUser);
 	}
+
+	public List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request) {
+		return qCalendarRepo.fetchAppointmentsByHospitalAdmin(hospitalAdmin, request);
+	}
 }
