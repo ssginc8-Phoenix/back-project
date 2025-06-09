@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class GuardianCalendar {
+	@Getter
 	public static class CalendarItemList {
 		private final String name;
 		private final List<CalendarItem> calendarItems;

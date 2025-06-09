@@ -26,7 +26,7 @@ public class CalendarApiController {
 
 	@GetMapping("/guardian")
 	public GuardianCalendar.Response getGuardianCalendar(@ModelAttribute CalendarRequest request) {
-		return null;
+		return calendarService.getGuardianCalendars(request);
 	}
 
 	@GetMapping("/doctor")

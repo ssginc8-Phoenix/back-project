@@ -9,6 +9,8 @@ import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
 public interface CalendarService {
 	PatientCalendar.Response getPatientCalendars(CalendarRequest request);
 
+	GuardianCalendar.Response getGuardianCalendars(CalendarRequest request);
+
 	HospitalCalendar.Response getHospitalCalendars(CalendarRequest request);
 
 	DoctorCalendar.Response getDoctorCalendars(CalendarRequest request);
