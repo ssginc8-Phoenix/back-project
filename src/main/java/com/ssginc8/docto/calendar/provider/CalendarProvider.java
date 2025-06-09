@@ -16,12 +16,12 @@ import lombok.RequiredArgsConstructor;
 public class CalendarProvider {
 	private final QCalendarRepo qCalendarRepo;
 
-	public List<Tuple> getMedicationInformation(User user) {
-		return qCalendarRepo.getMedicationInformation(user);
+	public List<Tuple> fetchMedicationsByPatient(User patient) {
+		return qCalendarRepo.fetchMedicationsByPatient(patient);
 	}
 
-	public List<Tuple> getAppointmentInformation(User user, CalendarRequest request) {
-		return qCalendarRepo.getAppointment(user, request);
+	public List<Tuple> fetchAppointmentsByPatient(User patient, CalendarRequest request) {
+		return qCalendarRepo.fetchAppointmentsByPatient(patient, request);
 	}
 
 	public List<Tuple> fetchMedicationsByGuardian(User guardian) {

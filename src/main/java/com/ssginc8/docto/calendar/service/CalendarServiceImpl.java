@@ -30,16 +30,10 @@ public class CalendarServiceImpl implements CalendarService {
 	public PatientCalendar.Response getPatientCalendars(CalendarRequest request) {
 		User user = getUser();
 
-		return null;
+		List<Tuple> appointmentTuples = calendarProvider.fetchAppointmentsByPatient(user, request);
+		List<Tuple> medicationTuples = calendarProvider.fetchMedicationsByPatient(user);
 
-		// List<CalendarItem> calendarItems = CalendarItem.toList(
-		// 	calendarProvider.getMedicationInformation(user),
-		// 	calendarProvider.getAppointmentInformation(user, request),
-		// 	request);
-		//
-		// return PatientCalendar.Response.builder()
-		// 	.calendarItems(calendarItems)
-		// 	.build();
+		return PatientCalendar.toResponse(appointmentTuples, medicationTuples, request);
 	}
 
 	@Transactional(readOnly = true)
