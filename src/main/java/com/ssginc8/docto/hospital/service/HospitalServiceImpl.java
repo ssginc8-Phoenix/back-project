@@ -222,7 +222,7 @@ public class HospitalServiceImpl implements HospitalService {
 		hospitalProvider.deleteByHospitalId(hospitalId);
 
 		// 7. 병원 삭제
-		hospital.softDelete();
+		hospital.delete();
 	}
 
 
