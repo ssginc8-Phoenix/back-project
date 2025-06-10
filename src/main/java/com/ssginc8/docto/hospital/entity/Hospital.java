@@ -80,10 +80,6 @@ public class Hospital extends BaseTimeEntity {
 		this.longitude = longitude;
 	}
 
-	public void softDelete(){
-		this.delete();
-	}
-
 	public static Hospital create(User user,
 		String name,
 		String address,
@@ -114,11 +110,8 @@ public class Hospital extends BaseTimeEntity {
 		}
 	}
 
-
-
 	public void updateWaiting(Long waiting) {
 		this.waiting = waiting;
 	}
-
 }
 

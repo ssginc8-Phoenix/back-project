@@ -241,9 +241,4 @@ public class HospitalController {
 	) {Page<HospitalReviewResponse> page = hospitalService.getReviews(hospitalId,pageable);
 		return ResponseEntity.ok(page);
 	}
-
-
-
-
-
 }
