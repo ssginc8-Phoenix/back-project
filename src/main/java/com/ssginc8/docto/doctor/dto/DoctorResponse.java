@@ -13,18 +13,25 @@ public class DoctorResponse {
 	private Specialization specialization;
 	private String username;
 	private String hospitalName;
-	public DoctorResponse(Long doctorId, String hospitalName, String username, String specialization) {
+	private Long capacityPerHalfHour;
+
+
+	public DoctorResponse(Long doctorId, String username, Specialization specialization, String hospitalName, Long capacityPerHalfHour) {
 		this.doctorId = doctorId;
-		this.hospitalName=hospitalName;
 		this.username = username;
-		this.specialization = Specialization.valueOf(specialization);
+		this.specialization = specialization;
+		this.hospitalName = hospitalName;
+		this.capacityPerHalfHour = capacityPerHalfHour;
 	}
+
 	public static DoctorResponse from(Doctor doctor) {
 		return new DoctorResponse(
 			doctor.getDoctorId(),
-			doctor.getHospital().getName(),
 			doctor.getUser().getName(),
-			doctor.getSpecialization().name()
+			doctor.getSpecialization(),
+			doctor.getHospital().getName(),
+			doctor.getCapacityPerHalfHour()
 		);
 	}
+
 }
