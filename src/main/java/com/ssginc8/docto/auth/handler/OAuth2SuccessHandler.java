@@ -9,9 +9,13 @@ import org.springframework.stereotype.Component;
 
 import com.ssginc8.docto.auth.entity.CustomOAuth2User;
 import com.ssginc8.docto.auth.jwt.dto.Token;
+import com.ssginc8.docto.auth.jwt.dto.TokenType;
+import com.ssginc8.docto.auth.jwt.entity.RefreshToken;
+import com.ssginc8.docto.auth.jwt.provider.RefreshTokenProvider;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
+import com.ssginc8.docto.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +31,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	private final UserProvider userProvider;
 	private final TokenProvider tokenProvider;
+	private final RefreshTokenProvider refreshTokenProvider;
+	private final CookieUtil cookieUtil;
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -51,9 +57,29 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 			response.sendRedirect(url + "/signup");
 		} else { // 비어있지 않다면 메인 페이지로 리다이렉트 + 토큰 생성
-			// Token token = tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
+			Token token = tokenProvider.generateTokens(user.getUuid(), user.getRole().getKey());
 
+			Token tokens = tokenProvider.generateTokens(
+				user.getUuid(),
+				user.getRole().getKey()
+			);
 
+			RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
+
+			if (refreshToken != null) {
+				refreshToken.update(tokens.getRefreshToken());
+			} else {
+				refreshToken = RefreshToken.createRefreshToken(user.getUuid(), tokens.getRefreshToken());
+				refreshTokenProvider.saveRefreshToken(refreshToken);
+			}
+
+			response.addCookie(
+				cookieUtil.createCookie(TokenType.ACCESS_TOKEN.getTokenType(), token.getAccessToken(),
+					token.getAccessTokenCookieMaxAge()));
+
+			response.addCookie(
+				cookieUtil.createCookie(TokenType.REFRESH_TOKEN.getTokenType(), token.getRefreshToken(),
+					token.getRefreshTokenCookieMaxAge()));
 
 			response.sendRedirect(url);
 		}
