@@ -168,4 +168,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# firebase-service-account.json
+src/main/resources/firebase-service-account.json
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,intellij
