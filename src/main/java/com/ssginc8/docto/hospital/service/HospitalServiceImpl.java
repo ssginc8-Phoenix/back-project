@@ -315,30 +315,26 @@ public List<HospitalScheduleResponse> getSchedules(Long hospitalId) {
 
 
 
-	/**
-	 * 병원 영업시간 수정
-	 *
-	 */
+
 	@Override
 	@Transactional
-	public void updateHospitalSchedule(Long hospitalId, Long scheduleId, HospitalScheduleRequest scheduleDto) {
-
+	public void updateHospitalSchedule(Long hospitalId, List<HospitalScheduleRequest> scheduleDtos) {
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
-		HospitalSchedule schedule = hospitalProvider.getScheduleByIdOrThrow(scheduleId);
+		for (HospitalScheduleRequest dto : scheduleDtos) {
+			HospitalSchedule schedule = hospitalProvider.getScheduleByIdOrThrow(dto.getHospitalScheduleId());
+			hospitalProvider.validateScheduleBelongsToHospital(schedule, hospital);
 
-		hospitalProvider.validateScheduleBelongsToHospital(schedule, hospital);
-
-		schedule.updateSchedule(
-			scheduleDto.getDayOfWeek(),
-			scheduleDto.getOpenTime(),
-			scheduleDto.getCloseTime(),
-			scheduleDto.getLunchStart(),
-			scheduleDto.getLunchEnd()
-		);
-
-
+			schedule.updateSchedule(
+				dto.getDayOfWeek(),
+				dto.getOpenTime(),
+				dto.getCloseTime(),
+				dto.getLunchStart(),
+				dto.getLunchEnd()
+			);
+		}
 	}
+
 
 	/**
 	 * 병원 영업시간 삭제

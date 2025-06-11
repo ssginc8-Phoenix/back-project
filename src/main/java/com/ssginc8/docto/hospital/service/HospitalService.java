@@ -44,7 +44,7 @@ public interface HospitalService {
 		List<HospitalScheduleResponse> getSchedules(Long hospitalId);
 
 		//영업시간 수정
-		void updateHospitalSchedule(Long hospitalId, Long scheduleId, HospitalScheduleRequest scheduleRequest);
+		void updateHospitalSchedule(Long hospitalId, List<HospitalScheduleRequest> scheduleRequest);
 
 		//영업시간 삭제
 		void deleteHospitalSchedules(Long hospitalScheduleId);

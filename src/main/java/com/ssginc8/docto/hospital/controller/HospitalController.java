@@ -187,14 +187,12 @@ public class HospitalController {
 	 *
 	 */
 	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-	@PatchMapping("/hospitals/{hospitalId}/schedules/{scheduleId}")
-	public ResponseEntity<Void> updateHospitalSchedule(
+	@PatchMapping("/hospitals/{hospitalId}/schedules")
+	public ResponseEntity<Void> updateHospitalSchedules(
 		@PathVariable Long hospitalId,
-		@PathVariable Long scheduleId,
-		@RequestBody HospitalScheduleRequest scheduleRequest
+		@RequestBody List<HospitalScheduleRequest> scheduleRequests
 	) {
-		// 병원 ID도 사실 검증용 외에 쓰지 않으면 생략해도 되지만, 일단 같이 넘기는 경우
-		hospitalService.updateHospitalSchedule(hospitalId, scheduleId, scheduleRequest);
+		hospitalService.updateHospitalSchedule(hospitalId, scheduleRequests);
 		return ResponseEntity.noContent().build();
 	}
 
