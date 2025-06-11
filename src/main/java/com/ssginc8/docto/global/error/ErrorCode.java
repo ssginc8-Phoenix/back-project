@@ -2,6 +2,8 @@ package com.ssginc8.docto.global.error;
 
 import org.springframework.http.HttpStatus;
 
+import com.google.api.Http;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -95,7 +97,10 @@ public enum ErrorCode {
 	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다."),
   
   // Review 관련 에러(R_)
-	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다.");
+	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다."),
+
+	//Notification 관련 에러 (N_)
+	NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N_001", "알림을 찾을 수 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;

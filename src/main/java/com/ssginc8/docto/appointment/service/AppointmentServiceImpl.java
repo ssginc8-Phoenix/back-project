@@ -29,6 +29,7 @@ import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
+import com.ssginc8.docto.notification.service.NotificationService;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
@@ -56,6 +57,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private final QaPostService qaPostService;
 	private final UserService userService;
+	private final NotificationService notificationService;
 
 	private final AppointmentValidator appointmentValidator;
 
@@ -184,6 +186,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointment.changeStatus(newStatus);
 
 		appointmentProvider.save(appointment);
+
+		if (newStatus == AppointmentStatus.CONFIRMED) {
+			notificationService.notifyAppointmentConfirmed(appointment);
+		}
+
+		if (newStatus == AppointmentStatus.CANCELED) {
+			notificationService.notifyAppointmentCanceled(appointment);
+		}
 
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
