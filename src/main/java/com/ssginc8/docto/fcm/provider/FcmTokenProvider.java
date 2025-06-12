@@ -27,4 +27,8 @@ public class FcmTokenProvider {
 	public FcmToken save(FcmToken fcmToken) {
 		return fcmTokenRepo.save(fcmToken);
 	}
+
+	public void delete(FcmToken fcmToken) {
+		fcmTokenRepo.delete(fcmToken);
+	}
 }

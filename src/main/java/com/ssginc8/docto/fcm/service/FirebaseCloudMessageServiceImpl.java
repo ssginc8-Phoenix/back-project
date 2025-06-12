@@ -69,7 +69,20 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	public void saveToken(Long userId, String token) {
 		User user = userProvider.getUserById(userId);
 
-		FcmToken fcmToken = new FcmToken(user, token);
-		fcmTokenProvider.save(fcmToken);
+		// 1. 해당 토큰이 이미 다른 유저에게 등록되어 있는 경우 제거
+		Optional<FcmToken> existingToken = fcmTokenProvider.findByToken(token);
+		if (existingToken.isPresent() && !existingToken.get().getUser().getUserId().equals(userId)) {
+			fcmTokenProvider.delete(existingToken.get());
+		}
+
+		// 2. 현재 유저에게 동일한 토큰이 이미 등록돼 있지 않다면 저장
+		Optional<FcmToken> latestToken = fcmTokenProvider.findLatestTokenByUserId(userId);
+		if (latestToken.isEmpty() || !latestToken.get().getToken().equals(token)) {
+			log.info("새로운 FCM 토큰 저장: userId={}, token={}", userId, token);
+			FcmToken newFcmToken = new FcmToken(user, token);
+			fcmTokenProvider.save(newFcmToken);
+		} else {
+			log.info("이미 저장된 최신 토큰과 동일합니다. 저장하지 않음: userId={}, token={}", userId, token);
+		}
 	}
 }
