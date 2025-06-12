@@ -16,10 +16,8 @@ public class FcmTokenProvider {
 
 	private final FcmTokenRepo fcmTokenRepo;
 
-	public String findLatestTokenByUserId(Long userId) {
-		return fcmTokenRepo.findTopByUser_UserIdOrderByUpdatedAtDesc(userId)
-			.map(FcmToken::getToken)
-			.orElseThrow(() -> new IllegalArgumentException("User token not found"));
+	public Optional<FcmToken> findLatestTokenByUserId(Long userId) {
+		return fcmTokenRepo.findLatestTokenByUserId(userId);
 	}
 
 	public Optional<FcmToken> findByToken(String token) {

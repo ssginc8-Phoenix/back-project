@@ -36,6 +36,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Log4j2
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationProvider notificationProvider;
@@ -72,14 +73,21 @@ public class NotificationServiceImpl implements NotificationService {
 	 * Notification 생성 메서드 (재사용을 위한)
 	 */
 	private void createNotification(User receiver, NotificationType type, String content, Long referenceId) {
+		log.info("알림 생성 대상 user: {}", receiver);
+		log.info("알림 내용: {}", content);
+		log.info("타겟 ID: {}", referenceId);
+
+
 		Notification notification = new Notification(
 			receiver,
 			type,
 			content,
 			referenceId
 		);
-
 		notificationProvider.save(notification);
+
+		// 토큰 조회 전 로그
+		log.info("FCM 전송 전, userId={}", receiver.getUserId());
 		fcmService.sendMessage(receiver.getUserId(), type.name(), content);
 	}
 

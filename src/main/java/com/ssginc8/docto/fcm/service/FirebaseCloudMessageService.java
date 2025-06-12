@@ -10,7 +10,5 @@ public interface FirebaseCloudMessageService {
 
 	String sendMessage(Long userId, String title, String body);
 
-	void saveToken(User user, String token);
-
-	void registerOrUpdateToken(Long userId, String token);
+	void saveToken(Long userId, String token);
 }

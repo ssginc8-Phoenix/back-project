@@ -29,7 +29,7 @@ public class FirebaseController {
 
 	@PutMapping("/token")
 	public ResponseEntity<Void> registerToken(@RequestBody AddFcmToken.Request request) {
-		firebaseCloudMessageService.registerOrUpdateToken(request.getUserId(), request.getToken());
+		firebaseCloudMessageService.saveToken(request.getUserId(), request.getToken());
 
 		return ResponseEntity.ok().build();
 	}
