@@ -1,5 +1,7 @@
 package com.ssginc8.docto.medication.service;
 
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.medication.dto.*;
 import com.ssginc8.docto.medication.entity.*;
 import com.ssginc8.docto.medication.provider.MedicationProvider;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class MedicationServiceImpl implements MedicationService {
 
 	private final MedicationProvider medicationProvider;
+	private final PatientGuardianProvider patientGuardianProvider;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -34,19 +37,29 @@ public class MedicationServiceImpl implements MedicationService {
 	public void registerMedicationSchedule(MedicationScheduleRequest request) {
 		User user = medicationProvider.getUser(request.getUserId());
 
-		MedicationInformation info = MedicationInformation.create(user, request.getPatientGuardianId(), request.getMedicationName());
+		// ✅ 약 정보는 1개만 생성
+		MedicationInformation info = MedicationInformation.create(
+			user,
+			request.getPatientGuardianId(),
+			request.getMedicationName(),
+			request.getStartDate(),
+			request.getEndDate()
+		);
 
+		// ✅ 알림 시간도 1개만 생성
 		MedicationAlertTime alertTime = MedicationAlertTime.create(info, request.getTimeToTake());
 
-		List<MedicationAlertDay> alertDays = request.getDays().stream()
-			.map(day -> MedicationAlertDay.create(alertTime, day))
-			.collect(Collectors.toList());
+		// ✅ 선택된 요일마다 Day 생성
+		for (DayOfWeek day : request.getDays()) {
+			alertTime.getAlertDays().add(MedicationAlertDay.create(alertTime, day));
+		}
 
-		alertTime.getAlertDays().addAll(alertDays);
 		info.getAlertTimes().add(alertTime);
 
+		// ✅ 단 1회 저장
 		medicationProvider.saveMedicationInformation(info);
 	}
+
 
 	@Transactional(readOnly = true)
 	@Override
@@ -104,5 +117,6 @@ public class MedicationServiceImpl implements MedicationService {
 			medicationProvider.saveMedicationLog(log);
 		}
 	}
+
 
 }

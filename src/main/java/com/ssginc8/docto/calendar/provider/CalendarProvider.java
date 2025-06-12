@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.querydsl.core.Tuple;
 import com.ssginc8.docto.calendar.repo.QCalendarRepo;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,9 @@ public class CalendarProvider {
 
 	public List<Tuple> fetchAppointmentsByDoctor(User doctor, CalendarRequest request) {
 		return qCalendarRepo.fetchAppointmentsByDoctor(doctor, request);
+	}
+
+	public List<PatientGuardian> fetchAcceptedGuardiansByGuardianUser(User guardianUser) {
+		return qCalendarRepo.fetchAcceptedGuardiansByGuardianUser(guardianUser);
 	}
 }

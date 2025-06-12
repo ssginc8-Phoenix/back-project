@@ -12,6 +12,7 @@ import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
 import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
 import com.ssginc8.docto.calendar.service.dto.HospitalCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 
@@ -39,10 +40,21 @@ public class CalendarServiceImpl implements CalendarService {
 	public GuardianCalendar.Response getGuardianCalendars(CalendarRequest request) {
 		User user = getUser();
 
+		// ✅ 보호자와 연결된 환자 정보 조회
+		List<PatientGuardian> patientGuardians = calendarProvider.fetchAcceptedGuardiansByGuardianUser(user);
+
+		// 진료 및 복약 일정 조회
 		List<Tuple> appointmentTuples = calendarProvider.fetchAppointmentsByGuardian(user, request);
 		List<Tuple> medicationTuples = calendarProvider.fetchMedicationsByGuardian(user);
 
-		return GuardianCalendar.toResponse(appointmentTuples, medicationTuples, request);
+		// 디버깅용 로그
+		System.out.println("👀 medicationTuples.size = " + medicationTuples.size());
+		for (Tuple t : medicationTuples) {
+			System.out.println("🧾 tuple = " + t);
+		}
+
+		// ✅ patientGuardians 추가 전달
+		return GuardianCalendar.toResponse(appointmentTuples, medicationTuples, patientGuardians, request);
 	}
 
 	@Transactional(readOnly = true)
