@@ -46,4 +46,9 @@ public class MedicationScheduler {
 				info.getMedicationId());
 		}
 	}
+
+	@Scheduled(cron = "5 * * * * *")
+	public void sendMedicationMissedAlerts() {
+		notificationService.notifyMedicationMissed();
+	}
 }

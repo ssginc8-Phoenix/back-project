@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
+import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -60,6 +62,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private final NotificationService notificationService;
 
 	private final AppointmentValidator appointmentValidator;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * 진료 예약 리스트 조회
@@ -187,13 +190,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(appointment);
 
-		if (newStatus == AppointmentStatus.CONFIRMED) {
-			notificationService.notifyAppointmentConfirmed(appointment);
-		}
-
-		if (newStatus == AppointmentStatus.CANCELED) {
-			notificationService.notifyAppointmentCanceled(appointment);
-		}
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment));
 
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}

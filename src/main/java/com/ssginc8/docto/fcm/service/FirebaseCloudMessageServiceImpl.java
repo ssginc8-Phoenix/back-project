@@ -13,10 +13,12 @@ import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Log4j2
 public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageService{
 
 	private final FcmTokenProvider fcmTokenProvider;
@@ -45,7 +47,7 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 			return "Message sent successfully: " + response;
 
 		} catch (FirebaseMessagingException e) {
-			e.printStackTrace();
+			log.warn("FCM 전송 실패: userId={}, error={}", userId, e.getMessage());
 			return "Failed to send message: " + e.getMessage();
 		}
 	}

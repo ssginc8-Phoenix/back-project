@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.fcm.service.FirebaseCloudMessageService;
 import com.ssginc8.docto.global.error.exception.commentException.CommentNotFoundException;
+import com.ssginc8.docto.global.error.exception.notificationException.NotificationSendFailed;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.medication.entity.MedicationAlertTime;
@@ -30,6 +31,7 @@ import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
@@ -93,7 +95,11 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String content = String.format("%s %s의 %s 환자의 예약이 확정되었습니다.", time, hospitalName, patientName);
 
-		createNotification(receiver, NotificationType.APPOINTMENT_CONFIRMED, content, appointment.getAppointmentId());
+		try {
+			createNotification(receiver, NotificationType.APPOINTMENT_CONFIRMED, content, appointment.getAppointmentId());
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
@@ -109,7 +115,11 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String content = String.format("%s %s의 %s 환자의 예약이 취소되었습니다.", time, hospitalName, patientName);
 
-		createNotification(receiver, NotificationType.APPOINTMENT_CANCELED, content, appointment.getAppointmentId());
+		try {
+			createNotification(receiver, NotificationType.APPOINTMENT_CANCELED, content, appointment.getAppointmentId());
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
@@ -131,7 +141,11 @@ public class NotificationServiceImpl implements NotificationService {
 		String content = String.format("%s %s 병원의 QnA에 답변이 등록되었습니다. (%s)",
 			time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), hospitalName, patientName);
 
-		createNotification(receiver, NotificationType.QNA_RESPONSE, content, qaComment.getQnaCommentId());
+		try {
+			createNotification(receiver, NotificationType.QNA_RESPONSE, content, qaComment.getQnaCommentId());
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
@@ -145,7 +159,11 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String content = String.format("환자 %s님이 당신을 보호자로 초대했습니다.", patientName);
 
-		createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, guardian.getPatientGuardianId());
+		try {
+			createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, guardian.getPatientGuardianId());
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
@@ -156,7 +174,11 @@ public class NotificationServiceImpl implements NotificationService {
 		String content = String.format("💊 %s님, %s에 복용할 약 '%s'이 있습니다.",
 			receiver.getName(), timeToTake.toString(), medicationName);
 
-		createNotification(receiver, NotificationType.MEDICATION_ALERT, content, medicationInfoId);
+		try {
+			createNotification(receiver, NotificationType.MEDICATION_ALERT, content, medicationInfoId);
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
@@ -189,7 +211,11 @@ public class NotificationServiceImpl implements NotificationService {
 				String content = String.format("⚠️ %s님이 %s에 약 '%s'을 복용하지 않았습니다.",
 					patienUser.getName(), alertTime.getTimeToTake(), info.getMedicationName());
 
-				createNotification(guardianUser, NotificationType.MEDICATION_MISSED, content, info.getMedicationId());
+				try {
+					createNotification(guardianUser, NotificationType.MEDICATION_MISSED, content, info.getMedicationId());
+				} catch (Exception e) {
+					throw new NotificationSendFailed();
+				}
 			}
 		}
 	}
