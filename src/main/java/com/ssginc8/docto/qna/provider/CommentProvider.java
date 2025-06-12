@@ -50,5 +50,9 @@ public class CommentProvider {
 		commentRepo.deleteById(commentId);
 	}
 
-
+	// ID로 Notification 에 필요한 데이터 찾기
+	@Transactional(readOnly = true)
+	public Object[] findNotificationDataByQnaCommentId(Long qnaCommentId) {
+		return commentRepo.findNotificationDataByQnaCommentId(qnaCommentId);
+	}
 }

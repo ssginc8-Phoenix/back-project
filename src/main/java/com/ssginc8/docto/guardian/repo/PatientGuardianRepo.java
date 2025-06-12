@@ -38,5 +38,7 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	Optional<PatientGuardian> findByInviteCode(String inviteCode);
 
+	PatientGuardian findPatientGuardianByPatient(Patient patient);
+
 }
 

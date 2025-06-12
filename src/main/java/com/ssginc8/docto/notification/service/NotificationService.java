@@ -1,10 +1,13 @@
 package com.ssginc8.docto.notification.service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.notification.dto.NotificationResponse;
 import com.ssginc8.docto.qna.entity.QaComment;
+import com.ssginc8.docto.user.entity.User;
 
 public interface NotificationService {
 
@@ -34,14 +37,17 @@ public interface NotificationService {
 	void notifyQnaResponse(QaComment qaComment);
 
 	/**
+	 * GUARDIAN 초대 알림 전송
+	 */
+	void notifyGuardianInvite(PatientGuardian guardian);
+
+	/**
 	 * MEDICATION 복용 알림 전송 (환자)
 	 */
+	void notifyMedicationAlert(User user, String medicationName, LocalTime timeToTake, Long medicationInfoId);
 
 	/**
 	 * MEDICATION 미복용 알림 전송 (보호자)
 	 */
-
-	/**
-	 * GUARDIAN 초대 알림 전송
-	 */
+	void notifyMedicationMissed();
 }
