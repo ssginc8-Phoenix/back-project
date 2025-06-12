@@ -1,5 +1,9 @@
 package com.ssginc8.docto.qna.provider;
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,17 @@ public class QaPostProvider {
 	@Transactional
 	public QaPost save(QaPost qaPost) {
 		return qaPostRepo.save(qaPost);
+	}
+
+	@Transactional(readOnly = true)
+	public Optional<QaPost> findByAppointment(Appointment appointment) {
+		return qaPostRepo.findByAppointment(appointment);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<QaPost> findAllByUserId(Long userId, Pageable pageable) {
+		// Appointment→patientGuardian→user→userId 경로에 맞춘 repo 메서드 호출
+		return qaPostRepo.findAllByAppointment_PatientGuardian_User_UserId(userId, pageable);
 	}
 
 
