@@ -21,13 +21,12 @@ public class CalendarRequest {
 	public LocalDateTime getEndDateTime() {
 		return LocalDate.of(year, month, 1).plusMonths(1).atStartOfDay();
 	}
-
-	// ✅ 추가: LocalDate 범위 반환용
+  
 	public LocalDate getStartDate() {
 		return LocalDate.of(year, month, 1);
 	}
 
 	public LocalDate getEndDate() {
 		return LocalDate.of(year, month, 1).plusMonths(1).minusDays(1);
-	}
+  }
 }

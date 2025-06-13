@@ -93,6 +93,7 @@ public class SecurityConfig {
 					"/api/v1/qnas/**", "/api/v1/medications/**", "/api/v1/calendar/guardian"
 				).hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasRole("GUARDIAN")
 
 				.requestMatchers(
 					"/api/v1/hospitals/**", "/api/v1/doctors/**", "/api/v1/calendar/hospital"

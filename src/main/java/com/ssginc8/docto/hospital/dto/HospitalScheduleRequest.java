@@ -24,7 +24,7 @@ public class HospitalScheduleRequest {
 	private LocalTime closeTime;
 	private LocalTime lunchStart;
 	private LocalTime lunchEnd;
-
+	private Long hospitalScheduleId;
 
 
 	public HospitalScheduleRequest(HospitalSchedule saved) {
@@ -34,6 +34,7 @@ public class HospitalScheduleRequest {
 		this.closeTime = saved.getCloseTime();
 		this.lunchStart = saved.getLunchStart();
 		this.lunchEnd = saved.getLunchEnd();
+		this.hospitalScheduleId = saved.getHospitalScheduleId();
 	}
 
 

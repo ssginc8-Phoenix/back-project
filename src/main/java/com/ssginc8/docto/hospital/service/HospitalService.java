@@ -23,7 +23,7 @@ public interface HospitalService {
 			 Pageable pageable);
 
 		//병원 정보
-		Long saveHospital(HospitalRequest HospitalRequest);
+		Long saveHospital(Long userId, HospitalRequest HospitalRequest);
 
 		//병원 상세 조회
 		HospitalResponse getHospitalId(Long hospitalId);
@@ -44,7 +44,7 @@ public interface HospitalService {
 		List<HospitalScheduleResponse> getSchedules(Long hospitalId);
 
 		//영업시간 수정
-		void updateHospitalSchedule(Long hospitalId, Long scheduleId, HospitalScheduleRequest scheduleRequest);
+		void updateHospitalSchedule(Long hospitalId, List<HospitalScheduleRequest> scheduleRequest);
 
 		//영업시간 삭제
 		void deleteHospitalSchedules(Long hospitalScheduleId);
@@ -66,5 +66,9 @@ public interface HospitalService {
 
 		// 로그인 사용자의 병원 정보 얻기
 		HospitalResponse getHospitalByAdminId(Long userId);
+
+		Long getHospitalIdByAdminId(Long userId);
+
+
 }
 

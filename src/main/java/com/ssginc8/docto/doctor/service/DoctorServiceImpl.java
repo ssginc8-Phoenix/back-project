@@ -176,4 +176,10 @@ public class DoctorServiceImpl implements DoctorService {
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
 		doctor.changeCapacityPerHalfHour(capacityPerHalfHour);
 	}
+
+	@Override
+	public DoctorResponse getDoctorInfoByUserId(Long userId) {
+		Doctor doctor = doctorProvider.getDoctorByUserId(userId);
+		return DoctorResponse.from(doctor);
+	}
 }

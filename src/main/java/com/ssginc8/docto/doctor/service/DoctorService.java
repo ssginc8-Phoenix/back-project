@@ -35,4 +35,6 @@ public interface DoctorService {
 
 	// 접수 가능한 환자 수 수정
 	void updateCapacityPerHalfHour(Long doctorId, Long capacityPerHalfHour);
+
+	DoctorResponse getDoctorInfoByUserId(Long doctorId);
 }
