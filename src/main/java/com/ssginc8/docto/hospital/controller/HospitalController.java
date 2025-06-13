@@ -47,21 +47,6 @@ public class HospitalController {
 	private final UserService userService;
 
 
-	@GetMapping("/hospitals/me/user-ratio")
-	public ResponseEntity<UserRoleRatioResponse> getUserRatioForMyHospital() {
-		UserInfo.Response userInfo = userService.getMyInfo();
-		Long userId = userInfo.userId;
-
-		// 관리자 본인의 병원 ID 추출
-		HospitalResponse myHospital = hospitalService.getHospitalByAdminId(userId);
-		Long hospitalId = myHospital.getHospitalId();
-
-		// 비율 계산
-		UserRoleRatioResponse ratio = hospitalService.getUserRatioByHospitalId(hospitalId);
-		return ResponseEntity.ok(ratio);
-	}
-
-
 
 	/**
 	 * 로그인 사용자의 병원 정보
