@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.ManyToAny;
 
+import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.user.entity.User;
 
@@ -18,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -68,7 +71,13 @@ public class Hospital extends BaseTimeEntity {
 	@Column(nullable = false, length = 200)
 	private String businessRegistrationNumber;
 
-	public Hospital(User user, String name, String address, String phone, String introduction, String notice, BigDecimal latitude, BigDecimal longitude, String businessRegistrationNumber, Object o) {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "file_id")
+	private File file;
+
+
+
+	public Hospital(User user, String name, String address, String phone, String introduction, String notice, BigDecimal latitude, BigDecimal longitude, String businessRegistrationNumber, Object o, File file) {
 		this.user = user;
 		this.name = name;
 		this.address = address;
@@ -78,6 +87,7 @@ public class Hospital extends BaseTimeEntity {
 		this.businessRegistrationNumber = businessRegistrationNumber;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.file = file;
 	}
 
 	public static Hospital create(User user,
@@ -87,8 +97,9 @@ public class Hospital extends BaseTimeEntity {
 		String introduction,
 		String businessRegistrationNumber, BigDecimal latitude,
 		BigDecimal longitude,
-		String notice) {
-		return new Hospital(user,name,address,phone,introduction,notice,latitude,longitude,businessRegistrationNumber,null);
+		String notice,
+		File file) {
+		return new Hospital(user,name,address,phone,introduction,notice,latitude,longitude,businessRegistrationNumber,null,file);
 	}
 
 
@@ -112,6 +123,10 @@ public class Hospital extends BaseTimeEntity {
 
 	public void updateWaiting(Long waiting) {
 		this.waiting = waiting;
+	}
+
+	public void updateImage(File file) {
+		this.file = file;
 	}
 }
 

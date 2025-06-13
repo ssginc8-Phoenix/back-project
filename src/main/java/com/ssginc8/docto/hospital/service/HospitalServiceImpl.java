@@ -16,6 +16,9 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 
+import com.ssginc8.docto.file.entity.File;
+import com.ssginc8.docto.file.provider.FileProvider;
+import com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException;
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
 import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
@@ -23,12 +26,15 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
+import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.review.provider.ReviewProvider;
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,9 +47,20 @@ public class HospitalServiceImpl implements HospitalService {
 	private final ReviewProvider reviewProvider;
 	private final DoctorProvider doctorProvider;
 	private final DoctorScheduleProvider doctorScheduleProvider;
+	private final UserRepo userRepo;
+	private final FileProvider fileProvider;
 
+	public UserRoleRatioResponse getUserRatioByHospitalId(Long hospitalId) {
+		int patientCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.PATIENT));
+		int guardianCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.GUARDIAN));
+		int doctorCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.DOCTOR));
 
-
+		return UserRoleRatioResponse.builder()
+			.patientCount(patientCount)
+			.guardianCount(guardianCount)
+			.doctorCount(doctorCount)
+			.build();
+	}
 
 
 	/**
@@ -53,6 +70,12 @@ public class HospitalServiceImpl implements HospitalService {
 	public HospitalResponse getHospitalByAdminId(Long userId) {
 
 		return hospitalProvider.getHospitalByAdminId(userId);
+	}
+
+	@Override
+	public Long getHospitalIdByAdminId(Long userId) {
+		Hospital hospital = hospitalProvider.findByUserUserId(userId);
+		return hospital.getHospitalId();
 	}
 
 	/**
@@ -109,6 +132,7 @@ public class HospitalServiceImpl implements HospitalService {
 			.notice(hospital.getNotice())
 			.waiting(hospital.getWaiting())
 			.serviceNames(serviceNames)  // 개별 서비스 이름 리스트로 넣음
+			.imageUrl(String.valueOf(hospital.getFile() != null ? hospital.getFile().getFileId() : null))
 			.build();
 
 	}
@@ -119,12 +143,16 @@ public class HospitalServiceImpl implements HospitalService {
 	 * 병원 정보 등록
 	 *
 	 */
-	@Override
-	public Long saveHospital(HospitalRequest hospitalRequest) {
-		// 유저 조회 (null 검사 포함된 내부 구현을 권장)
-		User user = hospitalProvider.getUserById(hospitalRequest.getUserId());
 
-		// 병원 엔티티 생성
+	@Override
+	public Long saveHospital(Long userId, HospitalRequest hospitalRequest) {
+		// 🔍 유저 조회
+		User user = hospitalProvider.getUserById(userId);
+		File image = null;
+		if (hospitalRequest.getFileId() != null) {
+			image = fileProvider.findById(hospitalRequest.getFileId());
+		}
+		// 🏥 병원 엔티티 생성
 		Hospital hospital = Hospital.create(
 			user,
 			hospitalRequest.getName(),
@@ -134,14 +162,17 @@ public class HospitalServiceImpl implements HospitalService {
 			hospitalRequest.getBusinessRegistrationNumber(),
 			hospitalRequest.getLatitude(),
 			hospitalRequest.getLongitude(),
-			hospitalRequest.getNotice()
+			hospitalRequest.getNotice(),
+			image
+
 		);
 
-		// 먼저 병원 저장 → ID 생성됨
+
+
+		// 💾 병원 저장
 		hospitalProvider.saveHospital(hospital);
 
-
-		// 서비스 엔티티 생성 및 저장
+		// 🧾 서비스 엔티티 생성 및 저장
 		List<String> serviceNames = hospitalRequest.getServiceName();
 
 		if (serviceNames != null && !serviceNames.isEmpty()) {
@@ -150,7 +181,7 @@ public class HospitalServiceImpl implements HospitalService {
 				.map(name -> ProvidedService.create(name.trim(), hospital))
 				.collect(Collectors.toList());
 
-			hospitalProvider.saveServices(services); // 여러 개 저장
+			hospitalProvider.saveServices(services);
 		}
 
 		return hospital.getHospitalId();
@@ -175,7 +206,10 @@ public class HospitalServiceImpl implements HospitalService {
 			dto.getIntroduction(),
 			dto.getNotice()
 		);
-
+		if (dto.getFileId() != null) {
+			File file = fileProvider.findById(dto.getFileId());
+			hospital.updateImage(file);
+		}
 		// 기존 서비스 모두 삭제
 		hospitalProvider.deleteByHospitalHospitalId(hospitalId);
 

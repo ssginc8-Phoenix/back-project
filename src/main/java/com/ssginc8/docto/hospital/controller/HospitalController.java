@@ -28,6 +28,7 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
+import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.service.HospitalService;
 import com.ssginc8.docto.review.service.ReviewService;
@@ -49,9 +50,24 @@ public class HospitalController {
 	private final UserService userService;
 
 
+	@GetMapping("/hospitals/me/user-ratio")
+	public ResponseEntity<UserRoleRatioResponse> getUserRatioForMyHospital() {
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long userId = userInfo.userId;
+
+		// 관리자 본인의 병원 ID 추출
+		HospitalResponse myHospital = hospitalService.getHospitalByAdminId(userId);
+		Long hospitalId = myHospital.getHospitalId();
+
+		// 비율 계산
+		UserRoleRatioResponse ratio = hospitalService.getUserRatioByHospitalId(hospitalId);
+		return ResponseEntity.ok(ratio);
+	}
+
+
 
 	/**
-	 * 로그인 사용자의 병워 정보
+	 * 로그인 사용자의 병원 정보
 	 *
 	 */
 	@GetMapping("/hospitals/me")
@@ -93,7 +109,11 @@ public class HospitalController {
 	 */
 	@PostMapping("/hospitals")
 	public ResponseEntity<Long> registerHospital(@Valid @RequestBody HospitalRequest hospitalRequest) {
-		Long hospitalId = hospitalService.saveHospital(hospitalRequest);
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long userId = userInfo.userId;
+
+		Long hospitalId = hospitalService.saveHospital(userId, hospitalRequest);
+
 		return ResponseEntity.ok(hospitalId);
 	}
 
