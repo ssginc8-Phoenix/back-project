@@ -1,14 +1,12 @@
 package com.ssginc8.docto.hospital.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,9 +47,24 @@ public class HospitalController {
 	private final UserService userService;
 
 
+	@GetMapping("/hospitals/me/user-ratio")
+	public ResponseEntity<UserRoleRatioResponse> getUserRatioForMyHospital() {
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long userId = userInfo.userId;
+
+		// 관리자 본인의 병원 ID 추출
+		HospitalResponse myHospital = hospitalService.getHospitalByAdminId(userId);
+		Long hospitalId = myHospital.getHospitalId();
+
+		// 비율 계산
+		UserRoleRatioResponse ratio = hospitalService.getUserRatioByHospitalId(hospitalId);
+		return ResponseEntity.ok(ratio);
+	}
+
+
 
 	/**
-	 * 로그인 사용자의 병워 정보
+	 * 로그인 사용자의 병원 정보
 	 *
 	 */
 	@GetMapping("/hospitals/me")
@@ -93,7 +106,11 @@ public class HospitalController {
 	 */
 	@PostMapping("/hospitals")
 	public ResponseEntity<Long> registerHospital(@Valid @RequestBody HospitalRequest hospitalRequest) {
-		Long hospitalId = hospitalService.saveHospital(hospitalRequest);
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long userId = userInfo.userId;
+
+		Long hospitalId = hospitalService.saveHospital(userId, hospitalRequest);
+
 		return ResponseEntity.ok(hospitalId);
 	}
 
@@ -187,14 +204,12 @@ public class HospitalController {
 	 *
 	 */
 	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-	@PatchMapping("/hospitals/{hospitalId}/schedules/{scheduleId}")
-	public ResponseEntity<Void> updateHospitalSchedule(
+	@PatchMapping("/hospitals/{hospitalId}/schedules")
+	public ResponseEntity<Void> updateHospitalSchedules(
 		@PathVariable Long hospitalId,
-		@PathVariable Long scheduleId,
-		@RequestBody HospitalScheduleRequest scheduleRequest
+		@RequestBody List<HospitalScheduleRequest> scheduleRequests
 	) {
-		// 병원 ID도 사실 검증용 외에 쓰지 않으면 생략해도 되지만, 일단 같이 넘기는 경우
-		hospitalService.updateHospitalSchedule(hospitalId, scheduleId, scheduleRequest);
+		hospitalService.updateHospitalSchedule(hospitalId, scheduleRequests);
 		return ResponseEntity.noContent().build();
 	}
 

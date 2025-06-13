@@ -45,7 +45,7 @@ public class HospitalResponse {
 
 	private List<HospitalScheduleResponse> schedules;
 
-
+	private String imageUrl; // ✅ 이미지 URL 포함
 
 	public HospitalResponse(Hospital hospital) {
 		this.hospitalId = hospital.getHospitalId();
@@ -73,6 +73,9 @@ public class HospitalResponse {
 		res.waiting = hospital.getWaiting();
 		res.serviceNames = new ArrayList<>();
 		res.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
+		if (hospital.getFile() != null) {
+			res.imageUrl = hospital.getFile().getUrl();
+		}
 		return res;
 	}
 }
