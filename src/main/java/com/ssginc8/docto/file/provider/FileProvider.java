@@ -17,4 +17,9 @@ public class FileProvider {
 	public File saveFile(File file) {
 		return fileRepo.save(file);
 	}
+
+	public File findById(Long fileId) {
+		return fileRepo.findById(fileId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 파일이 존재하지 않습니다."));
+	}
 }
