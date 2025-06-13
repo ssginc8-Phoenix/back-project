@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssginc8.docto.appointment.entity.QAppointment;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
@@ -41,7 +42,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 
 
 		return queryFactory
-			.select(information.medicationId, information.medicationName, alertTime.timeToTake, alertDay.dayOfWeek.stringValue())
+			.select(information.medicationId, information.medicationName, alertTime.timeToTake, alertDay.dayOfWeek.stringValue(), Expressions.stringTemplate("'환자이름없음'"), Expressions.stringTemplate("'0'"), information.startDate, information.endDate)
 			.from(information)
 			.join(information.alertTimes, alertTime)
 			.join(alertTime.alertDays, alertDay)
