@@ -57,5 +57,4 @@ public class PatientGuardianProvider {
 		return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
 			.orElse(null); // 없으면 null
 	}
-
 }
