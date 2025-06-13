@@ -18,7 +18,6 @@ import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
-import com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException;
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
 import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
@@ -26,7 +25,6 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
-import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
@@ -50,17 +48,7 @@ public class HospitalServiceImpl implements HospitalService {
 	private final UserRepo userRepo;
 	private final FileProvider fileProvider;
 
-	public UserRoleRatioResponse getUserRatioByHospitalId(Long hospitalId) {
-		int patientCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.PATIENT));
-		int guardianCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.GUARDIAN));
-		int doctorCount = userRepo.countUsersByHospitalIdAndRole(hospitalId, String.valueOf(Role.DOCTOR));
 
-		return UserRoleRatioResponse.builder()
-			.patientCount(patientCount)
-			.guardianCount(guardianCount)
-			.doctorCount(doctorCount)
-			.build();
-	}
 
 
 	/**

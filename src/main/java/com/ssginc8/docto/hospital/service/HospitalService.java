@@ -14,7 +14,6 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
-import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 
 public interface HospitalService {
@@ -70,6 +69,6 @@ public interface HospitalService {
 
 		Long getHospitalIdByAdminId(Long userId);
 
-		UserRoleRatioResponse getUserRatioByHospitalId(Long hospitalId);
+
 }
 
