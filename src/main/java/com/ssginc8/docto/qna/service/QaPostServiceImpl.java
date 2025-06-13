@@ -1,5 +1,7 @@
 package com.ssginc8.docto.qna.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,4 +74,20 @@ public class QaPostServiceImpl implements QaPostService{
 		qaPost.delete();
 		qaPostProvider.save(qaPost);
 	}
+
+	@Override
+	public QaPostResponse getByAppointment(Long appointmentId) {
+		Appointment appt = appointmentProvider.getAppointmentById(appointmentId);
+		return qaPostProvider.findByAppointment(appt)
+			.map(QaPostResponse::fromEntity)
+			.orElse(null);
+	}
+
+	@Override
+	public Page<QaPostResponse> getMyPosts(Long userId, Pageable pageable) {
+		return qaPostProvider.findAllByUserId(userId, pageable)
+			.map(QaPostResponse::fromEntity);
+	}
+
+
 }
