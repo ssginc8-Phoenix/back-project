@@ -18,6 +18,7 @@ import com.ssginc8.docto.global.error.exception.guardianException.GuardianAlread
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidInviteCodeException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidGuardianStatusException;
 import com.ssginc8.docto.global.event.EmailSendEvent;
+import com.ssginc8.docto.global.event.guardian.GuardianInviteEvent;
 import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianResponse;
@@ -68,6 +69,8 @@ public class GuardianServiceImpl implements GuardianService {
 			PatientGuardian newPg = PatientGuardian.create(guardian, patient, LocalDateTime.now());
 			newPg.updateInviteCode(inviteCode);
 			patientGuardianProvider.save(newPg);
+
+			eventPublisher.publishEvent(new GuardianInviteEvent(newPg));
 		}
 
 		// 🔥 이메일 발송 이벤트 추가

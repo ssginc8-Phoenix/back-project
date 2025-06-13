@@ -1,8 +1,0 @@
-.+/api/v1/reviews/{reviewId}/report+
-|===
-|Parameter|Description
-
-|`+reviewId+`
-|신고할 리뷰 ID
-
-|===

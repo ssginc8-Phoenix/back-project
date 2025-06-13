@@ -1,8 +1,0 @@
-.+/api/v1/hospitals/{hospitalId}+
-|===
-|Parameter|Description
-
-|`+hospitalId+`
-|조회할 병원의 ID
-
-|===

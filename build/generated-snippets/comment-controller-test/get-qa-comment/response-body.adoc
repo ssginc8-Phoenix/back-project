@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"commentId":18,"qnaPostId":14,"content":"답글 내용 예시","createdAt":"2025-06-01T01:43:05.073086","updatedAt":"2025-06-01T01:43:05.073086"}
-----

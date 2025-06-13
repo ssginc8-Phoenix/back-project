@@ -1,4 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/api/v1/hospitals/2/reviews?page=0&size=5' -i -X GET
-----

@@ -1,7 +1,0 @@
-|===
-|Part|Description
-
-|`+profileImage+`
-|프로필 이미지 (선택)
-
-|===

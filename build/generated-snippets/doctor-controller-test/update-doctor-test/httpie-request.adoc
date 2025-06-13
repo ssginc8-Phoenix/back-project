@@ -1,9 +1,0 @@
-[source,bash]
-----
-$ echo '{
-  "password" : "1qa12a",
-  "email" : "avbv@naver.com",
-  "specialization" : "PSYCHIATRY"
-}' | http PATCH 'http://localhost:8080/api/v1/doctors/9' \
-    'Content-Type:application/json;charset=UTF-8'
-----

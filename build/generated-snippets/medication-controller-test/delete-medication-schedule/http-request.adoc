@@ -1,6 +1,0 @@
-[source,http,options="nowrap"]
-----
-DELETE /api/v1/medications/43 HTTP/1.1
-Host: localhost:8080
-
-----

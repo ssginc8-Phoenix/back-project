@@ -33,7 +33,17 @@ public interface AppointmentRepo
 		AppointmentStatus status
 	);
 
-	boolean existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(Long patientId, LocalDateTime start, LocalDateTime end);
+	@Query("""
+		SELECT COUNT(a) > 0
+		FROM Appointment a
+		WHERE a.patientGuardian.patient.patientId = :patientId
+			AND a.appointmentTime BETWEEN :start AND :end
+			AND a.status <> com.ssginc8.docto.appointment.entity.AppointmentStatus.CANCELED
+	""")
+	boolean existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(
+		@Param("patientId") Long patientId,
+		@Param("start") LocalDateTime start,
+		@Param("end") LocalDateTime end);
 
 	@Query("SELECT COUNT(a) FROM Appointment a " +
 		"WHERE a.doctor.doctorId = :doctorId " +
@@ -86,4 +96,19 @@ public interface AppointmentRepo
 		Long userId, LocalDateTime start, LocalDateTime end, Pageable pageable
 	);
 
+	/**
+	 * 알림 전송을 위해 Appointment Fetch Join (Lazy 방지)
+	 * @param id
+	 * @return
+	 */
+	@Query("""
+    SELECT a FROM Appointment a
+    JOIN FETCH a.patientGuardian pg
+    JOIN FETCH pg.user
+    JOIN FETCH a.hospital
+    JOIN FETCH pg.patient p
+    JOIN FETCH p.user
+    WHERE a.appointmentId = :id
+""")
+	Optional<Appointment> findByAppointmentIdWithUser(@Param("id") Long id);
 }

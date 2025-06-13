@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+status+`
-|`+String+`
-|예약 상태 (REQUESTED, CONFIRMED, COMPLETED, CANCELLED)
-
-|===

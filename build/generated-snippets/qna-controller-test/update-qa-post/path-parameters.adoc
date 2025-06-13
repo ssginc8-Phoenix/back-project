@@ -1,8 +1,0 @@
-.+/api/v1/qnas/{qnaId}+
-|===
-|Parameter|Description
-
-|`+qnaId+`
-|수정할 Q&A 게시글 ID
-
-|===

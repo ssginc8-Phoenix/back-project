@@ -1,6 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "waiting" : 3
-}
-----

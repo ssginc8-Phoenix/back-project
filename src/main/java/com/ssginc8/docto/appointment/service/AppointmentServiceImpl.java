@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,12 @@ import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
+import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
+import com.ssginc8.docto.notification.service.NotificationService;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
@@ -56,8 +59,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private final QaPostService qaPostService;
 	private final UserService userService;
+	private final NotificationService notificationService;
 
 	private final AppointmentValidator appointmentValidator;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * 진료 예약 리스트 조회
@@ -184,6 +189,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointment.changeStatus(newStatus);
 
 		appointmentProvider.save(appointment);
+
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment));
 
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}

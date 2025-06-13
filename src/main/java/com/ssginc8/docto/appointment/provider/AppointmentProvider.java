@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -115,8 +116,6 @@ public class AppointmentProvider {
 			LocalDateTime startOfDay = date.atStartOfDay();
 			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
 
-			log.info("날짜 별 appointment List 호출됨");
-
 			return appointmentRepo.findByHospital_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
 				userId, startOfDay, endOfDay, pageable
 			);
@@ -124,4 +123,13 @@ public class AppointmentProvider {
 			return appointmentRepo.findByHospital_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 		}
 	}
+
+	/**
+	 * 알림 전송을 위해 Appointment 에서 User를 미리 로딩
+	 */
+	@Transactional(readOnly = true)
+	public Optional<Appointment> findByIdWithUser(Long id) {
+		return appointmentRepo.findByAppointmentIdWithUser(id);
+	}
+
 }
