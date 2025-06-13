@@ -77,12 +77,11 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 
 		// 2. 현재 유저에게 동일한 토큰이 이미 등록돼 있지 않다면 저장
 		Optional<FcmToken> latestToken = fcmTokenProvider.findLatestTokenByUserId(userId);
+
 		if (latestToken.isEmpty() || !latestToken.get().getToken().equals(token)) {
-			log.info("새로운 FCM 토큰 저장: userId={}, token={}", userId, token);
 			FcmToken newFcmToken = new FcmToken(user, token);
 			fcmTokenProvider.save(newFcmToken);
-		} else {
-			log.info("이미 저장된 최신 토큰과 동일합니다. 저장하지 않음: userId={}, token={}", userId, token);
+
 		}
 	}
 }
