@@ -1,14 +1,12 @@
 package com.ssginc8.docto.hospital.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +26,6 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingResponse;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
-import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.service.HospitalService;
 import com.ssginc8.docto.review.service.ReviewService;
