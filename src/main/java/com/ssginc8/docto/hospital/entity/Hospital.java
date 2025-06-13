@@ -124,7 +124,7 @@ public class Hospital extends BaseTimeEntity {
 	public void updateWaiting(Long waiting) {
 		this.waiting = waiting;
 	}
-
+  
 	public void updateImage(File file) {
 		this.file = file;
 	}

@@ -1,9 +1,11 @@
 package com.ssginc8.docto.medication.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.user.entity.User;
 
 // guardian 완성 시 아래 import 사용 예정
@@ -40,14 +42,28 @@ public class MedicationInformation extends BaseTimeEntity {
 	@Column(nullable = false, length = 100)
 	private String medicationName;
 
+	@Column(name = "start_date", nullable = false)
+	private LocalDate startDate;
+
+	@Column(name = "end_date", nullable = false)
+	private LocalDate endDate;
+  
 	@OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<MedicationAlertTime> alertTimes = new ArrayList<>();
 
-	public static MedicationInformation create(User user, Long patientGuardianId, String medicationName) {
+	public static MedicationInformation create(
+		User user,
+		Long patientGuardianId,
+		String medicationName,
+		LocalDate startDate,
+		LocalDate endDate)
+	{
 		MedicationInformation info = new MedicationInformation();
 		info.user = user;
 		info.patientGuardianId = patientGuardianId;
 		info.medicationName = medicationName;
+		info.startDate = startDate;
+		info.endDate = endDate;
 		return info;
 	}
 }

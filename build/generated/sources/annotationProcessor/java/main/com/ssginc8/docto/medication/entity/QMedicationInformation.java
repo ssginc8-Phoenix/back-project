@@ -32,11 +32,15 @@ public class QMedicationInformation extends EntityPathBase<MedicationInformation
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
+    public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
+
     public final NumberPath<Long> medicationId = createNumber("medicationId", Long.class);
 
     public final StringPath medicationName = createString("medicationName");
 
     public final NumberPath<Long> patientGuardianId = createNumber("patientGuardianId", Long.class);
+
+    public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

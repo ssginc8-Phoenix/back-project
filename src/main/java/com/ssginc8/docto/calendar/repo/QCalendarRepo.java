@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.querydsl.core.Tuple;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.user.entity.User;
 
 public interface QCalendarRepo {
@@ -18,4 +19,6 @@ public interface QCalendarRepo {
 	List<Tuple> fetchAppointmentsByHospitalAdmin(User hospitalAdmin, CalendarRequest request);
 
 	List<Tuple> fetchAppointmentsByDoctor(User doctor, CalendarRequest request);
+  
+	List<PatientGuardian> fetchAcceptedGuardiansByGuardianUser(User guardianUser);
 }

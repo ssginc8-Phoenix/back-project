@@ -1,9 +1,13 @@
 package com.ssginc8.docto.qna.provider;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.global.error.exception.commentException.CommentNotFoundException;
+import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.qna.repo.CommentRepo;
 
@@ -45,4 +49,6 @@ public class CommentProvider {
 	public void deleteById(Long commentId) {
 		commentRepo.deleteById(commentId);
 	}
+
+
 }

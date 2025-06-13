@@ -1,6 +1,7 @@
 package com.ssginc8.docto.medication.dto;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,5 +33,6 @@ public class MedicationScheduleRequest {
 	private List<DayOfWeek> days;
 	private Long patientGuardianId;
 
-
+	private LocalDate startDate; // ✅ 시작일 추가
+	private LocalDate endDate;   // ✅ 종료일 추가
 }

@@ -11,4 +11,5 @@ public interface MedicationInformationRepo extends JpaRepository<MedicationInfor
 	Optional<MedicationInformation> findByMedicationIdAndDeletedAtIsNull(Long medicationId);
 
 	List<MedicationInformation> findByUserAndDeletedAtIsNull(User user);
+
 }

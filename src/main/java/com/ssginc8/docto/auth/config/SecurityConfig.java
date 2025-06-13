@@ -69,6 +69,10 @@ public class SecurityConfig {
 					HttpMethod.POST, "/api/v1/patients"
 				).permitAll()
 
+				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
+
 				.requestMatchers(
 					"/api/v1/users/me", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
 					"/api/v1/users/check-password"
@@ -78,11 +82,11 @@ public class SecurityConfig {
 
 				.requestMatchers(
 					"/api/v1/patients/**", "/api/v1/calendar/patient", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
-					"/api/v1/medications/*/complete"
+					"/api/v1/medications/*/complete",  "/api/v1/guardians/{patientId}/invite"
 				).hasRole("PATIENT")
 
-				// .requestMatchers(HttpMethod.POST, "/api/v1/guardians/{patientId}/invite").hasRole("PATIENT")
-				// .requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.POST, "/api/v1/guardians/{patientId}/invite").hasRole("PATIENT")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
 
 				.requestMatchers(
 					"/api/v1/patients/**", "/api/v1/guardians/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews",
@@ -94,7 +98,8 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/v1/hospitals/**", "/api/v1/doctors/**", "/api/v1/calendar/hospital"
 				).hasRole("HOSPITAL_ADMIN")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasRole("HOSPITAL_ADMIN")
+                             
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasAnyRole("HOSPITAL_ADMIN", "GUARDIAN")
 
 				.requestMatchers(
 					"/api/v1/doctors/**", "/api/v1/qnas/*/comments/*", "/api/v1/calendar/doctor"

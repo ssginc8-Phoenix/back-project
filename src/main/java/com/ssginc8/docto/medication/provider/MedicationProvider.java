@@ -1,5 +1,7 @@
 package com.ssginc8.docto.medication.provider;
 
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.medication.entity.*;
 import com.ssginc8.docto.medication.repo.MedicationInformationRepo;
 import com.ssginc8.docto.medication.repo.MedicationLogRepo;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -24,6 +27,7 @@ public class MedicationProvider {
 	private final MedicationLogRepo medicationLogRepo;
 	private final UserProvider userProvider;
 	private final UserServiceImpl userService;
+	private final PatientGuardianProvider patientGuardianProvider;
 
 	@Transactional(readOnly = true)
 	public Page<MedicationLog> getMedicationLogsByCurrentUser(Pageable pageable) {
