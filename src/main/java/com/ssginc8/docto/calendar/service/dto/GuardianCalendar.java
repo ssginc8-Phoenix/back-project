@@ -14,7 +14,7 @@ import lombok.Getter;
 public class GuardianCalendar {
 	private static final int APPOINTMENT_PATIENT_NAME_INDEX = 3;
 	private static final int MEDICATION_PATIENT_NAME_INDEX = 4;
-	private static final int MEDICATION_PATIENT_GUARDIAN_ID_INDEX = 5; // ✅ 추가
+	private static final int MEDICATION_PATIENT_GUARDIAN_ID_INDEX = 5; 
 
 	@Getter
 	public static class CalendarItemList {
@@ -40,11 +40,11 @@ public class GuardianCalendar {
 		}
 	}
 
+
 	public static Response toResponse(List<Tuple> appointmentTuples, List<Tuple> medicationTuples, List<PatientGuardian> patientGuardians, CalendarRequest request) {
 		Map<String, List<CalendarItem>> patientCalendarMap = new HashMap<>();
 		Map<String, Long> patientNameToGuardianIdMap = new HashMap<>();
 
-		// 보호자와 연결된 모든 환자 정보 초기화 (약/진료 없어도 포함되도록)
 		for (PatientGuardian pg : patientGuardians) {
 			String patientName = pg.getPatient().getUser().getName();
 			Long pgId = pg.getPatientGuardianId();
@@ -53,7 +53,6 @@ public class GuardianCalendar {
 			patientNameToGuardianIdMap.putIfAbsent(patientName, pgId);
 		}
 
-		// 진료 일정 추가
 		Map<String, List<Tuple>> appointmentsByPatient = groupTuplesByPatientName(appointmentTuples, APPOINTMENT_PATIENT_NAME_INDEX);
 		for (Map.Entry<String, List<Tuple>> entry : appointmentsByPatient.entrySet()) {
 			String patientName = entry.getKey();
@@ -61,13 +60,11 @@ public class GuardianCalendar {
 			patientCalendarMap.computeIfAbsent(patientName, k -> new ArrayList<>()).addAll(items);
 		}
 
-		// 복약 일정 추가
 		Map<String, List<Tuple>> medicationsByPatient = groupTuplesByPatientName(medicationTuples, MEDICATION_PATIENT_NAME_INDEX);
 		for (Map.Entry<String, List<Tuple>> entry : medicationsByPatient.entrySet()) {
 			String patientName = entry.getKey();
 			List<Tuple> tuples = entry.getValue();
 
-			// guardianId가 없어도 CalendarItem은 처리 가능
 			if (!patientNameToGuardianIdMap.containsKey(patientName)) {
 				Long guardianId = tuples.get(0).get(MEDICATION_PATIENT_GUARDIAN_ID_INDEX, Long.class);
 				if (guardianId != null) {
@@ -79,7 +76,6 @@ public class GuardianCalendar {
 			patientCalendarMap.computeIfAbsent(patientName, k -> new ArrayList<>()).addAll(items);
 		}
 
-		// 최종 응답
 		List<CalendarItemList> calendarItemLists = patientCalendarMap.entrySet().stream()
 			.map(entry -> CalendarItemList.builder()
 				.name(entry.getKey())
@@ -87,7 +83,7 @@ public class GuardianCalendar {
 				.calendarItems(entry.getValue())
 				.build())
 			.toList();
-
+    
 		return Response.builder().calendarItemLists(calendarItemLists).build();
 	}
 

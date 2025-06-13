@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssginc8.docto.appointment.entity.QAppointment;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.doctor.entity.QDoctor;
+import com.ssginc8.docto.guardian.entity.QPatientGuardian;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.QPatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
@@ -81,7 +82,8 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 
 		return queryFactory
 			.select(qMedicationInformation.medicationId, qMedicationInformation.medicationName,
-				qMedicationAlertTime.timeToTake, qMedicationAlertDay.dayOfWeek.stringValue(), qPatient.user.name, qPatientGuardian.patientGuardianId, qMedicationInformation.startDate, qMedicationInformation.endDate)
+				qMedicationAlertTime.timeToTake, qMedicationAlertDay.dayOfWeek.stringValue(), qPatient.user.name, 
+              qPatientGuardian.patientGuardianId, qMedicationInformation.startDate, qMedicationInformation.endDate)
 			.from(qMedicationInformation)
 			.join(qMedicationInformation.alertTimes, qMedicationAlertTime)
 			.join(qMedicationAlertTime.alertDays, qMedicationAlertDay)

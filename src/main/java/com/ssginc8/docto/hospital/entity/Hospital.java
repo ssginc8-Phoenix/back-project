@@ -128,5 +128,7 @@ public class Hospital extends BaseTimeEntity {
 	public void updateImage(File file) {
 		this.file = file;
 	}
+
+
 }
 
