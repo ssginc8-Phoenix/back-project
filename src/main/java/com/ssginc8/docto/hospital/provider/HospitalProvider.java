@@ -148,5 +148,15 @@ public class HospitalProvider {
 		hospitalScheduleRepo.deleteAllByHospitalHospitalId(hospitalId);
 	}
 
-
+	@Transactional(readOnly = true)
+	public Hospital findByUserUserId(Long userId) {
+		return hospitalRepo.findByUserUserId(userId)
+			.orElseThrow(HospitalNotFoundException::new);
+	}
+	@Transactional(readOnly = true)
+	public Long getHospitalIdByAdminId(Long userId) {
+		return hospitalRepo.findByUserUserId(userId)
+			.map(Hospital::getHospitalId)
+			.orElseThrow(HospitalNotFoundException::new);
+	}
 }

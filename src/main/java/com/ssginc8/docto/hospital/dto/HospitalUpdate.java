@@ -26,6 +26,7 @@ public class HospitalUpdate {
 	private String notice;
 	private List<String> serviceNames;
 	private String businessRegistrationNumber;
+	private Long fileId;
 
 
 

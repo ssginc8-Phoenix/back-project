@@ -14,6 +14,7 @@ import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.dto.HospitalScheduleResponse;
 import com.ssginc8.docto.hospital.dto.HospitalUpdate;
 import com.ssginc8.docto.hospital.dto.HospitalWaitingRequest;
+import com.ssginc8.docto.hospital.dto.UserRoleRatioResponse;
 import com.ssginc8.docto.hospital.entity.Hospital;
 
 public interface HospitalService {
@@ -23,7 +24,7 @@ public interface HospitalService {
 			 Pageable pageable);
 
 		//병원 정보
-		Long saveHospital(HospitalRequest HospitalRequest);
+		Long saveHospital(Long userId, HospitalRequest HospitalRequest);
 
 		//병원 상세 조회
 		HospitalResponse getHospitalId(Long hospitalId);
@@ -66,5 +67,9 @@ public interface HospitalService {
 
 		// 로그인 사용자의 병원 정보 얻기
 		HospitalResponse getHospitalByAdminId(Long userId);
+
+		Long getHospitalIdByAdminId(Long userId);
+
+		UserRoleRatioResponse getUserRatioByHospitalId(Long hospitalId);
 }
 
