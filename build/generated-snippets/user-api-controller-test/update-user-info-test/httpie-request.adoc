@@ -1,8 +1,0 @@
-[source,bash]
-----
-$ http PATCH 'http://localhost:8080/api/v1/users/me' \
-    'Content-Type:multipart/form-data;charset=UTF-8' \
-    'Accept:application/json' \
-    'Cookie:accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4NDk2MzIsImV4cCI6MTc0ODg1MDUzMiwic3ViIjoiYTY5NzgwNjUtMDk1ZC00YmI0LWJjOWQtNzZmNDJjNjRhYzBjIiwicm9sZSI6IlJPTEVfU1lTVEVNX0FETUlOIn0.fifprhjnvsHaa9CQu8RUNlEIlhjb8G0sxCq11ccH94Y' \
-    'Cookie:refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4NDk2MzIsImV4cCI6MTc0OTQ1NDQzMiwic3ViIjoiYTY5NzgwNjUtMDk1ZC00YmI0LWJjOWQtNzZmNDJjNjRhYzBjIn0.FOGtM03TRsfpJh2YOaPQlOLlw6Nlyi_5t8_HKrdf6IA'
-----

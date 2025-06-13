@@ -1,8 +1,0 @@
-.+/api/v1/hospitals/{hospitalId}/schedules+
-|===
-|Parameter|Description
-
-|`+hospitalId+`
-|병원 ID
-
-|===

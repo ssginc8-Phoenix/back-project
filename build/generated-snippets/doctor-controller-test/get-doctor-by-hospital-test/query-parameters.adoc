@@ -1,7 +1,0 @@
-|===
-|Parameter|Description
-
-|`+hospitalId+`
-|병원 ID
-
-|===

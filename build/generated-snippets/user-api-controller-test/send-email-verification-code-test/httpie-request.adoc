@@ -1,7 +1,0 @@
-[source,bash]
-----
-$ echo '{
-  "email" : "udevel@naver.com"
-}' | http POST 'http://localhost:8080/api/v1/users/email/verify-code/send' \
-    'Content-Type:application/json;charset=UTF-8'
-----

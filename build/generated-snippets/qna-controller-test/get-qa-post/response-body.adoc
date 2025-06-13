@@ -1,7 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "message" : "Q&A 게시글이 없습니다.",
-  "code" : "Q_001"
-}
-----

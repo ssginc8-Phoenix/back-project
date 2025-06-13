@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+content+`
-|`+String+`
-|답변 본문
-
-|===

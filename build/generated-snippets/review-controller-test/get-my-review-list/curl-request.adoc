@@ -1,6 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/api/v1/users/me/reviews?page=0&size=5' -i -X GET \
-    -H 'Accept: application/json' \
-    --cookie 'accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4NDk2MzEsImV4cCI6MTc0ODg1MDUzMSwic3ViIjoiZTI2M2UwNjItOTAyOC00NDNmLThiYjYtZGJkZTMyOTMwNTEzIiwicm9sZSI6IlJPTEVfUEFUSUVOVCJ9.DyGyk0QR6ubK2FcBjLmJuXJbp5g2SumuIYtCZv4id6w;refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkb2N0b3VzZXIiLCJpYXQiOjE3NDg4NDk2MzEsImV4cCI6MTc0OTQ1NDQzMSwic3ViIjoiZTI2M2UwNjItOTAyOC00NDNmLThiYjYtZGJkZTMyOTMwNTEzIn0.sRks5nSBNkTndUuQe_OghUkZzpKNUKair3a-24-JLjU'
-----
