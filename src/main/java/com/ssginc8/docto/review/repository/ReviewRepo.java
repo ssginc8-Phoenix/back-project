@@ -33,6 +33,12 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 	})
 	Optional<Review> findWithGraphByReviewId(Long reviewId);
 
+	Page<Review> findByUserUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(
+		Long userId,
+		Pageable pageable
+	);
+
+
 
 }
 

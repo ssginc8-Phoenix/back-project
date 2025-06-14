@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.global.error.exception.reviewException.ReviewNotFoundException;
+import com.ssginc8.docto.review.dto.ReviewMyListResponse;
 import com.ssginc8.docto.review.entity.Review;
 import com.ssginc8.docto.review.repository.ReviewRepo;
 
@@ -24,7 +25,7 @@ public class ReviewProvider {
 	// 내가 쓴 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getMyReviews(Long userId, Pageable pageable) {
-		return reviewRepo.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
+		return reviewRepo.findByUserUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(userId, pageable);
 	}
 
 
@@ -66,6 +67,8 @@ public class ReviewProvider {
 			.orElseThrow(ReviewNotFoundException::new);
 		review.getKeywords().clear();
 	}
+
+
 
 
 }
