@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
@@ -24,11 +27,24 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	List<PatientGuardian> findAllByUser(User user);
 
-	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.status = 'ACCEPTED'")
+	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.status = 'ACCEPTED' AND pg.deletedAt IS NULL")
 	List<PatientGuardian> findAcceptedPatientsByUserId(Long userId);
 
 	@Query("SELECT pg FROM PatientGuardian pg WHERE pg.user.userId = :userId AND pg.patient.patientId = :patientId AND pg.deletedAt IS NULL")
 	Optional<PatientGuardian> findByUserIdAndPatientId(Long userId, Long patientId);
+
+	@Modifying
+	@Transactional
+	@Query("""
+      UPDATE PatientGuardian pg
+         SET pg.deletedAt = CURRENT_TIMESTAMP
+       WHERE pg.user.userId    = :userId
+         AND pg.patient.patientId = :patientId
+    """)
+	void softDeleteByUserIdAndPatientId(
+		@Param("userId") Long userId,
+		@Param("patientId") Long patientId
+	);
 
 	Optional<PatientGuardian> findByUserAndPatient(User user, Patient patient);
 

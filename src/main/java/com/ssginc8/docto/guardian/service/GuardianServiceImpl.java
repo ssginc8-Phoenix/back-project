@@ -113,8 +113,8 @@ public class GuardianServiceImpl implements GuardianService {
 
 	@Override
 	public void deleteMapping(Long guardianId, Long patientId) {
-		PatientGuardian pg = guardianProvider.getMapping(guardianId, patientId);
-		pg.delete();
+		// Provider 를 통해 soft‑delete 호출
+		patientGuardianProvider.deleteMapping(guardianId, patientId);
 	}
 
 	@Override
