@@ -12,6 +12,9 @@ import lombok.Getter;
 @Getter
 public class ReviewMyListResponse {
 
+	private Long appointmentId;
+
+
 	private Long reviewId;
 	private String contents;
 	private LocalDateTime createdAt;
@@ -22,9 +25,11 @@ public class ReviewMyListResponse {
 	private Long doctorId;
 	private String doctorName;
 
+
 	public static ReviewMyListResponse fromEntity(Review reviews) {
 
 		ReviewMyListResponse dto = new ReviewMyListResponse();
+
 		dto.reviewId   = reviews.getReviewId();
 		dto.contents   = reviews.getContents();
 		dto.createdAt  = reviews.getCreatedAt();
@@ -43,6 +48,12 @@ public class ReviewMyListResponse {
 		Doctor doc       = appt.getDoctor();
 		dto.doctorId     = doc.getDoctorId();
 		dto.doctorName   = doc.getUser().getName();
+
+		dto.appointmentId = appt.getAppointmentId();
+
+
+
+
 
 
 		return dto;
