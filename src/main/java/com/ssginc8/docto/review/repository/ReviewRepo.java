@@ -34,7 +34,14 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 	})
 	Optional<Review> findWithGraphByReviewId(Long reviewId);
 
-	/**
+	Page<Review> findByUserUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(
+		Long userId,
+		Pageable pageable
+	);
+
+	Optional<Review> findByReviewId(Long reviewId);
+
+  	/**
 	 * appointment Id로 review 가져오기
 	 */
 	@Query("""

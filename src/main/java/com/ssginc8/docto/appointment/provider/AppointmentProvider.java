@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
@@ -145,5 +146,15 @@ public class AppointmentProvider {
 
 	public List<User> getUsersWithNoShowSince(LocalDateTime since, Long threshold) {
 		return appointmentRepo.findUsersWithNoShowSince(since, threshold);
+	}
+
+	/**
+	 * 일일 진료 수
+	 */
+	@Transactional(readOnly = true)
+	public List<AppointmentDailyCountResponse> countAppointmentsByDateRange(Long userId, LocalDate start, LocalDate end) {
+		LocalDateTime startDateTime = start.atStartOfDay();
+		LocalDateTime endDateTime = end.atTime(LocalTime.MAX);
+		return appointmentRepo.countAppointmentsByDateRange(userId, startDateTime, endDateTime);
 	}
 }

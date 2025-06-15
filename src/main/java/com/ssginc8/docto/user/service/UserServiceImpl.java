@@ -149,21 +149,30 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public AddDoctorList.Response registerDoctor(AddDoctorList.Request request) {
-
-		List<Long> ids = new ArrayList<>();
+		List<AddDoctorList.Response.RegisteredDoctor> results = new ArrayList<>();
 
 		for (AddDoctorList.DoctorInfo doctor : request.getDoctorInfos()) {
 			userValidator.validateEmail(doctor.getEmail());
 			String encryptedPassword = bCryptPasswordEncoder.encode(doctor.getPassword());
 
-			User user = User.createDoctorByEmail(doctor.getEmail(), encryptedPassword,
-				doctor.getName(), doctor.getPhone(), Role.DOCTOR, null);
+			User user = User.createDoctorByEmail(
+				doctor.getEmail(), encryptedPassword,
+				doctor.getName(), doctor.getPhone(),
+				Role.DOCTOR, null
+			);
 
-			ids.add(userProvider.createUser(user).getUserId());
+			Long userId = userProvider.createUser(user).getUserId();
+
+			results.add(
+				AddDoctorList.Response.RegisteredDoctor.builder()
+					.email(doctor.getEmail())
+					.userId(userId)
+					.build()
+			);
 		}
 
 		return AddDoctorList.Response.builder()
-			.ids(ids)
+			.registeredDoctors(results)
 			.build();
 	}
 

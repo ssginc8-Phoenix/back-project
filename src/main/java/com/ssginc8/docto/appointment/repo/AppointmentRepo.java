@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.doctor.entity.Doctor;
@@ -129,4 +130,22 @@ public interface AppointmentRepo
 		@Param("sinceDate") LocalDateTime sinceDate,
 		@Param("threshold") Long threshold
 	);
+
+
+	@Query("SELECT new com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse(" +
+		"CAST(FUNCTION('DATE', a.appointmentTime) AS java.time.LocalDate), COUNT(a)) " +
+		"FROM Appointment a " +
+		"WHERE a.hospital.hospitalId = :hospitalId " +
+		"AND a.appointmentTime BETWEEN :start AND :end " +
+		"GROUP BY FUNCTION('DATE', a.appointmentTime) " +
+		"ORDER BY FUNCTION('DATE', a.appointmentTime)")
+	List<AppointmentDailyCountResponse> countAppointmentsByDateRange(
+		@Param("hospitalId") Long hospitalId,
+		@Param("start") LocalDateTime start,
+		@Param("end") LocalDateTime end
+	);
+
+
+
+
 }

@@ -19,4 +19,7 @@ public interface ProvidedServiceRepo extends JpaRepository<ProvidedService, Long
 
 	@Query("SELECT ps.serviceName FROM ProvidedService ps WHERE ps.hospital.hospitalId = :hospitalId")
 	List<String> findServiceNamesByHospitalId(@Param("hospitalId") Long hospitalId);
+
+	@Query("SELECT p FROM ProvidedService p WHERE p.hospital.hospitalId IN :hospitalIds")
+	List<ProvidedService> findByHospitalIds(@Param("hospitalIds") List<Long> hospitalIds);
 }

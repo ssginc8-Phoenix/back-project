@@ -6,10 +6,12 @@ import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,9 +71,8 @@ public class HospitalController {
 		@RequestParam(required = false) String query,
 		@PageableDefault(size = 10, sort = "name") Pageable pageable
 	) {
-		Page<Hospital> hospitals = hospitalService.searchHospitals(query, pageable);
-		Page<HospitalResponse> response = hospitals.map(HospitalResponse::from);
-		return ResponseEntity.ok(response);
+		Page<HospitalResponse> hospitals = hospitalService.searchHospitals(query, pageable);
+		return ResponseEntity.ok(hospitals);
 	}
 
 
@@ -89,13 +90,12 @@ public class HospitalController {
 	 * 병원 등록
 	 *
 	 */
-	@PostMapping("/hospitals")
-	public ResponseEntity<Long> registerHospital(@Valid @RequestBody HospitalRequest hospitalRequest) {
+	@PostMapping( "/hospitals")
+	public ResponseEntity<Long> registerHospital(
+		@ModelAttribute HospitalRequest hospitalRequest // MultipartFile 포함
+	) {
 		UserInfo.Response userInfo = userService.getMyInfo();
-		Long userId = userInfo.userId;
-
-		Long hospitalId = hospitalService.saveHospital(userId, hospitalRequest);
-
+		Long hospitalId = hospitalService.saveHospital(userInfo.userId, hospitalRequest);
 		return ResponseEntity.ok(hospitalId);
 	}
 
