@@ -70,7 +70,7 @@ public class ReviewProvider {
 
 	public Review getReviewById(Long reviewId) {
 		return reviewRepo.findById(reviewId)
-			.orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다. ID: " + reviewId));
+			.orElseThrow(ReviewNotFoundException::new);
 	}
 
 
