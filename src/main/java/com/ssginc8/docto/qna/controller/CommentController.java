@@ -6,6 +6,7 @@ import com.ssginc8.docto.qna.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CommentController {
 
 	// 의사 답변 생성
 	@PostMapping("/{qnaId}/comments")
+	@PreAuthorize("hasRole('DOCTOR')")
 	public ResponseEntity<CommentResponse> createComment(
 		@PathVariable Long qnaId,
 		@RequestBody @Valid CommentRequest request
