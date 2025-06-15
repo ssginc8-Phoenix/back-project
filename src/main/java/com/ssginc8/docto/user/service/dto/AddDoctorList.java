@@ -36,11 +36,18 @@ public class AddDoctorList {
 	@Getter
 	@NoArgsConstructor
 	public static class Response {
-		List<Long> ids;
+		private List<RegisteredDoctor> registeredDoctors;
 
 		@Builder
-		public Response(List<Long> ids) {
-			this.ids = ids;
+		public Response(List<RegisteredDoctor> registeredDoctors) {
+			this.registeredDoctors = registeredDoctors;
+		}
+
+		@Getter
+		@Builder
+		public static class RegisteredDoctor {
+			private String email;
+			private Long userId;
 		}
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
@@ -37,5 +38,12 @@ public interface AppointmentService {
 	// 재예약 (예약 시간만 변경)
 	AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime);
 
+
+	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, LocalDate date);
+
+	List<AppointmentDailyCountResponse> getDailyAppointmentCounts(LocalDate start, LocalDate end);
+
+
 	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, Long patientId, LocalDate date);
+
 }

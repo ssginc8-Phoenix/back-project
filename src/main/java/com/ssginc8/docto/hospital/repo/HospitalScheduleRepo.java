@@ -17,7 +17,7 @@ public interface HospitalScheduleRepo extends JpaRepository<HospitalSchedule, Lo
 
 	List<HospitalSchedule> findByHospitalHospitalId(Long hospitalId);
 
-
+	List<HospitalSchedule> findByHospitalHospitalIdIn(List<Long> hospitalIds);
 
 	void deleteAllByHospitalHospitalId(Long hospitalId);
 }

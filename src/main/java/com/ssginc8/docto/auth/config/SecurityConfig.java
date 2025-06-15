@@ -68,7 +68,18 @@ public class SecurityConfig {
 					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
 					"/api/v1/users/email/verify-code/confirm", "/api/v1/auth/session/provider-id"
 				).permitAll()
+
+				.requestMatchers(
+					HttpMethod.POST, "/api/v1/patients"
+				).permitAll()
+
+				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
+
 
 				/**
 				 * 로그인 사용자 공통

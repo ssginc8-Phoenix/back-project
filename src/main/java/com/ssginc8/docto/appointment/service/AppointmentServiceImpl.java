@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
@@ -33,13 +34,18 @@ import com.ssginc8.docto.guardian.provider.GuardianProvider;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
+import com.ssginc8.docto.hospital.service.HospitalService;
 import com.ssginc8.docto.notification.service.NotificationService;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
+
+import com.ssginc8.docto.user.entity.Role;
+
 import com.ssginc8.docto.review.provider.ReviewProvider;
+
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.UserService;
@@ -63,6 +69,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private final QaPostService qaPostService;
 	private final UserService userService;
+	private final HospitalService hospitalService;
+	private final NotificationService notificationService;
+
 
 	private final AppointmentValidator appointmentValidator;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -274,5 +283,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 				return new TimeSlotDto(slot.getStart(), slot.getEnd(), slot.isAvailable() && !overlaps);
 			}).toList();
+	}
+
+	@Override
+	public List<AppointmentDailyCountResponse> getDailyAppointmentCounts(LocalDate start, LocalDate end) {
+		User loginUser = userService.getUserFromUuid();
+		Hospital hospital = hospitalService.getByUserId(loginUser.getUserId());
+		return appointmentProvider.countAppointmentsByDateRange(hospital.getHospitalId(), start, end);
 	}
 }

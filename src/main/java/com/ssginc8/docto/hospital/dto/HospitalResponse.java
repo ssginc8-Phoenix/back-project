@@ -60,7 +60,7 @@ public class HospitalResponse {
 		this.schedules = new ArrayList<>();
 		this.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
 	}
-	public static HospitalResponse from(Hospital hospital) {
+	public static HospitalResponse from(Hospital hospital, String imageUrl, List<String> serviceNames) {
 		HospitalResponse res = new HospitalResponse();
 		res.hospitalId = hospital.getHospitalId();
 		res.name = hospital.getName();
@@ -71,11 +71,10 @@ public class HospitalResponse {
 		res.introduction = hospital.getIntroduction();
 		res.notice = hospital.getNotice();
 		res.waiting = hospital.getWaiting();
-		res.serviceNames = new ArrayList<>();
+		res.serviceNames = serviceNames != null ? serviceNames : new ArrayList<>();
 		res.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
-		if (hospital.getFile() != null) {
-			res.imageUrl = hospital.getFile().getUrl();
-		}
+		res.imageUrl = imageUrl;
 		return res;
 	}
+
 }
