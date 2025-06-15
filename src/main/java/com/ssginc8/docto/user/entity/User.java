@@ -206,4 +206,22 @@ public class User extends BaseTimeEntity {
 		// 필요한 초기화 작업 추가
 		return user;
 	}
+
+	/**
+	 * 패널티 부여
+	 * @param value
+	 */
+	public void addPenalty(Long value) {
+		if (this.penalty == null) {this.penalty = 0L;}
+		this.penalty += value;
+	}
+
+	/**
+	 * 예약 정지
+	 */
+	public void suspendFordDays(int days) {
+		this.isSuspended = true;
+		this.suspendedAt = LocalDateTime.now();
+		this.suspensionExpiresAt = LocalDateTime.now().plusDays(days);
+	}
 }

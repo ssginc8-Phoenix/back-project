@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -132,4 +134,16 @@ public class AppointmentProvider {
 		return appointmentRepo.findByAppointmentIdWithUser(id);
 	}
 
+	/**
+	 * 특정 기간 내 완료되지 않은 예약 목록 조회
+	 */
+	public List<Appointment> getAppointmentsNotCompletedBetween(LocalDateTime start, LocalDateTime end) {
+		return appointmentRepo.findAllByAppointmentTimeBetweenAndStatusNot(
+			start, end, AppointmentStatus.COMPLETED
+		);
+	}
+
+	public List<User> getUsersWithNoShowSince(LocalDateTime since, Long threshold) {
+		return appointmentRepo.findUsersWithNoShowSince(since, threshold);
+	}
 }

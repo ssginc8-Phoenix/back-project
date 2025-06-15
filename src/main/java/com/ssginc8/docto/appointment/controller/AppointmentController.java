@@ -66,6 +66,18 @@ public class AppointmentController {
 	}
 
 	/**
+	 * ✅ 진료 예약 취소
+	 * URL: /api/v1/appointments/{appointmentId}/cancel
+	 * Method: PATCH
+	 */
+	@PatchMapping("/appointments/{appointmentId}/cancel")
+	public ResponseEntity<Void> cancelAppointment(@PathVariable Long appointmentId) {
+		appointmentService.cancelAppointment(appointmentId);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
 	 * ✅ 재예약
 	 * URL: /api/v1/appointments/{appointmentId}/reschedule
 	 * Method: POST

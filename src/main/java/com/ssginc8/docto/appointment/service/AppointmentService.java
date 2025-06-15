@@ -38,4 +38,6 @@ public interface AppointmentService {
 	AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime);
 
 	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, Long patientId, LocalDate date);
+
+	void cancelAppointment(Long appointmentId);
 }

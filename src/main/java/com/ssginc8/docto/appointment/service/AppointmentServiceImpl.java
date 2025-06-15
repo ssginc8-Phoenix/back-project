@@ -26,6 +26,8 @@ import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.appointment.validator.AppointmentValidator;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
+import com.ssginc8.docto.global.error.exception.appointmentException.IsSuspendedUserException;
+import com.ssginc8.docto.global.error.exception.appointmentException.NotCanceledException;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
@@ -150,6 +152,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public void requestAppointment(AppointmentRequest request) {
 		// 1. 보호자 (user)와 환자 (patient) 조회
 		User guardian = userProvider.getUserById(request.getUserId());
+
+		if (guardian.getIsSuspended()) {
+			throw new IsSuspendedUserException();
+		}
+
 		Patient patient = patientProvider.getActivePatient(request.getPatientId());
 		
 		// 2. 보호자-환자 관계 유효성 검사
@@ -225,6 +232,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime) {
 		Appointment original = appointmentProvider.getAppointmentById(appointmentId);
+
+		User guardian = original.getPatientGuardian().getUser();
+
+		if (guardian.getIsSuspended()) {
+			throw new IsSuspendedUserException();
+		}
+
 		original.changeStatus(AppointmentStatus.CANCELED);
 		String qaContent = qaPostProvider.getQaPostByAppointment(original);
 
@@ -245,6 +259,33 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(newAppointment);
 		return AppointmentResponse.fromEntity(newAppointment, qaContent);
+	}
+
+	/**
+	 * 예약 취소
+	 */
+	public void cancelAppointment(Long appointmentId) {
+		Appointment appointment = appointmentProvider.getAppointmentById(appointmentId);
+		User user = appointment.getPatientGuardian().getUser();
+
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime appointmentTime = appointment.getAppointmentTime();
+
+		// 예약 상태 확인
+		if (appointment.getStatus() != AppointmentStatus.REQUESTED &&
+			appointment.getStatus() != AppointmentStatus.CONFIRMED) {
+			throw new NotCanceledException();
+		}
+
+		// 상태 변경
+		appointment.changeStatus(AppointmentStatus.CANCELED);
+		appointmentProvider.save(appointment);
+
+		// 1시간 이내 취소 -> 패널티 부여
+		if (now.isAfter(appointmentTime.minusHours(1))) {
+			user.addPenalty(1L);
+			appointment.changeStatus(AppointmentStatus.NO_SHOW);
+		}
 	}
 
 	@Override
