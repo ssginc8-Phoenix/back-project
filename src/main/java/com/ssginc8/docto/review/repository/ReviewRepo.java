@@ -38,6 +38,8 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 		Pageable pageable
 	);
 
+	Optional<Review> findByReviewId(Long reviewId);
+
 
 
 }

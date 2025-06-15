@@ -152,9 +152,10 @@ public class ReviewServiceImpl implements ReviewService {
 	//리뷰 신고 횟수 추가 기능
 	@Override
 	@Transactional
-	public void reportReview(Long reviewId) {
-		Review review = reviewProvider.getById(reviewId);
-		review.incrementReportCount();
+	public void reportReview(Long reviewId, String reason) {
+		Review review = reviewProvider.getReviewById(reviewId);
+		review.setReportCount(review.getReportCount() + 1);
+		review.setReportReason(reason);
 		reviewProvider.save(review);
 	}
 

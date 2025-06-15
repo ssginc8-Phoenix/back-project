@@ -68,6 +68,11 @@ public class ReviewProvider {
 		review.getKeywords().clear();
 	}
 
+	public Review getReviewById(Long reviewId) {
+		return reviewRepo.findById(reviewId)
+			.orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다. ID: " + reviewId));
+	}
+
 
 
 
