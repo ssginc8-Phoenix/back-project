@@ -22,7 +22,8 @@ public class DoctorResponse {
 
 
 	public DoctorResponse(Long doctorId, String name, String specialization, String name1, Long capacityPerHalfHour, String address) {
-		this.doctorId = doctorId;
+		
+    this.doctorId = doctorId;
 		this.name = name;
 		this.specialization = specialization;
 		this.hospitalName = name1;

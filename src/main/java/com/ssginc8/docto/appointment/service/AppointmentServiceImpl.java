@@ -3,6 +3,7 @@ package com.ssginc8.docto.appointment.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.guardian.provider.GuardianProvider;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
@@ -39,11 +41,15 @@ import com.ssginc8.docto.patient.provider.PatientProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
+
 import com.ssginc8.docto.user.entity.Role;
+
+import com.ssginc8.docto.review.provider.ReviewProvider;
+
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 import com.ssginc8.docto.user.service.UserService;
-import com.ssginc8.docto.util.TimeSlotUtil;
+import com.ssginc8.docto.appointment.util.TimeSlotUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -59,11 +65,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private final DoctorProvider doctorProvider;
 	private final DoctorScheduleProvider doctorScheduleProvider;
 	private final QaPostProvider qaPostProvider;
+	private final ReviewProvider reviewProvider;
 
 	private final QaPostService qaPostService;
 	private final UserService userService;
 	private final HospitalService hospitalService;
 	private final NotificationService notificationService;
+
 
 	private final AppointmentValidator appointmentValidator;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -89,23 +97,43 @@ public class AppointmentServiceImpl implements AppointmentService {
 		// 1. 로그인한 사용자 가져오기
 		User loginUser = userService.getUserFromUuid();
 
+		Page<Appointment> appointments;
+
 		// 2. 역할에 따라 분기 처리
 		switch (loginUser.getRole()) {
 			case PATIENT:
-				return appointmentProvider.getAppointmentsByPatient(loginUser.getUserId(), pageable)
-					.map(AppointmentListResponse::fromEntity);
+				appointments =  appointmentProvider.getAppointmentsByPatient(loginUser.getUserId(), pageable);
+				break;
+
 			case GUARDIAN:
-				return appointmentProvider.getAppointmentsByGuardian(loginUser.getUserId(), pageable)
-					.map(AppointmentListResponse::fromEntity);
+				appointments = appointmentProvider.getAppointmentsByGuardian(loginUser.getUserId(), pageable);
+				break;
+
 			case DOCTOR:
 				return appointmentProvider.getAppointmentsByDoctor(loginUser.getUserId(), pageable)
 					.map(AppointmentListResponse::fromEntity);
+
 			case HOSPITAL_ADMIN:
 				return appointmentProvider.getAppointmentsByHospital(loginUser.getUserId(), pageable, date)
 					.map(AppointmentListResponse::fromEntity);
 			default:
 				throw new RoleNotFoundException();
 		}
+
+		// 리뷰가 작성된 appointmentId만 추출
+		List<Long> appointmentIds = appointments.stream()
+			.map(Appointment::getAppointmentId)
+			.toList();
+
+		Set<Long> reviewedAppointmentIds = reviewProvider.getReviewedAppointmentIds(appointmentIds);
+
+		// 리뷰 여부 포함해서 DTO 변환
+		return appointments.map(app ->
+			AppointmentListResponse.fromEntity(
+				app,
+				reviewedAppointmentIds.contains(app.getAppointmentId())
+			)
+		);
 	}
 
 	/**
@@ -229,15 +257,32 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, LocalDate date) {
+	public List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, Long patientId, LocalDate date) {
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
 		DoctorSchedule schedule = doctorScheduleProvider.getScheduleByDoctorAndDay(doctor, date.getDayOfWeek());
+		Patient patient = patientProvider.getActivePatient(patientId);
 
 		LocalDateTime baseDate = date.atStartOfDay();
 
-		return TimeSlotUtil.getTimeSlotsWithAvailability(
+		List<TimeSlotDto> slots = TimeSlotUtil.getTimeSlotsWithAvailability(
 			schedule, doctor, baseDate, appointmentProvider
 		);
+
+		return slots.stream()
+			.map(slot -> {
+				// LocalDateTime으로 변환
+				LocalDateTime slotStart = baseDate.with(slot.getStart());
+				LocalDateTime slotEnd = baseDate.with(slot.getEnd());
+
+				boolean overlaps =
+					appointmentProvider.existsByPatientAndTimeRange(
+						patientId,
+						slotStart.minusMinutes(15),
+						slotEnd.plusMinutes(15)
+					);
+
+				return new TimeSlotDto(slot.getStart(), slot.getEnd(), slot.isAvailable() && !overlaps);
+			}).toList();
 	}
 
 	@Override
