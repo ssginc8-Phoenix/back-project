@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.qna.entity.QaPost;
+import com.ssginc8.docto.qna.entity.QaStatus;
 
 public interface QaPostRepo extends JpaRepository<QaPost, Long> {
 
@@ -20,4 +21,6 @@ public interface QaPostRepo extends JpaRepository<QaPost, Long> {
 		Long userId,
 		Pageable pageable
 	);
+
+	Page<QaPost> findAllByStatus(QaStatus status, Pageable pageable);
 }

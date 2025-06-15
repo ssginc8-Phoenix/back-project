@@ -5,6 +5,8 @@ import com.ssginc8.docto.global.base.BaseTimeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ import lombok.Setter;
 @Table(name = "tbl_qa_post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 public class QaPost extends BaseTimeEntity {
 
 	@Id
@@ -41,6 +44,10 @@ public class QaPost extends BaseTimeEntity {
 		qaPost.content = content;
 		return qaPost;
 	}
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private QaStatus status = QaStatus.PENDING;
 
 
 }
