@@ -33,4 +33,5 @@ public interface GuardianService {
 
 	void updateStatusByInviteCode(String inviteCode, String status);
 
+	void deleteMappingByMappingId(Long mappingId);
 }

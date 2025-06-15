@@ -133,8 +133,14 @@ public class GuardianServiceImpl implements GuardianService {
 	@Transactional(readOnly = true)
 	public List<GuardianResponse> getGuardiansByPatientId(Long patientId) {
 		return patientGuardianProvider.getAllAcceptedGuardiansByPatientId(patientId).stream()
-			.map(pg -> GuardianResponse.from(pg.getUser().getName()))
+			.map(pg -> GuardianResponse.from(pg.getPatientGuardianId(), pg.getUser().getName()))
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public void deleteMappingByMappingId(Long mappingId) {
+		PatientGuardian pg = guardianProvider.getById(mappingId);
+		pg.delete();  // BaseTimeEntity 의 delete() 호출 (soft delete)
 	}
 
 	private String generateInviteCode(Long patientId, Long userId) {

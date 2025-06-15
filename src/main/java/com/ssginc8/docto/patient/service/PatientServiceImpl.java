@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 @Service
 @RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
@@ -39,17 +42,17 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public PatientResponse getPatientByUserId(Long userId) {
-		Patient patient = patientProvider.getPatientByUserId(userId);
-		return PatientResponse.from(patient);
-	}
-
-	@Override
 	@Transactional
 	public void deletePatient(Long patientId) {
 		Patient patient = patientProvider.getActivePatient(patientId);
 		patient.delete(); // BaseTimeEntity의 soft delete
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public PatientResponse getPatientByUserId(Long userId) {
+		Patient patient = patientProvider.getPatientByUserId(userId);
+		return PatientResponse.from(patient);
 	}
 
 	private String encryptRRN(String rrn) {

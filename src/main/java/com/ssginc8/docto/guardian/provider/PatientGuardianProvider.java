@@ -43,8 +43,14 @@ public class PatientGuardianProvider {
 			.filter(pg -> pg.getStatus() == Status.ACCEPTED) // 수락된 상태만
 			.orElseThrow(GuardianMappingNotFoundException::new); // 보호자-환자 매핑 없으면 에러
 	}
+	// @Transactional(readOnly = true)
+	// public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
+	// 	return patientGuardianRepo.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED);
+	// }
+
 	@Transactional(readOnly = true)
 	public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
+		// return patientGuardianRepo.findByPatient_PatientIdAndStatusAndDeletedAtIsNull(patientId, Status.ACCEPTED);
 		return patientGuardianRepo
 			.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED)
 			.stream()
