@@ -2,6 +2,7 @@ package com.ssginc8.docto.review.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,14 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 
 	Optional<Review> findByReviewId(Long reviewId);
 
-
-
+  	/**
+	 * appointment Id로 review 가져오기
+	 */
+	@Query("""
+		SELECT r.appointment.appointmentId
+		FROM Review r
+		WHERE r.appointment.appointmentId IN :appointmentIds
+	""")
+	Set<Long> findAppointmentIdsWithReview(@Param("appointmentIds") List<Long> appointmentIds);
 }
 

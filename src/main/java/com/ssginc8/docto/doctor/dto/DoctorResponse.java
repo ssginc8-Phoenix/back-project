@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DoctorResponse {
 	private Long doctorId;
-	private Specialization specialization;
+	private String specialization;
 	private String username;
 	private String hospitalName;
 	private Long capacityPerHalfHour;
@@ -19,7 +19,7 @@ public class DoctorResponse {
 	public DoctorResponse(Long doctorId, String username, Specialization specialization, String hospitalName, Long capacityPerHalfHour) {
 		this.doctorId = doctorId;
 		this.username = username;
-		this.specialization = specialization;
+		this.specialization = specialization.getDescription();
 		this.hospitalName = hospitalName;
 		this.capacityPerHalfHour = capacityPerHalfHour;
 	}

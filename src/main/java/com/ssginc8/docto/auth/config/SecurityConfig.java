@@ -56,61 +56,103 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
 
+				/**
+				 * Public : 인증 없이 접근 가능
+				 */
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 				.requestMatchers(
-					"/static/**", "/docs/index.html", "/api/v1/auth/**", "/api/v1/users/register",
-					"/api/v1/users/social",
-					"/api/v1/users/doctors", "/api/v1/users/check-email", "/api/v1/users/email/find",
+					"/static/**", "/docs/index.html",
+					"/api/v1/auth/**", "/api/v1/users/register", "/api/v1/users/social", "/api/v1/users/doctors",
+					"/api/v1/users/check-email", "/api/v1/users/email/find",
 					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
 					"/api/v1/users/email/verify-code/confirm", "/api/v1/auth/session/provider-id"
 				).permitAll()
-				.requestMatchers(
-					HttpMethod.POST, "/api/v1/patients"
-				).permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
-
+				/**
+				 * 로그인 사용자 공통
+				 */
 				.requestMatchers(
-					"/api/v1/users/me", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",
+					"/api/v1/users/me",
+					"/api/v1/reviews/*/report", "/api/v1/csrooms/**",
 					"/api/v1/users/check-password"
-				).authenticated()// 로그인 한 사용자만 접근 가능
-				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**", "/api/v1/doctors/**",
-					"/api/v1/appointments/**", "/api/v1/reviews", "/api/v1/qnas/**").authenticated()
+				).authenticated()
 
+				.requestMatchers(HttpMethod.GET,
+					"/api/v1/hospitals/**",
+					"/api/v1/doctors/**",
+					"/api/v1/appointments/**",
+					"/api/v1/reviews",
+					"/api/v1/qnas/**")
+				.authenticated()
+
+				/**
+				 * 환자 전용
+				 */
 				.requestMatchers(
-					"/api/v1/patients/**", "/api/v1/calendar/patient", "/api/v1/reviews/**", "/api/v1/users/me/reviews", "/api/v1/medications/**",
-					"/api/v1/medications/*/complete",  "/api/v1/guardians/{patientId}/invite"
+					"/api/v1/patients/**",
+					"/api/v1/calendar/patient",
+					"/api/v1/medications/**",
+					"/api/v1/medications/*/complete",
+					"/api/v1/guardians/{patientId}/invite"
 				).hasRole("PATIENT")
 
 				.requestMatchers(HttpMethod.POST, "/api/v1/guardians/{patientId}/invite").hasRole("PATIENT")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
 
+				/**
+				 * 보호자 전용
+				 */
 				.requestMatchers(
-					"/api/v1/patients/**", "/api/v1/guardians/**", "/api/v1/reviews/**", "/api/v1/users/me/reviews",
-					"/api/v1/qnas/**", "/api/v1/medications/**", "/api/v1/calendar/guardian"
+					"/api/v1/patients/**",
+					"/api/v1/guardians/**",
+					"/api/v1/reviews/**",
+					"/api/v1/qnas/**",
+					"/api/v1/medications/**",
+					"/api/v1/calendar/guardian"
 				).hasRole("GUARDIAN")
+
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasRole("GUARDIAN")
 
+				/**
+				 * 환자 + 보호자 공통
+				 */
+				.requestMatchers("/api/v1/users/me/reviews").hasAnyRole("PATIENT", "GUARDIAN")
+				.requestMatchers("/api/v1/reviews/**").hasAnyRole("PATIENT", "GUARDIAN")
+
+				/**
+				 * 병원 관리자 전용
+				 */
 				.requestMatchers(
-					"/api/v1/hospitals/**", "/api/v1/doctors/**", "/api/v1/calendar/hospital"
+					"/api/v1/hospitals/**",
+					"/api/v1/doctors/**",
+					"/api/v1/calendar/hospital"
 				).hasRole("HOSPITAL_ADMIN")
-                             
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasAnyRole("HOSPITAL_ADMIN", "GUARDIAN")
 
+				/**
+				 * 의사 전용
+				 */
 				.requestMatchers(
-					"/api/v1/doctors/**", "/api/v1/qnas/*/comments/*", "/api/v1/calendar/doctor"
+					"/api/v1/doctors/**",
+					"/api/v1/qnas/*/comments/*",
+					"/api/v1/calendar/doctor"
 				).hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**").hasRole("DOCTOR")
 
-				.requestMatchers(
-					"/api/v1/admin/**"
-				).hasRole("SYSTEM_ADMIN")
+				/**
+				 * 병원 관리자 + 보호자 공통
+				 */
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/appointments/**").hasAnyRole("HOSPITAL_ADMIN", "GUARDIAN")
+
+				/**
+				 * 시스템 관리자 전용
+				 */
+				.requestMatchers("/api/v1/admin/**").hasRole("SYSTEM_ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasRole("SYSTEM_ADMIN")
-				.anyRequest().authenticated()) // 그외 모든 요청 인증 필요
+
+				.anyRequest().authenticated()
+			) // 그외 모든 요청 인증 필요
 			.csrf(AbstractHttpConfigurer::disable)
 			.oauth2Login(oauth2 -> oauth2
 				// "api/v1/auth/login" 뒤에 /kakao or /naver 붙여서 로그인 요청

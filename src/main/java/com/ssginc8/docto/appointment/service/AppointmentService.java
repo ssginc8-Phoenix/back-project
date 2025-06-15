@@ -37,5 +37,5 @@ public interface AppointmentService {
 	// 재예약 (예약 시간만 변경)
 	AppointmentResponse rescheduleAppointment(Long appointmentId, LocalDateTime newTime);
 
-	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, LocalDate date);
+	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, Long patientId, LocalDate date);
 }
