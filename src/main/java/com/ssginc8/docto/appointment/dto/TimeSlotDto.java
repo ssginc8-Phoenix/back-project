@@ -16,4 +16,10 @@ public class TimeSlotDto {
 		this.end = end.toLocalTime();
 		this.available = available;
 	}
+
+	public TimeSlotDto(LocalTime start, LocalTime end, boolean available) {
+		this.start = start;
+		this.end = end;
+		this.available = available;
+	}
 }
