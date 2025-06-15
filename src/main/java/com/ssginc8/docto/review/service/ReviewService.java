@@ -31,7 +31,7 @@ public interface ReviewService {
 
 
 	//리뷰 신고
-	void reportReview(Long reviewId);
+	void reportReview(Long reviewId, String reason);
 
 
 }
