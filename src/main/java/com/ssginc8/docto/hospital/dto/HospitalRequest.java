@@ -5,6 +5,8 @@ package com.ssginc8.docto.hospital.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssginc8.docto.file.entity.File;
 
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +47,7 @@ public class HospitalRequest {
 
 	private BigDecimal longitude;
 
-	private Long fileId;
+	private MultipartFile file;
 
 
 

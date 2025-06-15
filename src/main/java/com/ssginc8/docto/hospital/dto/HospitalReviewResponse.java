@@ -18,6 +18,7 @@ public class HospitalReviewResponse {
 	private LocalDateTime createdAt;
 	private Long reportCount;
 	private List<String> keywords;
+	private String writerName;
 
 	public static HospitalReviewResponse fromEntity(Review review) {
 		HospitalReviewResponse dto = new HospitalReviewResponse();
@@ -28,6 +29,13 @@ public class HospitalReviewResponse {
 		dto.keywords    = review.getKeywords().stream()
 			.map(Enum::name)
 			.toList();
+
+		dto.writerName = review.getAppointment()
+			.getPatientGuardian()
+			.getPatient()
+			.getUser()
+			.getName();
+
 		return dto;
 	}
 

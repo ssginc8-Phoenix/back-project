@@ -1,4 +1,4 @@
-package com.ssginc8.docto.util;
+package com.ssginc8.docto.appointment.util;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

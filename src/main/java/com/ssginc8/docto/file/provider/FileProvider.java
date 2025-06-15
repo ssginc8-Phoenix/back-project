@@ -1,5 +1,8 @@
 package com.ssginc8.docto.file.provider;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.ssginc8.docto.file.entity.File;
@@ -18,8 +21,14 @@ public class FileProvider {
 		return fileRepo.save(file);
 	}
 
-	public File findById(Long fileId) {
+
+
+	public String getFileUrlById(Long fileId) {
+		if (fileId == null) return null;
 		return fileRepo.findById(fileId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 파일이 존재하지 않습니다."));
+			.map(File::getUrl)
+			.orElse(null);
 	}
+
+
 }
