@@ -72,6 +72,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/medications/**").hasRole("GUARDIAN")
 
 				.requestMatchers(
 					"/api/v1/users/me", "/api/v1/reviews/*/report", "/api/v1/csrooms/**",

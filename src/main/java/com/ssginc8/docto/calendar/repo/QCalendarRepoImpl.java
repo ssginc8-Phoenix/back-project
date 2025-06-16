@@ -47,7 +47,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(alertTime.alertDays, alertDay)
 			.join(patientGuardian).on(information.patientGuardianId.eq(patientGuardian.patientGuardianId))
 			.join(patientGuardian.patient, qpatient)
-			.where(qpatient.user.eq(patient), patientGuardian.status.eq(Status.ACCEPTED), information.deletedAt.isNull())
+			.where(qpatient.user.eq(patient), patientGuardian.status.eq(Status.ACCEPTED), information.deletedAt.isNull(), patientGuardian.deletedAt.isNull())
 			.fetch();
 	}
 
@@ -88,7 +88,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(qMedicationAlertTime.alertDays, qMedicationAlertDay)
 			.join(qPatientGuardian).on(qMedicationInformation.patientGuardianId.eq(qPatientGuardian.patientGuardianId))
 			.join(qPatientGuardian.patient, qPatient)
-			.where(qPatientGuardian.user.eq(guardian),qPatientGuardian.status.eq(Status.ACCEPTED), qMedicationInformation.deletedAt.isNull())
+			.where(qPatientGuardian.user.eq(guardian),qPatientGuardian.status.eq(Status.ACCEPTED), qMedicationInformation.deletedAt.isNull(), qPatientGuardian.deletedAt.isNull())
 			.fetch();
 	}
 
@@ -105,9 +105,10 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(qAppointment.hospital, qHospital)
 			.join(qAppointment.patientGuardian, qPatientGuardian)
 			.join(qPatientGuardian.patient, qPatient)
-			.where(qPatientGuardian.user.eq(guardian), qAppointment.deletedAt.isNull(),
+			.where(qPatientGuardian.user.eq(guardian), qPatientGuardian.status.eq(Status.ACCEPTED), qAppointment.deletedAt.isNull(),
 				qAppointment.appointmentTime.goe(request.getStartDateTime()),
-				qAppointment.appointmentTime.lt(request.getEndDateTime()))
+				qAppointment.appointmentTime.lt(request.getEndDateTime()),
+				qPatientGuardian.deletedAt.isNull())
 			.orderBy(qAppointment.appointmentTime.asc())
 			.fetch();
 	}
@@ -156,7 +157,8 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		return queryFactory
 			.selectFrom(qPatientGuardian)
 			.where(qPatientGuardian.user.eq(guardianUser),
-				qPatientGuardian.status.eq(Status.ACCEPTED))
+				qPatientGuardian.status.eq(Status.ACCEPTED),
+				qPatientGuardian.deletedAt.isNull())
 			.fetch();
 	}
 }
