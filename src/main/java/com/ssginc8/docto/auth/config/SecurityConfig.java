@@ -78,6 +78,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/doctors/**").hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
 
 

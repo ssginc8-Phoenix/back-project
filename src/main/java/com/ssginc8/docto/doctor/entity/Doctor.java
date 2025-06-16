@@ -51,6 +51,8 @@ public class Doctor extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Long capacityPerHalfHour;
 
+	private Long fileId;
+
 	public Doctor(Hospital hospital, Specialization specialization, User user) {
 		this.hospital = hospital;
 		this.specialization = specialization;

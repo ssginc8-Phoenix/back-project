@@ -206,4 +206,13 @@ public class User extends BaseTimeEntity {
 		// 필요한 초기화 작업 추가
 		return user;
 	}
+
+	public void updatePhoneAndProfileImage(String phone, File profileImage) {
+		if (StringUtils.isNotBlank(phone)) {
+			this.phone = phone;
+		}
+		if (profileImage != null) {
+			this.profileImage = profileImage;
+		}
+	}
 }

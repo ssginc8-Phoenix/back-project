@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssginc8.docto.doctor.dto.DoctorProfileUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorSaveRequest;
 import com.ssginc8.docto.doctor.dto.DoctorResponse;
 import com.ssginc8.docto.doctor.dto.DoctorScheduleList;
@@ -37,4 +39,6 @@ public interface DoctorService {
 	void updateCapacityPerHalfHour(Long doctorId, Long capacityPerHalfHour);
 
 	DoctorResponse getDoctorInfoByUserId(Long doctorId);
+
+	void updateDoctorProfile(Long doctorId, DoctorProfileUpdateRequest request, MultipartFile profileImage);
 }

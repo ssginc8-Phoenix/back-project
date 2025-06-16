@@ -1,5 +1,7 @@
 package com.ssginc8.docto.doctor.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssginc8.docto.doctor.entity.Specialization;
 
 import lombok.Builder;
@@ -14,6 +16,7 @@ public class DoctorSaveRequest {
 	private Long hospitalId;
 	private Specialization specialization;
 	private Long userId;
+
 
 	public DoctorSaveRequest( Long hospitalId, Specialization specialization, Long userId) {
 
