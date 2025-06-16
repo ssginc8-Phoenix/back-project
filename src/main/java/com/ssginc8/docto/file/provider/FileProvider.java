@@ -17,4 +17,17 @@ public class FileProvider {
 	public File saveFile(File file) {
 		return fileRepo.save(file);
 	}
+
+	/**
+	 * 파일 ID로 S3 URL을 조회합니다.
+	 * @param fileId tbl_file PK
+	 * @return URL 문자열 또는 null
+	 */
+	public String getFileUrlById(Long fileId) {
+		if (fileId == null) {
+			return null;
+		}
+		// repository에 선언된 getFileUrlById(@Param("fileId") Long) 호출
+		return fileRepo.getFileUrlById(fileId);
+	}
 }
