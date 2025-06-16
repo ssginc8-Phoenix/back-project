@@ -48,6 +48,7 @@ public enum ErrorCode {
 	// File 관련 에러(F_)
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
 	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
+	FILE_NOT_FOUNT(HttpStatus.NOT_FOUND, "F_003", "파일을 찾을 수 없습니다"),
 
 	//Doctor 관련 에러(D_)
 	DOCTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "D_001", "해당 의사가 존재하지 않습니다."),
@@ -95,8 +96,11 @@ public enum ErrorCode {
 	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),
 	MEDICATION_ALERT_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_002", "복약 시간을 찾을 수 없습니다."),
 	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다."),
-  
-  // Review 관련 에러(R_)
+	INVALID_MEDICATION_DATE(HttpStatus.BAD_REQUEST, "MD_004", "시작일이 종료일보다 이후일 수 없습니다."),
+	MEDICATION_DATE_RANGE_INVALID(HttpStatus.BAD_REQUEST, "MD_005", "복약 기간이 유효하지 않습니다."),
+	MEDICATION_ALERT_DAY_NOT_FOUNT(HttpStatus.NOT_FOUND, "MD_006", "복약 요일을 찾을 수 없습니다."),
+
+	// Review 관련 에러(R_)
 	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다."),
 
 	//Notification 관련 에러 (N_)
