@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HospitalReviewResponse {
 
+
+	private String name;
 	private Long reviewId;
 	private String contents;
 	private LocalDateTime createdAt;
@@ -21,6 +23,8 @@ public class HospitalReviewResponse {
 
 	public static HospitalReviewResponse fromEntity(Review review) {
 		HospitalReviewResponse dto = new HospitalReviewResponse();
+
+		dto.name = review.getUser().getName();
 		dto.reviewId    = review.getReviewId();
 		dto.contents    = review.getContents();
 		dto.createdAt   = review.getCreatedAt();

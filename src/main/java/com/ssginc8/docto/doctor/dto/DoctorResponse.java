@@ -29,10 +29,11 @@ public class DoctorResponse {
 		this.hospitalName = name1;
 		this.capacityPerHalfHour = capacityPerHalfHour;
 		this.address = address;
+
 	}
 
 
-	public static DoctorResponse from(Doctor doctor) {
+	public static DoctorResponse from(Doctor doctor ) {
 		return new DoctorResponse(
 			doctor.getDoctorId(),
 			doctor.getUser().getName(),
@@ -40,6 +41,7 @@ public class DoctorResponse {
 			doctor.getHospital().getName(),
 			doctor.getCapacityPerHalfHour(),
 			doctor.getHospital().getAddress()
+
 		);
 	}
 

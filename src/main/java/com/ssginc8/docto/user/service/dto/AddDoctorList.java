@@ -24,6 +24,10 @@ public class AddDoctorList {
 
 		@NotBlank(message = "휴대폰 번호는 비어있을 수 없습니다.")
 		private String phone;
+
+		private Long hospitalId;
+
+		private String specialization;
 	}
 
 	@Getter
@@ -48,6 +52,8 @@ public class AddDoctorList {
 		public static class RegisteredDoctor {
 			private String email;
 			private Long userId;
+			private String specialization;
+			private Long hospitalId;
 		}
 	}
 }
