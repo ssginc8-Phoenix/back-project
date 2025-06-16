@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.global.error.exception.qnaException.QnaNotFoundException;
+import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.entity.QaPost;
+import com.ssginc8.docto.qna.entity.QaStatus;
 import com.ssginc8.docto.qna.repo.QaPostRepo;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -51,6 +54,23 @@ public class QaPostProvider {
 		// Appointment→patientGuardian→user→userId 경로에 맞춘 repo 메서드 호출
 		return qaPostRepo.findAllByAppointment_PatientGuardian_User_UserId(userId, pageable);
 	}
+
+	//상태 + 페이징 조회
+	public Page<QaPostResponse> getPostsByStatus(QaStatus status, Pageable pageable) {
+		return qaPostRepo.findAllByStatus(status, pageable)
+			.map(QaPostResponse::fromEntity);
+	}
+
+	//단건 상태 변경 후 DTO 반환
+	public QaPostResponse changeStatus(Long qnaId, QaStatus status) {
+		QaPost post =qaPostRepo.findById(qnaId)
+			.orElseThrow(() -> new EntityNotFoundException("QnA not found: " + qnaId));
+		post.setStatus(status);
+		qaPostRepo.save(post);
+
+		return QaPostResponse.fromEntity(post);
+	}
+
 
 
 }

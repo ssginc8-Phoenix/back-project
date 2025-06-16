@@ -59,4 +59,8 @@ public class UserProvider {
 	public User createUser(User user) {
 		return userRepo.save(user);
 	}
+
+	public User save(User user) {
+		return userRepo.save(user);
+	}
 }

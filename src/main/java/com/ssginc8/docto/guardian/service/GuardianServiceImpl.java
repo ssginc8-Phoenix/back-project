@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.global.error.exception.guardianException.GuardianAlreadyExistsException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidInviteCodeException;
 import com.ssginc8.docto.global.error.exception.guardianException.InvalidGuardianStatusException;
@@ -44,6 +46,10 @@ public class GuardianServiceImpl implements GuardianService {
 	private final PatientProvider patientProvider;
 	private final UserProvider userProvider;
 	private final ApplicationEventPublisher eventPublisher;
+	private final FileProvider fileProvider;
+
+	@Value("${cloud.default.image.address}")
+	private String defaultProfileUrl;
 
 	@Override
 	public GuardianInviteResponse inviteGuardian(Long patientId, String guardianEmail) {
@@ -113,19 +119,36 @@ public class GuardianServiceImpl implements GuardianService {
 
 	@Override
 	public void deleteMapping(Long guardianId, Long patientId) {
-		PatientGuardian pg = guardianProvider.getMapping(guardianId, patientId);
-		pg.delete();
+		// Provider 를 통해 soft‑delete 호출
+		patientGuardianProvider.deleteMapping(guardianId, patientId);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<PatientSummaryResponse> getAllAcceptedMappings(Long guardianId) {
 		return guardianProvider.getAllAcceptedMappings(guardianId).stream()
-			.map(pg -> PatientSummaryResponse.of(
-				pg.getPatient().getPatientId(),
-				pg.getPatient().getUser().getName(),
-				decryptRRN(pg.getPatient().getResidentRegistrationNumber()) // 복호화된 주민등록번호
-			))
+			.map(pg -> {
+				Patient patient = pg.getPatient();
+				User user = patient.getUser();
+				// 1) DTO 기본 정보 세팅
+				PatientSummaryResponse dto = PatientSummaryResponse.of(
+					patient.getPatientId(),
+					user.getName(),
+					decryptRRN(patient.getResidentRegistrationNumber())
+				);
+				// 2) 프로필 이미지 URL 가져오기 (FileProvider)
+				Long fileId = user.getProfileImage() != null
+					? user.getProfileImage().getFileId()
+					: null;
+				String url = fileProvider.getFileUrlById(fileId);
+				// 3) URL 이 없으면 default
+				dto.setProfileImageUrl(
+					(url != null && !url.isBlank())
+						? url
+						: defaultProfileUrl
+				);
+				return dto;
+			})
 			.collect(Collectors.toList());
 	}
 
@@ -133,8 +156,14 @@ public class GuardianServiceImpl implements GuardianService {
 	@Transactional(readOnly = true)
 	public List<GuardianResponse> getGuardiansByPatientId(Long patientId) {
 		return patientGuardianProvider.getAllAcceptedGuardiansByPatientId(patientId).stream()
-			.map(pg -> GuardianResponse.from(pg.getUser().getName()))
+			.map(pg -> GuardianResponse.from(pg.getPatientGuardianId(), pg.getUser().getName()))
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public void deleteMappingByMappingId(Long mappingId) {
+		PatientGuardian pg = guardianProvider.getById(mappingId);
+		pg.delete();  // BaseTimeEntity 의 delete() 호출 (soft delete)
 	}
 
 	private String generateInviteCode(Long patientId, Long userId) {

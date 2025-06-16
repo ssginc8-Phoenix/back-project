@@ -1,5 +1,6 @@
 package com.ssginc8.docto.appointment.repo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.user.entity.User;
 
 public interface AppointmentRepo
 	extends JpaRepository<Appointment, Long>, QuerydslPredicateExecutor<Appointment>, QAppointmentRepo {
@@ -104,15 +106,30 @@ public interface AppointmentRepo
 	 * @return
 	 */
 	@Query("""
-    SELECT a FROM Appointment a
-    JOIN FETCH a.patientGuardian pg
-    JOIN FETCH pg.user
-    JOIN FETCH a.hospital
-    JOIN FETCH pg.patient p
-    JOIN FETCH p.user
-    WHERE a.appointmentId = :id
-""")
+		   SELECT a FROM Appointment a
+		   JOIN FETCH a.patientGuardian pg
+		   JOIN FETCH pg.user
+		   JOIN FETCH a.hospital
+		   JOIN FETCH pg.patient p
+		   JOIN FETCH p.user
+		   WHERE a.appointmentId = :id
+	""")
 	Optional<Appointment> findByAppointmentIdWithUser(@Param("id") Long id);
+
+	List<Appointment> findAllByAppointmentTimeBetweenAndStatusNot(LocalDateTime start, LocalDateTime end, AppointmentStatus status);
+
+	@Query("""
+		SELECT a.patientGuardian.user
+		FROM Appointment a
+		WHERE a.status = com.ssginc8.docto.appointment.entity.AppointmentStatus.NO_SHOW
+		  AND a.appointmentTime >= :sinceDate
+		GROUP BY a.patientGuardian.user
+		HAVING COUNT(a) >= :threshold
+	""")
+	List<User> findUsersWithNoShowSince(
+		@Param("sinceDate") LocalDateTime sinceDate,
+		@Param("threshold") Long threshold
+	);
 
 
 	@Query("SELECT new com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse(" +

@@ -2,8 +2,6 @@ package com.ssginc8.docto.global.error;
 
 import org.springframework.http.HttpStatus;
 
-import com.google.api.Http;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -98,6 +96,8 @@ public enum ErrorCode {
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "A_010", "유효하지 않은 예약 타입입니다."),
 	INVALID_PAYMENT_VALUE(HttpStatus.BAD_REQUEST, "A_011", "유효하지 않은 결제 방법입니다."),
 	ROLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "A_012", "유효하지 않은 역할입니다."),
+	NOT_CANCELED(HttpStatus.BAD_REQUEST, "A_013", "취소할 수 없는 예약 상태입니다."),
+	IS_SUSPENDED_USER(HttpStatus.BAD_REQUEST, "A_014", "정지된 사용자는 진료 예약을 할 수 없습니다."),
 
 	// Medication 관련 에러 (MD_)
 	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),

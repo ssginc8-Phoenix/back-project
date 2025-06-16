@@ -9,9 +9,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class GuardianResponse {
+	private Long patientGuardianId;
 	private String name;
 
-	public static GuardianResponse from(String name) {
-		return new GuardianResponse(name);
+	public static GuardianResponse from(Long patientGuardianId, String name) {
+		return new GuardianResponse(patientGuardianId, name);
 	}
 }

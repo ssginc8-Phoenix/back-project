@@ -45,6 +45,28 @@ public class PatientController {
 	}
 
 	/**
+	 * 내(로그인된 환자) 입장에서
+	 * 특정 보호자 연결 해제(soft‑delete)
+	 */
+	@DeleteMapping("/me/guardians/{mappingId}")
+	public ResponseEntity<Void> removeMyGuardian(
+		@PathVariable Long mappingId
+	) {
+		// 1) 로그인된 보호자 → userId
+		Long guardianUserId = userService.getUserFromUuid().getUserId();
+
+		// 2) userId → 환자ID 조회
+		Long patientId = patientService
+			.getPatientByUserId(guardianUserId)
+			.getPatientId();
+
+		// 3) mappingId 로 삭제
+		guardianService.deleteMappingByMappingId(mappingId);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
 	 * 보호자 목록 조회 API
 	 */
 	@GetMapping("/{patientId}/guardians")
