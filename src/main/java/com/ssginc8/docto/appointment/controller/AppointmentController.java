@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentListResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentRequest;
 import com.ssginc8.docto.appointment.dto.AppointmentResponse;
@@ -25,6 +26,8 @@ import com.ssginc8.docto.appointment.dto.RescheduleRequest;
 import com.ssginc8.docto.appointment.dto.TimeSlotDto;
 import com.ssginc8.docto.appointment.dto.UpdateRequest;
 import com.ssginc8.docto.appointment.service.AppointmentService;
+import com.ssginc8.docto.hospital.service.HospitalService;
+import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 
 import jakarta.validation.Valid;
@@ -36,7 +39,8 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentController {
 
 	private final AppointmentService appointmentService;
-
+	private final UserService userService;
+	private final HospitalService hospitalService;
 	/**
 	 * ✅ 진료 예약 접수
 	 * URL : /api/v1/appointments
@@ -63,6 +67,18 @@ public class AppointmentController {
 		@RequestBody UpdateRequest request) {
 
 		return ResponseEntity.ok(appointmentService.updateAppointmentStatus(appointmentId, request.getStatus()));
+	}
+
+	/**
+	 * ✅ 진료 예약 취소
+	 * URL: /api/v1/appointments/{appointmentId}/cancel
+	 * Method: PATCH
+	 */
+	@PatchMapping("/appointments/{appointmentId}/cancel")
+	public ResponseEntity<Void> cancelAppointment(@PathVariable Long appointmentId) {
+		appointmentService.cancelAppointment(appointmentId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	/**
@@ -126,9 +142,22 @@ public class AppointmentController {
 	@GetMapping("/appointments/available-time-slots")
 	public ResponseEntity<List<TimeSlotDto>> getAvailableTimeSlots(
 		@RequestParam Long doctorId,
+		@RequestParam Long patientId,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
 	) {
-		List<TimeSlotDto> slots = appointmentService.getAvailableTimeSlots(doctorId, date);
+		List<TimeSlotDto> slots = appointmentService.getAvailableTimeSlots(doctorId, patientId, date);
 		return ResponseEntity.ok(slots);
+	}
+	/**
+	 * ✅ 일일 진료 수 조회
+	 */
+
+	@GetMapping("/appointments/daily-count")
+	public ResponseEntity<List<AppointmentDailyCountResponse>> getDailyAppointmentCounts(
+		@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+		@RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
+	) {
+		List<AppointmentDailyCountResponse> response = appointmentService.getDailyAppointmentCounts(start, end);
+		return ResponseEntity.ok(response);
 	}
 }

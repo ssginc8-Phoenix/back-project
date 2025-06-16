@@ -1,8 +1,0 @@
-.+/api/v1/hospitals/{hospitalId}+
-|===
-|Parameter|Description
-
-|`+hospitalId+`
-|삭제할 병원 ID (관련 스케쥴 및 의사도 함께 삭제됨)
-
-|===

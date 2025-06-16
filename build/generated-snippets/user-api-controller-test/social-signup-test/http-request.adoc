@@ -1,8 +1,0 @@
-[source,http,options="nowrap"]
-----
-POST /api/v1/users/social HTTP/1.1
-Content-Type: multipart/form-data;charset=UTF-8
-Accept: application/json
-Host: localhost:8080
-
-----

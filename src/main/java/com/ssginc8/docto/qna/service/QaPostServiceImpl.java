@@ -1,5 +1,7 @@
 package com.ssginc8.docto.qna.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import com.ssginc8.docto.appointment.provider.AppointmentProvider;
 import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.entity.QaPost;
+import com.ssginc8.docto.qna.entity.QaStatus;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -72,4 +75,32 @@ public class QaPostServiceImpl implements QaPostService{
 		qaPost.delete();
 		qaPostProvider.save(qaPost);
 	}
+
+	@Override
+	public QaPostResponse getByAppointment(Long appointmentId) {
+		Appointment appt = appointmentProvider.getAppointmentById(appointmentId);
+		return qaPostProvider.findByAppointment(appt)
+			.map(QaPostResponse::fromEntity)
+			.orElse(null);
+	}
+
+	@Override
+	public Page<QaPostResponse> getMyPosts(Long userId, Pageable pageable) {
+		return qaPostProvider.findAllByUserId(userId, pageable)
+			.map(QaPostResponse::fromEntity);
+	}
+
+
+	@Override
+	public Page<QaPostResponse> getDoctorPostsByStatus(QaStatus status, Pageable pageable) {
+		return qaPostProvider.getPostsByStatus(status, pageable);
+	}
+
+	@Override
+	public QaPostResponse updateQaPostStatus(Long qnaId,QaStatus status) {
+		return qaPostProvider.changeStatus(qnaId, status);
+	}
+
+
+
 }

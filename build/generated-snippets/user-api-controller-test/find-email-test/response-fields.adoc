@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+email+`
-|`+String+`
-|조회된 이메일
-
-|===

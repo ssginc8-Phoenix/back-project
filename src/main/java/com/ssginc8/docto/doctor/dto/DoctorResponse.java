@@ -10,21 +10,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DoctorResponse {
 	private Long doctorId;
-	private Specialization specialization;
-	private String username;
+	private String specialization;
+	private String name;
 	private String hospitalName;
-	public DoctorResponse(Long doctorId, String hospitalName, String username, String specialization) {
-		this.doctorId = doctorId;
-		this.hospitalName=hospitalName;
-		this.username = username;
-		this.specialization = Specialization.valueOf(specialization);
+	private Long capacityPerHalfHour;
+	private String address;
+
+
+	public DoctorResponse(Long doctorId, String name, Specialization specialization, String name1, Long capacityPerHalfHour, String address) {
+		
+    this.doctorId = doctorId;
+		this.name = name;
+		this.specialization = specialization.getDescription();
+		this.hospitalName = name1;
+		this.capacityPerHalfHour = capacityPerHalfHour;
+		this.address = address;
 	}
+
 	public static DoctorResponse from(Doctor doctor) {
 		return new DoctorResponse(
 			doctor.getDoctorId(),
-			doctor.getHospital().getName(),
 			doctor.getUser().getName(),
-			doctor.getSpecialization().name()
+			doctor.getSpecialization(),
+			doctor.getHospital().getName(),
+			doctor.getCapacityPerHalfHour(),
+			doctor.getHospital().getAddress()
 		);
 	}
+
 }

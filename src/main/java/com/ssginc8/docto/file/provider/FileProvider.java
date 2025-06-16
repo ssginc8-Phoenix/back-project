@@ -1,5 +1,8 @@
 package com.ssginc8.docto.file.provider;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.ssginc8.docto.file.entity.File;
@@ -18,6 +21,7 @@ public class FileProvider {
 		return fileRepo.save(file);
 	}
 
+  
 	/**
 	 * 파일 ID로 S3 URL을 조회합니다.
 	 * @param fileId tbl_file PK
@@ -30,4 +34,5 @@ public class FileProvider {
 		// repository에 선언된 getFileUrlById(@Param("fileId") Long) 호출
 		return fileRepo.getFileUrlById(fileId);
 	}
+
 }

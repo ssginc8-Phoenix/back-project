@@ -3,10 +3,12 @@ package com.ssginc8.docto.hospital.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,11 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 
+import com.ssginc8.docto.file.entity.Category;
+import com.ssginc8.docto.file.entity.File;
+import com.ssginc8.docto.file.provider.FileProvider;
+import com.ssginc8.docto.file.service.FileService;
+import com.ssginc8.docto.file.service.dto.UploadFile;
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
 import com.ssginc8.docto.hospital.dto.HospitalReviewResponse;
@@ -28,19 +35,27 @@ import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.review.provider.ReviewProvider;
+import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 
+import groovy.util.logging.Log4j2;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+
+@lombok.extern.log4j.Log4j2
 public class HospitalServiceImpl implements HospitalService {
 
 	private final HospitalProvider hospitalProvider;
 	private final ReviewProvider reviewProvider;
 	private final DoctorProvider doctorProvider;
 	private final DoctorScheduleProvider doctorScheduleProvider;
+	private final UserRepo userRepo;
+	private final FileProvider fileProvider;
+	private final FileService fileService;
 
 
 
@@ -55,13 +70,66 @@ public class HospitalServiceImpl implements HospitalService {
 		return hospitalProvider.getHospitalByAdminId(userId);
 	}
 
+	@Override
+	public Long getHospitalIdByAdminId(Long userId) {
+		Hospital hospital = hospitalProvider.findByUserUserId(userId);
+		return hospital.getHospitalId();
+	}
+
+	@Override
+	public Hospital getByUserId(Long userId) {
+		return hospitalProvider.findByUserUserId(userId);
+	}
+
 	/**
 	 *  병원 검색
 	 */
 	@Override
-	public Page<Hospital> searchHospitals(String query, Pageable pageable) {
-		return hospitalProvider.searchHospitalsWithoutLocation(query, pageable);
+	public Page<HospitalResponse> searchHospitals(String keyword, Pageable pageable) {
+		// 1. 병원 목록 조회
+		Page<Hospital> hospitals = hospitalProvider.searchHospitalsWithoutLocation(keyword, pageable);
+		List<Hospital> hospitalList = hospitals.getContent();
+
+		// 2. 병원 ID 목록
+		List<Long> hospitalIds = hospitalList.stream()
+			.map(Hospital::getHospitalId)
+			.toList();
+
+		// 3. 병원별 스케줄 & 서비스 조회
+		List<HospitalSchedule> allSchedules = hospitalProvider.findSchedulesByHospitalIds(hospitalIds);
+		Map<Long, List<HospitalSchedule>> scheduleMap = allSchedules.stream()
+			.collect(Collectors.groupingBy(s -> s.getHospital().getHospitalId()));
+
+		Map<Long, List<String>> serviceMap = hospitalProvider.findServiceNamesMapByHospitalIds(hospitalIds); // ✅ 새로 정의 필요
+		Map<Long, String> fileUrlMap = hospitalProvider.findFileUrlMapByHospitalIds(hospitalIds); // ✅ 새로 정의 필요
+
+		// 4. 변환
+		List<HospitalResponse> hospitalResponses = hospitalList.stream()
+			.map(hospital -> {
+				Long hid = hospital.getHospitalId();
+				List<HospitalScheduleResponse> scheduleDtos = scheduleMap.getOrDefault(hid, List.of()).stream()
+					.map(s -> new HospitalScheduleResponse(
+						s.getHospitalScheduleId(),
+						s.getDayOfWeek(),
+						s.getOpenTime(),
+						s.getCloseTime(),
+						s.getLunchStart(),
+						s.getLunchEnd()
+					)).toList();
+
+				String imageUrl = fileUrlMap.get(hid);
+				List<String> services = serviceMap.getOrDefault(hid, List.of());
+
+				HospitalResponse dto = HospitalResponse.from(hospital, imageUrl, services);
+				dto.setSchedules(scheduleDtos);
+
+				return dto;
+			})
+			.toList();
+
+		return new PageImpl<>(hospitalResponses, pageable, hospitals.getTotalElements());
 	}
+
 
 
 	/**
@@ -74,8 +142,13 @@ public class HospitalServiceImpl implements HospitalService {
 		Page<Hospital> hospitals = hospitalProvider.findHospitalsWithinRadius(
 			lat, lng, radius, query, pageable
 		);
-		return hospitals.map(HospitalResponse::from);
+		return hospitals.map(hospital -> {
+			String imageUrl = hospitalProvider.getImageUrl(hospital.getHospitalId());
+			List<String> serviceNames = hospitalProvider.getServiceNames(hospital.getHospitalId());
+			return HospitalResponse.from(hospital, imageUrl, serviceNames);
+		});
 	}
+
 
 
 
@@ -87,17 +160,16 @@ public class HospitalServiceImpl implements HospitalService {
 	public HospitalResponse getHospitalId(Long hospitalId) {
 
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
-
-		// 병원 ID로 서비스 목록 조회 (반환 타입 List<ProvidedService>로 수정)
 		List<ProvidedService> services = hospitalProvider.findServicesByHospitalId(hospitalId);
 
-		// 서비스 이름들을 콤마로 연결
 		List<String> serviceNames = (services == null || services.isEmpty())
 			? Collections.emptyList()
 			: services.stream()
 			.map(ProvidedService::getServiceName)
 			.collect(Collectors.toList());
 
+		String imageUrl = fileProvider.getFileUrlById(hospital.getFileId()); // ✅ 이미지 URL 가져오기
+		log.info("병원 fileId = {}", hospital.getFileId());
 		return HospitalResponse.builder()
 			.hospitalId(hospital.getHospitalId())
 			.name(hospital.getName())
@@ -108,7 +180,8 @@ public class HospitalServiceImpl implements HospitalService {
 			.introduction(hospital.getIntroduction())
 			.notice(hospital.getNotice())
 			.waiting(hospital.getWaiting())
-			.serviceNames(serviceNames)  // 개별 서비스 이름 리스트로 넣음
+			.serviceNames(serviceNames)
+			.imageUrl(imageUrl) // ✅ 포함
 			.build();
 
 	}
@@ -119,12 +192,38 @@ public class HospitalServiceImpl implements HospitalService {
 	 * 병원 정보 등록
 	 *
 	 */
-	@Override
-	public Long saveHospital(HospitalRequest hospitalRequest) {
-		// 유저 조회 (null 검사 포함된 내부 구현을 권장)
-		User user = hospitalProvider.getUserById(hospitalRequest.getUserId());
 
-		// 병원 엔티티 생성
+	@Override
+	public Long saveHospital(Long userId, HospitalRequest hospitalRequest) {
+		// 🔍 유저 조회
+		User user = hospitalProvider.getUserById(userId);
+
+		Long fileId = null;
+
+		// 📁 파일 업로드 처리
+		if (hospitalRequest.getFile() != null && !hospitalRequest.getFile().isEmpty()) {
+			UploadFile.Result uploadResult = fileService.uploadImage(
+				UploadFile.Command.builder()
+					.file(hospitalRequest.getFile())
+					.category(Category.HOSPITAL) // 카테고리 예시
+					.build()
+			);
+
+			// DB에 저장할 File 엔티티 생성 및 저장
+			File file = File.createFile(
+				uploadResult.getCategory(),
+				uploadResult.getFileName(),
+				uploadResult.getOriginalFileName(),
+				uploadResult.getUrl(),
+				uploadResult.getBucket(),
+				uploadResult.getFileSize(),
+				uploadResult.getFileType()
+			);
+
+			File savedFile = fileProvider.saveFile(file);
+			fileId = savedFile.getFileId();
+		}
+
 		Hospital hospital = Hospital.create(
 			user,
 			hospitalRequest.getName(),
@@ -134,14 +233,12 @@ public class HospitalServiceImpl implements HospitalService {
 			hospitalRequest.getBusinessRegistrationNumber(),
 			hospitalRequest.getLatitude(),
 			hospitalRequest.getLongitude(),
-			hospitalRequest.getNotice()
+			hospitalRequest.getNotice(),
+			fileId
 		);
 
-		// 먼저 병원 저장 → ID 생성됨
 		hospitalProvider.saveHospital(hospital);
-
-
-		// 서비스 엔티티 생성 및 저장
+		// 🧾 서비스 엔티티 생성 및 저장
 		List<String> serviceNames = hospitalRequest.getServiceName();
 
 		if (serviceNames != null && !serviceNames.isEmpty()) {
@@ -150,7 +247,7 @@ public class HospitalServiceImpl implements HospitalService {
 				.map(name -> ProvidedService.create(name.trim(), hospital))
 				.collect(Collectors.toList());
 
-			hospitalProvider.saveServices(services); // 여러 개 저장
+			hospitalProvider.saveServices(services);
 		}
 
 		return hospital.getHospitalId();
@@ -315,30 +412,26 @@ public List<HospitalScheduleResponse> getSchedules(Long hospitalId) {
 
 
 
-	/**
-	 * 병원 영업시간 수정
-	 *
-	 */
+
 	@Override
 	@Transactional
-	public void updateHospitalSchedule(Long hospitalId, Long scheduleId, HospitalScheduleRequest scheduleDto) {
-
+	public void updateHospitalSchedule(Long hospitalId, List<HospitalScheduleRequest> scheduleDtos) {
 		Hospital hospital = hospitalProvider.getHospitalById(hospitalId);
 
-		HospitalSchedule schedule = hospitalProvider.getScheduleByIdOrThrow(scheduleId);
+		for (HospitalScheduleRequest dto : scheduleDtos) {
+			HospitalSchedule schedule = hospitalProvider.getScheduleByIdOrThrow(dto.getHospitalScheduleId());
+			hospitalProvider.validateScheduleBelongsToHospital(schedule, hospital);
 
-		hospitalProvider.validateScheduleBelongsToHospital(schedule, hospital);
-
-		schedule.updateSchedule(
-			scheduleDto.getDayOfWeek(),
-			scheduleDto.getOpenTime(),
-			scheduleDto.getCloseTime(),
-			scheduleDto.getLunchStart(),
-			scheduleDto.getLunchEnd()
-		);
-
-
+			schedule.updateSchedule(
+				dto.getDayOfWeek(),
+				dto.getOpenTime(),
+				dto.getCloseTime(),
+				dto.getLunchStart(),
+				dto.getLunchEnd()
+			);
+		}
 	}
+
 
 	/**
 	 * 병원 영업시간 삭제

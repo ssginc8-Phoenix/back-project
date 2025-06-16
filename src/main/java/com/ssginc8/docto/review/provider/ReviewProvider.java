@@ -1,13 +1,18 @@
 package com.ssginc8.docto.review.provider;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.appointment.entity.Appointment;
+import com.ssginc8.docto.appointment.provider.AppointmentProvider;
+import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.global.error.exception.reviewException.ReviewNotFoundException;
+import com.ssginc8.docto.review.dto.ReviewMyListResponse;
 import com.ssginc8.docto.review.entity.Review;
 import com.ssginc8.docto.review.repository.ReviewRepo;
 
@@ -19,12 +24,10 @@ public class ReviewProvider {
 
 	private final ReviewRepo reviewRepo;
 
-
-
 	// 내가 쓴 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getMyReviews(Long userId, Pageable pageable) {
-		return reviewRepo.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
+		return reviewRepo.findByUserUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(userId, pageable);
 	}
 
 
@@ -67,5 +70,15 @@ public class ReviewProvider {
 		review.getKeywords().clear();
 	}
 
-
+	public Review getReviewById(Long reviewId) {
+		return reviewRepo.findById(reviewId)
+			.orElseThrow(ReviewNotFoundException::new);
+	}
+  
+  /**
+	 * appointment Id로 review 가져오기
+	 */
+	public Set<Long> getReviewedAppointmentIds(List<Long> appointmentIds) {
+		return reviewRepo.findAppointmentIdsWithReview(appointmentIds);
+	}
 }

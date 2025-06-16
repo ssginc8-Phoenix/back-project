@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"content":[],"pageable":{"pageNumber":0,"pageSize":5,"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"unpaged":false,"paged":true},"last":true,"totalPages":0,"totalElements":0,"size":5,"number":0,"sort":{"empty":true,"unsorted":true,"sorted":false},"first":true,"numberOfElements":0,"empty":true}
-----

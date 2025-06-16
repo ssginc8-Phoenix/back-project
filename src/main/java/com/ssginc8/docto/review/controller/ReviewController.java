@@ -83,10 +83,13 @@ public class ReviewController {
 
 	// 신고 엔드포인트
 	@PostMapping("/reviews/{reviewId}/report")
-	public ResponseEntity<Void> report(@PathVariable Long reviewId) {
-		reviewService.reportReview(reviewId);
+	public ResponseEntity<Void> report(
+		@PathVariable Long reviewId,
+		@RequestParam String reason) {
+		reviewService.reportReview(reviewId, reason);
 		return ResponseEntity.ok().build();
 	}
+
 
 }
 

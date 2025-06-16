@@ -1,6 +1,0 @@
-[source,http,options="nowrap"]
-----
-GET /api/v1/users/me/reviews?userId=5&page=0&size=5 HTTP/1.1
-Host: localhost:8080
-
-----

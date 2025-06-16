@@ -8,7 +8,6 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.Tuple;
 
@@ -24,10 +23,10 @@ public class CalendarItem {
 	private final List<DayOfWeek> days;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	private final LocalDate startDate; // ✅ 추가
+	private final LocalDate startDate; 
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	private final LocalDate endDate;   // ✅ 추가
+	private final LocalDate endDate;   
 
 	private CalendarItem(LocalDate date, LocalTime time, String title, Long relatedId, ItemType itemType, List<DayOfWeek> days, LocalDate startDate, LocalDate endDate) {
 		this.date = date;
@@ -61,15 +60,17 @@ public class CalendarItem {
 
 			DayOfWeek tupleDay = DayOfWeek.valueOf(tupleDayString.toUpperCase());
 
-			// 👉 startDate, endDate 처리
-			LocalDate startDate = tuple.get(6, LocalDate.class); // medication.startDate
-			LocalDate endDate = tuple.get(7, LocalDate.class);   // medication.endDate
-			if (startDate == null || endDate == null) continue;
+			LocalDate startDate = tuple.get(6, LocalDate.class); 
+			LocalDate endDate = tuple.get(7, LocalDate.class); 
+			if (startDate == null || endDate == null) {
+        continue;
+      }
 
 			for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
 				LocalDate date = LocalDate.of(request.getYear(), request.getMonth(), day);
-				if (!date.getDayOfWeek().equals(tupleDay)) continue;
-				if (date.isBefore(startDate) || date.isAfter(endDate)) continue;
+				if (!date.getDayOfWeek().equals(tupleDay) || date.isBefore(startDate) || date.isAfter(endDate)) {
+          continue;
+        }
 
 				items.add(fromMedicationTuple(tuple, date));
 			}
@@ -83,8 +84,8 @@ public class CalendarItem {
 		String title = tuple.get(1, String.class);
 		LocalTime time = tuple.get(2, LocalTime.class);
 		String dayString = tuple.get(3, String.class);
-		LocalDate startDate = tuple.get(6, LocalDate.class); // ✅
-		LocalDate endDate = tuple.get(7, LocalDate.class);   // ✅
+		LocalDate startDate = tuple.get(6, LocalDate.class); 
+		LocalDate endDate = tuple.get(7, LocalDate.class);   
 
 		List<DayOfWeek> days = new ArrayList<>();
 		if (dayString != null) {

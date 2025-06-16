@@ -19,6 +19,9 @@ import com.ssginc8.docto.auth.jwt.dto.Token;
 import com.ssginc8.docto.auth.jwt.entity.RefreshToken;
 import com.ssginc8.docto.auth.jwt.provider.RefreshTokenProvider;
 import com.ssginc8.docto.auth.jwt.provider.TokenProvider;
+import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.doctor.entity.Specialization;
+import com.ssginc8.docto.doctor.provider.DoctorProvider;
 import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.service.FileService;
@@ -30,6 +33,8 @@ import com.ssginc8.docto.global.event.EmailSendEvent;
 import com.ssginc8.docto.global.util.CodeGenerator;
 import com.ssginc8.docto.global.util.RedisKeyPrefix;
 import com.ssginc8.docto.global.util.RedisUtil;
+import com.ssginc8.docto.hospital.entity.Hospital;
+import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.user.entity.Role;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
@@ -64,6 +69,8 @@ public class UserServiceImpl implements UserService {
 	private final UserSearchRepoImpl userSearchRepoImpl;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final RedisUtil redisUtil;
+	private final DoctorProvider doctorProvider;
+	private final HospitalProvider hospitalProvider;
 
 	@Value("${cloud.default.image.address}")
 	private String defaultProfileUrl;
@@ -149,23 +156,38 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public AddDoctorList.Response registerDoctor(AddDoctorList.Request request) {
-
-		List<Long> ids = new ArrayList<>();
+		List<AddDoctorList.Response.RegisteredDoctor> results = new ArrayList<>();
 
 		for (AddDoctorList.DoctorInfo doctor : request.getDoctorInfos()) {
 			userValidator.validateEmail(doctor.getEmail());
 			String encryptedPassword = bCryptPasswordEncoder.encode(doctor.getPassword());
 
-			User user = User.createDoctorByEmail(doctor.getEmail(), encryptedPassword,
-				doctor.getName(), doctor.getPhone(), Role.DOCTOR, null);
+			User user = User.createDoctorByEmail(
+				doctor.getEmail(), encryptedPassword,
+				doctor.getName(), doctor.getPhone(),
+				Role.DOCTOR, null
+			);
 
-			ids.add(userProvider.createUser(user).getUserId());
+			Long userId = userProvider.createUser(user).getUserId();
+
+
+			Hospital hospital = hospitalProvider.getHospitalById(doctor.getHospitalId());
+			Doctor newDoctor = Doctor.create(hospital, Specialization.valueOf(doctor.getSpecialization()), user);
+			doctorProvider.saveDoctor(newDoctor);
+
+			results.add(
+				AddDoctorList.Response.RegisteredDoctor.builder()
+					.email(doctor.getEmail())
+					.userId(userId)
+					.build()
+			);
 		}
 
 		return AddDoctorList.Response.builder()
-			.ids(ids)
+			.registeredDoctors(results)
 			.build();
 	}
+
 
 	@Transactional
 	@Override

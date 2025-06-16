@@ -1,8 +1,8 @@
 package com.ssginc8.docto.medication.provider;
 
-import com.ssginc8.docto.guardian.entity.PatientGuardian;
-import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.medication.entity.*;
+import com.ssginc8.docto.medication.repo.MedicationAlertDayRepo;
+import com.ssginc8.docto.medication.repo.MedicationAlertTimeRepo;
 import com.ssginc8.docto.medication.repo.MedicationInformationRepo;
 import com.ssginc8.docto.medication.repo.MedicationLogRepo;
 import com.ssginc8.docto.user.entity.User;
@@ -16,7 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Component
@@ -24,10 +27,10 @@ import java.util.List;
 public class MedicationProvider {
 
 	private final MedicationInformationRepo medicationInformationRepo;
+	private final MedicationAlertDayRepo medicationAlertDayRepo;
 	private final MedicationLogRepo medicationLogRepo;
 	private final UserProvider userProvider;
 	private final UserServiceImpl userService;
-	private final PatientGuardianProvider patientGuardianProvider;
 
 	@Transactional(readOnly = true)
 	public Page<MedicationLog> getMedicationLogsByCurrentUser(Pageable pageable) {
@@ -64,6 +67,16 @@ public class MedicationProvider {
 	@Transactional
 	public void saveMedicationLog(MedicationLog medicationLog) {
 		medicationLogRepo.save(medicationLog);
+	}
+
+	@Transactional(readOnly = true)
+	public List<MedicationAlertTime> findAlertTimesDayAndTime(DayOfWeek day, LocalTime now) {
+		return medicationAlertDayRepo.findAlertTimesByDayAndTime(day, now);
+	}
+
+	@Transactional(readOnly = true)
+	public boolean existsMedicationLog(MedicationAlertTime alertTime, LocalDate date) {
+		return medicationLogRepo.existsByAlertTimeAndDate(alertTime, date);
 	}
 
 }

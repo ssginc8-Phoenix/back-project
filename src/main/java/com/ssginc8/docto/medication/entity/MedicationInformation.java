@@ -47,7 +47,7 @@ public class MedicationInformation extends BaseTimeEntity {
 
 	@Column(name = "end_date", nullable = false)
 	private LocalDate endDate;
-
+  
 	@OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<MedicationAlertTime> alertTimes = new ArrayList<>();
 

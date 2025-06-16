@@ -24,6 +24,10 @@ public class AddDoctorList {
 
 		@NotBlank(message = "휴대폰 번호는 비어있을 수 없습니다.")
 		private String phone;
+
+		private Long hospitalId;
+
+		private String specialization;
 	}
 
 	@Getter
@@ -36,11 +40,20 @@ public class AddDoctorList {
 	@Getter
 	@NoArgsConstructor
 	public static class Response {
-		List<Long> ids;
+		private List<RegisteredDoctor> registeredDoctors;
 
 		@Builder
-		public Response(List<Long> ids) {
-			this.ids = ids;
+		public Response(List<RegisteredDoctor> registeredDoctors) {
+			this.registeredDoctors = registeredDoctors;
+		}
+
+		@Getter
+		@Builder
+		public static class RegisteredDoctor {
+			private String email;
+			private Long userId;
+			private String specialization;
+			private Long hospitalId;
 		}
 	}
 }
