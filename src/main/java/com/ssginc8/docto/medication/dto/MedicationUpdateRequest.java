@@ -1,6 +1,7 @@
 package com.ssginc8.docto.medication.dto;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,4 +23,6 @@ public class MedicationUpdateRequest {
 
 	private LocalTime newTimeToTake; // 수정할 복약 시간
 	private List<DayOfWeek> newDays; // 수정할 요일 리스트
+	private LocalDate newStartDate;        // 수정할 복용 시작일
+	private LocalDate newEndDate;          // 수정할 복용 종료일
 }
