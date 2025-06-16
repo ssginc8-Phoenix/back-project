@@ -21,4 +21,5 @@ public interface MedicationService {
 
 	void completeMedication(Long medicationId, MedicationCompleteRequest request);
 
+	MedicationScheduleResponse getMedicationScheduleById(Long medicationId);
 }
