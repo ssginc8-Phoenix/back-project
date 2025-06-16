@@ -17,26 +17,21 @@ public class DoctorResponse {
 	private String address;
 
 
-
-
-
-
-	public DoctorResponse(Long doctorId, String name, String specialization, String name1, Long capacityPerHalfHour, String address) {
+	public DoctorResponse(Long doctorId, String name, Specialization specialization, String name1, Long capacityPerHalfHour, String address) {
 		
     this.doctorId = doctorId;
 		this.name = name;
-		this.specialization = specialization;
+		this.specialization = specialization.getDescription();
 		this.hospitalName = name1;
 		this.capacityPerHalfHour = capacityPerHalfHour;
 		this.address = address;
 	}
 
-
 	public static DoctorResponse from(Doctor doctor) {
 		return new DoctorResponse(
 			doctor.getDoctorId(),
 			doctor.getUser().getName(),
-			doctor.getSpecialization().name(),
+			doctor.getSpecialization(),
 			doctor.getHospital().getName(),
 			doctor.getCapacityPerHalfHour(),
 			doctor.getHospital().getAddress()
