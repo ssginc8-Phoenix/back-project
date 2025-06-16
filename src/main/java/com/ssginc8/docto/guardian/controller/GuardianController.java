@@ -61,6 +61,16 @@ public class GuardianController {
 		return ResponseEntity.ok(patients);
 	}
 
+	/**
+	 * 내(로그인한 보호자) – 특정 환자 연결 해제 (soft‑delete)
+	 */
+	@DeleteMapping("/me/patients/{patientId}")
+	public ResponseEntity<Void> deleteMyMapping(@PathVariable Long patientId) {
+		Long guardianId = userService.getUserFromUuid().getUserId();
+		guardianService.deleteMapping(guardianId, patientId);
+		return ResponseEntity.noContent().build();
+	}
+
 	@GetMapping("/me")
 	public ResponseEntity<GuardianInfoResponse> getMyGuardianInfo() {
 		var user = userService.getUserFromUuid(); // 현재 로그인된 유저
