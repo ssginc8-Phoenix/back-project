@@ -74,6 +74,16 @@ public class SecurityConfig {
 				).permitAll()
 
 
+				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/doctors/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
+
+
+
 				/**
 				 * 로그인 사용자 공통
 				 */
