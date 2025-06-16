@@ -71,6 +71,12 @@ public class QaPostProvider {
 		return QaPostResponse.fromEntity(post);
 	}
 
+	@Transactional(readOnly = true)
+	public Page<QaPost> findAllByDoctorUuidAndStatus(String doctorUuid, QaStatus status, Pageable pageable) {
+		return qaPostRepo.findAllByAppointmentDoctorUserUuidAndStatus(doctorUuid, status, pageable);
+	}
+
+
 
 
 }

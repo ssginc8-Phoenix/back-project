@@ -9,6 +9,7 @@ import com.ssginc8.docto.qna.dto.QaPostUpdateRequest;
 import com.ssginc8.docto.qna.dto.UpdateStatusRequest;
 import com.ssginc8.docto.qna.entity.QaStatus;
 import com.ssginc8.docto.qna.service.QaPostService;
+import com.ssginc8.docto.user.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class QnAController {
 
 	private final QaPostService qaPostService;
+	private final UserService userService;
 
 	// 게시글 생성
 	@PostMapping
@@ -87,9 +89,14 @@ public class QnAController {
 		@RequestParam(defaultValue = "PENDING") QaStatus status,
 		Pageable pageable
 	) {
-		Page<QaPostResponse> page = qaPostService.getDoctorPostsByStatus(status, pageable);
+		// 현재 로그인한 의사의 uuid 가져오기
+		String doctorUuid = userService.getUserFromUuid().getUuid();
+
+		Page<QaPostResponse> page = qaPostService.getDoctorPostsByDoctorIdAndStatus(doctorUuid, status, pageable);
+
 		return ResponseEntity.ok(page);
 	}
+
 
 
 	@PatchMapping("/{qnaId}/status")

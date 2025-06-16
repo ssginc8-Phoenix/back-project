@@ -28,7 +28,8 @@ public interface QaPostService {
 	Page<QaPostResponse> getMyPosts(Long userId, Pageable pageable);
 
 
-	Page<QaPostResponse> getDoctorPostsByStatus(QaStatus status, Pageable pageable);
+	Page<QaPostResponse> getDoctorPostsByDoctorIdAndStatus(String uuid, QaStatus status, Pageable pageable);
+
 
 	QaPostResponse updateQaPostStatus(Long qnaId, QaStatus status);
 
