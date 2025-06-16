@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.repository.FileRepo;
+import com.ssginc8.docto.global.error.exception.fileException.FileNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,7 +33,12 @@ public class FileProvider {
 			return null;
 		}
 		// repository에 선언된 getFileUrlById(@Param("fileId") Long) 호출
-		return fileRepo.getFileUrlById(fileId);
+		String url = fileRepo.getFileUrlById(fileId);
+		if (url == null || url.isBlank()) {
+			// 해당 ID로 저장된 파일을 찾을 수 없을 때 예외 던짐
+			throw new FileNotFoundException();
+		}
+		return url;
 	}
 
 }
