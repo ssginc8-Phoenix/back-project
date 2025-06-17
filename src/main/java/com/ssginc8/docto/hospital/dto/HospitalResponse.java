@@ -77,4 +77,8 @@ public class HospitalResponse {
 		return res;
 	}
 
+	public static HospitalResponse from(Hospital h) {
+		return from(h, null, List.of());
+	}
+
 }

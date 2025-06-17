@@ -1,5 +1,6 @@
 package com.ssginc8.docto.hospital.provider;
 
+import java.nio.channels.FileChannel;
 import java.time.DayOfWeek;
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -193,4 +196,26 @@ public class HospitalProvider {
 	public List<String> getServiceNames(Long hospitalId) {
 		return providedServiceRepo.findServiceNamesByHospitalId(hospitalId);
 	}
+
+	public Page<Hospital> findAllNearby(
+		String query,
+		double latitude,
+		double longitude,
+		double radius,
+		Pageable pageable
+	) {
+		// repository 의 커스텀 메서드 호출
+		return hospitalRepo.findAllNearby(query, latitude, longitude, radius, pageable);
+	}
+
+	/**
+	 * 일반 검색
+	 */
+	public Page<Hospital> findAll(
+		Specification<Hospital> spec,
+		Pageable pageable
+	) {
+		return hospitalRepo.findAll(spec, pageable);
+	}
 }
+

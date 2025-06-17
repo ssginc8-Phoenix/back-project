@@ -9,9 +9,13 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
 
@@ -85,52 +89,49 @@ public class HospitalServiceImpl implements HospitalService {
 	 *  병원 검색
 	 */
 	@Override
-	public Page<HospitalResponse> searchHospitals(String keyword, Pageable pageable) {
-		// 1. 병원 목록 조회
-		Page<Hospital> hospitals = hospitalProvider.searchHospitalsWithoutLocation(keyword, pageable);
-		List<Hospital> hospitalList = hospitals.getContent();
+	public Page<HospitalResponse> searchHospitals(
+		String query,
+		String sortBy,
+		Double latitude,
+		Double longitude,
+		Double radius,
+		Pageable pageable
+	) {
+		// 1) 이름 검색 Specification (글로벌/이름순/리뷰순에도 적용)
+		Specification<Hospital> spec = Specification.where(null);
+		if (StringUtils.hasText(query)) {
+			spec = spec.and((root, cq, cb) ->
+				cb.like(cb.lower(root.get("name")), "%" + query.toLowerCase() + "%")
+			);
+		}
 
-		// 2. 병원 ID 목록
-		List<Long> hospitalIds = hospitalList.stream()
-			.map(Hospital::getHospitalId)
-			.toList();
+		// 2) 거리순 분기: latitude, longitude, radius 모두 필요
+		if ("DISTANCE".equalsIgnoreCase(sortBy)
+			&& latitude != null && longitude != null && radius != null
+		) {
+			return hospitalProvider
+				.findAllNearby(
+					query,
+					latitude,
+					longitude,
+					radius,
+					PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())
+				)
+				.map(HospitalResponse::from);
+		}
 
-		// 3. 병원별 스케줄 & 서비스 조회
-		List<HospitalSchedule> allSchedules = hospitalProvider.findSchedulesByHospitalIds(hospitalIds);
-		Map<Long, List<HospitalSchedule>> scheduleMap = allSchedules.stream()
-			.collect(Collectors.groupingBy(s -> s.getHospital().getHospitalId()));
+		// 3) 글로벌(이름순) 또는 리뷰 많은 순
+		Sort sort = Sort.by("name");  // 기본 이름순
+		if ("REVIEW_COUNT".equalsIgnoreCase(sortBy)) {
+			sort = Sort.by(Sort.Direction.DESC, "reviewCount");
+		}
 
-		Map<Long, List<String>> serviceMap = hospitalProvider.findServiceNamesMapByHospitalIds(hospitalIds); // ✅ 새로 정의 필요
-		Map<Long, String> fileUrlMap = hospitalProvider.findFileUrlMapByHospitalIds(hospitalIds); // ✅ 새로 정의 필요
-
-		// 4. 변환
-		List<HospitalResponse> hospitalResponses = hospitalList.stream()
-			.map(hospital -> {
-				Long hid = hospital.getHospitalId();
-				List<HospitalScheduleResponse> scheduleDtos = scheduleMap.getOrDefault(hid, List.of()).stream()
-					.map(s -> new HospitalScheduleResponse(
-						s.getHospitalScheduleId(),
-						s.getDayOfWeek(),
-						s.getOpenTime(),
-						s.getCloseTime(),
-						s.getLunchStart(),
-						s.getLunchEnd()
-					)).toList();
-
-				String imageUrl = fileUrlMap.get(hid);
-				List<String> services = serviceMap.getOrDefault(hid, List.of());
-
-				HospitalResponse dto = HospitalResponse.from(hospital, imageUrl, services);
-				dto.setSchedules(scheduleDtos);
-
-				return dto;
-			})
-			.toList();
-
-		return new PageImpl<>(hospitalResponses, pageable, hospitals.getTotalElements());
+		Page<Hospital> page = hospitalProvider.findAll(
+			spec,
+			PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+		);
+		return page.map(HospitalResponse::from);
 	}
-
-
 
 	/**
 	 *  위치기반 병원 리스트 조회

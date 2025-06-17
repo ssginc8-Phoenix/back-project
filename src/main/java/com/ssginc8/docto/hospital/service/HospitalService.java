@@ -62,7 +62,12 @@ public interface HospitalService {
 		Page<HospitalReviewResponse> getReviews(Long hospitalId, Pageable pageable);
 
 		// 병원 검색
-		Page<HospitalResponse> searchHospitals(String query, Pageable pageable);
+		Page<HospitalResponse> searchHospitals(String query,
+			String sortBy,
+			Double latitude,
+			Double longitude,
+			Double radius,
+			Pageable pageable);
 
 		// 로그인 사용자의 병원 정보 얻기
 		HospitalResponse getHospitalByAdminId(Long userId);

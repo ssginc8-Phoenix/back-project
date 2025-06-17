@@ -69,10 +69,21 @@ public class HospitalController {
 	@GetMapping("/hospitals/search")
 	public ResponseEntity<Page<HospitalResponse>> searchHospitals(
 		@RequestParam(required = false) String query,
-		@PageableDefault(size = 10, sort = "name") Pageable pageable
+		@RequestParam(defaultValue = "NAME") String sortBy,
+		@RequestParam(required = false) Double latitude,
+		@RequestParam(required = false) Double longitude,
+		@RequestParam(defaultValue = "5") double radius,               // ← 반경 추가
+		@PageableDefault(size = 10) Pageable pageable
 	) {
-		Page<HospitalResponse> hospitals = hospitalService.searchHospitals(query, pageable);
-		return ResponseEntity.ok(hospitals);
+		Page<HospitalResponse> page = hospitalService.searchHospitals(
+			query,
+			sortBy,
+			latitude,
+			longitude,
+			radius,               // ← 서비스에 radius 전달
+			pageable
+		);
+		return ResponseEntity.ok(page);
 	}
 
 

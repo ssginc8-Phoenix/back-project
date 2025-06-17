@@ -45,16 +45,16 @@ public class DoctorResponse {
 
 	
 
-	public static DoctorResponse from(Doctor doctor) {
+	public static DoctorResponse from(Doctor doctor, String imageUrl) {
 
 		return new DoctorResponse(
 			doctor.getHospital().getHospitalId(),
 			doctor.getDoctorId(),
 			doctor.getUser().getName(),
-			doctor.getSpecialization(),
+			doctor.getSpecialization().getDescription(),
 			doctor.getHospital().getName(),
 			doctor.getCapacityPerHalfHour(),
-	    doctor.getHospital().getAddress(),
+	    	doctor.getHospital().getAddress(),
 			doctor.getUser().getEmail(),
 			doctor.getUser().getPhone(),
 			imageUrl
