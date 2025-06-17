@@ -76,4 +76,11 @@ public class DoctorProvider {
 			throw new NotDoctorRoleException();
 		}
 	}
+
+	public String getImageUrlOrNull(Doctor doctor) {
+		if (doctor.getUser() != null && doctor.getUser().getProfileImage() != null) {
+			return doctor.getUser().getProfileImage().getUrl();
+		}
+		return null;
+	}
 }

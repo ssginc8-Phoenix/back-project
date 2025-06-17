@@ -62,7 +62,15 @@ public enum ErrorCode {
 	DOCTOR_ALREADY_EXISTS(HttpStatus.CONFLICT,"D_010", "이미 의사로 등록된 사용자입니다"),
 	NEGATIVE_CAPACITY(HttpStatus.BAD_REQUEST, "D_011", "진료 가능 인원은 음수일 수 없습니다."),
 	DOCTOR_OVER_CAPACITY(HttpStatus.BAD_REQUEST, "D_012", "해당 시간에는 이미 예약이 가득 찼습니다."),
-  
+	INVALID_DOCTOR_SCHEDULE_REQUIRED_FIELDS(   HttpStatus.BAD_REQUEST, "D_013", "요일, 진료 시작시간, 종료시간은 필수 입력 항목입니다."),
+	INVALID_DOCTOR_SCHEDULE_TIME_ORDER(        HttpStatus.BAD_REQUEST, "D_014", "진료 시작시간은 종료시간보다 빠르게 설정해야 합니다."),
+	INVALID_DOCTOR_SCHEDULE_LUNCH_INCOMPLETE(   HttpStatus.BAD_REQUEST, "D_015", "점심시간을 설정하려면 시작시간과 종료시간을 모두 입력해야 합니다."),
+	INVALID_DOCTOR_SCHEDULE_LUNCH_ORDER(        HttpStatus.BAD_REQUEST, "D_016", "점심 시작시간은 점심 종료시간보다 빠르게 설정해야 합니다."),
+	INVALID_DOCTOR_SCHEDULE_LUNCH_RANGE(        HttpStatus.BAD_REQUEST, "D_017", "점심시간은 진료시간 범위 안에 있어야 합니다."),
+	INVALID_DOCTOR_SCHEDULE_SLOT_UNIT(          HttpStatus.BAD_REQUEST, "D_020", "스케줄은 30분 단위로만 설정할 수 있습니다."),
+	DOCTOR_SCHEDULE_DUPLICATE_DAY(              HttpStatus.BAD_REQUEST, "D_021", "스케줄이 요청 목록 내에 중복되었습니다."),
+	DOCTOR_SCHEDULE_OVERLAP(                    HttpStatus.BAD_REQUEST, "D_022", "등록 스케줄이 기존 스케줄과 겹칩니다."),
+
 	//Hospital 관련 에러(H_)
 	HOSPITAL_NOT_FOUND(HttpStatus.NOT_FOUND, "H_001", "해당 병원은 존재하지 않습니다."),
 	SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "H_002", "스케줄을 찾을 수 없습니다."),
