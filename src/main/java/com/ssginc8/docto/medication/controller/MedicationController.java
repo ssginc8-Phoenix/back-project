@@ -34,6 +34,14 @@ public class MedicationController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/{medicationId}")
+	public ResponseEntity<MedicationScheduleResponse> getSchedule(
+		@PathVariable Long medicationId
+	) {
+		MedicationScheduleResponse dto = medicationService.getMedicationScheduleById(medicationId);
+		return ResponseEntity.ok(dto);
+	}
+
 	@PostMapping
 	public ResponseEntity<Void> registerSchedule(@RequestBody MedicationScheduleRequest request) {
 		medicationService.registerMedicationSchedule(request);
