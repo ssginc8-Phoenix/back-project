@@ -69,6 +69,20 @@ public class NotificationServiceImpl implements NotificationService {
 			.toList();
 	}
 
+	@Override
+	public void deleteReadNotifications() {
+		User loginUser = userService.getUserFromUuid();
+
+		// 해당 유저의 읽은 알림만 가져오기
+		List<Notification> readNotifications = notificationProvider
+			.getUserNotifications(loginUser.getUserId()).stream()
+			.filter(Notification::isRead)
+			.toList();
+
+		// 소프트 삭제
+		readNotifications.forEach(Notification::delete);
+	}
+
 	/**
 	 * Notification 생성 메서드 (재사용을 위한)
 	 */

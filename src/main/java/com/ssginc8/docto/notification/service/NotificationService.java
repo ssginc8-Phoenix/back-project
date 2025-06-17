@@ -6,6 +6,7 @@ import java.util.List;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.notification.dto.NotificationResponse;
+import com.ssginc8.docto.notification.entity.Notification;
 import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.user.entity.User;
 
@@ -20,6 +21,11 @@ public interface NotificationService {
 	 * 알림 조회 (한 유저의)
 	 */
 	List<NotificationResponse> getNotificationsByLoginUser();
+
+	/**
+	 * isRead = true 인 알림들 삭제
+	 */
+	void deleteReadNotifications();
 
 	/**
 	 * Appointment 확정 알림 전송 (보호자)
