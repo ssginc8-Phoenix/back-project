@@ -1,6 +1,7 @@
 package com.ssginc8.docto.patient.service;
 
 import com.ssginc8.docto.file.provider.FileProvider;
+import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.patient.dto.PatientRequest;
 import com.ssginc8.docto.patient.dto.PatientResponse;
 import com.ssginc8.docto.patient.entity.Patient;
@@ -81,14 +82,8 @@ public class PatientServiceImpl implements PatientService {
 
 	private String encryptRRN(String rrn) {
 		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] hash = digest.digest(rrn.getBytes());
-			StringBuilder hexString = new StringBuilder();
-			for (byte b : hash) {
-				hexString.append(String.format("%02x", b));
-			}
-			return hexString.toString();
-		} catch (NoSuchAlgorithmException e) {
+			return AESUtil.encrypt(rrn);
+		} catch (Exception e) {
 			throw new RRNEncryptionFailedException();
 		}
 	}
