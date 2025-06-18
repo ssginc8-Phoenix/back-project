@@ -295,6 +295,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 			user.addPenalty(1L);
 			appointment.changeStatus(AppointmentStatus.NO_SHOW);
 		}
+
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment));
 	}
 
 	@Override

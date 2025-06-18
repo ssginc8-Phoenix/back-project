@@ -49,5 +49,10 @@ public class QaPost extends BaseTimeEntity {
 	@Column(nullable = false)
 	private QaStatus status = QaStatus.PENDING;
 
+	// 상태 변경 메서드 추가
+	public void changeStatus(QaStatus newStatus) {
+		this.status = newStatus;
+	}
+
 
 }

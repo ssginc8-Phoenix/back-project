@@ -22,7 +22,7 @@ public class AppointmentResponse {
 
 	private Long hospitalId;
 	private Long doctorId;
-	private Long patientGuardianId;
+	private Long patientId;
 
 	private String hospitalName;
 	private String doctorName;
@@ -45,7 +45,7 @@ public class AppointmentResponse {
 			.appointmentId(appointment.getAppointmentId())
 			.hospitalId(appointment.getHospital().getHospitalId())
 			.doctorId(appointment.getDoctor().getDoctorId())
-			.patientGuardianId(appointment.getPatientGuardian().getPatientGuardianId())
+			.patientId(appointment.getPatientGuardian().getPatient().getPatientId())
 			.hospitalName(appointment.getHospital().getName())
 			.doctorName(appointment.getDoctor().getUser().getName())
 			.patientName(appointment.getPatientGuardian().getPatient().getUser().getName())

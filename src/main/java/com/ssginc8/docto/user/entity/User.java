@@ -207,6 +207,15 @@ public class User extends BaseTimeEntity {
 		return user;
 	}
 
+
+	public void updatePhoneAndProfileImage(String phone, File profileImage) {
+		if (StringUtils.isNotBlank(phone)) {
+			this.phone = phone;
+		}
+		if (profileImage != null) {
+			this.profileImage = profileImage;
+		}
+  }
 	/**
 	 * 패널티 부여
 	 * @param value
@@ -223,5 +232,6 @@ public class User extends BaseTimeEntity {
 		this.isSuspended = true;
 		this.suspendedAt = LocalDateTime.now();
 		this.suspensionExpiresAt = LocalDateTime.now().plusDays(days);
+
 	}
 }

@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,10 +32,22 @@ public class MedicationScheduleRequest {
 
 	private Long userId;
 	private String medicationName;
-	private LocalTime timeToTake;
+
 	private List<DayOfWeek> days;
 	private Long patientGuardianId;
 
 	private LocalDate startDate; // ✅ 시작일 추가
 	private LocalDate endDate;   // ✅ 종료일 추가
+
+	private List<MealTime> times;
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class MealTime {
+		private String meal;  // "morning", "lunch", "dinner"
+		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+		private LocalTime time;
+	}
+
 }
