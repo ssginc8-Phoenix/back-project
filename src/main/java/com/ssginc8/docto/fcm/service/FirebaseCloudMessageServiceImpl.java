@@ -10,6 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.ssginc8.docto.fcm.entity.FcmToken;
 import com.ssginc8.docto.fcm.provider.FcmTokenProvider;
+import com.ssginc8.docto.global.error.exception.fcmException.FailedSendMessage;
+import com.ssginc8.docto.global.error.exception.fcmException.NotFoundTokenException;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 
@@ -33,12 +35,11 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	@Override
 	public String sendMessage(Long userId, String title, String body) {
 		// 사용자의 Firebase 토큰 값을 조회
-		log.info("토큰 조회 시작!!!!!!!!!!!!!!!!!!!");
 		Optional<FcmToken> optionalFcmToken = fcmTokenProvider.findLatestTokenByUserId(userId);
 
 		if (optionalFcmToken.isEmpty() || optionalFcmToken.get().getToken() == null || optionalFcmToken.get().getToken().isBlank()) {
 			log.warn("유효한 FCM 토큰이 없습니다. 알림을 전송할 수 없습니다. userId={}", userId);
-			return "No valid FCM token found.";
+			throw new NotFoundTokenException();
 		}
 
 		String userFirebaseToken = optionalFcmToken.get().getToken();
@@ -61,7 +62,7 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 
 		} catch (FirebaseMessagingException e) {
 			log.error("FCM 전송 실패: userId={}, error={}", userId, e.getMessage(), e);
-			return "Failed to send message: " + e.getMessage();
+			throw new FailedSendMessage();
 		}
 	}
 
