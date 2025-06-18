@@ -4,6 +4,8 @@ package com.ssginc8.docto.qna.service;
 import com.ssginc8.docto.global.event.qna.QnaAnsweredEvent;
 import com.ssginc8.docto.qna.dto.CommentResponse;
 import com.ssginc8.docto.qna.entity.QaComment;
+import com.ssginc8.docto.qna.entity.QaPost;
+import com.ssginc8.docto.qna.entity.QaStatus;
 import com.ssginc8.docto.qna.provider.CommentProvider;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import javax.xml.stream.events.Comment;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +37,17 @@ public class CommentServiceImpl implements CommentService {
 
 		// 2. 댓글 엔티티 생성·저장
 		QaComment comment = QaComment.create(post, content);
-		QaComment saved   = commentProvider.save(comment);
+		QaComment saved = commentProvider.save(comment);
 
-		applicationEventPublisher.publishEvent(new QnaAnsweredEvent(comment));
+
+		// 3. 게시글 상태를 COMPLETED로 갱신
+		if (post.getStatus() != QaStatus.COMPLETED) {
+			post.setStatus(QaStatus.COMPLETED);
+			qaPostProvider.save(post);
+		}
+
+		//applicationEventPublisher.publishEvent(new QnaAnsweredEvent(comment));
+
 
 		return CommentResponse.fromEntity(saved);
 	}
@@ -85,6 +95,17 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	@Transactional
 	public void deleteComment(Long commentId) {
+		// 1. 댓글 조회
+		QaComment comment = commentProvider.getById(commentId);
+
+		// 2. QnA 게시글 가져오기
+		QaPost qnaPost = comment.getQnaPostId();
+
+		// 3. 댓글 삭제
 		commentProvider.deleteById(commentId);
+
+		// 4. QnA 상태를 다시 PENDING으로 복구
+		qnaPost.setStatus(QaStatus.PENDING);
 	}
+
 }

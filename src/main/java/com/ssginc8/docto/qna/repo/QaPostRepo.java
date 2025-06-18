@@ -23,4 +23,13 @@ public interface QaPostRepo extends JpaRepository<QaPost, Long> {
 	);
 
 	Page<QaPost> findAllByStatus(QaStatus status, Pageable pageable);
+
+
+	Page<QaPost> findAllByAppointmentDoctorUserUuidAndStatus(
+		String uuid,
+		QaStatus status,
+		Pageable pageable
+	);
+
+
 }
