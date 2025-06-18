@@ -43,9 +43,17 @@ spring:
     init:
       mode: never
 
+  ai:
+    openai:
+      api-key:  ${OPENAI_API_KEY}
+    chat:
+      model: gpt-3.5-turbo
+
+
 # 로그 설정
 logging:
   level:
     com.ssginc8: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
     org.springframework.security: TRACE
+
