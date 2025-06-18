@@ -1,5 +1,6 @@
 package com.ssginc8.docto.fcm.service;
 
+import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.fcm.dto.FcmMessageRequest;
 import com.ssginc8.docto.user.entity.User;
 

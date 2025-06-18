@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class PaymentProvider {
 	private final PaymentRequestRepo paymentRequestRepo;
 
-	public void save(PaymentRequest paymentRequest) {
-		paymentRequestRepo.save(paymentRequest);
+	public PaymentRequest save(PaymentRequest paymentRequest) {
+		return paymentRequestRepo.save(paymentRequest);
 	}
 }

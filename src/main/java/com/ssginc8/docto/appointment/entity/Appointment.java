@@ -8,6 +8,7 @@ import com.ssginc8.docto.global.error.exception.appointmentException.Appointment
 import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentCompletedModificationNotAllowedException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.hospital.entity.Hospital;
+import com.ssginc8.docto.user.entity.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -113,5 +114,13 @@ public class Appointment extends BaseTimeEntity {
 		}
 
 		this.status = newStatus;
+	}
+
+	public User getGuardian() {
+		return this.patientGuardian.getUser();
+	}
+
+	public String getPatientName() {
+		return this.patientGuardian.getPatient().getUser().getName();
 	}
 }

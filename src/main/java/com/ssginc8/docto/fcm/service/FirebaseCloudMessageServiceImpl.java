@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.fcm.entity.FcmToken;
 import com.ssginc8.docto.fcm.provider.FcmTokenProvider;
 import com.ssginc8.docto.user.entity.User;
@@ -33,7 +34,7 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	@Override
 	public String sendMessage(Long userId, String title, String body) {
 		// 사용자의 Firebase 토큰 값을 조회
-		log.info("토큰 조회 시작!!!!!!!!!!!!!!!!!!!");
+		log.info("토큰 조회 시작!!!!!!!!!!!!!!!!!!! " + userId);
 		Optional<FcmToken> optionalFcmToken = fcmTokenProvider.findLatestTokenByUserId(userId);
 
 		if (optionalFcmToken.isEmpty() || optionalFcmToken.get().getToken() == null || optionalFcmToken.get().getToken().isBlank()) {
