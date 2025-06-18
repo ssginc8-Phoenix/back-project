@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.ManyToAny;
 
+import com.ssginc8.docto.doctor.entity.Specialization;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 import com.ssginc8.docto.user.entity.User;
@@ -15,6 +16,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -123,6 +126,10 @@ public class Hospital extends BaseTimeEntity {
 	public void updateWaiting(Long waiting) {
 		this.waiting = waiting;
 	}
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Specialization specialization;
 
 
 
