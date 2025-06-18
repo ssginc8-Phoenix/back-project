@@ -34,6 +34,7 @@ public enum ErrorCode {
 	INVALID_INVITE_CODE(HttpStatus.BAD_REQUEST, "GDN_003", "유효하지 않은 초대 코드입니다."),
 	INVALID_GUARDIAN_STATUS(HttpStatus.BAD_REQUEST, "GDN_004", "유효하지 않은 보호자 상태입니다."),
 	GUARDIAN_ALREADY_EXISTS(HttpStatus.CONFLICT, "GDN_005", "이미 초대된 보호자입니다."),
+	GUARDIAN_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_006", "보호자-환자 관계를 찾을 수 없습니다."),
 
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
@@ -107,6 +108,7 @@ public enum ErrorCode {
 	INVALID_MEDICATION_DATE(HttpStatus.BAD_REQUEST, "MD_004", "시작일이 종료일보다 이후일 수 없습니다."),
 	MEDICATION_DATE_RANGE_INVALID(HttpStatus.BAD_REQUEST, "MD_005", "복약 기간이 유효하지 않습니다."),
 	MEDICATION_ALERT_DAY_NOT_FOUNT(HttpStatus.NOT_FOUND, "MD_006", "복약 요일을 찾을 수 없습니다."),
+	MEDICATION_TAKEN_TIME_NOT_TODAY(HttpStatus.BAD_REQUEST, "MD_007", "복용 완료 시간은 오늘 날짜여야 합니다."),
 
 	// Review 관련 에러(R_)
 	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다."),
