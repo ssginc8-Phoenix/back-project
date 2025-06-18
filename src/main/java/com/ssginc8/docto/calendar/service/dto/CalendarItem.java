@@ -8,7 +8,10 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.Tuple;
 
 import lombok.Getter;
@@ -20,13 +23,23 @@ public class CalendarItem {
 	private final String title;
 	private final Long relatedId;
 	private final ItemType itemType;
+	private final List<DayOfWeek> days;
 
-	private CalendarItem(LocalDate date, LocalTime time, String title, Long relatedId, ItemType itemType) {
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	private final LocalDate startDate; 
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	private final LocalDate endDate;   
+
+	private CalendarItem(LocalDate date, LocalTime time, String title, Long relatedId, ItemType itemType, List<DayOfWeek> days, LocalDate startDate, LocalDate endDate) {
 		this.date = date;
 		this.time = time;
 		this.title = title;
 		this.relatedId = relatedId;
 		this.itemType = itemType;
+		this.days = days;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public static List<CalendarItem> mergeAndSort(List<Tuple> medicationTuples, List<Tuple> appointmentTuples, CalendarRequest request) {
@@ -44,14 +57,33 @@ public class CalendarItem {
 		List<CalendarItem> items = new ArrayList<>();
 		YearMonth yearMonth = YearMonth.of(request.getYear(), request.getMonth());
 
-		for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
-			LocalDate date = LocalDate.of(request.getYear(), request.getMonth(), day);
-			DayOfWeek dayOfWeek = date.getDayOfWeek();
+		// medicationId 기준으로 그룹핑
+		Map<Long, List<Tuple>> grouped = tuples.stream()
+			.collect(Collectors.groupingBy(t -> t.get(0, Long.class)));
 
-			for (Tuple tuple : tuples) {
-				if (dayOfWeek.equals(tuple.get(3, DayOfWeek.class))) {
-					items.add(fromMedicationTuple(tuple, date));
+		for (Map.Entry<Long, List<Tuple>> entry : grouped.entrySet()) {
+			List<Tuple> group = entry.getValue();
+			Tuple base = group.get(0);
+
+			Long id = base.get(0, Long.class);
+			String title = base.get(1, String.class);
+			LocalTime time = base.get(2, LocalTime.class);
+			LocalDate startDate = base.get(6, LocalDate.class);
+			LocalDate endDate = base.get(7, LocalDate.class);
+
+			// 해당 약의 전체 요일 수집
+			List<DayOfWeek> days = group.stream()
+				.map(t -> DayOfWeek.valueOf(t.get(3, String.class).toUpperCase()))
+				.collect(Collectors.toList());
+
+			for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
+				LocalDate date = LocalDate.of(request.getYear(), request.getMonth(), day);
+				if (!days.contains(date.getDayOfWeek()) || date.isBefore(startDate) || date.isAfter(endDate)) {
+					continue;
 				}
+
+				// 여러 요일 모두 담은 CalendarItem 생성
+				items.add(new CalendarItem(date, time, title, id, ItemType.MEDICATION, days, startDate, endDate));
 			}
 		}
 
@@ -62,8 +94,16 @@ public class CalendarItem {
 		Long id = tuple.get(0, Long.class);
 		String title = tuple.get(1, String.class);
 		LocalTime time = tuple.get(2, LocalTime.class);
+		String dayString = tuple.get(3, String.class);
+		LocalDate startDate = tuple.get(6, LocalDate.class); 
+		LocalDate endDate = tuple.get(7, LocalDate.class);   
 
-		return new CalendarItem(date, time, title, id, ItemType.MEDICATION);
+		List<DayOfWeek> days = new ArrayList<>();
+		if (dayString != null) {
+			days.add(DayOfWeek.valueOf(dayString.toUpperCase()));
+		}
+
+		return new CalendarItem(date, time, title, id, ItemType.MEDICATION, days, startDate, endDate);
 	}
 
 	public static List<CalendarItem> fromAppointmentTuples(List<Tuple> tuples) {
@@ -79,6 +119,6 @@ public class CalendarItem {
 		String title = tuple.get(1, String.class);
 		LocalDateTime dateTime = tuple.get(2, LocalDateTime.class);
 
-		return new CalendarItem(dateTime.toLocalDate(), dateTime.toLocalTime(), title, id, ItemType.APPOINTMENT);
+		return new CalendarItem(dateTime.toLocalDate(), dateTime.toLocalTime(), title, id, ItemType.APPOINTMENT, null, null, null);
 	}
 }

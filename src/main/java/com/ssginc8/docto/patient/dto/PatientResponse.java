@@ -1,6 +1,5 @@
 package com.ssginc8.docto.patient.dto;
 
-import com.ssginc8.docto.global.util.AESUtil;
 import com.ssginc8.docto.patient.entity.Patient;
 
 import lombok.Builder;
@@ -15,6 +14,7 @@ public class PatientResponse {
 	private final Long patientId;
 	private final Long userId;
 	private final String residentRegistrationNumber;
+	private String profileImageUrl;
 
 	private PatientResponse(Long patientId, Long userId, String rrn) {
 		this.patientId = patientId;
@@ -29,7 +29,10 @@ public class PatientResponse {
 		return new PatientResponse(
 			patient.getPatientId(),
 			patient.getUser().getUserId(),
-			AESUtil.decrypt(patient.getResidentRegistrationNumber())
+			patient.getResidentRegistrationNumber()
 		);
+	}
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
 	}
 }

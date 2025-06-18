@@ -29,6 +29,10 @@ public class DoctorProvider {
 
 	private final DoctorRepo doctorRepo;
 
+	public Doctor getDoctorByUserId(Long userId) {
+		return doctorRepo.findByUserUserId(userId)
+			.orElseThrow(DoctorNotFoundException::new);
+	}
 
 	@Transactional(readOnly = true)
 	public Doctor getDoctorById(Long doctorId) {
@@ -71,5 +75,12 @@ public class DoctorProvider {
 		if (user.getRole() != Role.DOCTOR) {
 			throw new NotDoctorRoleException();
 		}
+	}
+
+	public String getImageUrlOrNull(Doctor doctor) {
+		if (doctor.getUser() != null && doctor.getUser().getProfileImage() != null) {
+			return doctor.getUser().getProfileImage().getUrl();
+		}
+		return null;
 	}
 }

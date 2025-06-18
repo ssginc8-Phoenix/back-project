@@ -1,8 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "updatedAt" : null,
-  "contents" : "�뾽�뜲�씠�듃�맂 由щ럭 �궡�슜�엯�땲�떎.",
-  "keywords" : [ "WANT_RETURN", "THOROUGH" ]
-}
-----

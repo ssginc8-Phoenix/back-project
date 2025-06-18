@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+status+`
-|`+String+`
-|복약 상태 (TAKEN, MISSED)
-
-|===

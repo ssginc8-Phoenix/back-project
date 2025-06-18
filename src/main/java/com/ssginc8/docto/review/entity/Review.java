@@ -20,7 +20,7 @@ import lombok.*;
 @Table(name = "tbl_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Builder
+@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Review extends BaseTimeEntity {
 
@@ -49,6 +49,9 @@ public class Review extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private Long reportCount;
+
+	@Column(name = "report_reason")
+	private String reportReason;  // 신고 사유
 
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "tbl_review_keyword",

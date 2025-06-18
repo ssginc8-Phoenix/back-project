@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse;
 import com.ssginc8.docto.appointment.dto.AppointmentSearchCondition;
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.appointment.entity.AppointmentStatus;
@@ -17,6 +20,7 @@ import com.ssginc8.docto.appointment.repo.AppointmentRepo;
 import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.global.error.exception.appointmentException.AppointmentNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -115,13 +119,42 @@ public class AppointmentProvider {
 			LocalDateTime startOfDay = date.atStartOfDay();
 			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
 
-			log.info("날짜 별 appointment List 호출됨");
-
 			return appointmentRepo.findByHospital_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
 				userId, startOfDay, endOfDay, pageable
 			);
 		} else {
 			return appointmentRepo.findByHospital_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
 		}
+	}
+
+	/**
+	 * 알림 전송을 위해 Appointment 에서 User를 미리 로딩
+	 */
+	@Transactional(readOnly = true)
+	public Optional<Appointment> findByIdWithUser(Long id) {
+		return appointmentRepo.findByAppointmentIdWithUser(id);
+	}
+
+	/**
+	 * 특정 기간 내 완료되지 않은 예약 목록 조회
+	 */
+	public List<Appointment> getAppointmentsNotCompletedBetween(LocalDateTime start, LocalDateTime end) {
+		return appointmentRepo.findAllByAppointmentTimeBetweenAndStatusNot(
+			start, end, AppointmentStatus.COMPLETED
+		);
+	}
+
+	public List<User> getUsersWithNoShowSince(LocalDateTime since, Long threshold) {
+		return appointmentRepo.findUsersWithNoShowSince(since, threshold);
+	}
+
+	/**
+	 * 일일 진료 수
+	 */
+	@Transactional(readOnly = true)
+	public List<AppointmentDailyCountResponse> countAppointmentsByDateRange(Long userId, LocalDate start, LocalDate end) {
+		LocalDateTime startDateTime = start.atStartOfDay();
+		LocalDateTime endDateTime = end.atTime(LocalTime.MAX);
+		return appointmentRepo.countAppointmentsByDateRange(userId, startDateTime, endDateTime);
 	}
 }

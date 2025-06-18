@@ -1,17 +1,17 @@
 package com.ssginc8.docto.hospital.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +51,7 @@ public class HospitalController {
 
 
 	/**
-	 * 로그인 사용자의 병워 정보
+	 * 로그인 사용자의 병원 정보
 	 *
 	 */
 	@GetMapping("/hospitals/me")
@@ -71,9 +71,8 @@ public class HospitalController {
 		@RequestParam(required = false) String query,
 		@PageableDefault(size = 10, sort = "name") Pageable pageable
 	) {
-		Page<Hospital> hospitals = hospitalService.searchHospitals(query, pageable);
-		Page<HospitalResponse> response = hospitals.map(HospitalResponse::from);
-		return ResponseEntity.ok(response);
+		Page<HospitalResponse> hospitals = hospitalService.searchHospitals(query, pageable);
+		return ResponseEntity.ok(hospitals);
 	}
 
 
@@ -91,9 +90,12 @@ public class HospitalController {
 	 * 병원 등록
 	 *
 	 */
-	@PostMapping("/hospitals")
-	public ResponseEntity<Long> registerHospital(@Valid @RequestBody HospitalRequest hospitalRequest) {
-		Long hospitalId = hospitalService.saveHospital(hospitalRequest);
+	@PostMapping( "/hospitals")
+	public ResponseEntity<Long> registerHospital(
+		@ModelAttribute HospitalRequest hospitalRequest // MultipartFile 포함
+	) {
+		UserInfo.Response userInfo = userService.getMyInfo();
+		Long hospitalId = hospitalService.saveHospital(userInfo.userId, hospitalRequest);
 		return ResponseEntity.ok(hospitalId);
 	}
 
@@ -187,14 +189,12 @@ public class HospitalController {
 	 *
 	 */
 	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-	@PatchMapping("/hospitals/{hospitalId}/schedules/{scheduleId}")
-	public ResponseEntity<Void> updateHospitalSchedule(
+	@PatchMapping("/hospitals/{hospitalId}/schedules")
+	public ResponseEntity<Void> updateHospitalSchedules(
 		@PathVariable Long hospitalId,
-		@PathVariable Long scheduleId,
-		@RequestBody HospitalScheduleRequest scheduleRequest
+		@RequestBody List<HospitalScheduleRequest> scheduleRequests
 	) {
-		// 병원 ID도 사실 검증용 외에 쓰지 않으면 생략해도 되지만, 일단 같이 넘기는 경우
-		hospitalService.updateHospitalSchedule(hospitalId, scheduleId, scheduleRequest);
+		hospitalService.updateHospitalSchedule(hospitalId, scheduleRequests);
 		return ResponseEntity.noContent().build();
 	}
 

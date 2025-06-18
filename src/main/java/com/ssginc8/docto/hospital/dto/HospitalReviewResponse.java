@@ -13,14 +13,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HospitalReviewResponse {
 
+
+	private String name;
 	private Long reviewId;
 	private String contents;
 	private LocalDateTime createdAt;
 	private Long reportCount;
 	private List<String> keywords;
+	private String writerName;
 
 	public static HospitalReviewResponse fromEntity(Review review) {
 		HospitalReviewResponse dto = new HospitalReviewResponse();
+
+		dto.name = review.getUser().getName();
 		dto.reviewId    = review.getReviewId();
 		dto.contents    = review.getContents();
 		dto.createdAt   = review.getCreatedAt();
@@ -28,6 +33,13 @@ public class HospitalReviewResponse {
 		dto.keywords    = review.getKeywords().stream()
 			.map(Enum::name)
 			.toList();
+
+		dto.writerName = review.getAppointment()
+			.getPatientGuardian()
+			.getPatient()
+			.getUser()
+			.getName();
+
 		return dto;
 	}
 

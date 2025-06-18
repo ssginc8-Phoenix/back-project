@@ -5,7 +5,10 @@ import static com.ssginc8.docto.global.error.ErrorCode.*;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -14,11 +17,18 @@ import com.ssginc8.docto.doctor.entity.Doctor;
 import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 import com.ssginc8.docto.global.error.exception.doctorException.DoctorLunchTimeConflictException;
+import com.ssginc8.docto.global.error.exception.doctorException.DoctorScheduleDuplicateDayException;
 import com.ssginc8.docto.global.error.exception.doctorException.DoctorScheduleNotFoundException;
+import com.ssginc8.docto.global.error.exception.doctorException.DoctorScheduleOverlapException;
 import com.ssginc8.docto.global.error.exception.doctorException.HospitalScheduleNotFoundException;
 import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleLunchException;
+import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleLunchIncompleteException;
+import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleLunchOrderException;
+import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleLunchRangeException;
 import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleOutOfHoursException;
+import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleRequiredFieldsException;
 import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleTimeException;
+import com.ssginc8.docto.global.error.exception.doctorException.InvalidDoctorScheduleTimeOrderException;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
@@ -48,6 +58,66 @@ public class DoctorScheduleProvider {
 			throw new InvalidDoctorScheduleLunchException();
 		}
 	}
+
+
+
+		// 1) 필수 필드 Null 검증
+		public void validateRequiredFields(DoctorScheduleRequest req) {
+			if (req.getDayOfWeek() == null ||
+				req.getStartTime() == null ||
+				req.getEndTime() == null) {
+				throw new InvalidDoctorScheduleRequiredFieldsException();
+			}
+		}
+
+		// 2) 진료·점심시간 범위 검증
+		public void validateTimeRanges(DoctorScheduleRequest req) {
+			LocalTime start = req.getStartTime();
+			LocalTime end = req.getEndTime();
+			LocalTime lunchStart = req.getLunchStart();
+			LocalTime lunchEnd = req.getLunchEnd();
+
+			// 진료 시작 < 종료
+			if (!start.isBefore(end)) {
+				throw new InvalidDoctorScheduleTimeOrderException();
+			}
+
+			// 점심시간 불완전 설정
+			if ((lunchStart != null && lunchEnd == null) ||
+				(lunchStart == null && lunchEnd != null)) {
+				throw new InvalidDoctorScheduleLunchIncompleteException();
+			}
+
+			if (lunchStart != null) {
+				// 점심 시작 < 점심 종료
+				if (!lunchStart.isBefore(lunchEnd)) {
+					throw new InvalidDoctorScheduleLunchOrderException();
+				}
+				// 점심이 진료 시간 범위 안에
+				if (lunchStart.isBefore(start) || lunchEnd.isAfter(end)) {
+					throw new InvalidDoctorScheduleLunchRangeException();
+				}
+			}
+		}
+
+
+
+
+		// 4) 요청 리스트 내 중복 요일 검증
+		public void validateNoDuplicateDay(List<DoctorScheduleRequest> reqList) {
+			Set<DayOfWeek> seen = new HashSet<>();
+			for (DoctorScheduleRequest req : reqList) {
+				if (!seen.add(req.getDayOfWeek())) {
+					throw new DoctorScheduleDuplicateDayException();
+				}
+			}
+		}
+
+
+
+
+
+
 
 	public DoctorSchedule saveDoctorSchedule(DoctorSchedule doctorSchedule) {
 		return doctorScheduleRepo.save(doctorSchedule);

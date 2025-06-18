@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ssginc8.docto.medication.dto.*;
 import com.ssginc8.docto.medication.service.MedicationService;
+import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.provider.UserProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class MedicationController {
 
 	private final MedicationService medicationService;
+	private final UserProvider userProvider;
 
 	@GetMapping("/me/logs")
 	public ResponseEntity<Page<MedicationLogResponse>> getLogsByCurrentUser(Pageable pageable) {
@@ -29,6 +32,14 @@ public class MedicationController {
 	public ResponseEntity<List<MedicationScheduleResponse>> getSchedulesByCurrentUser() {
 		List<MedicationScheduleResponse> response = medicationService.getMedicationSchedulesByCurrentUser();
 		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/{medicationId}")
+	public ResponseEntity<MedicationScheduleResponse> getSchedule(
+		@PathVariable Long medicationId
+	) {
+		MedicationScheduleResponse dto = medicationService.getMedicationScheduleById(medicationId);
+		return ResponseEntity.ok(dto);
 	}
 
 	@PostMapping

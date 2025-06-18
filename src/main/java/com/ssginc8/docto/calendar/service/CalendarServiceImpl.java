@@ -12,6 +12,7 @@ import com.ssginc8.docto.calendar.service.dto.DoctorCalendar;
 import com.ssginc8.docto.calendar.service.dto.GuardianCalendar;
 import com.ssginc8.docto.calendar.service.dto.HospitalCalendar;
 import com.ssginc8.docto.calendar.service.dto.PatientCalendar;
+import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
 
@@ -38,11 +39,12 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public GuardianCalendar.Response getGuardianCalendars(CalendarRequest request) {
 		User user = getUser();
-
+    
+		List<PatientGuardian> patientGuardians = calendarProvider.fetchAcceptedGuardiansByGuardianUser(user);
 		List<Tuple> appointmentTuples = calendarProvider.fetchAppointmentsByGuardian(user, request);
 		List<Tuple> medicationTuples = calendarProvider.fetchMedicationsByGuardian(user);
 
-		return GuardianCalendar.toResponse(appointmentTuples, medicationTuples, request);
+		return GuardianCalendar.toResponse(appointmentTuples, medicationTuples, patientGuardians, request);
 	}
 
 	@Transactional(readOnly = true)

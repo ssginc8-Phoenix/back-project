@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,8 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssginc8.docto.doctor.dto.DoctorProfileUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorSaveRequest;
 import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.doctor.dto.DoctorResponse;
@@ -25,6 +30,9 @@ import com.ssginc8.docto.doctor.entity.DoctorSchedule;
 import com.ssginc8.docto.doctor.repo.DoctorRepo;
 import com.ssginc8.docto.doctor.repo.DoctorScheduleRepo;
 import com.ssginc8.docto.doctor.service.DoctorService;
+import com.ssginc8.docto.user.provider.UserProvider;
+import com.ssginc8.docto.user.service.UserService;
+import com.ssginc8.docto.user.service.dto.UserInfo;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +44,27 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DoctorController {
 	private final DoctorService doctorService;
+	private final UserService userService;
 
+
+	/**
+	 * 로그인 한 의사 정보 조회
+	 */
+	@GetMapping("/doctors/me")
+	public DoctorResponse getMyDoctorInfo() {
+		Long userId = userService.getMyInfo().userId;
+		return doctorService.getDoctorInfoByUserId(userId);
+	}
+
+	@PatchMapping(value = "/doctors/{doctorId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Void> updateDoctorProfile(
+		@PathVariable Long doctorId,
+		@RequestPart("data") DoctorProfileUpdateRequest request,
+		@RequestPart(value = "profile", required = false) MultipartFile profileImage
+	) {
+		doctorService.updateDoctorProfile(doctorId, request, profileImage);
+		return ResponseEntity.ok().build();
+	}
 
 	/**
 	 * 의사 등록
@@ -121,8 +149,13 @@ public class DoctorController {
 	 * 의사가 30분 당 받을 수 있는 최대 환자 수 수정
 	 * capacityPerHalfHour
 	 */
-	@PatchMapping("/{doctorId}/capacity")
-	public ResponseEntity<Void> updateCapacityPerHalfHour(@PathVariable Long doctorId, @RequestBody Long capacityPerHalfHour) {
+	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+	@PatchMapping("/doctors/{doctorId}/capacity")
+	public ResponseEntity<Void> updateCapacityPerHalfHour(
+		@PathVariable Long doctorId,
+		@RequestBody Long capacityPerHalfHour) {
+
+		doctorService.updateCapacityPerHalfHour(doctorId, capacityPerHalfHour);
 		return ResponseEntity.noContent().build();
 	}
 

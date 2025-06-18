@@ -1,6 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "inviteCode" : "inv-5-22-20250602-c3fe52"
-}
-----

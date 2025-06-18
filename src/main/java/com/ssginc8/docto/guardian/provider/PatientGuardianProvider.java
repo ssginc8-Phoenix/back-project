@@ -2,6 +2,7 @@ package com.ssginc8.docto.guardian.provider;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +32,31 @@ public class PatientGuardianProvider {
 		return patientGuardianRepo.findAllByUser(user);
 	}
 
+	@Transactional
+	public void deleteMapping(Long guardianId, Long patientId) {
+		patientGuardianRepo.softDeleteByUserIdAndPatientId(guardianId, patientId);
+	}
+
 	public PatientGuardian validateAndGetPatientGuardian(User guardian, Patient patient) {
 		return patientGuardianRepo.findByUserAndPatient(guardian, patient)
 			.filter(pg -> pg.getDeletedAt() == null) // 논리삭제 제외
 			.filter(pg -> pg.getStatus() == Status.ACCEPTED) // 수락된 상태만
 			.orElseThrow(GuardianMappingNotFoundException::new); // 보호자-환자 매핑 없으면 에러
 	}
+	// @Transactional(readOnly = true)
+	// public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
+	// 	return patientGuardianRepo.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED);
+	// }
+
 	@Transactional(readOnly = true)
 	public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
-		return patientGuardianRepo.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED);
+		// return patientGuardianRepo.findByPatient_PatientIdAndStatusAndDeletedAtIsNull(patientId, Status.ACCEPTED);
+		return patientGuardianRepo
+			.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED)
+			.stream()
+			// deletedAt이 null인(=아직 활성화된) 매핑만 남긴다
+			.filter(pg -> pg.getDeletedAt() == null)
+			.collect(Collectors.toList());
 	}
 
 	public Optional<PatientGuardian> findByUserAndPatient(User guardian, Patient patient) {
@@ -57,5 +74,4 @@ public class PatientGuardianProvider {
 		return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
 			.orElse(null); // 없으면 null
 	}
-
 }

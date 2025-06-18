@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ssginc8.docto.guardian.dto.GuardianInfoResponse;
 import com.ssginc8.docto.guardian.dto.GuardianInviteRequest;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
@@ -58,5 +59,29 @@ public class GuardianController {
 		Long guardianId = userService.getUserFromUuid().getUserId();
 		List<PatientSummaryResponse> patients = guardianService.getAllAcceptedMappings(guardianId);
 		return ResponseEntity.ok(patients);
+	}
+
+	/**
+	 * 내(로그인한 보호자) – 특정 환자 연결 해제 (soft‑delete)
+	 */
+	@DeleteMapping("/me/patients/{patientId}")
+	public ResponseEntity<Void> deleteMyMapping(@PathVariable Long patientId) {
+		Long guardianId = userService.getUserFromUuid().getUserId();
+		guardianService.deleteMapping(guardianId, patientId);
+		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/me")
+	public ResponseEntity<GuardianInfoResponse> getMyGuardianInfo() {
+		var user = userService.getUserFromUuid(); // 현재 로그인된 유저
+
+		var response = GuardianInfoResponse.builder()
+			.guardianId(user.getUserId()) // userId가 guardianId
+			.name(user.getName())
+			.email(user.getEmail())
+			.role(user.getRole())
+			.build();
+
+		return ResponseEntity.ok(response);
 	}
 }

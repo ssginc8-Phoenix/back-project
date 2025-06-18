@@ -1,8 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "hospitalId" : 1,
-  "specialization" : "DERMATOLOGY",
-  "userId" : 29
-}
-----

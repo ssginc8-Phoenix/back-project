@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+waiting+`
-|`+Number+`
-|등록된 대기 인원 수
-
-|===

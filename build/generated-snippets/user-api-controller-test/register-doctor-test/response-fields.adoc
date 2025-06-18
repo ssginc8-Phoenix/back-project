@@ -1,8 +1,0 @@
-|===
-|Path|Type|Description
-
-|`+ids[]+`
-|`+Array+`
-|생성된 의사 ID 리스트
-
-|===

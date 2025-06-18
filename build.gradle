@@ -90,6 +90,7 @@ dependencies {
     // 🔹 스케줄링 (복약 알림 등 주기 작업)
 
     // 🔹 FCM Push 알림
+    implementation 'com.google.firebase:firebase-admin:9.5.0'
 
     // 🔹 파일 업로드/다운로드 (보험 서류 등)
 

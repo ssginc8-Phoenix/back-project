@@ -1,6 +1,7 @@
 package com.ssginc8.docto.qna.service;
 
 
+import com.ssginc8.docto.global.event.qna.QnaAnsweredEvent;
 import com.ssginc8.docto.qna.dto.CommentResponse;
 import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.qna.entity.QaPost;
@@ -8,6 +9,8 @@ import com.ssginc8.docto.qna.entity.QaStatus;
 import com.ssginc8.docto.qna.provider.CommentProvider;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,7 @@ public class CommentServiceImpl implements CommentService {
 
 	private final CommentProvider commentProvider;
 	private final QaPostProvider qaPostProvider;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	// 답변 생성
 	@Override
@@ -35,11 +39,15 @@ public class CommentServiceImpl implements CommentService {
 		QaComment comment = QaComment.create(post, content);
 		QaComment saved = commentProvider.save(comment);
 
+
 		// 3. 게시글 상태를 COMPLETED로 갱신
 		if (post.getStatus() != QaStatus.COMPLETED) {
 			post.setStatus(QaStatus.COMPLETED);
 			qaPostProvider.save(post);
 		}
+
+		//applicationEventPublisher.publishEvent(new QnaAnsweredEvent(comment));
+
 
 		return CommentResponse.fromEntity(saved);
 	}

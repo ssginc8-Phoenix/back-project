@@ -1,8 +1,0 @@
-.+/api/v1/doctors/{doctorId}/schedules+
-|===
-|Parameter|Description
-
-|`+doctorId+`
-|의사 ID
-
-|===

@@ -1,7 +1,0 @@
-[source,json,options="nowrap"]
-----
-{
-  "message" : "잘못된 HTTP 메서드를 호출했습니다.",
-  "code" : "G_001"
-}
-----

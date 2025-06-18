@@ -1,6 +1,9 @@
 package com.ssginc8.docto.doctor.repo;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.print.Doc;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +21,6 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long> {
 	void deleteAll(Iterable<? extends Doctor> doctors);
 	Page<Doctor> findByDeletedAtIsNull(Pageable pageable);
 	boolean existsByUser(User user);
+
+	Optional<Doctor> findByUserUserId(Long userId);
 }

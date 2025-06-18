@@ -3,6 +3,8 @@ package com.ssginc8.docto.hospital.provider;
 import java.time.DayOfWeek;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.doctor.repo.DoctorRepo;
+import com.ssginc8.docto.file.repository.FileRepo;
 import com.ssginc8.docto.global.error.ErrorCode;
 import com.ssginc8.docto.global.error.exception.BusinessBaseException;
 import com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException;
@@ -40,6 +43,7 @@ public class HospitalProvider {
 	private final HospitalScheduleRepo hospitalScheduleRepo;
 	private final ProvidedServiceRepo providedServiceRepo;
 	private final DoctorRepo doctorRepo;
+	private final FileRepo fileRepo;
 
 
 
@@ -70,17 +74,16 @@ public class HospitalProvider {
 		Hospital hospital = hospitalRepo.findByUserUserId(userId)
 			.orElseThrow(HospitalNotFoundException::new);
 
-		// 1) 서비스 리스트 조회 (서비스 이름만 뽑기)
+		String imageUrl = hospital.getFileId() != null
+			? fileRepo.getFileUrlById(hospital.getFileId())
+			: null;
+
 		List<String> serviceNames = providedServiceRepo.findServiceNamesByHospitalId(hospital.getHospitalId());
 
-		// 2) HospitalResponse 생성
-		HospitalResponse res = HospitalResponse.from(hospital);
-
-		// 3) 서비스 이름 리스트 세팅
-		res.setServiceNames(serviceNames);
-
-		return res;
+		return HospitalResponse.from(hospital, imageUrl, serviceNames);
 	}
+
+
 
 	public void validateScheduleBelongsToHospital(HospitalSchedule schedule, Hospital hospital) {
 		if (!schedule.getHospital().getHospitalId().equals(hospital.getHospitalId())) {
@@ -105,7 +108,7 @@ public class HospitalProvider {
 	public Page<Hospital> findHospitalsWithinRadius(double lat, double lng, double radius, String query, Pageable pageable) {
 		return hospitalRepo.findHospitalsWithinRadius(lat, lng, radius,query,  pageable);
 	}
-
+	
 
 
 	@Transactional
@@ -148,5 +151,46 @@ public class HospitalProvider {
 		hospitalScheduleRepo.deleteAllByHospitalHospitalId(hospitalId);
 	}
 
+	@Transactional(readOnly = true)
+	public Hospital findByUserUserId(Long userId) {
+		return hospitalRepo.findByUserUserId(userId)
+			.orElseThrow(HospitalNotFoundException::new);
+	}
+	@Transactional(readOnly = true)
+	public Long getHospitalIdByAdminId(Long userId) {
+		return hospitalRepo.findByUserUserId(userId)
+			.map(Hospital::getHospitalId)
+			.orElseThrow(HospitalNotFoundException::new);
+	}
 
+	public List<HospitalSchedule> findSchedulesByHospitalIds(List<Long> hospitalIds) {
+		return hospitalScheduleRepo.findByHospitalHospitalIdIn(hospitalIds);
+	}
+
+	public Map<Long, List<String>> findServiceNamesMapByHospitalIds(List<Long> hospitalIds) {
+		List<ProvidedService> list = providedServiceRepo.findByHospitalIds(hospitalIds);
+		return list.stream()
+			.collect(Collectors.groupingBy(
+				p -> p.getHospital().getHospitalId(),
+				Collectors.mapping(ProvidedService::getServiceName, Collectors.toList())
+			));
+	}
+
+	public Map<Long, String> findFileUrlMapByHospitalIds(List<Long> hospitalIds) {
+		List<Hospital> hospitals = hospitalRepo.findAllById(hospitalIds);
+		return hospitals.stream()
+			.filter(h -> h.getFileId() != null)
+			.collect(Collectors.toMap(
+				Hospital::getHospitalId,
+				h -> fileRepo.getFileUrlById(h.getFileId()) // fileId → url
+			));
+	}
+
+	public String getImageUrl(Long hospitalId) {
+		return fileRepo.getFileUrlByHospitalId(hospitalId);
+	}
+
+	public List<String> getServiceNames(Long hospitalId) {
+		return providedServiceRepo.findServiceNamesByHospitalId(hospitalId);
+	}
 }

@@ -1,7 +1,0 @@
-[source,http,options="nowrap"]
-----
-DELETE /api/v1/hospitals/1/schedules/2 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Host: localhost:8080
-
-----
