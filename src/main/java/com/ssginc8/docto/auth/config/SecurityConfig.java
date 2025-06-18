@@ -124,7 +124,9 @@ public class SecurityConfig {
 					"/api/v1/reviews/**",
 					"/api/v1/qnas/**",
 					"/api/v1/medications/**",
-					"/api/v1/calendar/guardian"
+					"/api/v1/calendar/guardian",
+					"/api/v1/payment-history/{paymentRequestId}",
+					"/api/v1/payments/init"
 				).hasRole("GUARDIAN")
 
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")

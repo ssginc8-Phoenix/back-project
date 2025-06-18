@@ -123,4 +123,20 @@ public class Appointment extends BaseTimeEntity {
 	public String getPatientName() {
 		return this.patientGuardian.getPatient().getUser().getName();
 	}
+
+	public String getHospitalName() {
+		return this.hospital.getName();
+	}
+
+	public String getDoctorName() {
+		return this.doctor.getUser().getName();
+	}
+
+	public String getGuardianName() {
+		return this.patientGuardian.getUser().getName();
+	}
+
+	public String getGuardianEmail() {
+		return this.patientGuardian.getUser().getEmail();
+	}
 }

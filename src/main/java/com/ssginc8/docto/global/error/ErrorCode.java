@@ -113,7 +113,11 @@ public enum ErrorCode {
 
 	//Notification 관련 에러 (N_)
 	NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N_001", "알림을 찾을 수 없습니다."),
-	NOTIFICATION_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "N_002", "알림 전송에 실패하였습니다.");
+	NOTIFICATION_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "N_002", "알림 전송에 실패하였습니다."),
+
+	// payments 관련 에러 (P_)
+	PAYMENT_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "결제 요청 내역을 찾을 수 없습니다."),
+	;
 
 	private final HttpStatus status;
 	private final String code;

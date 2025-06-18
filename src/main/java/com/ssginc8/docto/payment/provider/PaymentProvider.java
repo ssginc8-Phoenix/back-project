@@ -2,6 +2,7 @@ package com.ssginc8.docto.payment.provider;
 
 import org.springframework.stereotype.Service;
 
+import com.ssginc8.docto.global.error.exception.paymentException.PaymentRequestNotFound;
 import com.ssginc8.docto.payment.entity.PaymentRequest;
 import com.ssginc8.docto.payment.repository.PaymentRequestRepo;
 
@@ -14,5 +15,10 @@ public class PaymentProvider {
 
 	public PaymentRequest save(PaymentRequest paymentRequest) {
 		return paymentRequestRepo.save(paymentRequest);
+	}
+
+	public PaymentRequest findPaymentRequestByPaymentRequestId(Long paymentRequestId) {
+		return paymentRequestRepo.findByPaymentRequestId(paymentRequestId)
+			.orElseThrow(PaymentRequestNotFound::new);
 	}
 }
