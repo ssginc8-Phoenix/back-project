@@ -38,6 +38,11 @@ public interface NotificationService {
 	void notifyAppointmentCanceled(Appointment appointment);
 
 	/**
+	 * Appointment 노쇼 알림 전송 (보호자)
+	 */
+	void notifyAppointmentNoShow(Appointment appointment);
+
+	/**
 	 * QNA 알림 전송
 	 */
 	void notifyQnaResponse(QaComment qaComment);
