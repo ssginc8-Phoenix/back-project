@@ -111,6 +111,10 @@ public enum ErrorCode {
 	// Review 관련 에러(R_)
 	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다."),
 
+	// FCM 관련 에러 (F_)
+	NOT_FOUND_TOKEN(HttpStatus.NOT_FOUND, "F_001", "FCM 토큰을 찾을 수 없습니다."),
+	FAILED_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "FCM 전송에 실패했습니다."),
+
 	//Notification 관련 에러 (N_)
 	NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N_001", "알림을 찾을 수 없습니다."),
 	NOTIFICATION_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "N_002", "알림 전송에 실패하였습니다.");
