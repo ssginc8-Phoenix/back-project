@@ -1,12 +1,20 @@
 package com.ssginc8.docto.medication.service;
 
-import com.ssginc8.docto.guardian.entity.PatientGuardian;
+import com.ssginc8.docto.global.error.exception.medicationException.InvalidMedicationDateException;
+import com.ssginc8.docto.global.error.exception.medicationException.MedicationAlertDayNotFoundException;
+import com.ssginc8.docto.global.error.exception.medicationException.MedicationAlertTimeNotFoundException;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
-import com.ssginc8.docto.medication.dto.*;
-import com.ssginc8.docto.medication.entity.*;
+import com.ssginc8.docto.medication.dto.MedicationCompleteRequest;
+import com.ssginc8.docto.medication.dto.MedicationLogResponse;
+import com.ssginc8.docto.medication.dto.MedicationScheduleRequest;
+import com.ssginc8.docto.medication.dto.MedicationScheduleResponse;
+import com.ssginc8.docto.medication.dto.MedicationUpdateRequest;
+import com.ssginc8.docto.medication.entity.MedicationAlertDay;
+import com.ssginc8.docto.medication.entity.MedicationAlertTime;
+import com.ssginc8.docto.medication.entity.MedicationInformation;
+import com.ssginc8.docto.medication.entity.MedicationLog;
 import com.ssginc8.docto.medication.provider.MedicationProvider;
 import com.ssginc8.docto.user.entity.User;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +44,15 @@ public class MedicationServiceImpl implements MedicationService {
 	@Transactional
 	@Override
 	public void registerMedicationSchedule(MedicationScheduleRequest request) {
+		// 날짜 유효성 검사
+		if (request.getStartDate() != null
+			&& request.getEndDate() != null
+			&& request.getStartDate().isAfter(request.getEndDate())) {
+			throw new InvalidMedicationDateException();
+		}
+
 		User user = medicationProvider.getUser(request.getUserId());
 
-		// ✅ 약 정보는 1개만 생성
 		MedicationInformation info = MedicationInformation.create(
 			user,
 			request.getPatientGuardianId(),
@@ -46,35 +61,57 @@ public class MedicationServiceImpl implements MedicationService {
 			request.getEndDate()
 		);
 
-		// ✅ 알림 시간도 1개만 생성
-		MedicationAlertTime alertTime = MedicationAlertTime.create(info, request.getTimeToTake());
-
-		// ✅ 선택된 요일마다 Day 생성
-		for (DayOfWeek day : request.getDays()) {
-			alertTime.getAlertDays().add(MedicationAlertDay.create(alertTime, day));
+		if (request.getTimes() == null || request.getTimes().isEmpty()) {
+			throw new MedicationAlertTimeNotFoundException();
 		}
 
-		info.getAlertTimes().add(alertTime);
+		// MealTime 리스트 순회하여 meal+time 저장
+		for (MedicationScheduleRequest.MealTime mt : request.getTimes()) {
+			String meal = mt.getMeal();              // "morning" | "lunch" | "dinner"
+			LocalTime t = mt.getTime();
 
-		// ✅ 단 1회 저장
+			MedicationAlertTime at = MedicationAlertTime.create(info, meal, t);
+			for (DayOfWeek dow : request.getDays()) {
+				at.getAlertDays().add(
+					MedicationAlertDay.create(at, dow)
+				);
+			}
+			info.getAlertTimes().add(at);
+		}
+
 		medicationProvider.saveMedicationInformation(info);
 	}
-
 
 	@Transactional(readOnly = true)
 	@Override
 	public List<MedicationScheduleResponse> getMedicationSchedulesByCurrentUser() {
 		User user = medicationProvider.getCurrentUserFromToken();
-
 		List<MedicationInformation> infos = medicationProvider.getMedicationsByUser(user);
 
 		return infos.stream()
-			.flatMap(info -> info.getAlertTimes().stream().map(alertTime -> {
-				List<DayOfWeek> days = alertTime.getAlertDays().stream()
-					.map(MedicationAlertDay::getDayOfWeek)
+			.map(info -> {
+				List<MedicationScheduleResponse.MealTime> times = info.getAlertTimes().stream()
+					.map(at -> new MedicationScheduleResponse.MealTime(
+						at.getMeal(),
+						at.getTimeToTake()
+					))
 					.collect(Collectors.toList());
-				return MedicationScheduleResponse.from(info, alertTime, days);
-			}))
+
+				List<DayOfWeek> days = info.getAlertTimes().stream()
+					.flatMap(at -> at.getAlertDays().stream())
+					.map(MedicationAlertDay::getDayOfWeek)
+					.distinct()
+					.collect(Collectors.toList());
+
+				return MedicationScheduleResponse.builder()
+					.medicationId(info.getMedicationId())
+					.medicationName(info.getMedicationName())
+					.times(times)
+					.days(days)
+					.startDate(info.getStartDate())
+					.endDate(info.getEndDate())
+					.build();
+			})
 			.collect(Collectors.toList());
 	}
 
@@ -82,14 +119,40 @@ public class MedicationServiceImpl implements MedicationService {
 	@Override
 	public void updateMedicationTime(Long medicationId, MedicationUpdateRequest request) {
 		MedicationInformation info = medicationProvider.getMedication(medicationId);
-		MedicationAlertTime alertTime = info.getAlertTimes().get(0); // 첫 번째 알림시간 수정
-		alertTime.updateTimeToTake(request.getNewTimeToTake());
 
-		alertTime.getAlertDays().clear();
-		List<MedicationAlertDay> newDays = request.getNewDays().stream()
-			.map(day -> MedicationAlertDay.create(alertTime, day))
-			.collect(Collectors.toList());
-		alertTime.getAlertDays().addAll(newDays);
+		// 날짜 범위 변경
+		if (request.getNewStartDate() != null || request.getNewEndDate() != null) {
+			medicationProvider.updateDateRange(
+				medicationId,
+				request.getNewStartDate(),
+				request.getNewEndDate()
+			);
+		}
+
+		// MealTime 기반 알림시간·요일 일괄 교체
+		List<MedicationUpdateRequest.MealTime> times = request.getNewTimes();
+		List<DayOfWeek> days = request.getNewDays();
+
+		if (times != null && !times.isEmpty()) {
+			info.getAlertTimes().clear();
+			for (MedicationUpdateRequest.MealTime mt : times) {
+				MedicationAlertTime at = MedicationAlertTime.create(
+					info,
+					mt.getMeal(),
+					mt.getTime()
+				);
+				if (days != null && !days.isEmpty()) {
+					for (DayOfWeek dow : days) {
+						at.getAlertDays().add(
+							MedicationAlertDay.create(at, dow)
+						);
+					}
+				} else {
+					throw new MedicationAlertDayNotFoundException();
+				}
+				info.getAlertTimes().add(at);
+			}
+		}
 	}
 
 	@Transactional
@@ -103,8 +166,6 @@ public class MedicationServiceImpl implements MedicationService {
 	@Override
 	public void completeMedication(Long medicationId, MedicationCompleteRequest request) {
 		MedicationInformation info = medicationProvider.getMedication(medicationId);
-
-		// 복약 스케줄 (알림시간) 가져오기
 		List<MedicationAlertTime> alertTimes = info.getAlertTimes();
 
 		for (MedicationAlertTime alertTime : alertTimes) {
@@ -118,5 +179,31 @@ public class MedicationServiceImpl implements MedicationService {
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public MedicationScheduleResponse getMedicationScheduleById(Long medicationId) {
+		MedicationInformation info = medicationProvider.getMedication(medicationId);
+		// 기존 getMedicationSchedulesByCurrentUser 내부 로직을 재사용
+		List<MedicationScheduleResponse.MealTime> times = info.getAlertTimes().stream()
+			.map(at -> new MedicationScheduleResponse.MealTime(
+				at.getMeal(),
+				at.getTimeToTake()
+			))
+			.collect(Collectors.toList());
 
+		List<DayOfWeek> days = info.getAlertTimes().stream()
+			.flatMap(at -> at.getAlertDays().stream())
+			.map(MedicationAlertDay::getDayOfWeek)
+			.distinct()
+			.collect(Collectors.toList());
+
+		return MedicationScheduleResponse.builder()
+			.medicationId(info.getMedicationId())
+			.medicationName(info.getMedicationName())
+			.times(times)
+			.days(days)
+			.startDate(info.getStartDate())
+			.endDate(info.getEndDate())
+			.build();
+	}
 }

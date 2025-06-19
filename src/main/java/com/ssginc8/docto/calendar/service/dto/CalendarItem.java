@@ -8,6 +8,9 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.Tuple;
 
@@ -54,25 +57,33 @@ public class CalendarItem {
 		List<CalendarItem> items = new ArrayList<>();
 		YearMonth yearMonth = YearMonth.of(request.getYear(), request.getMonth());
 
-		for (Tuple tuple : tuples) {
-			String tupleDayString = tuple.get(3, String.class);
-			if (tupleDayString == null) continue;
+		// medicationId 기준으로 그룹핑
+		Map<Long, List<Tuple>> grouped = tuples.stream()
+			.collect(Collectors.groupingBy(t -> t.get(0, Long.class)));
 
-			DayOfWeek tupleDay = DayOfWeek.valueOf(tupleDayString.toUpperCase());
+		for (Map.Entry<Long, List<Tuple>> entry : grouped.entrySet()) {
+			List<Tuple> group = entry.getValue();
+			Tuple base = group.get(0);
 
-			LocalDate startDate = tuple.get(6, LocalDate.class); 
-			LocalDate endDate = tuple.get(7, LocalDate.class); 
-			if (startDate == null || endDate == null) {
-        continue;
-      }
+			Long id = base.get(0, Long.class);
+			String title = base.get(1, String.class);
+			LocalTime time = base.get(2, LocalTime.class);
+			LocalDate startDate = base.get(6, LocalDate.class);
+			LocalDate endDate = base.get(7, LocalDate.class);
+
+			// 해당 약의 전체 요일 수집
+			List<DayOfWeek> days = group.stream()
+				.map(t -> DayOfWeek.valueOf(t.get(3, String.class).toUpperCase()))
+				.collect(Collectors.toList());
 
 			for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
 				LocalDate date = LocalDate.of(request.getYear(), request.getMonth(), day);
-				if (!date.getDayOfWeek().equals(tupleDay) || date.isBefore(startDate) || date.isAfter(endDate)) {
-          continue;
-        }
+				if (!days.contains(date.getDayOfWeek()) || date.isBefore(startDate) || date.isAfter(endDate)) {
+					continue;
+				}
 
-				items.add(fromMedicationTuple(tuple, date));
+				// 여러 요일 모두 담은 CalendarItem 생성
+				items.add(new CalendarItem(date, time, title, id, ItemType.MEDICATION, days, startDate, endDate));
 			}
 		}
 

@@ -91,15 +91,18 @@ public class QaPostServiceImpl implements QaPostService{
 	}
 
 
-	@Override
-	public Page<QaPostResponse> getDoctorPostsByStatus(QaStatus status, Pageable pageable) {
-		return qaPostProvider.getPostsByStatus(status, pageable);
-	}
 
 	@Override
 	public QaPostResponse updateQaPostStatus(Long qnaId,QaStatus status) {
 		return qaPostProvider.changeStatus(qnaId, status);
 	}
+
+	@Override
+	public Page<QaPostResponse> getDoctorPostsByDoctorIdAndStatus(String uuid, QaStatus status, Pageable pageable) {
+		return qaPostProvider.findAllByDoctorUuidAndStatus(uuid, status, pageable)
+			.map(QaPostResponse::fromEntity);
+	}
+
 
 
 

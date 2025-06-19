@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.repository.FileRepo;
+import com.ssginc8.docto.global.error.exception.fileException.FileNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,30 @@ public class FileProvider {
 		return fileRepo.save(file);
 	}
 
-
+  /**
+	 * 파일 ID로 S3 URL을 조회합니다.
+	 * @param fileId tbl_file PK
+	 * @return URL 문자열 또는 null
+	 */
+	public String getFileUrlById(Long fileId) {
+		if (fileId == null) {
+			return null;
+		}
+		// repository에 선언된 getFileUrlById(@Param("fileId") Long) 호출
+		String url = fileRepo.getFileUrlById(fileId);
+		if (url == null || url.isBlank()) {
+			// 해당 ID로 저장된 파일을 찾을 수 없을 때 예외 던짐
+			throw new FileNotFoundException();
+		}
+		return url;
+	}
+  
 	public List<String> getFileUrlsByIds(List<Long> fileIds) {
 		if (fileIds == null || fileIds.isEmpty()) {
 			return Collections.emptyList();
 		}
-		// 한 번에 IN 조회
+
+	
 		return fileRepo.getFileUrlsByIds(fileIds)
 			.stream()
 			.filter(Objects::nonNull)

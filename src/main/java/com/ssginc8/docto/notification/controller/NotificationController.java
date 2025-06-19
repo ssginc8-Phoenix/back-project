@@ -40,4 +40,10 @@ public class NotificationController {
 	public ResponseEntity<List<NotificationResponse>> getUserNotifications() {
 		return ResponseEntity.ok(notificationService.getNotificationsByLoginUser());
 	}
+
+	@PatchMapping("/delete")
+	public ResponseEntity<Void> deleteNotifications() {
+		notificationService.deleteReadNotifications();
+		return ResponseEntity.noContent().build();
+	}
 }

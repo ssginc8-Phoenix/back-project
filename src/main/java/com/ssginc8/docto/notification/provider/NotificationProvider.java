@@ -33,6 +33,6 @@ public class NotificationProvider {
 	// 알림 목록 조회
 	@Transactional(readOnly = true)
 	public List<Notification> getUserNotifications(Long userId) {
-		return notificationRepo.findAllByReceiver_UserIdOrderByCreatedAtDesc(userId);
+		return notificationRepo.findAllByReceiver_UserIdAndDeletedAtIsNullOrderByCreatedAtDesc(userId);
 	}
 }

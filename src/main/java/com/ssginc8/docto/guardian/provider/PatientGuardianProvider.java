@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssginc8.docto.global.error.exception.guardianException.GuardianNotFoundException;
+import com.ssginc8.docto.global.error.exception.patientException.PatientNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
 import com.ssginc8.docto.guardian.repo.PatientGuardianRepo;
@@ -43,10 +45,6 @@ public class PatientGuardianProvider {
 			.filter(pg -> pg.getStatus() == Status.ACCEPTED) // 수락된 상태만
 			.orElseThrow(GuardianMappingNotFoundException::new); // 보호자-환자 매핑 없으면 에러
 	}
-	// @Transactional(readOnly = true)
-	// public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
-	// 	return patientGuardianRepo.findByPatient_PatientIdAndStatus(patientId, Status.ACCEPTED);
-	// }
 
 	@Transactional(readOnly = true)
 	public List<PatientGuardian> getAllAcceptedGuardiansByPatientId(Long patientId) {
@@ -73,5 +71,11 @@ public class PatientGuardianProvider {
 	public PatientGuardian findPendingMapping(User guardian, Patient patient) {
 		return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
 			.orElse(null); // 없으면 null
+	}
+
+	@Transactional(readOnly = true)
+	public PatientGuardian getPatientGuardianById(Long patientGuardianId) {
+		return patientGuardianRepo.findByIdWithPatientAndUser(patientGuardianId)
+			.orElseThrow(GuardianNotFoundException::new);
 	}
 }

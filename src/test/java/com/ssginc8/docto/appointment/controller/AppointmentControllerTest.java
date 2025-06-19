@@ -221,7 +221,7 @@ public class AppointmentControllerTest {
 	@DisplayName("재예약")
 	void rescheduleAppointment() throws Exception {
 		RescheduleRequest request = new RescheduleRequest();
-		request.setNewTime(LocalDateTime.now().plusDays(2));
+		request.setNewTime(String.valueOf(LocalDateTime.now().plusDays(2)));
 
 		mockMvc.perform(post("/api/v1/appointments/{appointmentId}/reschedule", 1L)
 				.contentType(MediaType.APPLICATION_JSON)

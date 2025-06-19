@@ -1,6 +1,9 @@
 package com.ssginc8.docto.notification.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.swing.text.DateFormatter;
 
 import com.ssginc8.docto.notification.entity.Notification;
 
@@ -16,18 +19,23 @@ public class NotificationResponse {
 	private String type;
 	private Long referenceId;
 	private boolean isRead;
-	private LocalDateTime createdAt;
+	private String createdAt;
 	private LocalDateTime readAt;
 
 	public static NotificationResponse from(Notification notification) {
 		return new NotificationResponse(
 			notification.getNotificationId(),
 			notification.getContent(),
-			notification.getType().name(),
+			notification.getType().getDescription(),
 			notification.getReferenceId(),
 			notification.isRead(),
-			notification.getCreatedAt(),
+			formatKoreanDate(notification.getCreatedAt()),
 			notification.getReadAt()
 		);
+	}
+
+	private static String formatKoreanDate(LocalDateTime createdAt) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+		return createdAt.format(formatter);
 	}
 }

@@ -7,6 +7,8 @@ import com.ssginc8.docto.user.entity.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +34,7 @@ public class Notification extends BaseTimeEntity {
 	@JoinColumn(name = "receiver_id", nullable = false)
 	private User receiver;
 
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private NotificationType type;
 

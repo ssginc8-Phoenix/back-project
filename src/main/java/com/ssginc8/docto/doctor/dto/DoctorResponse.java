@@ -54,13 +54,10 @@ public class DoctorResponse {
 			doctor.getSpecialization().getDescription(),
 			doctor.getHospital().getName(),
 			doctor.getCapacityPerHalfHour(),
-	    	doctor.getHospital().getAddress(),
+	    doctor.getHospital().getAddress(),
 			doctor.getUser().getEmail(),
 			doctor.getUser().getPhone(),
 			imageUrl
-
-		
-
 		);
 	}
 }

@@ -34,6 +34,7 @@ public enum ErrorCode {
 	INVALID_INVITE_CODE(HttpStatus.BAD_REQUEST, "GDN_003", "유효하지 않은 초대 코드입니다."),
 	INVALID_GUARDIAN_STATUS(HttpStatus.BAD_REQUEST, "GDN_004", "유효하지 않은 보호자 상태입니다."),
 	GUARDIAN_ALREADY_EXISTS(HttpStatus.CONFLICT, "GDN_005", "이미 초대된 보호자입니다."),
+	GUARDIAN_NOT_FOUND(HttpStatus.NOT_FOUND, "GDN_006", "보호자-환자 관계를 찾을 수 없습니다."),
 
 	// Mail 전송 관련 에러 (M_)
 	EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M_001", "메일 전송에 실패했습니다."),
@@ -48,6 +49,7 @@ public enum ErrorCode {
 	// File 관련 에러(F_)
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_001", "파일 업로드에 실패했습니다."),
 	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "파일 삭제에 실패했습니다."),
+	FILE_NOT_FOUNT(HttpStatus.NOT_FOUND, "F_003", "파일을 찾을 수 없습니다"),
 
 	//Doctor 관련 에러(D_)
 	DOCTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "D_001", "해당 의사가 존재하지 않습니다."),
@@ -103,13 +105,26 @@ public enum ErrorCode {
 	MEDICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_001", "약 정보를 찾을 수 없습니다."),
 	MEDICATION_ALERT_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_002", "복약 시간을 찾을 수 없습니다."),
 	MEDICATION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "MD_003", "복약 기록을 찾을 수 없습니다."),
-  
-  // Review 관련 에러(R_)
+	INVALID_MEDICATION_DATE(HttpStatus.BAD_REQUEST, "MD_004", "시작일이 종료일보다 이후일 수 없습니다."),
+	MEDICATION_DATE_RANGE_INVALID(HttpStatus.BAD_REQUEST, "MD_005", "복약 기간이 유효하지 않습니다."),
+	MEDICATION_ALERT_DAY_NOT_FOUNT(HttpStatus.NOT_FOUND, "MD_006", "복약 요일을 찾을 수 없습니다."),
+	MEDICATION_TAKEN_TIME_NOT_TODAY(HttpStatus.BAD_REQUEST, "MD_007", "복용 완료 시간은 오늘 날짜여야 합니다."),
+
+	// Review 관련 에러(R_)
 	REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R_001", "리뷰가 없습니다."),
+
+	// FCM 관련 에러 (F_)
+	NOT_FOUND_TOKEN(HttpStatus.NOT_FOUND, "F_001", "FCM 토큰을 찾을 수 없습니다."),
+	FAILED_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, "F_002", "FCM 전송에 실패했습니다."),
 
 	//Notification 관련 에러 (N_)
 	NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N_001", "알림을 찾을 수 없습니다."),
-	NOTIFICATION_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "N_002", "알림 전송에 실패하였습니다.");
+	NOTIFICATION_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "N_002", "알림 전송에 실패하였습니다."),
+
+	// payments 관련 에러 (P_)
+	PAYMENT_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "P_001", "결제 요청 내역을 찾을 수 없습니다."),
+	INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, "P_002", "결제 금액이 일치하지 않습니다."),
+	;
 
 	private final HttpStatus status;
 	private final String code;

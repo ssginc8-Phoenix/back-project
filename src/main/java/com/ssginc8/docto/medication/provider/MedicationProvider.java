@@ -79,4 +79,13 @@ public class MedicationProvider {
 		return medicationLogRepo.existsByAlertTimeAndDate(alertTime, date);
 	}
 
+	@Transactional
+	public void updateDateRange(Long medicationId, LocalDate newStart, LocalDate newEnd) {
+		int updated = medicationInformationRepo.updateDateRange(medicationId, newStart, newEnd);
+		if (updated == 0) {
+			throw new com.ssginc8.docto.global.error.exception.medicationException.MedicationNotFoundException();
+		}
+		// 필요 시 영속성 컨텍스트를 clear하거나, Service에서 재조회
+	}
+
 }
