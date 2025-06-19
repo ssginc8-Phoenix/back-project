@@ -2,6 +2,7 @@ package com.ssginc8.docto.doctor.provider;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,9 @@ import lombok.RequiredArgsConstructor;
 public class DoctorProvider {
 
 	private final DoctorRepo doctorRepo;
+
+	@Value("${cloud.default.image.address}")
+	private String defaultProfileUrl;
 
 	public Doctor getDoctorByUserId(Long userId) {
 		return doctorRepo.findByUserUserId(userId)
@@ -81,6 +85,6 @@ public class DoctorProvider {
 		if (doctor.getUser() != null && doctor.getUser().getProfileImage() != null) {
 			return doctor.getUser().getProfileImage().getUrl();
 		}
-		return null;
+		return defaultProfileUrl;
 	}
 }
