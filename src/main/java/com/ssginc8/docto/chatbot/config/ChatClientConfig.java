@@ -1,4 +1,4 @@
-package com.ssginc8.docto.ai.config;
+package com.ssginc8.docto.chatbot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
