@@ -3,8 +3,10 @@ package com.ssginc8.docto.hospital.provider;
 import java.nio.channels.FileChannel;
 import java.time.DayOfWeek;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.doctor.repo.DoctorRepo;
+import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.file.repository.FileRepo;
 import com.ssginc8.docto.global.error.ErrorCode;
 import com.ssginc8.docto.global.error.exception.BusinessBaseException;
@@ -45,17 +48,15 @@ public class HospitalProvider {
 	private final UserRepo userRepo;
 	private final HospitalScheduleRepo hospitalScheduleRepo;
 	private final ProvidedServiceRepo providedServiceRepo;
-	private final DoctorRepo doctorRepo;
 	private final FileRepo fileRepo;
+	private final FileProvider fileProvider;
 
 
 
 
 
 
-	public Page<Hospital> searchHospitalsWithoutLocation(String query, Pageable pageable) {
-		return hospitalRepo.searchHospitalsWithoutLocation(query, pageable);
-	}
+
 
 	@Transactional(readOnly = true)
 	public Hospital getHospitalById(Long hospitalId) {
@@ -73,18 +74,7 @@ public class HospitalProvider {
 			.orElseThrow(ScheduleNotFoundException::new);
 	}
 
-	public HospitalResponse getHospitalByAdminId(Long userId) {
-		Hospital hospital = hospitalRepo.findByUserUserId(userId)
-			.orElseThrow(HospitalNotFoundException::new);
 
-		String imageUrl = hospital.getFileId() != null
-			? fileRepo.getFileUrlById(hospital.getFileId())
-			: null;
-
-		List<String> serviceNames = providedServiceRepo.findServiceNamesByHospitalId(hospital.getHospitalId());
-
-		return HospitalResponse.from(hospital, imageUrl, serviceNames);
-	}
 
 
 
@@ -103,15 +93,13 @@ public class HospitalProvider {
 		return schedule;
 	}
 
-	public void saveServices(List<ProvidedService> services) {
-		providedServiceRepo.saveAll(services);
-	}
 
-	// HospitalRepo 의존 제거
+
+
 	public Page<Hospital> findHospitalsWithinRadius(double lat, double lng, double radius, String query, Pageable pageable) {
 		return hospitalRepo.findHospitalsWithinRadius(lat, lng, radius,query,  pageable);
 	}
-	
+
 
 
 	@Transactional
@@ -130,9 +118,7 @@ public class HospitalProvider {
 	public void deleteProvidedServicesByHospital(Hospital hospital) {
 		providedServiceRepo.deleteAllByHospital(hospital);
 	}
-	public void deleteByHospitalHospitalId(Long hospitalId) {
-		providedServiceRepo.deleteByHospitalHospitalId(hospitalId);
-	}
+
 
 
 
@@ -159,38 +145,14 @@ public class HospitalProvider {
 		return hospitalRepo.findByUserUserId(userId)
 			.orElseThrow(HospitalNotFoundException::new);
 	}
-	@Transactional(readOnly = true)
-	public Long getHospitalIdByAdminId(Long userId) {
-		return hospitalRepo.findByUserUserId(userId)
-			.map(Hospital::getHospitalId)
-			.orElseThrow(HospitalNotFoundException::new);
-	}
 
-	public List<HospitalSchedule> findSchedulesByHospitalIds(List<Long> hospitalIds) {
-		return hospitalScheduleRepo.findByHospitalHospitalIdIn(hospitalIds);
-	}
 
-	public Map<Long, List<String>> findServiceNamesMapByHospitalIds(List<Long> hospitalIds) {
-		List<ProvidedService> list = providedServiceRepo.findByHospitalIds(hospitalIds);
-		return list.stream()
-			.collect(Collectors.groupingBy(
-				p -> p.getHospital().getHospitalId(),
-				Collectors.mapping(ProvidedService::getServiceName, Collectors.toList())
-			));
-	}
 
-	public Map<Long, String> findFileUrlMapByHospitalIds(List<Long> hospitalIds) {
-		List<Hospital> hospitals = hospitalRepo.findAllById(hospitalIds);
-		return hospitals.stream()
-			.filter(h -> h.getFileId() != null)
-			.collect(Collectors.toMap(
-				Hospital::getHospitalId,
-				h -> fileRepo.getFileUrlById(h.getFileId()) // fileId → url
-			));
-	}
+
+
 
 	public String getImageUrl(Long hospitalId) {
-		return fileRepo.getFileUrlByHospitalId(hospitalId);
+		return fileRepo.getFileUrlById((hospitalId));
 	}
 
 	public List<String> getServiceNames(Long hospitalId) {
@@ -216,6 +178,29 @@ public class HospitalProvider {
 		Pageable pageable
 	) {
 		return hospitalRepo.findAll(spec, pageable);
+	}
+
+	public void saveAll(List<ProvidedService> svs) {
+		providedServiceRepo.saveAll(svs);
+	}
+
+	public List<String> findServiceNamesByHospitalId(Long hospitalId) {
+		return providedServiceRepo.findServiceNamesByHospitalId(hospitalId);
+	}
+
+
+
+
+
+	@Transactional
+	public void deleteServiceById(Long serviceId) {
+		providedServiceRepo.deleteById(serviceId);
+	}
+
+
+	@Transactional
+	public ProvidedService saveService(ProvidedService service) {
+		return providedServiceRepo.save(service);
 	}
 }
 

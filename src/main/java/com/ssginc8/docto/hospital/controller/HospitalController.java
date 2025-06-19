@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssginc8.docto.hospital.dto.HospitalRequest;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
@@ -101,27 +103,42 @@ public class HospitalController {
 	 * 병원 등록
 	 *
 	 */
-	@PostMapping( "/hospitals")
+	@PostMapping(
+		path = "/hospitals",
+		consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	)
 	public ResponseEntity<Long> registerHospital(
-		@ModelAttribute HospitalRequest hospitalRequest // MultipartFile 포함
+		@RequestPart("data") HospitalRequest hospitalRequest,
+		@RequestPart(value = "files", required = false) List<MultipartFile> newFiles
 	) {
+		// 필요하다면 dto 에 setFiles(newFiles) 호출
+		if (newFiles != null) {
+			hospitalRequest.setFiles(newFiles);
+		}
+
 		UserInfo.Response userInfo = userService.getMyInfo();
 		Long hospitalId = hospitalService.saveHospital(userInfo.userId, hospitalRequest);
 		return ResponseEntity.ok(hospitalId);
 	}
 
-	/**
-	 * 병원 정보 수정
-	 *
-	 */
-	@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-	@PatchMapping("/hospitals/{hospitalId}")
-	public ResponseEntity<Long> updateHospital(
-		@PathVariable Long hospitalId,
-		@RequestBody HospitalUpdate hospitalUpdate) {
 
-		Long updatedHospital = hospitalService.updateHospital(hospitalId, hospitalUpdate);
-		return ResponseEntity.ok(updatedHospital);
+
+
+
+	@PatchMapping(
+		value = "/hospitals/{hospitalId}",
+		consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	)
+	public ResponseEntity<Void> updateHospital(
+		@PathVariable Long hospitalId,
+		@RequestPart("data") HospitalUpdate request,
+		@RequestPart(value = "files", required = false) List<MultipartFile> newFiles
+	) {
+		if (newFiles != null) {
+			request.setFiles(newFiles);
+		}
+		hospitalService.updateHospital(hospitalId, request);
+		return ResponseEntity.ok().build();
 	}
 
 	/**

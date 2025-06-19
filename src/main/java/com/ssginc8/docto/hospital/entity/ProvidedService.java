@@ -42,4 +42,13 @@ public class ProvidedService {
 	public static ProvidedService create(String serviceName, Hospital hospital) {
 		return new ProvidedService(serviceName, hospital);
 	}
+
+	public String getName() {
+		return this.serviceName;
+	}
+
+
+	public Long getId() {
+		return this.providedServiceId;
+	}
 }
