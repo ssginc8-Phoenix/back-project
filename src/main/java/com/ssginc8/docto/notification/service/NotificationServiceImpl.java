@@ -123,12 +123,14 @@ public class NotificationServiceImpl implements NotificationService {
 		createNotification(receiver, NotificationType.APPOINTMENT_CONFIRMED, content, appointment.getAppointmentId());
 	}
 
+
+
 	/**
 	 * Appointment 취소 알림 전송 (보호자)
 	 */
 	@Override
 	public void notifyAppointmentCanceled(Appointment appointment) {
-		User receiver = appointment.getPatientGuardian().getUser();
+		User receiver = appointment.getGuardian();
 
 		String hospitalName = appointment.getHospital().getName();
 		String patientName = appointment.getPatientGuardian().getPatient().getUser().getName();
@@ -152,6 +154,20 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String content = String.format("%s, %s의 %s님 예약이 노쇼 처리되어 패널티가 부과됩니다.", time, hospitalName, patientName);
 		createNotification(receiver, NotificationType.APPOINTMENT_NOSHOW, content, appointment.getAppointmentId());
+	}
+
+	@Override
+	public void notifyPaymentRequest(Appointment appointment, Long paymentRequestId) {
+		User receiver = appointment.getGuardian();
+		String patientName = appointment.getPatientName();
+
+		String content = String.format("[%s]님의 진료에 대한 결제 요청이 도착했습니다. 알림을 클릭해 결제를 진행해주세요.", patientName);
+
+		try {
+			createNotification(receiver, NotificationType.PAYMENT_REQUEST, content, paymentRequestId);
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**

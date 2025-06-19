@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.fcm.entity.FcmToken;
 import com.ssginc8.docto.fcm.provider.FcmTokenProvider;
 import com.ssginc8.docto.global.error.exception.fcmException.FailedSendMessage;

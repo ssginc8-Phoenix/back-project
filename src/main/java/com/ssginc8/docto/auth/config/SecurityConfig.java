@@ -74,6 +74,7 @@ public class SecurityConfig {
 				).permitAll()
 
 
+				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/{appointmentId}/payment-request").hasRole("HOSPITAL_ADMIN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
@@ -123,7 +124,10 @@ public class SecurityConfig {
 					"/api/v1/reviews/**",
 					"/api/v1/qnas/**",
 					"/api/v1/medications/**",
-					"/api/v1/calendar/guardian"
+					"/api/v1/calendar/guardian",
+					"/api/v1/payment-history/{paymentRequestId}",
+					"/api/v1/payments/init",
+					"/api/v1/payments/confirm"
 				).hasRole("GUARDIAN")
 
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")

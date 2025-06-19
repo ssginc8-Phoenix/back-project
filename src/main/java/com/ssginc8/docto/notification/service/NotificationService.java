@@ -38,7 +38,12 @@ public interface NotificationService {
 	void notifyAppointmentCanceled(Appointment appointment);
 
 	/**
-	 * Appointment 노쇼 알림 전송 (보호자)
+	 * 결제 요청 알림 전송 (보호자)
+	 */
+	void notifyPaymentRequest(Appointment appointment, Long paymentRequestId);
+
+	/** 
+   * Appointment 노쇼 알림 전송 (보호자)
 	 */
 	void notifyAppointmentNoShow(Appointment appointment);
 
