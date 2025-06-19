@@ -53,4 +53,8 @@ public class PaymentRequest extends BaseTimeEntity {
 		this.orderId = orderId;
 		this.customerKey = customerKey;
 	}
+
+	public void updateStatus() {
+		this.status = RequestStatus.COMPLETED;
+	}
 }
