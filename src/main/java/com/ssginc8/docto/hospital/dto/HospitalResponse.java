@@ -2,6 +2,7 @@ package com.ssginc8.docto.hospital.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.ssginc8.docto.hospital.entity.Hospital;
@@ -45,7 +46,9 @@ public class HospitalResponse {
 
 	private List<HospitalScheduleResponse> schedules;
 
-	private String imageUrl; // ✅ 이미지 URL 포함
+	private List<String> imageUrls; // ✅ 이미지 URL 포함
+
+	private List<Long> fileIds;
 
 	public HospitalResponse(Hospital hospital) {
 		this.hospitalId = hospital.getHospitalId();
@@ -60,7 +63,7 @@ public class HospitalResponse {
 		this.schedules = new ArrayList<>();
 		this.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
 	}
-	public static HospitalResponse from(Hospital hospital, String imageUrl, List<String> serviceNames) {
+	public static HospitalResponse from(Hospital hospital, List<String> imageUrls, List<String> serviceNames) {
 		HospitalResponse res = new HospitalResponse();
 		res.hospitalId = hospital.getHospitalId();
 		res.name = hospital.getName();
@@ -73,8 +76,12 @@ public class HospitalResponse {
 		res.waiting = hospital.getWaiting();
 		res.serviceNames = serviceNames != null ? serviceNames : new ArrayList<>();
 		res.businessRegistrationNumber = hospital.getBusinessRegistrationNumber();
-		res.imageUrl = imageUrl;
+		res.imageUrls = imageUrls;
 		return res;
+	}
+
+	public static HospitalResponse from(Hospital h) {
+		return from(h, null, List.of());
 	}
 
 }
