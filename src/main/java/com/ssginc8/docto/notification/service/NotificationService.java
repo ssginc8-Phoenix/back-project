@@ -42,6 +42,11 @@ public interface NotificationService {
 	 */
 	void notifyPaymentRequest(Appointment appointment, Long paymentRequestId);
 
+	/** 
+   * Appointment 노쇼 알림 전송 (보호자)
+	 */
+	void notifyAppointmentNoShow(Appointment appointment);
+
 	/**
 	 * QNA 알림 전송
 	 */

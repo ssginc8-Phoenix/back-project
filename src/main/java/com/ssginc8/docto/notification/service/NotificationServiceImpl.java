@@ -47,6 +47,9 @@ public class NotificationServiceImpl implements NotificationService {
 	private final PatientGuardianProvider guardianProvider;
 	private final PatientProvider patientProvider;
 
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.d");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
 	/**
 	 * 알림 읽음
 	 * @param notificationId
@@ -87,9 +90,8 @@ public class NotificationServiceImpl implements NotificationService {
 	 * Notification 생성 메서드 (재사용을 위한)
 	 */
 	private void createNotification(User receiver, NotificationType type, String content, Long referenceId) {
-		log.info("알림 생성 대상 user: {}", receiver);
-		log.info("알림 내용: {}", content);
-		log.info("타겟 ID: {}", referenceId);
+		log.info("알림이 생성: {}, type: {}, content: {}, refId: {}",
+			receiver.getUserId(), type, content, referenceId);
 
 
 		Notification notification = new Notification(
@@ -100,28 +102,25 @@ public class NotificationServiceImpl implements NotificationService {
 		);
 		notificationProvider.save(notification);
 
-		// 토큰 조회 전 로그
-		log.info("FCM 전송 전, userId={}", receiver.getUserId());
-		fcmService.sendMessage(receiver.getUserId(), type.name(), content);
+		try {
+			fcmService.sendMessage(receiver.getUserId(), type.name(), content);
+		} catch (Exception e) {
+			throw new NotificationSendFailed();
+		}
 	}
 
 	/**
 	 * Appointment 확정 알림 전송 (보호자)
 	 */
+	@Override
 	public void notifyAppointmentConfirmed(Appointment appointment) {
 		User receiver = appointment.getPatientGuardian().getUser();
-
 		String hospitalName = appointment.getHospital().getName();
 		String patientName = appointment.getPatientGuardian().getPatient().getUser().getName();
-		String time = appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		String time = appointment.getAppointmentTime().format(DATE_FORMATTER);
 
-		String content = String.format("%s %s의 %s 환자의 예약이 확정되었습니다.", time, hospitalName, patientName);
-
-		try {
-			createNotification(receiver, NotificationType.APPOINTMENT_CONFIRMED, content, appointment.getAppointmentId());
-		} catch (Exception e) {
-			throw new NotificationSendFailed();
-		}
+		String content = String.format("%s, %s의 %s님 예약이 확정되었습니다.", time, hospitalName, patientName);
+		createNotification(receiver, NotificationType.APPOINTMENT_CONFIRMED, content, appointment.getAppointmentId());
 	}
 
 
@@ -134,16 +133,27 @@ public class NotificationServiceImpl implements NotificationService {
 		User receiver = appointment.getGuardian();
 
 		String hospitalName = appointment.getHospital().getName();
-		String patientName = appointment.getPatientName();
-		String time = appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		String patientName = appointment.getPatientGuardian().getPatient().getUser().getName();
+		String time = appointment.getAppointmentTime().format(DATE_FORMATTER);
 
-		String content = String.format("%s %s의 %s 환자의 예약이 취소되었습니다.", time, hospitalName, patientName);
+		String content = String.format("%s, %s의 %s님 예약이 취소되었습니다.", time, hospitalName, patientName);
+		createNotification(receiver, NotificationType.APPOINTMENT_CANCELED, content, appointment.getAppointmentId());
 
-		try {
-			createNotification(receiver, NotificationType.APPOINTMENT_CANCELED, content, appointment.getAppointmentId());
-		} catch (Exception e) {
-			throw new NotificationSendFailed();
-		}
+	}
+
+	/**
+	 * Appointment 노쇼 알림 전송 (보호자)
+	 */
+	@Override
+	public void notifyAppointmentNoShow(Appointment appointment) {
+		User receiver = appointment.getPatientGuardian().getUser();
+
+		String hospitalName = appointment.getHospital().getName();
+		String patientName = appointment.getPatientGuardian().getPatient().getUser().getName();
+		String time = appointment.getAppointmentTime().format(DATE_FORMATTER);
+
+		String content = String.format("%s, %s의 %s님 예약이 노쇼 처리되어 패널티가 부과됩니다.", time, hospitalName, patientName);
+		createNotification(receiver, NotificationType.APPOINTMENT_NOSHOW, content, appointment.getAppointmentId());
 	}
 
 	@Override
@@ -176,14 +186,11 @@ public class NotificationServiceImpl implements NotificationService {
 		String patientName = (String) data[2];
 		LocalDateTime time = (LocalDateTime) data[3];
 
-		String content = String.format("%s %s 병원의 QnA에 답변이 등록되었습니다. (%s)",
-			time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), hospitalName, patientName);
 
-		try {
-			createNotification(receiver, NotificationType.QNA_RESPONSE, content, qaComment.getQnaCommentId());
-		} catch (Exception e) {
-			throw new NotificationSendFailed();
-		}
+		String content = String.format("%s에 작성하신 QnA에 답변이 등록되었습니다. (%s, %s)",
+			time.format(DATE_FORMATTER), hospitalName, patientName);
+		createNotification(receiver, NotificationType.QNA_RESPONSE, content, qaComment.getQnaCommentId());
+
 	}
 
 	/**
@@ -195,13 +202,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String patientName = guardian.getPatient().getUser().getName();
 
-		String content = String.format("환자 %s님이 당신을 보호자로 초대했습니다.", patientName);
-
-		try {
-			createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, guardian.getPatientGuardianId());
-		} catch (Exception e) {
-			throw new NotificationSendFailed();
-		}
+		String content = String.format("%s님께서 당신을 보호자로 초대했습니다.", patientName);
+		createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, guardian.getPatientGuardianId());
 	}
 
 	/**
@@ -209,14 +211,11 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 	@Override
 	public void notifyMedicationAlert(User receiver, String medicationName, LocalTime timeToTake, Long medicationInfoId) {
+		String formattedTime = timeToTake.format(TIME_FORMATTER);
 		String content = String.format("💊 %s님, %s에 복용할 약 '%s'이 있습니다.",
-			receiver.getName(), timeToTake.toString(), medicationName);
+			receiver.getName(), formattedTime, medicationName);
 
-		try {
-			createNotification(receiver, NotificationType.MEDICATION_ALERT, content, medicationInfoId);
-		} catch (Exception e) {
-			throw new NotificationSendFailed();
-		}
+		createNotification(receiver, NotificationType.MEDICATION_ALERT, content, medicationInfoId);
 	}
 
 	/**
@@ -236,24 +235,21 @@ public class NotificationServiceImpl implements NotificationService {
 
 		for (MedicationAlertTime alertTime : missedAlertTimes) {
 			MedicationInformation info = alertTime.getMedication();
-
 			User patienUser = info.getUser();
 
 			// 보호자 목록 조회 (여러 명)
 			Patient patient = patientProvider.getPatientByUserId(patienUser.getUserId());
 			List<PatientGuardian> guardians = guardianProvider.getAllAcceptedGuardiansByPatientId(patient.getPatientId());
 
+			String formattedAlertTime = alertTime.getTimeToTake().format(TIME_FORMATTER);
+
 			for (PatientGuardian guardian : guardians) {
 				User guardianUser = guardian.getUser();
 
-				String content = String.format("⚠️ %s님이 %s에 약 '%s'을 복용하지 않았습니다.",
-					patienUser.getName(), alertTime.getTimeToTake(), info.getMedicationName());
+				String content = String.format("⚠️ %s님께서 %s에 '%s' 복용을 놓쳤습니다.",
+					patienUser.getName(), formattedAlertTime, info.getMedicationName());
 
-				try {
-					createNotification(guardianUser, NotificationType.MEDICATION_MISSED, content, info.getMedicationId());
-				} catch (Exception e) {
-					throw new NotificationSendFailed();
-				}
+				createNotification(guardianUser, NotificationType.MEDICATION_MISSED, content, info.getMedicationId());
 			}
 		}
 	}
