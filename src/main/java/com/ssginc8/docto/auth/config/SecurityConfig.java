@@ -56,6 +56,8 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
 
+
+
 				/**
 				 * Public : 인증 없이 접근 가능
 				 */
@@ -75,6 +77,11 @@ public class SecurityConfig {
 
 
 				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
+
+				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasRole("DOCTOR")
+
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
+
 
 				/**
 				 * 로그인 사용자 공통
@@ -134,7 +141,8 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/v1/hospitals/**",
 					"/api/v1/doctors/**",
-					"/api/v1/calendar/hospital"
+					"/api/v1/calendar/hospital",
+					"/api/v1/file/**"
 				).hasRole("HOSPITAL_ADMIN")
 
 				/**
