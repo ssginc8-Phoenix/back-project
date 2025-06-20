@@ -10,7 +10,7 @@ import com.ssginc8.docto.guardian.dto.GuardianInviteRequest;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
-import com.ssginc8.docto.guardian.service.GuardianService;
+import com.ssginc8.docto.guardian.service.PatientGuardianService;
 import com.ssginc8.docto.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/guardians")
 public class PatientGuardianController {
 
-	private final GuardianService guardianService;
+	private final PatientGuardianService guardianService;
 	private final UserServiceImpl userService;
 
 	@PatchMapping("/request/{requestId}")

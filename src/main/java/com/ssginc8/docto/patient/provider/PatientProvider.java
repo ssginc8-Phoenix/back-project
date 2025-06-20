@@ -33,7 +33,7 @@ public class PatientProvider {
 
 	@Transactional(readOnly = true)
 	public Patient getPatientByUserId(Long userId) {
-		return patientRepo.findByUser_UserIdAndDeletedAtIsNull(userId)
+		return patientRepo.findByUser_UserIdAndUser_DeletedAtIsNullAndDeletedAtIsNull(userId)
 			.orElseThrow(PatientNotFoundException::new);
 	}
 }

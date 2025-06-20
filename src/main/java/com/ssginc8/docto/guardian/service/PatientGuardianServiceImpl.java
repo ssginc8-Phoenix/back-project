@@ -38,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class GuardianServiceImpl implements GuardianService {
+public class PatientGuardianServiceImpl implements PatientGuardianService {
 
 	private final PatientGuardianProvider patientGuardianProvider;
 	private final PatientProvider patientProvider;
@@ -52,6 +52,7 @@ public class GuardianServiceImpl implements GuardianService {
 	@Override
 	public GuardianInviteResponse inviteGuardian(Long patientId, String guardianEmail) {
 		Patient patient = patientProvider.getActivePatient(patientId);
+		User patientUser = patient.getUser();
 		User guardian = userProvider.loadUserByEmailOrException(guardianEmail);
 
 		Optional<PatientGuardian> existing = patientGuardianProvider.findPendingOrAcceptedMapping(guardian, patient);
@@ -74,7 +75,9 @@ public class GuardianServiceImpl implements GuardianService {
 			newPg.updateInviteCode(inviteCode);
 			patientGuardianProvider.save(newPg);
 
-			eventPublisher.publishEvent(new GuardianInviteEvent(newPg));
+			// 알림 전송받는 USER receiver = 보호자,
+			eventPublisher.publishEvent(new GuardianInviteEvent(guardian, patientUser.getName(),
+				newPg.getPatientGuardianId()));
 		}
 
 		// 🔥 이메일 발송 이벤트 추가

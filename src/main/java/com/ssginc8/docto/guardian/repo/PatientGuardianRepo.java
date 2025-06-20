@@ -54,7 +54,7 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	Optional<PatientGuardian> findByInviteCode(String inviteCode);
 
-	@Query("SELECT pg FROM PatientGuardian pg JOIN FETCH pg.patient p JOIN FETCH p.user u WHERE pg.id = :id")
+	@Query("SELECT pg FROM PatientGuardian pg JOIN FETCH pg.patient p JOIN FETCH p.user u WHERE pg.patientGuardianId = :id")
 	Optional<PatientGuardian> findByIdWithPatientAndUser(@Param("id") Long id);
 
 }

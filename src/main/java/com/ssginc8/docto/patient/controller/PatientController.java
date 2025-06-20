@@ -3,15 +3,14 @@ package com.ssginc8.docto.patient.controller;
 import java.util.List;
 
 import com.ssginc8.docto.guardian.dto.GuardianResponse;
-import com.ssginc8.docto.guardian.service.GuardianService;
+import com.ssginc8.docto.guardian.service.PatientGuardianService;
 import com.ssginc8.docto.patient.dto.PatientRequest;
 import com.ssginc8.docto.patient.dto.PatientResponse;
 import com.ssginc8.docto.patient.service.PatientService;
 import com.ssginc8.docto.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
 
 	private final PatientService patientService;
-	private final GuardianService guardianService;
+	private final PatientGuardianService guardianService;
 	private final UserService userService;
 
 	/**

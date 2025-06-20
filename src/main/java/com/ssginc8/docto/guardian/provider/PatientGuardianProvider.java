@@ -74,6 +74,11 @@ public class PatientGuardianProvider {
 			.orElse(null); // 없으면 null
 	}
 
+	/**
+	 *
+	 * @param patientGuardianId
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	public PatientGuardian getPatientGuardianById(Long patientGuardianId) {
 		return patientGuardianRepo.findByIdWithPatientAndUser(patientGuardianId)

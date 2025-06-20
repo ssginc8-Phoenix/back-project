@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianResponse;
-import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 
 /**
@@ -13,7 +12,7 @@ import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
  * - 보호자 관계 해제
  * - 보호자가 가진 환자 목록 조회
  */
-public interface GuardianService {
+public interface PatientGuardianService {
 
 	/**
 	 * @param requestId  요청 ID

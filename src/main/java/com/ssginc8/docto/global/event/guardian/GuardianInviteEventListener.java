@@ -17,6 +17,6 @@ public class GuardianInviteEventListener {
 	@Async
 	@TransactionalEventListener
 	public void handleGuardianInviteEvent(GuardianInviteEvent event) {
-		notificationService.notifyGuardianInvite(event.getPatientGuardian());
+		notificationService.notifyGuardianInvite(event.getGuardian(), event.getPatientName(), event.getPatientGuardianId());
 	}
 }
