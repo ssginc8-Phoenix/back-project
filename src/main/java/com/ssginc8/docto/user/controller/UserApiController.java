@@ -87,8 +87,18 @@ public class UserApiController {
 	}
 
 	@PostMapping("/users/social")
-	public SocialSignup.Response socialSignup(@Valid SocialSignup.Request request) {
-		return userService.updateSocialInfo(request);
+	public SocialSignup.Response socialSignup(@Valid SocialSignup.Request request, HttpServletResponse response) {
+		SocialSignup.Response socialSignupResponse = userService.updateSocialInfo(request);
+
+		response.addCookie(
+			cookieUtil.createCookie(TokenType.ACCESS_TOKEN.getTokenType(), socialSignupResponse.getAccessToken(),
+				socialSignupResponse.getAccessTokenCookieMaxAge()));
+
+		response.addCookie(
+			cookieUtil.createCookie(TokenType.REFRESH_TOKEN.getTokenType(), socialSignupResponse.getRefreshToken(),
+				socialSignupResponse.getRefreshTokenCookieMaxAge()));
+
+		return socialSignupResponse;
 	}
 
 	@PostMapping("/users/doctors")

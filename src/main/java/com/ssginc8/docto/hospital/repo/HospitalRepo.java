@@ -71,8 +71,6 @@ public interface HospitalRepo extends JpaRepository<Hospital, Long>, JpaSpecific
 
 	Optional<Hospital> findByUserUserId(Long userId);
 
-	// List<Hospital> findTop5BySpecializationOrderByWaitingAsc(Specialization specialization);
-
 	@Query(
 		value = """
         SELECT h.*

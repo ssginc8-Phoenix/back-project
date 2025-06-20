@@ -146,10 +146,21 @@ public class UserServiceImpl implements UserService {
 		// user 정보 업데이트
 		user.updateSocialInfo(request.getPhone(), profileImage, request.getAddress(), Role.valueOf(request.getRole()));
 
+		Token tokens = tokenProvider.generateTokens(
+			user.getUuid(),
+			user.getRole().getKey()
+		);
+
+		syncRefreshToken(user, tokens);
+
 		// response 만들어서 반환
 		return SocialSignup.Response.builder()
 			.userId(user.getUserId())
 			.role(user.getRole().getKey())
+			.accessToken(tokens.getAccessToken())
+			.refreshToken(tokens.getRefreshToken())
+			.accessTokenCookieMaxAge(tokens.getAccessTokenCookieMaxAge())
+			.refreshTokenCookieMaxAge(tokens.getRefreshTokenCookieMaxAge())
 			.build();
 	}
 
@@ -202,14 +213,7 @@ public class UserServiceImpl implements UserService {
 			user.getRole().getKey()
 		);
 
-		RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
-
-		if (refreshToken != null) {
-			refreshToken.update(tokens.getRefreshToken());
-		} else {
-			refreshToken = RefreshToken.createRefreshToken(user.getUuid(), tokens.getRefreshToken());
-			refreshTokenProvider.saveRefreshToken(refreshToken);
-		}
+		syncRefreshToken(user, tokens);
 
 		return Login.Response.builder()
 			.accessToken(tokens.getAccessToken())
@@ -314,6 +318,16 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return savedProfileImage;
+	}
+
+	private void syncRefreshToken(User user, Token tokens) {
+		RefreshToken refreshToken = refreshTokenProvider.findByUuid(user.getUuid());
+		if (Objects.nonNull(refreshToken)) {
+			refreshToken.update(tokens.getRefreshToken());
+		} else {
+			refreshTokenProvider.saveRefreshToken(
+				RefreshToken.createRefreshToken(user.getUuid(), tokens.getRefreshToken()));
+		}
 	}
 
 	public User getUserFromUuid() {
