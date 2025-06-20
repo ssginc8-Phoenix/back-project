@@ -12,5 +12,4 @@ public interface MedicationAlertTimeRepo extends JpaRepository<MedicationAlertTi
 
 	Optional<MedicationAlertTime> findByMedicationAlertTimeIdAndDeletedAtIsNull(Long medicationAlertTimeId);
 
-	List<MedicationAlertTime> findByMedicationAndDeletedAtIsNull(MedicationInformation medication);
 }

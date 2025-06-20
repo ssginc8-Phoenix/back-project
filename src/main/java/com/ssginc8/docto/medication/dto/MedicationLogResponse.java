@@ -12,13 +12,13 @@ public class MedicationLogResponse {
 	private final Long medicationLogId;
 	private final Long medicationId;
 	private final MedicationStatus status;
-	private final LocalDateTime timeToTake;
+	private final LocalDateTime loggedAt;
 
-	public MedicationLogResponse(Long medicationLogId, Long medicationId, MedicationStatus status, LocalDateTime timeToTake) {
+	public MedicationLogResponse(Long medicationLogId, Long medicationId, MedicationStatus status, LocalDateTime loggedAt) {
 		this.medicationLogId = medicationLogId;
 		this.medicationId = medicationId;
 		this.status = status;
-		this.timeToTake = timeToTake;
+		this.loggedAt = loggedAt;
 	}
 
 	public static MedicationLogResponse from(MedicationLog log) {
@@ -26,7 +26,7 @@ public class MedicationLogResponse {
 			log.getMedicationLogId(),
 			log.getMedication().getMedicationId(),
 			log.getStatus(),
-			log.getTimeToTake()
+			log.getLoggedAt()
 		);
 	}
 }

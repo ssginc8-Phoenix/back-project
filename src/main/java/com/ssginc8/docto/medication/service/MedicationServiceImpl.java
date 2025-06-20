@@ -3,6 +3,7 @@ package com.ssginc8.docto.medication.service;
 import com.ssginc8.docto.global.error.exception.medicationException.InvalidMedicationDateException;
 import com.ssginc8.docto.global.error.exception.medicationException.MedicationAlertDayNotFoundException;
 import com.ssginc8.docto.global.error.exception.medicationException.MedicationAlertTimeNotFoundException;
+import com.ssginc8.docto.global.error.exception.medicationException.MedicationTakenTimeNotTodayException;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.medication.dto.MedicationCompleteRequest;
 import com.ssginc8.docto.medication.dto.MedicationLogResponse;
@@ -13,9 +14,12 @@ import com.ssginc8.docto.medication.entity.MedicationAlertDay;
 import com.ssginc8.docto.medication.entity.MedicationAlertTime;
 import com.ssginc8.docto.medication.entity.MedicationInformation;
 import com.ssginc8.docto.medication.entity.MedicationLog;
+import com.ssginc8.docto.medication.entity.MedicationStatus;
 import com.ssginc8.docto.medication.provider.MedicationProvider;
 import com.ssginc8.docto.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,10 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MedicationServiceImpl implements MedicationService {
@@ -164,19 +173,34 @@ public class MedicationServiceImpl implements MedicationService {
 
 	@Transactional
 	@Override
-	public void completeMedication(Long medicationId, MedicationCompleteRequest request) {
-		MedicationInformation info = medicationProvider.getMedication(medicationId);
-		List<MedicationAlertTime> alertTimes = info.getAlertTimes();
+	public void completedMedication(Long medicationId, MedicationCompleteRequest request) {
+		// 한국 시간대로 변환
+		OffsetDateTime utcCompletedAt = request.getCompletedAt();
+		ZonedDateTime koreanZonedTime = utcCompletedAt.atZoneSameInstant(ZoneId.of("Asia/Seoul"));
+		LocalDateTime completedAt = koreanZonedTime.toLocalDateTime();
 
-		for (MedicationAlertTime alertTime : alertTimes) {
-			MedicationLog log = MedicationLog.create(
-				alertTime,
-				info,
-				request.getStatus(),
-				alertTime.getTimeToTake().atDate(LocalDate.now())
-			);
-			medicationProvider.saveMedicationLog(log);
+		MedicationInformation info = medicationProvider.getMedication(medicationId);
+		MedicationAlertTime alertTime = medicationProvider.getMedicationAlertTimeById(request.getMedicationAlertTimeId());
+
+		// 클라이언트에서 보낸 completeAt이 현재 날짜와 다를 경우 유효성 검사
+		if (!request.getCompletedAt().toLocalDate().isEqual(LocalDate.now())) {
+			throw new MedicationTakenTimeNotTodayException();
 		}
+
+		// 이미 해당 알림 시간에 대해 오늘 TAKEN 또는 MISSED 로그가 있는지 확인
+		// MISSED 상태라도 사용자가 나중에 약을 복용할 수 있으므로, TAKEN과 MISSED 둘 다 확인
+		if (medicationProvider.existsTakenLogForToday(alertTime) || medicationProvider.existsMissedLogForToday(alertTime)) {
+			log.debug("DEBUG: 이미 복용 완료 또는 미복용 처리된 약입니다. alertTimeId: {}", alertTime.getMedicationAlertTimeId());
+			return;
+		}
+
+		MedicationLog log = MedicationLog.create(
+			alertTime,
+			info,
+			MedicationStatus.TAKEN,
+			completedAt
+		);
+		medicationProvider.saveMedicationLog(log);
 	}
 
 	@Override

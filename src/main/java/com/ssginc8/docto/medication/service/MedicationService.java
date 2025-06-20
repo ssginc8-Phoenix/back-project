@@ -19,7 +19,7 @@ public interface MedicationService {
 
 	void deleteMedicationSchedule(Long medicationId);
 
-	void completeMedication(Long medicationId, MedicationCompleteRequest request);
+	void completedMedication(Long medicationId, MedicationCompleteRequest request);
 
 	MedicationScheduleResponse getMedicationScheduleById(Long medicationId);
 }

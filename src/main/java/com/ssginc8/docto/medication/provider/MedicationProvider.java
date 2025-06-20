@@ -28,6 +28,7 @@ public class MedicationProvider {
 
 	private final MedicationInformationRepo medicationInformationRepo;
 	private final MedicationAlertDayRepo medicationAlertDayRepo;
+	private final MedicationAlertTimeRepo medicationAlertTimeRepo;
 	private final MedicationLogRepo medicationLogRepo;
 	private final UserProvider userProvider;
 	private final UserServiceImpl userService;
@@ -64,19 +65,9 @@ public class MedicationProvider {
 			.orElseThrow(MedicationNotFoundException::new);
 	}
 
-	@Transactional
-	public void saveMedicationLog(MedicationLog medicationLog) {
-		medicationLogRepo.save(medicationLog);
-	}
-
 	@Transactional(readOnly = true)
-	public List<MedicationAlertTime> findAlertTimesDayAndTime(DayOfWeek day, LocalTime now) {
-		return medicationAlertDayRepo.findAlertTimesByDayAndTime(day, now);
-	}
-
-	@Transactional(readOnly = true)
-	public boolean existsMedicationLog(MedicationAlertTime alertTime, LocalDate date) {
-		return medicationLogRepo.existsByAlertTimeAndDate(alertTime, date);
+	public List<MedicationAlertTime> findAlertTimesDayAndTime(DayOfWeek day, LocalTime time) {
+		return medicationAlertDayRepo.findAlertTimesByDayAndTime(day, time);
 	}
 
 	@Transactional
@@ -86,6 +77,35 @@ public class MedicationProvider {
 			throw new com.ssginc8.docto.global.error.exception.medicationException.MedicationNotFoundException();
 		}
 		// 필요 시 영속성 컨텍스트를 clear하거나, Service에서 재조회
+	}
+
+	@Transactional(readOnly = true)
+	public MedicationAlertTime getMedicationAlertTimeById(Long alertTimeId) {
+		return medicationAlertTimeRepo.findByMedicationAlertTimeIdAndDeletedAtIsNull(alertTimeId)
+			.orElseThrow(MedicationNotFoundException::new);
+	}
+
+	/**
+	 * 특정 MedicationAlertTime에 대해 오늘 TAKEN (복용 완료) 로그가 존재하는지 확인
+	 */
+	@Transactional(readOnly = true)
+	public boolean existsTakenLogForToday(MedicationAlertTime alertTime) {
+		return medicationLogRepo.existsTakenLogByAlertTimeAndDate(alertTime, LocalDate.now());
+	}
+	/**
+	 * 특정 MedicationAlertTime에 대해 오늘 MISSED (미복용) 로그가 존재하는지 확인
+	 */
+	@Transactional(readOnly = true)
+	public boolean existsMissedLogForToday(MedicationAlertTime alertTime) {
+		return medicationLogRepo.existsMissedLogByAlertTimeAndDate(alertTime, LocalDate.now());
+	}
+
+	/**
+	 * MedicationLog 저장
+	 */
+	@Transactional
+	public void saveMedicationLog(MedicationLog medicationLog) {
+		medicationLogRepo.save(medicationLog);
 	}
 
 }

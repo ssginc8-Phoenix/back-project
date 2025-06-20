@@ -38,14 +38,14 @@ public class MedicationLog extends BaseTimeEntity {
 	private MedicationStatus status;
 
 	@Column(nullable = false)
-	private LocalDateTime timeToTake;
+	private LocalDateTime loggedAt;	// 복약 기록이 생성된 (복용되었거나 미복용으로 판단된) 실제 시각
 
-	public static MedicationLog create(MedicationAlertTime alertTime, MedicationInformation medication, MedicationStatus status, LocalDateTime timeToTake) {
+	public static MedicationLog create(MedicationAlertTime alertTime, MedicationInformation medication, MedicationStatus status, LocalDateTime loggedAt) {
 		MedicationLog log = new MedicationLog();
 		log.medicationAlertTime = alertTime;   // ❗ 알림 시간 세팅
 		log.medication = medication;
 		log.status = status;
-		log.timeToTake = timeToTake;
+		log.loggedAt = loggedAt;
 		return log;
 	}
 }

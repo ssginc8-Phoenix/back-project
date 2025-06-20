@@ -29,14 +29,16 @@ public interface MedicationAlertDayRepo extends JpaRepository<MedicationAlertDay
 
 	/**
 	 *
-	 * 요일과 시간으로 복욕 정보 검색
-	 * @param dayOfWeek
-	 * @param time
-	 * @return
+	 * 요일과 시간으로 복용 정보를 검색하며,
+	 * MedicationAlertTime, MedicationInformation 를 JOIN FETCH를 통해 즉시 로딩
+	 * @param dayOfWeek 요일
+	 * @param time 시간
+	 * @return 해당 요일과 시간에 맞는 MedicationAlertTime 리스트
 	 */
 	@Query("""
 		SELECT d.medicationAlertTime
 		FROM MedicationAlertDay d
+			JOIN FETCH d.medicationAlertTime.medication m
 		WHERE d.dayOfWeek = :dayOfWeek AND d.medicationAlertTime.timeToTake = :time
 	""")
 	List<MedicationAlertTime>findAlertTimesByDayAndTime(

@@ -48,9 +48,9 @@ public class MedicationController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PatchMapping("/{medicationId}/complete")
+	@PostMapping("/{medicationId}/taken")
 	public ResponseEntity<Void> completeMedication(@PathVariable Long medicationId, @RequestBody MedicationCompleteRequest request) {
-		medicationService.completeMedication(medicationId, request);
+		medicationService.completedMedication(medicationId, request);
 		return ResponseEntity.ok().build();
 	}
 
