@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -22,7 +23,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Log4j2
 public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageService{
 
@@ -36,6 +36,7 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	 * @param body 메시지 본문
 	 */
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void sendMessage(Long userId, String title, String body) {
 		Message message = buildMessage(userId, Map.of("title", title, "body", body));
 		send(message, userId);
@@ -50,6 +51,7 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	 * @param data 데이터 맵
 	 */
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void sendMessageWithData(Long userId, String title, String body, Map<String, String> data) {
 		log.info("sendMessageWithData 시작: userId={}", userId);
 		// 데이터 맵에 title, body 추가하여 일관성 유지
@@ -88,11 +90,13 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 		} catch (Exception e) {
 			log.error("send 메서드에서 예상치 못한 오류 발생: userId={}, message={}, errorType={}, errorMessage={}",
 				userId, message, e.getClass().getName(), e.getMessage(), e);
+			throw new RuntimeException("FCM 전송 중 예상치 못한 오류 발생", e);
 		}
 		log.info("send 메서드 종료: userId={}", userId);
 	}
 
 	@Override
+	@Transactional
 	public void saveToken(Long userId, String token) {
 		User user = userProvider.getUserById(userId);
 
