@@ -20,6 +20,7 @@ import com.ssginc8.docto.medication.entity.MedicationAlertTime;
 import com.ssginc8.docto.medication.entity.MedicationInformation;
 import com.ssginc8.docto.medication.provider.MedicationProvider;
 import com.ssginc8.docto.notification.dto.NotificationResponse;
+import com.ssginc8.docto.notification.dto.QnaNotificationData;
 import com.ssginc8.docto.notification.entity.Notification;
 import com.ssginc8.docto.notification.entity.NotificationType;
 import com.ssginc8.docto.notification.provider.NotificationProvider;
@@ -186,22 +187,18 @@ public class NotificationServiceImpl implements NotificationService {
 	 * QNA 답변 알림 전송
 	 */
 	@Override
-	public void notifyQnaResponse(QaComment qaComment) {
-		Object[] data = commentProvider.findNotificationDataByQnaCommentId(qaComment.getQnaCommentId());
+	public void notifyQnaResponse(Long qnaPostId, LocalDateTime answeredAt, Long qnaCommentId) {
+		log.info("Q&A 답변 알림 이벤트 서비스 START");
+		QnaNotificationData qnaNotificationData = commentProvider.findNotificationDataByQnaCommentId(qnaCommentId);
 
-		if (data == null) {
-			throw new CommentNotFoundException();
-		}
-
-		User receiver = (User)data[0];
-		String hospitalName = (String)data[1];
-		String patientName = (String)data[2];
-		LocalDateTime time = (LocalDateTime)data[3];
+		User receiver = qnaNotificationData.getReceiver();
+		String hospitalName = qnaNotificationData.getHospitalName();
+		String patientName = qnaNotificationData.getPatientName();
+		LocalDateTime postTime = qnaNotificationData.getPostTime();
 
 		String content = String.format("%s에 작성하신 QnA에 답변이 등록되었습니다. (%s, %s)",
-			time.format(DATE_FORMATTER), hospitalName, patientName);
-		createNotification(receiver, NotificationType.QNA_RESPONSE, content, qaComment.getQnaCommentId());
-
+			postTime.format(DATE_FORMATTER), hospitalName, patientName);
+		createNotification(receiver, NotificationType.QNA_RESPONSE, content, qnaCommentId);
 	}
 
 	/**

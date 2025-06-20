@@ -1,5 +1,6 @@
 package com.ssginc8.docto.notification.service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public interface NotificationService {
 	/**
 	 * QNA 알림 전송
 	 */
-	void notifyQnaResponse(QaComment qaComment);
+	void notifyQnaResponse(Long qnaPostId, LocalDateTime answeredAt, Long qnaCommentId);
 
 	/**
 	 * GUARDIAN 초대 알림 전송

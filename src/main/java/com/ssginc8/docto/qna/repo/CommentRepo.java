@@ -1,5 +1,6 @@
 package com.ssginc8.docto.qna.repo;
 
+import com.ssginc8.docto.notification.dto.QnaNotificationData;
 import com.ssginc8.docto.qna.entity.QaComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,9 @@ public interface CommentRepo extends JpaRepository<QaComment, Long> {
 	List<QaComment> findByQnaPostIdQnaPostId(Long qnaPostId);
 
 	@Query("""
-		SELECT u, h.name, pg.patient.user.name, a.appointmentTime
+		SELECT new com.ssginc8.docto.notification.dto.QnaNotificationData(
+			u, h.name, pg.patient.user.name, a.appointmentTime
+		)
 		FROM QaComment qc
 		JOIN qc.qnaPostId qp
 		JOIN qp.appointment a
@@ -24,5 +27,5 @@ public interface CommentRepo extends JpaRepository<QaComment, Long> {
 		JOIN pg.user u
 		WHERE qc.qnaCommentId = :qnaCommentId
 	""")
-	Object[] findNotificationDataByQnaCommentId(@Param("qnaCommentId") Long qnaCommentId);
+	QnaNotificationData findNotificationDataByQnaCommentId(@Param("qnaCommentId") Long qnaCommentId);
 }

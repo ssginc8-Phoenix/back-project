@@ -46,8 +46,13 @@ public class CommentServiceImpl implements CommentService {
 			qaPostProvider.save(post);
 		}
 
-		//applicationEventPublisher.publishEvent(new QnaAnsweredEvent(comment));
-
+		applicationEventPublisher.publishEvent(
+			new QnaAnsweredEvent(
+				post.getQnaPostId(),
+				post.getCreatedAt(),
+				saved.getQnaCommentId()
+			)
+		);
 
 		return CommentResponse.fromEntity(saved);
 	}

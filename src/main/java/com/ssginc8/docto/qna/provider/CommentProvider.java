@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.appointment.entity.Appointment;
 import com.ssginc8.docto.global.error.exception.commentException.CommentNotFoundException;
+import com.ssginc8.docto.notification.dto.QnaNotificationData;
 import com.ssginc8.docto.qna.dto.QaPostResponse;
 import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.qna.repo.CommentRepo;
@@ -52,7 +53,7 @@ public class CommentProvider {
 
 	// ID로 Notification 에 필요한 데이터 찾기
 	@Transactional(readOnly = true)
-	public Object[] findNotificationDataByQnaCommentId(Long qnaCommentId) {
+	public QnaNotificationData findNotificationDataByQnaCommentId(Long qnaCommentId) {
 		return commentRepo.findNotificationDataByQnaCommentId(qnaCommentId);
 	}
 }
