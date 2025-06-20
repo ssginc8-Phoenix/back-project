@@ -125,10 +125,6 @@ public class Hospital extends BaseTimeEntity {
 		this.waiting = waiting;
 	}
 
-	// @Enumerated(EnumType.STRING)
-	// @Column(nullable = false)
-	// private Specialization specialization;
-
 
 
 	public void clearFileIds() {

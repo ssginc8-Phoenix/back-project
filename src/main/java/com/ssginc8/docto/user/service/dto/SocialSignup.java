@@ -43,11 +43,20 @@ public class SocialSignup {
 	public static class Response {
 		private Long userId;
 		private String role;
+		private String accessToken;
+		private String refreshToken;
+		private int accessTokenCookieMaxAge;
+		private int refreshTokenCookieMaxAge;
 
 		@Builder
-		public Response(Long userId, String role) {
+		public Response(Long userId, String role, String accessToken, String refreshToken, int accessTokenCookieMaxAge,
+			int refreshTokenCookieMaxAge) {
 			this.userId = userId;
 			this.role = role;
+			this.accessToken = accessToken;
+			this.refreshToken = refreshToken;
+			this.accessTokenCookieMaxAge = accessTokenCookieMaxAge;
+			this.refreshTokenCookieMaxAge = refreshTokenCookieMaxAge;
 		}
 	}
 }
