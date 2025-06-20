@@ -8,8 +8,10 @@ import lombok.Getter;
 public class AppointmentStatusChangedEvent {
 
 	private final Appointment appointment;
+	private final boolean isPenaltyCancellation;
 
-	public AppointmentStatusChangedEvent(Appointment appointment) {
+	public AppointmentStatusChangedEvent(Appointment appointment, boolean isPenaltyCancellation) {
 		this.appointment = appointment;
+		this.isPenaltyCancellation = isPenaltyCancellation;
 	}
 }

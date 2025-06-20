@@ -54,9 +54,8 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	Optional<PatientGuardian> findByInviteCode(String inviteCode);
 
-	List<PatientGuardian> findByPatient_PatientIdAndStatusAndDeletedAtIsNull(Long patientId, Status status);
-
-	PatientGuardian findPatientGuardianByPatient(Patient patient);
+	@Query("SELECT pg FROM PatientGuardian pg JOIN FETCH pg.patient p JOIN FETCH p.user u WHERE pg.id = :id")
+	Optional<PatientGuardian> findByIdWithPatientAndUser(@Param("id") Long id);
 
 }
 

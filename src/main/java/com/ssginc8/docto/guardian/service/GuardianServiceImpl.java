@@ -27,7 +27,6 @@ import com.ssginc8.docto.guardian.dto.GuardianResponse;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
-import com.ssginc8.docto.guardian.provider.GuardianProvider;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
@@ -41,7 +40,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class GuardianServiceImpl implements GuardianService {
 
-	private final GuardianProvider guardianProvider;
 	private final PatientGuardianProvider patientGuardianProvider;
 	private final PatientProvider patientProvider;
 	private final UserProvider userProvider;
@@ -87,7 +85,7 @@ public class GuardianServiceImpl implements GuardianService {
 
 	@Override
 	public void updateStatusByInviteCode(String inviteCode, String statusStr) {
-		PatientGuardian pg = guardianProvider.findByInviteCode(inviteCode);
+		PatientGuardian pg = patientGuardianProvider.findByInviteCode(inviteCode);
 
 		Status newStatus;
 		try {
@@ -101,7 +99,7 @@ public class GuardianServiceImpl implements GuardianService {
 
 	@Override
 	public void updateStatus(Long requestId, String inviteCode, String statusStr) {
-		PatientGuardian pg = guardianProvider.getById(requestId);
+		PatientGuardian pg = patientGuardianProvider.getById(requestId);
 
 		if (!pg.getInviteCode().equals(inviteCode)) {
 			throw new InvalidInviteCodeException();
@@ -126,7 +124,7 @@ public class GuardianServiceImpl implements GuardianService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<PatientSummaryResponse> getAllAcceptedMappings(Long guardianId) {
-		return guardianProvider.getAllAcceptedMappings(guardianId).stream()
+		return patientGuardianProvider.getAllAcceptedMappings(guardianId).stream()
 			.map(pg -> {
 				Patient patient = pg.getPatient();
 				User user = patient.getUser();
@@ -162,7 +160,7 @@ public class GuardianServiceImpl implements GuardianService {
 
 	@Override
 	public void deleteMappingByMappingId(Long mappingId) {
-		PatientGuardian pg = guardianProvider.getById(mappingId);
+		PatientGuardian pg = patientGuardianProvider.getById(mappingId);
 		pg.delete();  // BaseTimeEntity 의 delete() 호출 (soft delete)
 	}
 

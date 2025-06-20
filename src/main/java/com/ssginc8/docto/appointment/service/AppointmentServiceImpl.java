@@ -229,7 +229,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		appointmentProvider.save(appointment);
 
-		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment));
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, false));
 
 		return AppointmentResponse.fromEntity(appointment, qaContent);
 	}
@@ -290,13 +290,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointment.changeStatus(AppointmentStatus.CANCELED);
 		appointmentProvider.save(appointment);
 
+		// 알림 이벤트 발행
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, false));
+
 		// 1시간 이내 취소 -> 패널티 부여
-		if (now.isAfter(appointmentTime.minusHours(1))) {
+		boolean isPenalty = now.isAfter(appointmentTime.minusHours(1));
+		if (isPenalty) {
 			user.addPenalty(1L);
 			appointment.changeStatus(AppointmentStatus.NO_SHOW);
+			appointmentProvider.save(appointment);
 		}
-
-		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment));
+		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, isPenalty));
 	}
 
 	@Override

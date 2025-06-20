@@ -21,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_hospital_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+
 public class HospitalSchedule {
 
 	@Id
@@ -52,10 +54,10 @@ public class HospitalSchedule {
 	@Column(nullable = false, name = "close_time")
 	private LocalTime closeTime;
 
-	@Column(nullable = false, name = "lunch_start")
+	@Column(nullable = true, name = "lunch_start")
 	private LocalTime lunchStart;
 
-	@Column(nullable = false, name = "lunch_end")
+	@Column(nullable = true, name = "lunch_end")
 	private LocalTime lunchEnd;
 
 

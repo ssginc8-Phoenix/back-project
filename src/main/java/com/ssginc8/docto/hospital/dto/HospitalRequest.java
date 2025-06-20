@@ -13,12 +13,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.Getter;
 
 @Data
 
 @AllArgsConstructor
 @Builder
+@Getter
 //병원 등록/수정
 public class HospitalRequest {
 
@@ -47,7 +48,9 @@ public class HospitalRequest {
 
 	private BigDecimal longitude;
 
-	private MultipartFile file;
+	private List<MultipartFile> files;
+
+	private List<Long> existingFileIds;
 
 
 

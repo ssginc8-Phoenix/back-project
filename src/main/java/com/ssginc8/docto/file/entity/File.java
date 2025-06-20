@@ -3,14 +3,18 @@ package com.ssginc8.docto.file.entity;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.hospital.entity.Hospital;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,6 +51,8 @@ public class File extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String fileType;
 
+
+
 	private File(Category category, String fileName, String originalName, String url, String bucketName,
 		Long fileSize, String fileType) {
 		this.category = category;
@@ -58,12 +64,44 @@ public class File extends BaseTimeEntity {
 		this.fileType = fileType;
 	}
 
+
+
 	public static File createFile(Category category, String fileName, String originalName, String url,
 		String bucketName,
 		Long fileSize, String fileType) {
 		return new File(category, fileName, originalName, url, bucketName, fileSize, fileType);
 	}
+	public static File hospitalCreateFile(
+		Hospital hospital,       // ← 첫번째 인자
+		Category category,
+		String fileName,
+		String originalName,
+		String url,
+		String bucketName,
+		Long fileSize,
+		String fileType
+	) {
+		return new File(category, fileName, originalName, url, bucketName, fileSize, fileType, hospital);
+	}
+	private File(
+		Category category,
+		String fileName,
+		String originalName,
+		String url,
+		String bucketName,
+		Long fileSize,
+		String fileType,
+		Hospital hospital
+	) {
+		this.category = category;
+		this.fileName = fileName;
+		this.originalName = originalName;
+		this.url = url;
+		this.bucketName = bucketName;
+		this.fileSize = fileSize;
+		this.fileType = fileType;
 
+	}
 	public void updateFile(String fileName, String originalName, String url,
 		String bucketName, Long fileSize, String fileType) {
 		this.fileName = fileName;

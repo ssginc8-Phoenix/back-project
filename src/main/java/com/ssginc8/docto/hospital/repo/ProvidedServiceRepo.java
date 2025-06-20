@@ -10,16 +10,16 @@ import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
 
 public interface ProvidedServiceRepo extends JpaRepository<ProvidedService, Long > {
-	void deleteByHospital(Hospital hospital);
-	List<ProvidedService> findByHospitalHospitalId(Long hospitalId);
 
-	void deleteByHospitalHospitalId(Long hospitalId);
+
+	List<ProvidedService> findByHospitalHospitalId(Long hospitalId);
 
 	void deleteAllByHospital(Hospital hospital);
 
 	@Query("SELECT ps.serviceName FROM ProvidedService ps WHERE ps.hospital.hospitalId = :hospitalId")
 	List<String> findServiceNamesByHospitalId(@Param("hospitalId") Long hospitalId);
 
-	@Query("SELECT p FROM ProvidedService p WHERE p.hospital.hospitalId IN :hospitalIds")
-	List<ProvidedService> findByHospitalIds(@Param("hospitalIds") List<Long> hospitalIds);
+
+
+
 }

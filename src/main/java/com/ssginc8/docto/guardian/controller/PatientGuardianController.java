@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/guardians")
-public class GuardianController {
+public class PatientGuardianController {
 
 	private final GuardianService guardianService;
 	private final UserServiceImpl userService;

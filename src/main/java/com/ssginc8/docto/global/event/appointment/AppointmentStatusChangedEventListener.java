@@ -38,7 +38,11 @@ public class AppointmentStatusChangedEventListener {
 		Appointment appointment = optionalFetched.get();
 
 		try {
-			if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
+			if (event.isPenaltyCancellation()) {
+				log.info("예약 노쇼(패널티) 알림 호출 시작");
+				notificationService.notifyAppointmentNoShow(appointment);
+
+			} else if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
 				log.info("예약 확정 알림 호출 시작");
 				notificationService.notifyAppointmentConfirmed(appointment);
 
