@@ -1,5 +1,6 @@
 package com.ssginc8.docto.hospital.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ssginc8.docto.doctor.entity.Doctor;
+import com.ssginc8.docto.doctor.entity.Specialization;
 import com.ssginc8.docto.hospital.entity.Hospital;
 
 public interface HospitalRepo extends JpaRepository<Hospital, Long>, JpaSpecificationExecutor<Hospital> {
@@ -69,6 +71,8 @@ public interface HospitalRepo extends JpaRepository<Hospital, Long>, JpaSpecific
 
 	Optional<Hospital> findByUserUserId(Long userId);
 
+	List<Hospital> findTop5BySpecializationOrderByWaitingAsc(Specialization specialization);
+
 	@Query(
 		value = """
         SELECT h.*
@@ -109,6 +113,5 @@ public interface HospitalRepo extends JpaRepository<Hospital, Long>, JpaSpecific
 		@Param("radius") double radius,
 		Pageable pageable
 	);
-
 
 }

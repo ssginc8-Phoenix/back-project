@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.global.error.exception.guardianException.GuardianNotFoundException;
+import com.ssginc8.docto.global.error.exception.guardianException.GuardianRequestNotFoundException;
 import com.ssginc8.docto.global.error.exception.patientException.PatientNotFoundException;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.entity.Status;
@@ -77,5 +78,26 @@ public class PatientGuardianProvider {
 	public PatientGuardian getPatientGuardianById(Long patientGuardianId) {
 		return patientGuardianRepo.findByIdWithPatientAndUser(patientGuardianId)
 			.orElseThrow(GuardianNotFoundException::new);
+	}
+
+	public PatientGuardian getById(Long requestId) {
+		return patientGuardianRepo.findById(requestId)
+			.filter(pg -> pg.getDeletedAt() == null)
+			.orElseThrow(GuardianRequestNotFoundException::new);
+	}
+
+	public PatientGuardian getMapping(Long guardianId, Long patientId) {
+		return patientGuardianRepo.findByUserIdAndPatientId(guardianId, patientId)
+			.filter(pg -> pg.getDeletedAt() == null)
+			.orElseThrow(GuardianMappingNotFoundException::new);
+	}
+
+	public List<PatientGuardian> getAllAcceptedMappings(Long guardianId) {
+		return patientGuardianRepo.findAcceptedPatientsByUserId(guardianId);
+	}
+
+	public PatientGuardian findByInviteCode(String inviteCode) {
+		return patientGuardianRepo.findByInviteCode(inviteCode)
+			.orElseThrow(() -> new GuardianRequestNotFoundException());
 	}
 }
