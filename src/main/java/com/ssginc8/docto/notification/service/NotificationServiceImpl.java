@@ -1,11 +1,11 @@
 package com.ssginc8.docto.notification.service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,10 +90,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * Notification 생성 메서드 (재사용을 위한)
 	 */
 	private void createNotification(User receiver, NotificationType type, String content, Long referenceId) {
-		log.info("알림이 생성: {}, type: {}, content: {}, refId: {}",
-			receiver.getUserId(), type, content, referenceId);
-
-
+		// 1. DB에 알림 저장
 		Notification notification = new Notification(
 			receiver,
 			type,
@@ -102,10 +99,25 @@ public class NotificationServiceImpl implements NotificationService {
 		);
 		notificationProvider.save(notification);
 
+		// 2. FCM 전송
 		try {
 			fcmService.sendMessage(receiver.getUserId(), type.name(), content);
 		} catch (Exception e) {
-			throw new NotificationSendFailed();
+			log.error("FCM 메시지 전송 실패 (userId: {}, type: {}): {}", receiver.getUserId(), type.name(), e.getMessage(), e);
+		}
+	}
+
+	private void createNotificationWithData(User receiver, NotificationType type, String title, String body,
+		Long referenceId, Map<String, String> data) {
+		// 1. DB 저장
+		Notification notification = new Notification(receiver, type, body, referenceId);
+		notificationProvider.save(notification);
+
+		// 2. FCM 전송
+		try {
+			fcmService.sendMessageWithData(receiver.getUserId(), title, body, data);
+		} catch (Exception e) {
+			log.error("FCM 메시지 전송 실패 (userId: {}, type: {}): {}", receiver.getUserId(), type.name(), e.getMessage(), e);
 		}
 	}
 
@@ -181,11 +193,10 @@ public class NotificationServiceImpl implements NotificationService {
 			throw new CommentNotFoundException();
 		}
 
-		User receiver = (User) data[0];
-		String hospitalName = (String) data[1];
-		String patientName = (String) data[2];
-		LocalDateTime time = (LocalDateTime) data[3];
-
+		User receiver = (User)data[0];
+		String hospitalName = (String)data[1];
+		String patientName = (String)data[2];
+		LocalDateTime time = (LocalDateTime)data[3];
 
 		String content = String.format("%s에 작성하신 QnA에 답변이 등록되었습니다. (%s, %s)",
 			time.format(DATE_FORMATTER), hospitalName, patientName);
@@ -197,61 +208,68 @@ public class NotificationServiceImpl implements NotificationService {
 	 * GUARDIAN 초대 알림 전송
 	 */
 	@Override
-	public void notifyGuardianInvite(PatientGuardian guardian) {
-		User receiver = guardian.getUser();
-
-		String patientName = guardian.getPatient().getUser().getName();
+	public void notifyGuardianInvite(User receiver, String patientName, Long patientGuardianId) {
 
 		String content = String.format("%s님께서 당신을 보호자로 초대했습니다.", patientName);
-		createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, guardian.getPatientGuardianId());
+		createNotification(receiver, NotificationType.GUARDIAN_INVITE, content, patientGuardianId);
 	}
 
 	/**
 	 * Medication 복욕 알림 전송
 	 */
 	@Override
-	public void notifyMedicationAlert(User receiver, String medicationName, LocalTime timeToTake, Long medicationInfoId) {
-		String formattedTime = timeToTake.format(TIME_FORMATTER);
-		String content = String.format("💊 %s님, %s에 복용할 약 '%s'이 있습니다.",
-			receiver.getName(), formattedTime, medicationName);
+	public void notifyMedicationAlert(User receiver, String medicationName, LocalTime timeToTake, Long medicationInfoId, Map<String, String> data) {
+		String title = "복약 알림 💊";
+		String body = String.format("%s님, %s에 복용할 약 '%s'이 있습니다.", receiver.getName(), timeToTake.format(TIME_FORMATTER),
+			medicationName);
 
-		createNotification(receiver, NotificationType.MEDICATION_ALERT, content, medicationInfoId);
+		// `data` 맵에 'action' 필드 추가 (Service Worker 에서 이 필드를 보고 버튼 생성 여부 판단)
+		data.put("action", "TAKE_MEDICATION");
+
+		createNotificationWithData(receiver, NotificationType.MEDICATION_ALERT, title, body, medicationInfoId, data);
 	}
 
 	/**
 	 * MEDICATION 미복용 알림 전송 (보호자)
 	 */
 	@Override
-	public void notifyMedicationMissed() {
-		LocalTime fiveMinutesAgo = LocalTime.now().minusMinutes(5).withSecond(0).withNano(0);
-		DayOfWeek today = LocalDateTime.now().getDayOfWeek();
-		LocalDate date = LocalDate.now();
+	public void notifyMedicationMissed(MedicationInformation info, MedicationAlertTime alertTime, User patientUser) {
+		String medicationName = info.getMedicationName();
+		LocalTime missedTime = alertTime.getTimeToTake();
 
-		// 5분 전 복약 알림 시간 중, 아직 복약 로그가 없는 것 조회
-		List<MedicationAlertTime> missedAlertTimes =
-			medicationProvider.findAlertTimesDayAndTime(today, fiveMinutesAgo).stream()
-				.filter(alertTime -> !medicationProvider.existsMedicationLog(alertTime, date))
-				.toList();
+		// 보호자 목록 조회 (여러 명)
+		Patient patient = patientProvider.getPatientByUserId(patientUser.getUserId());
+		List<PatientGuardian> guardians = guardianProvider.getAllAcceptedGuardiansByPatientId(patient.getPatientId());
 
-		for (MedicationAlertTime alertTime : missedAlertTimes) {
-			MedicationInformation info = alertTime.getMedication();
-			User patienUser = info.getUser();
-
-			// 보호자 목록 조회 (여러 명)
-			Patient patient = patientProvider.getPatientByUserId(patienUser.getUserId());
-			List<PatientGuardian> guardians = guardianProvider.getAllAcceptedGuardiansByPatientId(patient.getPatientId());
-
-			String formattedAlertTime = alertTime.getTimeToTake().format(TIME_FORMATTER);
-
-			for (PatientGuardian guardian : guardians) {
-				User guardianUser = guardian.getUser();
-
-				String content = String.format("⚠️ %s님께서 %s에 '%s' 복용을 놓쳤습니다.",
-					patienUser.getName(), formattedAlertTime, info.getMedicationName());
-
-				createNotification(guardianUser, NotificationType.MEDICATION_MISSED, content, info.getMedicationId());
-			}
+		if (guardians.isEmpty()) {
+			return;
 		}
+
+		String title = "미복용 알림 🚨";
+		String body = String.format("%s님이 %s에 복용 예정이었던 '%s'을(를) 복용하지 않았습니다.",
+			patientUser.getName(), missedTime.format(TIME_FORMATTER), medicationName);
+
+		// 프론트엔드 전달용 데이터
+		Map<String, String> data = new HashMap<>();
+		data.put("type", "MEDICATION_MISSED_ALERT");
+		data.put("patientId", String.valueOf(patientUser.getUserId()));
+		data.put("patientName", patientUser.getName());
+		data.put("medicationName", medicationName);
+		data.put("missedTime", missedTime.format(TIME_FORMATTER));
+
+		for (PatientGuardian guardian : guardians) {
+			User guardianUser = guardian.getUser();
+
+			createNotificationWithData(
+				guardian.getUser(),
+				NotificationType.MEDICATION_MISSED,
+				title,
+				body,
+				patientUser.getUserId(),
+				data
+			);
+		}
+
 	}
 
 }
