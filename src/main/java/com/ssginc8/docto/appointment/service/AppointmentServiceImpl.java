@@ -32,7 +32,6 @@ import com.ssginc8.docto.global.error.exception.appointmentException.NotCanceled
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
 import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
-import com.ssginc8.docto.guardian.provider.GuardianProvider;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
@@ -44,7 +43,6 @@ import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
 
-import com.ssginc8.docto.user.entity.Role;
 
 import com.ssginc8.docto.review.provider.ReviewProvider;
 
