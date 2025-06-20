@@ -75,13 +75,6 @@ public class SecurityConfig {
 					HttpMethod.POST, "/api/v1/patients"
 				).permitAll()
 
-
-
-				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasAnyRole("DOCTOR","HOSPITAL_ADMIN")
-
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
-
-
 				/**
 				 * 로그인 사용자 공통
 				 */
@@ -98,6 +91,11 @@ public class SecurityConfig {
 					"/api/v1/reviews",
 					"/api/v1/qnas/**")
 				.authenticated()
+
+				/**
+				 * 의사 + 병원 관리자
+				 */
+				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasAnyRole("DOCTOR","HOSPITAL_ADMIN")
 
 				/**
 				 * 환자 전용
