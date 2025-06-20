@@ -72,32 +72,28 @@ public class DoctorScheduleProvider {
 
 		// 2) 진료·점심시간 범위 검증
 		public void validateTimeRanges(DoctorScheduleRequest req) {
-			LocalTime start = req.getStartTime();
-			LocalTime end = req.getEndTime();
+			LocalTime start      = req.getStartTime();
+			LocalTime end        = req.getEndTime();
 			LocalTime lunchStart = req.getLunchStart();
-			LocalTime lunchEnd = req.getLunchEnd();
+			LocalTime lunchEnd   = req.getLunchEnd();
 
-			// 진료 시작 < 종료
+			// 1) 진료 시작 < 종료
 			if (!start.isBefore(end)) {
 				throw new InvalidDoctorScheduleTimeOrderException();
 			}
 
-			// 점심시간 불완전 설정
-			if ((lunchStart != null && lunchEnd == null) ||
-				(lunchStart == null && lunchEnd != null)) {
-				throw new InvalidDoctorScheduleLunchIncompleteException();
-			}
-
-			if (lunchStart != null) {
-				// 점심 시작 < 점심 종료
+			// 2) 점심시간이 둘 다 설정된 경우에만 추가 검증
+			if (lunchStart != null && lunchEnd != null) {
+				// 2-1) 점심 시작 < 점심 종료
 				if (!lunchStart.isBefore(lunchEnd)) {
 					throw new InvalidDoctorScheduleLunchOrderException();
 				}
-				// 점심이 진료 시간 범위 안에
+				// 2-2) 점심이 진료 시간 범위 안에 있는지
 				if (lunchStart.isBefore(start) || lunchEnd.isAfter(end)) {
 					throw new InvalidDoctorScheduleLunchRangeException();
 				}
 			}
+
 		}
 
 

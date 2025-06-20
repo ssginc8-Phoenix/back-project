@@ -45,10 +45,10 @@ public class DoctorSchedule extends BaseTimeEntity {
 	@Column(nullable = false)
 	private LocalTime endTime;
 
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private LocalTime lunchStart;
 
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private LocalTime lunchEnd;
 
 	public DoctorSchedule(Doctor doctor, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, LocalTime lunchStart, LocalTime lunchEnd) {

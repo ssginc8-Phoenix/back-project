@@ -23,6 +23,7 @@ import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.file.service.FileService;
 import com.ssginc8.docto.file.service.dto.UploadFile;
+import com.ssginc8.docto.global.error.exception.doctorException.DoctorScheduleNotFoundException;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 
@@ -159,25 +160,43 @@ public class DoctorServiceImpl implements DoctorService {
 		Long scheduleId,
 		DoctorScheduleRequest dto
 	) {
-		// 1) 의사 및 기존 스케줄 조회
+		// 1) 의사 조회
 		Doctor doctor = doctorProvider.getDoctorById(doctorId);
-		DoctorSchedule existing = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
 
-		// 2) 소유 여부 검증
-		doctorProvider.validateScheduleBelongsToDoctor(existing, doctor.getDoctorId());
+		try {
+			// 2) 기존 스케줄 조회 & 소유 검증
+			DoctorSchedule existing = doctorScheduleProvider.getDoctorScheduleById(scheduleId);
+			doctorProvider.validateScheduleBelongsToDoctor(existing, doctor.getDoctorId());
 
-		// 3) 필수 필드 Null 및 시간 범위 검증
-		doctorScheduleProvider.validateRequiredFields(dto);
-		doctorScheduleProvider.validateTimeRanges(dto);
+			// 3) 필수 필드 및 시간 검증
+			doctorScheduleProvider.validateRequiredFields(dto);
+			doctorScheduleProvider.validateTimeRanges(dto);
 
-		// 4) 엔티티 업데이트
-		existing.updateDoctorSchedule(
-			dto.getDayOfWeek(),
-			dto.getStartTime(),
-			dto.getEndTime(),
-			dto.getLunchStart(),
-			dto.getLunchEnd()
-		);
+			// 4) 엔티티 업데이트
+			existing.updateDoctorSchedule(
+				dto.getDayOfWeek(),
+				dto.getStartTime(),
+				dto.getEndTime(),
+				dto.getLunchStart(),
+				dto.getLunchEnd()
+			);
+		} catch (DoctorScheduleNotFoundException e) {
+			// 스케줄이 없으면 새로 생성
+			doctorScheduleProvider.validateRequiredFields(dto);
+			doctorScheduleProvider.validateTimeRanges(dto);
+
+			DoctorSchedule newSchedule = DoctorSchedule.create(
+				doctor,
+				dto.getDayOfWeek(),
+				dto.getStartTime(),
+				dto.getEndTime(),
+				dto.getLunchStart(),
+				dto.getLunchEnd()
+			);
+
+			doctorScheduleProvider.saveDoctorSchedule(newSchedule);
+		}
+
 		return dto;
 	}
 
