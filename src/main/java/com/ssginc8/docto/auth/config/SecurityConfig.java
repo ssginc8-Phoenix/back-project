@@ -74,17 +74,7 @@ public class SecurityConfig {
 				).permitAll()
 
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/{appointmentId}/payment-request").hasRole("HOSPITAL_ADMIN")
-				.requestMatchers(HttpMethod.POST, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.GET, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/medications/**").hasRole("GUARDIAN")
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
-				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasRole("DOCTOR")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/doctors/**").hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.POST, "/api/v1/patients").permitAll()
-
-
 
 				/**
 				 * 로그인 사용자 공통
@@ -109,8 +99,6 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/v1/patients/**",
 					"/api/v1/calendar/patient",
-					"/api/v1/medications/**",
-					"/api/v1/medications/*/complete",
 					"/api/v1/guardians/{patientId}/invite"
 				).hasRole("PATIENT")
 
@@ -124,7 +112,6 @@ public class SecurityConfig {
 					"/api/v1/guardians/**",
 					"/api/v1/reviews/**",
 					"/api/v1/qnas/**",
-					"/api/v1/medications/**",
 					"/api/v1/calendar/guardian",
 					"/api/v1/payment-history/{paymentRequestId}",
 					"/api/v1/payments/init",
@@ -139,6 +126,7 @@ public class SecurityConfig {
 				 */
 				.requestMatchers("/api/v1/users/me/reviews").hasAnyRole("PATIENT", "GUARDIAN")
 				.requestMatchers("/api/v1/reviews/**").hasAnyRole("PATIENT", "GUARDIAN")
+				.requestMatchers("/api/v1/medications/**").hasAnyRole("PATIENT", "GUARDIAN")
 
 				/**
 				 * 병원 관리자 전용
