@@ -1,5 +1,6 @@
 package com.ssginc8.docto.fcm.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,42 +30,66 @@ public class FirebaseCloudMessageServiceImpl implements  FirebaseCloudMessageSer
 	private final UserProvider userProvider;
 
 	/**
-	 * 메세지 전송
-	 * @Body requestDto
-	 * @return
+	 * 단순 제목/내용으로 FCM 메세지 전송
+	 * @param userId 수신자 ID
+	 * @param title 메시지 제목
+	 * @param body 메시지 본문
 	 */
 	@Override
-	public String sendMessage(Long userId, String title, String body) {
-		// 사용자의 Firebase 토큰 값을 조회
-		Optional<FcmToken> optionalFcmToken = fcmTokenProvider.findLatestTokenByUserId(userId);
+	public void sendMessage(Long userId, String title, String body) {
+		Message message = buildMessage(userId, Map.of("title", title, "body", body));
+		send(message, userId);
+	}
 
-		if (optionalFcmToken.isEmpty() || optionalFcmToken.get().getToken() == null || optionalFcmToken.get().getToken().isBlank()) {
-			log.warn("유효한 FCM 토큰이 없습니다. 알림을 전송할 수 없습니다. userId={}", userId);
-			throw new NotFoundTokenException();
-		}
+	/**
+	 * 클라이언트에서 활용할 추가 데이터를 포함하여 FCM 메시지를 전송합니다.
+	 * (복용 알림 등에서 사용)
+	 * @param userId 수신자 ID
+	 * @param title 메시지 제목
+	 * @param body 메시지 본문
+	 * @param data 데이터 맵
+	 */
+	@Override
+	public void sendMessageWithData(Long userId, String title, String body, Map<String, String> data) {
+		log.info("sendMessageWithData 시작: userId={}", userId);
+		// 데이터 맵에 title, body 추가하여 일관성 유지
+		data.put("title", title);
+		data.put("body", body);
 
-		String userFirebaseToken = optionalFcmToken.get().getToken();
+		Message message = buildMessage(userId, data);
+		log.info("메시지 빌드 완료, send 호출 전: userId={}, message={}", userId, message);
+		send(message, userId);
+		log.info("sendMessageWithData 종료: userId={}", userId);
+	}
+
+	private Message buildMessage(Long userId, Map<String, String> data) {
+		String userFirebaseToken = fcmTokenProvider.findLatestTokenByUserId(userId)
+			.map(FcmToken::getToken)
+			.filter(token -> token != null && !token.isBlank())
+			.orElseThrow(NotFoundTokenException::new);
+
 		log.info("FCM 토큰 조회 성공: userId={}, token={}", userId, userFirebaseToken);
 
-		// 메시지 구성
-		Message message = Message.builder()
-			.putData("title", title)
-			.putData("body", body)
-			.setToken(userFirebaseToken)	// 조회한 토큰 값을 사용
+		return Message.builder()
+			.putAllData(data)
+			.setToken(userFirebaseToken)
 			.build();
+	}
 
-		log.info("전송할 FCM 메시지: {}", message);
-
+	private void send(Message message, Long userId) {
 		try {
-			// 메세지 전송
+			log.info("전송할 FCM 메세지: {}", message);
 			String response = FirebaseMessaging.getInstance().send(message);
-			log.info("FCM 메시지 전송 성공: {}", response);
-			return "Message sent successfully: " + response;
+			log.info("FCM 메세지 전송 성공: {}", response);
 
 		} catch (FirebaseMessagingException e) {
-			log.error("FCM 전송 실패: userId={}, error={}", userId, e.getMessage(), e);
+			log.error("FCM 전송 실패: userId={}, message={}, error={}",userId, message, e.getMessage());
 			throw new FailedSendMessage();
+		} catch (Exception e) {
+			log.error("send 메서드에서 예상치 못한 오류 발생: userId={}, message={}, errorType={}, errorMessage={}",
+				userId, message, e.getClass().getName(), e.getMessage(), e);
 		}
+		log.info("send 메서드 종료: userId={}", userId);
 	}
 
 	@Override

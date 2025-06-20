@@ -1,6 +1,7 @@
 package com.ssginc8.docto.fcm.service;
 
-import com.ssginc8.docto.appointment.entity.Appointment;
+import java.util.Map;
+
 import com.ssginc8.docto.fcm.dto.FcmMessageRequest;
 import com.ssginc8.docto.user.entity.User;
 
@@ -9,7 +10,9 @@ import com.ssginc8.docto.user.entity.User;
  */
 public interface FirebaseCloudMessageService {
 
-	String sendMessage(Long userId, String title, String body);
+	void sendMessage(Long userId, String title, String body);
+
+	void sendMessageWithData(Long userId, String title, String body, Map<String, String> data);
 
 	void saveToken(Long userId, String token);
 }

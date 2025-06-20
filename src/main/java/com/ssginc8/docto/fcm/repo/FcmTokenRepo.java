@@ -13,6 +13,11 @@ public interface FcmTokenRepo extends JpaRepository<FcmToken, Long> {
 
 	Optional<FcmToken> findByToken(String token);
 
-	@Query("SELECT f FROM FcmToken f WHERE f.user.userId = :userId ORDER BY f.updatedAt DESC")
+	@Query(value = """
+		SELECT f
+		FROM FcmToken f
+		WHERE f.user.userId = :userId
+		ORDER BY f.updatedAt DESC, f.fcmId DESC LIMIT 1
+	""", nativeQuery = false)
 	Optional<FcmToken> findLatestTokenByUserId(@Param("userId") Long userId);
 }

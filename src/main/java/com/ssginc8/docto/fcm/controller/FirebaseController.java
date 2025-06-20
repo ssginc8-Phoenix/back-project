@@ -21,11 +21,23 @@ public class FirebaseController {
 	private final FirebaseCloudMessageService firebaseCloudMessageService;
 
 	@PostMapping("/sendMessage")
-	public ResponseEntity<String> sendMessage(@RequestBody FcmMessageRequest request) {
-		String response = firebaseCloudMessageService.sendMessage(request.getUserId(), request.getTitle(), request.getBody());
+	public ResponseEntity<Void> sendMessage(@RequestBody FcmMessageRequest request) {
+		firebaseCloudMessageService.sendMessage(request.getUserId(), request.getTitle(), request.getBody());
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok().build();
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	@PutMapping("/token")
 	public ResponseEntity<Void> registerToken(@RequestBody AddFcmToken.Request request) {
