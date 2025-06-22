@@ -20,10 +20,11 @@ import com.ssginc8.docto.review.entity.Review;
 @Repository
 public interface ReviewRepo extends JpaRepository<Review, Long> {
 
+	Page<Review> findByHospitalHospitalIdAndDeletedAtIsNullAndReportCountLessThan(Long hospitalId, int maxCount, Pageable pageable);
 
-	Page<Review> findByUserUserIdOrderByCreatedAtDesc(Long UserId, Pageable pageable);
+	Page<Review> findByDeletedAtIsNullAndReportCountLessThan(int maxCount, Pageable pageable);
 
-	Page<Review> findByHospitalHospitalId(Long hospitalId, Pageable pageable);
+
 
 	@EntityGraph(attributePaths = {
 		"user",
@@ -38,8 +39,6 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 		Long userId,
 		Pageable pageable
 	);
-
-	Optional<Review> findByReviewId(Long reviewId);
 
   	/**
 	 * appointment Id로 review 가져오기

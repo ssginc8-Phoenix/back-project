@@ -34,13 +34,15 @@ public class ReviewProvider {
 	// 병원 전체 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getHospitalReviews(Long hospitalId, Pageable pageable) {
-		return reviewRepo.findByHospitalHospitalId(hospitalId, pageable);
+		return reviewRepo.findByHospitalHospitalIdAndDeletedAtIsNullAndReportCountLessThan(
+			hospitalId, 3, pageable
+		);
 	}
 
 	// admin 전체 리뷰 조회
 	@Transactional(readOnly = true)
 	public Page<Review> getAllReviews(Pageable pageable) {
-		return reviewRepo.findAll(pageable);
+		return reviewRepo.findByDeletedAtIsNullAndReportCountLessThan(3, pageable);
 	}
 
 
