@@ -117,7 +117,6 @@ public class SecurityConfig {
 					"/api/v1/patients/**",
 					"/api/v1/guardians/**",
 					"/api/v1/reviews/**",
-					"/api/v1/qnas/**",
 					"/api/v1/calendar/guardian",
 					"/api/v1/payment-history/{paymentRequestId}",
 					"/api/v1/payments/init",
@@ -126,6 +125,7 @@ public class SecurityConfig {
 
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/guardians/respond").hasRole("GUARDIAN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/**").hasRole("GUARDIAN")
+				.requestMatchers(HttpMethod.GET, "/api/v1/qnas/**").hasRole("GUARDIAN")
 
 				/**
 				 * 환자 + 보호자 공통
@@ -154,10 +154,12 @@ public class SecurityConfig {
 				 */
 				.requestMatchers(
 					"/api/v1/doctors/**",
-					"/api/v1/qnas/*/comments/*",
+					"/api/v1/qnas/*/comments/**",
 					"/api/v1/calendar/doctor"
 				).hasRole("DOCTOR")
 				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/**").hasRole("DOCTOR")
+				.requestMatchers(HttpMethod.POST, "/api/v1/qnas/*/comments").hasRole("DOCTOR")
+
 
 				/**
 				 * 병원 관리자 + 보호자 공통
