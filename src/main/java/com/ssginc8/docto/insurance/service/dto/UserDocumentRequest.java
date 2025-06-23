@@ -15,6 +15,10 @@ public class UserDocumentRequest {
 	@NotNull
 	private Long requesterId;
 
+	/** 발급받을 병원 ID */
+	@NotNull
+	private Long hospitalId;
+
 	/** 요청 메모(선택) */
 	private String note;
 }

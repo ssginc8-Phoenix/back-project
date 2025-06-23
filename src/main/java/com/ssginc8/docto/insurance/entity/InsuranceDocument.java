@@ -3,6 +3,8 @@ package com.ssginc8.docto.insurance.entity;
 
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.hospital.entity.Hospital;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,6 +32,11 @@ public class InsuranceDocument extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Long requesterId;
 
+	/** 어느 병원에서 발급할지 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "hospital_id", nullable = false)
+	private Hospital hospital;
+
 	/** 요청 메모(선택) */
 	@Column(length = 500)
 	private String note;
@@ -52,12 +59,14 @@ public class InsuranceDocument extends BaseTimeEntity {
 	 * 환자·보호자용 요청 생성 메서드
 	 *
 	 * @param requesterId 요청자 ID
+	 * @param hospital    발급 병원
 	 * @param note        요청 메모
 	 * @return status=REQUESTED 인 새 엔티티
 	 */
-	public static InsuranceDocument createRequest(Long requesterId, String note) {
+	public static InsuranceDocument createRequest(Long requesterId, Hospital hospital, String note) {
 		InsuranceDocument doc = new InsuranceDocument();
 		doc.requesterId = requesterId;
+		doc.hospital    = hospital;
 		doc.note        = note;
 		doc.status      = DocumentStatus.REQUESTED;
 		return doc;

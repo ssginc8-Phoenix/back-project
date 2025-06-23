@@ -53,7 +53,6 @@ public class InsuranceDocumentController {
 	@GetMapping("/{id}/download")
 	public ResponseEntity<ByteArrayResource> download(@PathVariable Long id) {
 		FileDownload download = service.downloadFile(id);
-
 		ByteArrayResource resource = new ByteArrayResource(download.getData());
 
 		return ResponseEntity.ok()
