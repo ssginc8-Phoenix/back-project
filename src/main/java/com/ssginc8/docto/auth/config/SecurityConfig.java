@@ -108,8 +108,6 @@ public class SecurityConfig {
 					"/api/v1/guardians/{patientId}/invite"
 				).hasRole("PATIENT")
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/guardians/{patientId}/invite").hasRole("PATIENT")
-
 				/**
 				 * 보호자 전용
 				 */
