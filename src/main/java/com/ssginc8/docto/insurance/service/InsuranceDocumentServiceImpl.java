@@ -21,6 +21,7 @@ import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.global.error.exception.fileException.FileUploadFailedException;
+import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.insurance.entity.InsuranceDocument;
 import com.ssginc8.docto.insurance.provider.InsuranceDocumentProvider;
 import com.ssginc8.docto.insurance.repo.InsuranceDocumentRepo;
@@ -37,6 +38,7 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 
 	private final InsuranceDocumentRepo repo;
 	private final InsuranceDocumentProvider provider;
+	private final HospitalProvider hospitalProvider;
 	private final AmazonS3 amazonS3;
 	private final FileProvider fileProvider;
 
@@ -50,9 +52,11 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 	@Override
 	@Transactional
 	public DocumentResponse createRequest(UserDocumentRequest dto) {
+		// Hospital 조회
+		var hospital = hospitalProvider.getHospitalById(dto.getHospitalId());
 		// ● 엔티티 생성 (status=REQUESTED, file=null)
 		InsuranceDocument doc = InsuranceDocument.createRequest(
-			dto.getRequesterId(), dto.getNote()
+			dto.getRequesterId(),hospital, dto.getNote()
 		);
 		// ● DB에 저장
 		repo.save(doc);
