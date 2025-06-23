@@ -19,4 +19,7 @@ public class DocumentResponse {
 	private final String rejectionReason;
 	/** (첨부 후) 다운로드용 URL */
 	private final String downloadUrl;
+
+	private Long   hospitalId;
+	private String hospitalName;
 }

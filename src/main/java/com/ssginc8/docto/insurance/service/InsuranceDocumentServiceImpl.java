@@ -21,6 +21,7 @@ import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
 import com.ssginc8.docto.global.error.exception.fileException.FileUploadFailedException;
+import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.provider.HospitalProvider;
 import com.ssginc8.docto.insurance.entity.InsuranceDocument;
 import com.ssginc8.docto.insurance.provider.InsuranceDocumentProvider;
@@ -119,11 +120,14 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 	@Transactional(readOnly = true)
 	public DocumentResponse status(Long documentId) {
 		InsuranceDocument doc = provider.getById(documentId);
+		Hospital hosp = doc.getHospital();
 		return DocumentResponse.builder()
 			.documentId(doc.getDocumentId())
 			.status(doc.getStatus())
 			.rejectionReason(doc.getRejectionReason())
 			.downloadUrl(doc.getFile() != null ? doc.getFile().getUrl() : null)
+			.hospitalId(hosp.getHospitalId())
+			.hospitalName(hosp.getName())
 			.build();
 	}
 
