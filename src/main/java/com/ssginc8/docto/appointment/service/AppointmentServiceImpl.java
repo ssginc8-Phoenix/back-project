@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.query.SortDirection;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +44,6 @@ import com.ssginc8.docto.qna.dto.QaPostCreateRequest;
 import com.ssginc8.docto.qna.provider.QaPostProvider;
 import com.ssginc8.docto.qna.service.QaPostService;
 
-
 import com.ssginc8.docto.review.provider.ReviewProvider;
 
 import com.ssginc8.docto.user.entity.User;
@@ -71,7 +71,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private final UserService userService;
 	private final HospitalService hospitalService;
 	private final NotificationService notificationService;
-
 
 	private final AppointmentValidator appointmentValidator;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -102,7 +101,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		// 2. 역할에 따라 분기 처리
 		switch (loginUser.getRole()) {
 			case PATIENT:
-				appointments =  appointmentProvider.getAppointmentsByPatient(loginUser.getUserId(), pageable);
+				appointments = appointmentProvider.getAppointmentsByPatient(loginUser.getUserId(), pageable);
 				break;
 
 			case GUARDIAN:
@@ -165,14 +164,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 		}
 
 		Patient patient = patientProvider.getActivePatient(request.getPatientId());
-		
+
 		// 2. 보호자-환자 관계 유효성 검사
 		PatientGuardian patientGuardian = patientGuardianProvider.validateAndGetPatientGuardian(guardian, patient);
-		
+
 		// 3. 병원과 의사 조회
 		Hospital hospital = hospitalProvider.getHospitalById(request.getHospitalId());
 		Doctor doctor = doctorProvider.getDoctorById(request.getDoctorId());
-		
+
 		// 4. request 데이터 검증
 		// 1) validate appointmentTime
 		appointmentValidator.validateAppointmentTime(doctor, patientGuardian, request.getAppointmentTime());
@@ -299,6 +298,74 @@ public class AppointmentServiceImpl implements AppointmentService {
 			appointmentProvider.save(appointment);
 		}
 		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, isPenalty));
+	}
+
+	@Override
+	public Page<AppointmentListResponse> getActiveAppointmentsByLoginUser(Pageable pageable, LocalDate date) {
+		List<AppointmentStatus> activeStatuses = List.of(AppointmentStatus.REQUESTED, AppointmentStatus.CONFIRMED);
+		return getAppointmentsByLoginUserAndStatus(pageable, date, activeStatuses, SortDirection.ASCENDING);
+	}
+
+	@Override
+	public Page<AppointmentListResponse> getInactiveAppointmentsByLoginUser(Pageable pageable, LocalDate date) {
+		List<AppointmentStatus> inactiveStatuses = List.of(AppointmentStatus.COMPLETED, AppointmentStatus.CANCELED, AppointmentStatus.NO_SHOW);
+		return getAppointmentsByLoginUserAndStatus(pageable, date, inactiveStatuses, SortDirection.DESCENDING);
+	}
+
+	/**
+	 * 특정 상태를 가진 예약 리스트 가져오는 공통 로직
+	 */
+	private Page<AppointmentListResponse> getAppointmentsByLoginUserAndStatus(
+		Pageable pageable,
+		LocalDate date,
+		List<AppointmentStatus> targetStatuses,
+		SortDirection sortDirection
+	)
+	{
+		User loginUser = userService.getUserFromUuid();
+		Page<Appointment> appointments;
+
+		switch (loginUser.getRole()) {
+			case PATIENT:
+				appointments = (sortDirection == SortDirection.ASCENDING) ?
+					appointmentProvider.getAppointmentsByPatientAndStatusIn(loginUser.getUserId(), targetStatuses, pageable) :
+					appointmentProvider.getAppointmentsByPatientAndStatusInDesc(loginUser.getUserId(), targetStatuses, pageable);
+				break;
+			case GUARDIAN:
+				appointments = (sortDirection == SortDirection.ASCENDING) ?
+					appointmentProvider.getAppointmentsByGuardianAndStatusIn(loginUser.getUserId(), targetStatuses, pageable) :
+					appointmentProvider.getAppointmentsByGuardianAndStatusInDesc(loginUser.getUserId(), targetStatuses, pageable);
+				break;
+			case DOCTOR:
+				return (sortDirection == SortDirection.ASCENDING) ?
+					appointmentProvider.getAppointmentsByDoctorAndStatusIn(loginUser.getUserId(), targetStatuses, pageable)
+						.map(AppointmentListResponse::fromEntity) :
+					appointmentProvider.getAppointmentsByDoctorAndStatusInDesc(loginUser.getUserId(), targetStatuses, pageable)
+						.map(AppointmentListResponse::fromEntity);
+			case HOSPITAL_ADMIN:
+				return (sortDirection == SortDirection.ASCENDING) ?
+					appointmentProvider.getAppointmentsByHospitalAndStatusIn(loginUser.getUserId(), targetStatuses, pageable, date)
+						.map(AppointmentListResponse::fromEntity) :
+					appointmentProvider.getAppointmentsByHospitalAndStatusInDesc(loginUser.getUserId(), targetStatuses, pageable, date)
+						.map(AppointmentListResponse::fromEntity);
+			default:
+				throw new RoleNotFoundException();
+		}
+
+		// 리뷰 여부 확인 로직은 동일하게 적용
+		List<Long> appointmentIds = appointments.stream()
+			.map(Appointment::getAppointmentId)
+			.toList();
+
+		Set<Long> reviewedAppointmentIds = reviewProvider.getReviewedAppointmentIds(appointmentIds);
+
+		// 리뷰 여부 포함해서 DTO 변환
+		return appointments.map(app ->
+			AppointmentListResponse.fromEntity(
+				app,
+				reviewedAppointmentIds.contains(app.getAppointmentId())
+			)
+		);
 	}
 
 	@Override

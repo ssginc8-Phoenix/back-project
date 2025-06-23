@@ -157,4 +157,67 @@ public class AppointmentProvider {
 		LocalDateTime endDateTime = end.atTime(LocalTime.MAX);
 		return appointmentRepo.countAppointmentsByDateRange(userId, startDateTime, endDateTime);
 	}
+
+	/**
+	 * Status 인자로 받는
+	 */
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByPatientAndStatusIn(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByPatientGuardian_Patient_User_UserIdAndStatusInOrderByAppointmentTimeAsc(userId, statuses, pageable);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByGuardianAndStatusIn(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByPatientGuardian_User_UserIdAndStatusInOrderByAppointmentTimeAsc(userId, statuses, pageable);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByDoctorAndStatusIn(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByDoctor_User_UserIdAndStatusInOrderByAppointmentTimeAsc(userId, statuses, pageable);
+	}
+
+	// 병원 관리자는 날짜와 상태를 모두 고려
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByHospitalAndStatusIn(Long userId, List<AppointmentStatus> statuses, Pageable pageable, LocalDate date) {
+		if (date != null) {
+			LocalDateTime startOfDay = date.atStartOfDay();
+			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+			return appointmentRepo.findByHospital_User_UserIdAndAppointmentTimeBetweenAndStatusInOrderByAppointmentTimeAsc(
+				userId, startOfDay, endOfDay, statuses, pageable
+			);
+		} else {
+			return appointmentRepo.findByHospital_User_UserIdAndStatusInOrderByAppointmentTimeAsc(userId, statuses, pageable);
+		}
+	}
+
+	/**
+	 * DESC 정렬
+	 */
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByPatientAndStatusInDesc(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByPatientGuardian_Patient_User_UserIdAndStatusInOrderByAppointmentTimeDesc(userId, statuses, pageable);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByGuardianAndStatusInDesc(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByPatientGuardian_User_UserIdAndStatusInOrderByAppointmentTimeDesc(userId, statuses, pageable);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByDoctorAndStatusInDesc(Long userId, List<AppointmentStatus> statuses, Pageable pageable) {
+		return appointmentRepo.findByDoctor_User_UserIdAndStatusInOrderByAppointmentTimeDesc(userId, statuses, pageable);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<Appointment> getAppointmentsByHospitalAndStatusInDesc(Long userId, List<AppointmentStatus> statuses, Pageable pageable, LocalDate date) {
+		if (date != null) {
+			LocalDateTime startOfDay = date.atStartOfDay();
+			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+			return appointmentRepo.findByHospital_User_UserIdAndAppointmentTimeBetweenAndStatusInOrderByAppointmentTimeDesc(
+				userId, startOfDay, endOfDay, statuses, pageable
+			);
+		} else {
+			return appointmentRepo.findByHospital_User_UserIdAndStatusInOrderByAppointmentTimeDesc(userId, statuses, pageable);
+		}
+	}
 }

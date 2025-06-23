@@ -38,12 +38,12 @@ public interface AppointmentRepo
 	);
 
 	@Query("""
-		SELECT COUNT(a) > 0
-		FROM Appointment a
-		WHERE a.patientGuardian.patient.patientId = :patientId
-			AND a.appointmentTime BETWEEN :start AND :end
-			AND a.status <> com.ssginc8.docto.appointment.entity.AppointmentStatus.CANCELED
-	""")
+			SELECT COUNT(a) > 0
+			FROM Appointment a
+			WHERE a.patientGuardian.patient.patientId = :patientId
+				AND a.appointmentTime BETWEEN :start AND :end
+				AND a.status <> com.ssginc8.docto.appointment.entity.AppointmentStatus.CANCELED
+		""")
 	boolean existsByPatientGuardian_Patient_PatientIdAndAppointmentTimeBetween(
 		@Param("patientId") Long patientId,
 		@Param("start") LocalDateTime start,
@@ -68,7 +68,8 @@ public interface AppointmentRepo
 		"doctor.user",
 		"patientGuardian.patient.user"
 	})
-	Page<Appointment> findByPatientGuardian_Patient_User_UserIdOrderByAppointmentTimeAsc(Long userId, Pageable pageable);
+	Page<Appointment> findByPatientGuardian_Patient_User_UserIdOrderByAppointmentTimeAsc(Long userId,
+		Pageable pageable);
 
 	@EntityGraph(attributePaths = {
 		"hospital.user",
@@ -106,31 +107,31 @@ public interface AppointmentRepo
 	 * @return
 	 */
 	@Query("""
-		   SELECT a FROM Appointment a
-		   JOIN FETCH a.patientGuardian pg
-		   JOIN FETCH pg.user
-		   JOIN FETCH a.hospital
-		   JOIN FETCH pg.patient p
-		   JOIN FETCH p.user
-		   WHERE a.appointmentId = :id
-	""")
+			   SELECT a FROM Appointment a
+			   JOIN FETCH a.patientGuardian pg
+			   JOIN FETCH pg.user
+			   JOIN FETCH a.hospital
+			   JOIN FETCH pg.patient p
+			   JOIN FETCH p.user
+			   WHERE a.appointmentId = :id
+		""")
 	Optional<Appointment> findByAppointmentIdWithUser(@Param("id") Long id);
 
-	List<Appointment> findAllByAppointmentTimeBetweenAndStatusNot(LocalDateTime start, LocalDateTime end, AppointmentStatus status);
+	List<Appointment> findAllByAppointmentTimeBetweenAndStatusNot(LocalDateTime start, LocalDateTime end,
+		AppointmentStatus status);
 
 	@Query("""
-		SELECT a.patientGuardian.user
-		FROM Appointment a
-		WHERE a.status = com.ssginc8.docto.appointment.entity.AppointmentStatus.NO_SHOW
-		  AND a.appointmentTime >= :sinceDate
-		GROUP BY a.patientGuardian.user
-		HAVING COUNT(a) >= :threshold
-	""")
+			SELECT a.patientGuardian.user
+			FROM Appointment a
+			WHERE a.status = com.ssginc8.docto.appointment.entity.AppointmentStatus.NO_SHOW
+			  AND a.appointmentTime >= :sinceDate
+			GROUP BY a.patientGuardian.user
+			HAVING COUNT(a) >= :threshold
+		""")
 	List<User> findUsersWithNoShowSince(
 		@Param("sinceDate") LocalDateTime sinceDate,
 		@Param("threshold") Long threshold
 	);
-
 
 	@Query("SELECT new com.ssginc8.docto.appointment.dto.AppointmentDailyCountResponse(" +
 		"CAST(FUNCTION('DATE', a.appointmentTime) AS java.time.LocalDate), COUNT(a)) " +
@@ -145,7 +146,96 @@ public interface AppointmentRepo
 		@Param("end") LocalDateTime end
 	);
 
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByPatientGuardian_Patient_User_UserIdAndStatusInOrderByAppointmentTimeAsc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
 
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByPatientGuardian_User_UserIdAndStatusInOrderByAppointmentTimeAsc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
 
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByDoctor_User_UserIdAndStatusInOrderByAppointmentTimeAsc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
 
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByHospital_User_UserIdAndStatusInOrderByAppointmentTimeAsc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByHospital_User_UserIdAndAppointmentTimeBetweenAndStatusInOrderByAppointmentTimeAsc(
+		Long userId, LocalDateTime start, LocalDateTime end, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	/**
+	 * Inactive 예약들을 위한 DESC
+	 */
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByPatientGuardian_Patient_User_UserIdAndStatusInOrderByAppointmentTimeDesc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByPatientGuardian_User_UserIdAndStatusInOrderByAppointmentTimeDesc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByDoctor_User_UserIdAndStatusInOrderByAppointmentTimeDesc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByHospital_User_UserIdAndStatusInOrderByAppointmentTimeDesc(
+		Long userId, List<AppointmentStatus> statuses, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
+	Page<Appointment> findByHospital_User_UserIdAndAppointmentTimeBetweenAndStatusInOrderByAppointmentTimeDesc(
+		Long userId, LocalDateTime start, LocalDateTime end, List<AppointmentStatus> statuses, Pageable pageable
+	);
 }

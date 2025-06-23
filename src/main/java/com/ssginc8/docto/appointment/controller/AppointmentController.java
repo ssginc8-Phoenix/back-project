@@ -125,6 +125,34 @@ public class AppointmentController {
 	}
 
 	/**
+	 * ✅ ( 예정된 ) 활성 예약 리스트 조회 (로그인한 유저의)
+	 * URL: /users/me/appointments/active
+	 * Method: GET
+	 */
+	@GetMapping("/users/me/appointments/active")
+	public ResponseEntity<Page<AppointmentListResponse>> getMyActiveAppointmentList(
+		Pageable pageable,
+		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
+		Page<AppointmentListResponse> response = appointmentService.getActiveAppointmentsByLoginUser(pageable, date);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * ✅ ( 완료 / 취소된 ) 비활성 예약 리스트 조회 (로그인한 유저의)
+	 * URL: /users/me/appointments/inactive
+	 * Method: GET
+	 */
+	@GetMapping("/users/me/appointments/inactive")
+	public ResponseEntity<Page<AppointmentListResponse>> getMyInactiveAppointmentList(
+		Pageable pageable,
+		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
+		Page<AppointmentListResponse> response = appointmentService.getInactiveAppointmentsByLoginUser(pageable, date);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
 	 * ✅ 예약 상세 내역 조회
 	 * URL: /api/v1/appointments/{appointmentId}
 	 * Method: GET

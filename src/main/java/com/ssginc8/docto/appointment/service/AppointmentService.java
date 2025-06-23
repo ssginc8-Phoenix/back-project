@@ -43,4 +43,14 @@ public interface AppointmentService {
 	List<TimeSlotDto> getAvailableTimeSlots(Long doctorId, Long patientId, LocalDate date);
 
 	void cancelAppointment(Long appointmentId);
+
+	/**
+	 * ( 예정된 ) 활성 예약 리스트 가져오기 : REQUESTED, CONFIRMED
+	 */
+	Page<AppointmentListResponse> getActiveAppointmentsByLoginUser(Pageable pageable, LocalDate date);
+
+	/**
+	 * ( 완료 / 취소된 ) 비활성 예약 리스트 가져오기 : COMPLETED, CANCELED, NO_SHOW
+	 */
+	Page<AppointmentListResponse> getInactiveAppointmentsByLoginUser(Pageable pageable, LocalDate date);
 }
