@@ -2,6 +2,7 @@
 package com.ssginc8.docto.insurance.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+
 import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.file.provider.FileProvider;
@@ -36,62 +38,50 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 
-	private final InsuranceDocumentRepo      repo;
-	private final InsuranceDocumentProvider  provider;
-	private final HospitalProvider           hospitalProvider;
-	private final AmazonS3                   amazonS3;
-	private final FileProvider               fileProvider;
+	private final InsuranceDocumentRepo     repo;
+	private final InsuranceDocumentProvider provider;
+	private final HospitalProvider          hospitalProvider;
+	private final AmazonS3                  amazonS3;
+	private final FileProvider              fileProvider;
 
-	/** S3 버킷 이름을 application.yml 에서 주입 */
 	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
+	private String bucket;  // S3 버킷 이름
 
-	// 1) 환자·보호자용: 요청 생성
+	// 1) 환자·보호자: 단건 요청 생성
 	@Override
 	@Transactional
 	public DocumentResponse createRequest(UserDocumentRequest dto) {
-		// 발급 Hospital 조회 (없으면 404)
 		Hospital hosp = hospitalProvider.getHospitalById(dto.getHospitalId());
-
-		// 엔티티 생성 (file=null, status=REQUESTED)
 		InsuranceDocument doc = InsuranceDocument.createRequest(
-			dto.getRequesterId(),
-			hosp,
-			dto.getNote()
+			dto.getRequesterId(), hosp, dto.getNote(), dto.getType()
 		);
 		repo.save(doc);
-
-		return DocumentResponse.builder()
-			.documentId(doc.getDocumentId())
-			.status(doc.getStatus())
-			.hospitalId(hosp.getHospitalId())
-			.hospitalName(hosp.getName())
-			.build();
+		return toDto(doc);
 	}
 
-	// 1-2) 환자·보호자용: 본인 요청 페이징 조회
+	// 1-2) 환자·보호자: 본인 요청 페이징 조회
 	@Override
 	@Transactional(readOnly = true)
 	public Page<DocumentResponse> listUserRequests(Long requesterId, Pageable pageable) {
 		return repo.findAllByRequesterId(requesterId, pageable)
-			.map(doc -> DocumentResponse.builder()
-				.documentId(doc.getDocumentId())
-				.status(doc.getStatus())
-				.rejectionReason(doc.getRejectionReason())
-				.downloadUrl(doc.getFile() != null ? doc.getFile().getUrl() : null)
-				.hospitalId(doc.getHospital().getHospitalId())
-				.hospitalName(doc.getHospital().getName())
-				.build()
-			);
+			.map(this::toDto);
 	}
 
-	// 2) 관리자용: 파일 첨부
+	// 1-3) 환자·보호자: 배치 요청 생성
+	@Override
+	@Transactional
+	public List<DocumentResponse> createRequests(List<UserDocumentRequest> dtos) {
+		return dtos.stream()
+			.map(this::createRequest)
+			.collect(Collectors.toList());
+	}
+
+	// 2) 관리자: 파일 첨부
 	@Override
 	@Transactional
 	public DocumentResponse attachFile(Long documentId, MultipartFile multipart) {
 		InsuranceDocument doc = provider.getById(documentId);
 
-		// S3 키 생성
 		String key = "insurance/" + UUID.randomUUID() + "_" + multipart.getOriginalFilename();
 		ObjectMetadata meta = new ObjectMetadata();
 		meta.setContentType(multipart.getContentType());
@@ -103,7 +93,6 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 			throw new FileUploadFailedException();
 		}
 
-		// File 엔티티 생성/저장
 		File fileEntity = File.createFile(
 			Category.INSURANCE,
 			key,
@@ -115,50 +104,28 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 		);
 		fileEntity = fileProvider.saveFile(fileEntity);
 
-		// 요청에 파일 연결 후 저장
 		doc.attach(fileEntity);
 		repo.save(doc);
 
-		return DocumentResponse.builder()
-			.documentId(doc.getDocumentId())
-			.status(doc.getStatus())
-			.hospitalId(doc.getHospital().getHospitalId())
-			.hospitalName(doc.getHospital().getName())
-			.build();
+		return toDto(doc);
 	}
 
-	// 3) 단건 상태 조회
+	// 3) 공통: 단건 상태 조회
 	@Override
 	@Transactional(readOnly = true)
 	public DocumentResponse status(Long documentId) {
-		InsuranceDocument doc = provider.getById(documentId);
-		return DocumentResponse.builder()
-			.documentId(doc.getDocumentId())
-			.status(doc.getStatus())
-			.rejectionReason(doc.getRejectionReason())
-			.downloadUrl(doc.getFile() != null ? doc.getFile().getUrl() : null)
-			.hospitalId(doc.getHospital().getHospitalId())
-			.hospitalName(doc.getHospital().getName())
-			.build();
+		return toDto(provider.getById(documentId));
 	}
 
-	// 4) 관리자용: 전체 요청 페이징 조회
+	// 4) 관리자: 전체 요청 페이징 조회
 	@Override
 	@Transactional(readOnly = true)
 	public Page<DocumentResponse> listAll(Pageable pageable) {
-		return provider.getAll(pageable)  // provider 에도 Page<InsuranceDocument> getAll(Pageable) 추가
-			.map(doc -> DocumentResponse.builder()
-				.documentId(doc.getDocumentId())
-				.status(doc.getStatus())
-				.rejectionReason(doc.getRejectionReason())
-				.downloadUrl(doc.getFile() != null ? doc.getFile().getUrl() : null)
-				.hospitalId(doc.getHospital().getHospitalId())
-				.hospitalName(doc.getHospital().getName())
-				.build()
-			);
+		return repo.findAll(pageable)
+			.map(this::toDto);
 	}
 
-	// 5) 승인/반려 처리
+	// 5) 관리자: 승인/반려 처리
 	@Override
 	@Transactional
 	public void approve(Long documentId, DocumentApproval dto) {
@@ -171,14 +138,14 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 		repo.save(doc);
 	}
 
-	// 6) S3 파일 다운로드
+	// 6) 공통: 파일 다운로드
 	@Override
 	@Transactional(readOnly = true)
 	public FileDownload downloadFile(Long documentId) {
 		InsuranceDocument doc = provider.getById(documentId);
 		File file = doc.getFile();
 		if (file == null) {
-			throw new IllegalStateException("아직 파일이 첨부되지 않았습니다.");
+			throw new IllegalStateException("첨부된 파일이 없습니다.");
 		}
 
 		S3Object s3Object = amazonS3.getObject(file.getBucketName(), file.getFileName());
@@ -191,7 +158,20 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 				.originalName(file.getOriginalName())
 				.build();
 		} catch (IOException e) {
-			throw new RuntimeException("파일 다운로드 중 오류가 발생했습니다.", e);
+			throw new RuntimeException("파일 다운로드 오류", e);
 		}
+	}
+
+	/** 엔티티 → DTO 변환 헬퍼 */
+	private DocumentResponse toDto(InsuranceDocument doc) {
+		return DocumentResponse.builder()
+			.documentId(doc.getDocumentId())
+			.status(doc.getStatus())
+			.rejectionReason(doc.getRejectionReason())
+			.downloadUrl(doc.getFile() != null ? doc.getFile().getUrl() : null)
+			.hospitalId(doc.getHospital().getHospitalId())
+			.hospitalName(doc.getHospital().getName())
+			.type(doc.getType())
+			.build();
 	}
 }

@@ -11,10 +11,8 @@ import com.ssginc8.docto.insurance.entity.InsuranceDocument;
  */
 public interface InsuranceDocumentRepo extends JpaRepository<InsuranceDocument, Long> {
 
-	/**
-	 * 환자·보호자가 생성한 요청만 페이징 조회
-	 * @param requesterId 요청자 ID
-	 * @param pageable    페이징 정보 (page, size, sort)
-	 */
+	/** 환자·보호자: 본인이 생성한 요청 페이징 조회 */
 	Page<InsuranceDocument> findAllByRequesterId(Long requesterId, Pageable pageable);
-}
+
+	/** 관리자: 전체 요청 페이징 조회 */
+	Page<InsuranceDocument> findAll(Pageable pageable);}

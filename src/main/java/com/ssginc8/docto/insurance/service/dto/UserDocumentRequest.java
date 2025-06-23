@@ -1,6 +1,8 @@
 // src/main/java/com/ssginc8/docto/insurance/service/dto/UserDocumentRequest.java
 package com.ssginc8.docto.insurance.service.dto;
 
+import com.ssginc8.docto.insurance.entity.DocumentType;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,9 @@ public class UserDocumentRequest {
 	/** 발급받을 병원 ID */
 	@NotNull
 	private Long hospitalId;
+
+	/** 문서 종류   */
+	@NotNull private DocumentType type;
 
 	/** 요청 메모(선택) */
 	private String note;

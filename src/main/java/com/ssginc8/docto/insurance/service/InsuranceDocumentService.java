@@ -10,16 +10,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * 보험 서류 비즈니스 로직 인터페이스
- */
+import java.util.List;
+
 public interface InsuranceDocumentService {
 
-	/** 환자·보호자: 요청 생성 */
+	/** 환자·보호자: 단건 요청 생성 */
 	DocumentResponse createRequest(UserDocumentRequest dto);
 
 	/** 환자·보호자: 본인 요청 페이징 조회 */
 	Page<DocumentResponse> listUserRequests(Long requesterId, Pageable pageable);
+
+	/** 환자·보호자: 배치 요청 생성 */
+	List<DocumentResponse> createRequests(List<UserDocumentRequest> dtos);
 
 	/** 관리자: 파일 첨부 */
 	DocumentResponse attachFile(Long documentId, MultipartFile file);
@@ -33,6 +35,6 @@ public interface InsuranceDocumentService {
 	/** 관리자: 승인/반려 처리 */
 	void approve(Long documentId, DocumentApproval dto);
 
-	/** 공통: S3 파일 다운로드 */
+	/** 공통: 파일 다운로드 */
 	FileDownload downloadFile(Long documentId);
 }

@@ -55,6 +55,34 @@ public class InsuranceDocument extends BaseTimeEntity {
 	@Column(length = 500)
 	private String rejectionReason;
 
+	/** 어떤 서류인지 구분하는 타입 */
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 50)
+	private DocumentType type;
+
+	/**
+	 * 환자·보호자 요청 생성 팩토리
+	 *
+	 * @param requesterId 요청자 ID
+	 * @param hospital    발급 병원 엔티티
+	 * @param note        요청 메모
+	 * @param type        문서 종류
+	 */
+	public static InsuranceDocument createRequest(
+		Long requesterId,
+		Hospital hospital,
+		String note,
+		DocumentType type
+	) {
+		InsuranceDocument doc = new InsuranceDocument();
+		doc.requesterId    = requesterId;
+		doc.hospital       = hospital;
+		doc.note           = note;
+		doc.type           = type;
+		doc.status         = DocumentStatus.REQUESTED;
+		return doc;
+	}
+
 	/**
 	 * 환자·보호자용 요청 생성 메서드
 	 *

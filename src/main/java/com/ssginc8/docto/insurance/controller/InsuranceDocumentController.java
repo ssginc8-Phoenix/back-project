@@ -1,6 +1,8 @@
 // src/main/java/com/ssginc8/docto/insurance/controller/InsuranceDocumentController.java
 package com.ssginc8.docto.insurance.controller;
 
+import java.util.List;
+
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +28,7 @@ public class InsuranceDocumentController {
 
 	private final InsuranceDocumentService service;
 
-	/** 1) 서류 요청 생성 */
+	/** 1) 단건 요청 생성 */
 	@PostMapping
 	public ResponseEntity<DocumentResponse> request(
 		@RequestBody UserDocumentRequest dto
@@ -34,17 +36,23 @@ public class InsuranceDocumentController {
 		return ResponseEntity.ok(service.createRequest(dto));
 	}
 
-	/**
-	 * 2) 본인 요청 페이징 조회
-	 * @param requesterId 환자·보호자 ID
-	 * @param pageable    page, size, sort
-	 */
+	/** 1-2) 배치 요청 생성 */
+	@PostMapping("/batch")
+	public ResponseEntity<List<DocumentResponse>> batchRequest(
+		@RequestBody List<UserDocumentRequest> dtos
+	) {
+		return ResponseEntity.ok(service.createRequests(dtos));
+	}
+
+	/** 2) 본인 요청 페이징 조회 */
 	@GetMapping
-	public ResponseEntity<Page<DocumentResponse>> listRequests(
+	public ResponseEntity<Page<DocumentResponse>> listOwn(
 		@RequestParam Long requesterId,
 		Pageable pageable
 	) {
-		return ResponseEntity.ok(service.listUserRequests(requesterId, pageable));
+		return ResponseEntity.ok(
+			service.listUserRequests(requesterId, pageable)
+		);
 	}
 
 	/** 3) 단건 상태 조회 */
@@ -56,14 +64,14 @@ public class InsuranceDocumentController {
 	/** 4) 파일 다운로드 */
 	@GetMapping("/{id}/download")
 	public ResponseEntity<ByteArrayResource> download(@PathVariable Long id) {
-		FileDownload download = service.downloadFile(id);
-		ByteArrayResource resource = new ByteArrayResource(download.getData());
+		FileDownload dl = service.downloadFile(id);
+		ByteArrayResource resource = new ByteArrayResource(dl.getData());
 
 		return ResponseEntity.ok()
 			.header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + download.getOriginalName() + "\"")
-			.contentType(MediaType.parseMediaType(download.getContentType()))
-			.contentLength(download.getSize())
+				"attachment; filename=\"" + dl.getOriginalName() + "\"")
+			.contentType(MediaType.parseMediaType(dl.getContentType()))
+			.contentLength(dl.getSize())
 			.body(resource);
 	}
 }

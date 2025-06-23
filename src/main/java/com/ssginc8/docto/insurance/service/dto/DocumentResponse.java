@@ -2,6 +2,8 @@
 package com.ssginc8.docto.insurance.service.dto;
 
 import com.ssginc8.docto.insurance.entity.DocumentStatus;
+import com.ssginc8.docto.insurance.entity.DocumentType;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,4 +24,6 @@ public class DocumentResponse {
 
 	private Long   hospitalId;
 	private String hospitalName;
+	/** 문서 종류  */
+	private final DocumentType type;
 }
