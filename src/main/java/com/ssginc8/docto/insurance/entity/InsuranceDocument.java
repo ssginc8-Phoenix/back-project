@@ -9,26 +9,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 【엔티티 설계 원칙】
- * 1. @NoArgsConstructor(access = AccessLevel.PROTECTED)로 protected 기본 생성자만 허용하여
- *    JPA 리플렉션용 이외의 무분별한 생성 방지
- * 2. @AllArgsConstructor, @Builder 사용 금지
- * 3. 정적 팩토리 메서드(create)를 통해 의도를 명확히, 불완전한 생성 방지
- * 4. setter 미작성: 변경이 필요한 경우 명시적 메서드(approve, reject) 제공
- * 5. @ToString 미작성: 민감 정보 노출 및 성능/순환참조 이슈 방지
+ * 보험 서류 엔티티
+ *
+ * • protected 기본 생성자
+ * • setter 제거, 변경은 도메인 메서드로만
+ * • 정적 팩토리만을 통해 생성
  */
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tbl_insurance_document")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InsuranceDocument extends BaseTimeEntity {
-	/** PK: 문서 ID */
+
+	/** PK: 서류 요청 고유 ID */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long documentId;
 
-	/** 업로드된 파일(File 엔티티)과의 연관관계 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	/** 요청자 식별자 (환자·보호자용 요청 시 필요) */
+	@Column(nullable = false)
+	private Long requesterId;
+
+	/** 요청 메모(선택) */
+	@Column(length = 500)
+	private String note;
+
+	/** 파일 첨부 시점에 설정되는 File 엔티티 */
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "file_id")
 	private File file;
 
@@ -42,30 +49,55 @@ public class InsuranceDocument extends BaseTimeEntity {
 	private String rejectionReason;
 
 	/**
-	 * 정적 팩토리 메서드: InsuranceDocument 생성
-	 * - 엔티티와 DB가 맞닿아 있으므로 모든 필수 속성을 메서드에서 강제
-	 * @param file 업로드된 File 엔티티
-	 * @return 생성된 InsuranceDocument
+	 * 환자·보호자용 요청 생성 팩토리
+	 *
+	 * @param requesterId 요청자 ID
+	 * @param note        요청 메모(선택)
+	 * @return 생성된 InsuranceDocument (file 없음, status=REQUESTED)
 	 */
-	public static InsuranceDocument create(File file) {
+	public static InsuranceDocument createRequest(Long requesterId, String note) {
 		InsuranceDocument doc = new InsuranceDocument();
-		doc.file = file;
-		doc.status = DocumentStatus.REQUESTED;  // 초기 상태
+		doc.requesterId = requesterId;
+		doc.note        = note;
+		doc.status      = DocumentStatus.REQUESTED;
 		return doc;
 	}
 
-	/** 문서 승인 처리 메서드 (setter 미작성 원칙 준수) */
+	/**
+	 * 관리자용 파일 첨부 메서드
+	 *
+	 * @param file S3 업로드 후 생성된 File 엔티티
+	 */
+	public void attach(File file) {
+		this.file = file;
+	}
+
+	/**
+	 * 기존 파일 업로드 시 즉시 생성 팩토리 (필요시 유지)
+	 *
+	 * @param file File 엔티티
+	 * @return 생성된 InsuranceDocument (status=REQUESTED)
+	 */
+	public static InsuranceDocument createWithFile(File file) {
+		InsuranceDocument doc = new InsuranceDocument();
+		doc.file   = file;
+		doc.status = DocumentStatus.REQUESTED;
+		return doc;
+	}
+
+	/** 승인 처리 */
 	public void approve() {
-		this.status = DocumentStatus.APPROVED;
+		this.status          = DocumentStatus.APPROVED;
 		this.rejectionReason = null;
 	}
 
 	/**
-	 * 문서 반려 처리 메서드
+	 * 반려 처리
+	 *
 	 * @param reason 반려 사유
 	 */
 	public void reject(String reason) {
-		this.status = DocumentStatus.REJECTED;
+		this.status          = DocumentStatus.REJECTED;
 		this.rejectionReason = reason;
 	}
 }
