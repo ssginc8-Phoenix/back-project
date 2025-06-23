@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import com.ssginc8.docto.insurance.service.InsuranceDocumentService;
-import com.ssginc8.docto.insurance.service.dto.DocumentApprovalDTO;
-import com.ssginc8.docto.insurance.service.dto.DocumentResponseDTO;
+import com.ssginc8.docto.insurance.service.dto.DocumentApproval;
+import com.ssginc8.docto.insurance.service.dto.DocumentResponse;
 
 /**
  * 관리자용 보험 서류 관리 API 컨트롤러
@@ -33,7 +33,7 @@ public class AdminInsuranceDocumentController {
 	 * @return 모든 InsuranceDocument 레코드에 대한 상태 DTO 리스트
 	 */
 	@GetMapping
-	public ResponseEntity<List<DocumentResponseDTO>> listAll() {
+	public ResponseEntity<List<DocumentResponse>> listAll() {
 		return ResponseEntity.ok(service.listAll());
 	}
 
@@ -48,7 +48,7 @@ public class AdminInsuranceDocumentController {
 	 * @return 첨부 후 업데이트된 상태 정보
 	 */
 	@PostMapping("/{id}/attach")
-	public ResponseEntity<DocumentResponseDTO> attachFile(
+	public ResponseEntity<DocumentResponse> attachFile(
 		@PathVariable Long id,
 		@RequestParam("file") MultipartFile file
 	) {
@@ -68,7 +68,7 @@ public class AdminInsuranceDocumentController {
 	@PatchMapping("/{id}")
 	public ResponseEntity<Void> approve(
 		@PathVariable Long id,
-		@RequestBody DocumentApprovalDTO dto
+		@RequestBody DocumentApproval dto
 	) {
 		service.approve(id, dto);
 		return ResponseEntity.noContent().build();
