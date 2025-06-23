@@ -56,13 +56,6 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/admin/insurance/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/admin/insurance/**").permitAll()
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/admin/insurance/**").permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/v1/insurance/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/insurance/**").permitAll()
-				.requestMatchers(HttpMethod.PATCH, "/api/v1/insurance/**").permitAll()
-
 				/**
 				 * Public : 인증 없이 접근 가능
 				 */
