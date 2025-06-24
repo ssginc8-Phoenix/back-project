@@ -1,5 +1,6 @@
 package com.ssginc8.docto.guardian.provider;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -69,10 +70,10 @@ public class PatientGuardianProvider {
 			.filter(pg -> pg.getStatus() == Status.PENDING || pg.getStatus() == Status.ACCEPTED); // 초대 대기 중 또는 수락된 보호자
 	}
 
-	public PatientGuardian findPendingMapping(User guardian, Patient patient) {
-		return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
-			.orElse(null); // 없으면 null
-	}
+	// public PatientGuardian findPendingMapping(User guardian, Patient patient) {
+	// 	return patientGuardianRepo.findByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
+	// 		.orElse(null); // 없으면 null
+	// }
 
 	/**
 	 *
@@ -101,8 +102,34 @@ public class PatientGuardianProvider {
 		return patientGuardianRepo.findAcceptedPatientsByUserId(guardianId);
 	}
 
+	/**
+	 * inviteCode 로 조회할 때, 동일 inviteCode 매핑이 여러 개일 수 있으므로
+	 * 최신 invitedAt 기준으로 하나만 꺼내 반환합니다.
+	 */
 	public PatientGuardian findByInviteCode(String inviteCode) {
-		return patientGuardianRepo.findByInviteCode(inviteCode)
+		return patientGuardianRepo.findAllByInviteCode(inviteCode).stream()
+			.filter(pg -> pg.getDeletedAt() == null)                  // soft‑delete 제외
+			.max(Comparator.comparing(PatientGuardian::getInvitedAt)) // 초대 시각 최신순
 			.orElseThrow(() -> new GuardianRequestNotFoundException());
+	}
+
+	/** 특정 환자에 대해 PENDING 상태인 매핑만 반환 */
+	public List<PatientGuardian> getPendingInvitesByPatientId(Long patientId) {
+		return patientGuardianRepo
+			.findByPatient_PatientIdAndStatus(patientId, Status.PENDING)
+			.stream()
+			.filter(pg -> pg.getDeletedAt() == null)
+			.collect(Collectors.toList());
+	}
+	/**
+	 * PENDING 상태인 매핑 중, invitedAt 기준으로 가장 최근 매핑 하나만 반환
+	 */
+	public PatientGuardian findLatestPendingMapping(User guardian, Patient patient) {
+		return patientGuardianRepo
+			.findAllByUserAndPatientAndStatus(guardian, patient, Status.PENDING)
+			.stream()
+			.filter(pg -> pg.getDeletedAt() == null)  // soft‑delete 제외
+			.max(Comparator.comparing(PatientGuardian::getInvitedAt))
+			.orElse(null);
 	}
 }

@@ -103,7 +103,8 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/v1/patients/**",
 					"/api/v1/calendar/patient",
-					"/api/v1/guardians/{patientId}/invite"
+					"/api/v1/guardians/{patientId}/invite",
+					"/api/v1/guardians/{patientId}/pending-invites"
 				).hasRole("PATIENT")
 
 				/**

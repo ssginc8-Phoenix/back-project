@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianResponse;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
+import com.ssginc8.docto.guardian.dto.PendingInviteResponse;
 
 /**
  * 보호자 기능을 정의한 인터페이스
@@ -33,4 +34,6 @@ public interface PatientGuardianService {
 	void updateStatusByInviteCode(String inviteCode, String status);
 
 	void deleteMappingByMappingId(Long mappingId);
-}
+
+	/** 특정 환자에 대해 PENDING 상태인 보호자 목록 조회 */
+	List<PendingInviteResponse> getPendingInvites(Long patientId);}
