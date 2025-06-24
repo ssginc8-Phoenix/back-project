@@ -50,12 +50,26 @@ public interface PatientGuardianRepo extends JpaRepository<PatientGuardian, Long
 
 	List<PatientGuardian> findByPatient_PatientIdAndStatus(Long patientId, Status status);
 
-	Optional<PatientGuardian> findByUserAndPatientAndStatus(User user, Patient patient, Status status);
+	// Optional<PatientGuardian> findByUserAndPatientAndStatus(User user, Patient patient, Status status);
 
-	Optional<PatientGuardian> findByInviteCode(String inviteCode);
+	/**
+	 * 특정 보호자-환자 쌍에 대해, PENDING 상태인 매핑을 모두 반환
+	 */
+	List<PatientGuardian> findAllByUserAndPatientAndStatus(
+		User user,
+		Patient patient,
+		Status status
+	);
+
+	// Optional<PatientGuardian> findByInviteCode(String inviteCode);
 
 	@Query("SELECT pg FROM PatientGuardian pg JOIN FETCH pg.patient p JOIN FETCH p.user u WHERE pg.patientGuardianId = :id")
 	Optional<PatientGuardian> findByIdWithPatientAndUser(@Param("id") Long id);
+
+	/**
+	 * 동일한 inviteCode 를 가진 모든 매핑을 리스트로 조회합니다.
+	 */
+	List<PatientGuardian> findAllByInviteCode(String inviteCode);
 
 }
 
