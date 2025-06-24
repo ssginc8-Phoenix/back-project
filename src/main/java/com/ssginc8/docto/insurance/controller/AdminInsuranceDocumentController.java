@@ -24,14 +24,12 @@ public class AdminInsuranceDocumentController {
 
 	private final InsuranceDocumentService service;
 
-	/**
-	 * 전체 요청 내역 페이징 조회
-	 */
 	@GetMapping
-	public ResponseEntity<Page<DocumentResponse>> listAll(
-		@PageableDefault(page=0, size=20, sort="documentId", direction= Sort.Direction.DESC) Pageable pageable
+	public ResponseEntity<Page<DocumentResponse>> listByHospital(
+		@RequestParam Long hospitalId,
+		@PageableDefault(page = 0, size = 20, sort = "documentId", direction = Sort.Direction.DESC) Pageable pageable
 	) {
-		return ResponseEntity.ok(service.listAll(pageable));
+		return ResponseEntity.ok(service.listByHospital(hospitalId, pageable));
 	}
 
 	/** 파일 첨부 */
