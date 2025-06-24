@@ -90,7 +90,10 @@ public class SecurityConfig {
 					"/api/v1/qnas/**")
 				.authenticated()
 
+
+
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/*/payment-request").hasRole("HOSPITAL_ADMIN")
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
 
 				/**
 				 * 의사 + 병원 관리자
@@ -129,11 +132,6 @@ public class SecurityConfig {
 				.requestMatchers("/api/v1/users/me/reviews").hasAnyRole("PATIENT", "GUARDIAN")
 				.requestMatchers("/api/v1/reviews/**").hasAnyRole("PATIENT", "GUARDIAN")
 				.requestMatchers("/api/v1/medications/**").hasAnyRole("PATIENT", "GUARDIAN")
-
-				/**
-				 * 의사 전용
-				 */
-				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasAnyRole("DOCTOR")
 
 				/**
 				 * 병원 관리자 전용
