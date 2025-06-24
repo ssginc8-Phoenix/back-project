@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssginc8.docto.appointment.entity.AppointmentStatus;
 import com.ssginc8.docto.appointment.entity.QAppointment;
 import com.ssginc8.docto.calendar.service.dto.CalendarRequest;
 import com.ssginc8.docto.doctor.entity.QDoctor;
@@ -59,7 +60,6 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 		QPatientGuardian patientGuardian = QPatientGuardian.patientGuardian;
 		QAppointment appointment = QAppointment.appointment;
 		QHospital hospital = QHospital.hospital;
-		QDoctor doctor = QDoctor.doctor;
 
 		return queryFactory
 			.select(appointment.appointmentId, hospital.name, appointment.appointmentTime)
@@ -69,6 +69,8 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(patientGuardian.patient, patient)
 			.where(patient.user.eq(user))
 			.where(appointment.deletedAt.isNull(),
+				appointment.status.ne(AppointmentStatus.CANCELED),
+				appointment.status.ne(AppointmentStatus.REQUESTED),
 				appointment.appointmentTime.goe(request.getStartDateTime()),
 				appointment.appointmentTime.lt(request.getEndDateTime())).fetch();
 	}
@@ -90,7 +92,7 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(qMedicationAlertTime.alertDays, qMedicationAlertDay)
 			.join(qPatientGuardian).on(qMedicationInformation.patientGuardianId.eq(qPatientGuardian.patientGuardianId))
 			.join(qPatientGuardian.patient, qPatient)
-			.where(qPatientGuardian.user.eq(guardian),qPatientGuardian.status.eq(Status.ACCEPTED), qMedicationInformation.deletedAt.isNull(), qPatientGuardian.deletedAt.isNull())
+			.where(qPatientGuardian.user.eq(guardian), qPatientGuardian.status.eq(Status.ACCEPTED), qMedicationInformation.deletedAt.isNull(), qPatientGuardian.deletedAt.isNull())
 			.fetch();
 	}
 
@@ -110,7 +112,9 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.where(qPatientGuardian.user.eq(guardian), qPatientGuardian.status.eq(Status.ACCEPTED), qAppointment.deletedAt.isNull(),
 				qAppointment.appointmentTime.goe(request.getStartDateTime()),
 				qAppointment.appointmentTime.lt(request.getEndDateTime()),
-				qPatientGuardian.deletedAt.isNull())
+				qPatientGuardian.deletedAt.isNull(),
+				qAppointment.status.ne(AppointmentStatus.CANCELED),
+				qAppointment.status.ne(AppointmentStatus.REQUESTED))
 			.orderBy(qAppointment.appointmentTime.asc())
 			.fetch();
 	}
@@ -127,6 +131,8 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(qAppointment.doctor, qDoctor)
 			.join(qAppointment.hospital, qHospital)
 			.where(qAppointment.deletedAt.isNull(), qHospital.user.eq(hospitalAdmin),
+				qAppointment.status.ne(AppointmentStatus.CANCELED),
+				qAppointment.status.ne(AppointmentStatus.REQUESTED),
 				qAppointment.appointmentTime.goe(request.getStartDateTime()),
 				qAppointment.appointmentTime.lt(request.getEndDateTime()))
 			.orderBy(qAppointment.appointmentTime.asc())
@@ -146,6 +152,8 @@ public class QCalendarRepoImpl implements QCalendarRepo {
 			.join(qAppointment.doctor, qDoctor)
 			.where(qDoctor.user.eq(doctor))
 			.where(qAppointment.deletedAt.isNull(),
+				qAppointment.status.ne(AppointmentStatus.CANCELED),
+				qAppointment.status.ne(AppointmentStatus.REQUESTED),
 				qAppointment.appointmentTime.goe(request.getStartDateTime()),
 				qAppointment.appointmentTime.lt(request.getEndDateTime()))
 			.orderBy(qAppointment.appointmentTime.asc())
