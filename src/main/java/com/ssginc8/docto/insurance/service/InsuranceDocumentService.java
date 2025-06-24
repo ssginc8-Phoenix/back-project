@@ -37,4 +37,6 @@ public interface InsuranceDocumentService {
 
 	/** 공통: 파일 다운로드 */
 	FileDownload downloadFile(Long documentId);
+
+	Page<DocumentResponse> listByHospital(Long hospitalId, Pageable pageable);
 }

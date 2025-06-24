@@ -1,6 +1,8 @@
 // src/main/java/com/ssginc8/docto/insurance/service/dto/DocumentResponse.java
 package com.ssginc8.docto.insurance.service.dto;
 
+import com.ssginc8.docto.insurance.entity.InsuranceDocument;
+
 import com.ssginc8.docto.insurance.entity.DocumentStatus;
 import com.ssginc8.docto.insurance.entity.DocumentType;
 
@@ -26,4 +28,19 @@ public class DocumentResponse {
 	private String hospitalName;
 	/** 문서 종류  */
 	private final DocumentType type;
+
+
+	public static DocumentResponse from(InsuranceDocument document) {
+		return DocumentResponse.builder()
+			.documentId(document.getDocumentId())
+			.type(DocumentType.valueOf(document.getType().name())) // 예: MEDICAL_REPORT, RECEIPT 등
+			.status(DocumentStatus.valueOf(document.getStatus().name())) // 예: REQUESTED, APPROVED 등
+			.rejectionReason(document.getRejectionReason())
+			.downloadUrl(
+				document.getFile() != null ? document.getFile().getUrl() : null
+			)
+			.hospitalId(document.getHospital().getHospitalId())
+			.hospitalName(document.getHospital().getName())
+			.build();
+	}
 }

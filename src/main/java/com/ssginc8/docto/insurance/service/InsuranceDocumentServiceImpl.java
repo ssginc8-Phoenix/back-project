@@ -162,6 +162,13 @@ public class InsuranceDocumentServiceImpl implements InsuranceDocumentService {
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Page<DocumentResponse> listByHospital(Long hospitalId, Pageable pageable) {
+		Page<InsuranceDocument> page = repo.findAllByHospitalHospitalId(hospitalId, pageable);
+		return page.map(DocumentResponse::from);  // 같은 트랜잭션 안에서 프록시가 초기화됨
+	}
+
 	/** 엔티티 → DTO 변환 헬퍼 */
 	private DocumentResponse toDto(InsuranceDocument doc) {
 		return DocumentResponse.builder()
