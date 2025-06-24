@@ -56,8 +56,6 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
 
-
-
 				/**
 				 * Public : 인증 없이 접근 가능
 				 */
