@@ -134,7 +134,8 @@ public class PatientGuardianServiceImpl implements PatientGuardianService {
 				PatientSummaryResponse dto = PatientSummaryResponse.of(
 					patient.getPatientId(),
 					user.getName(),
-					decryptRRN(patient.getResidentRegistrationNumber())
+					decryptRRN(patient.getResidentRegistrationNumber()),
+					user.getAddress()
 				);
 				Long fileId = user.getProfileImage() != null
 					? user.getProfileImage().getFileId()

@@ -22,11 +22,14 @@ import com.ssginc8.docto.file.repository.FileRepo;
 import com.ssginc8.docto.global.error.ErrorCode;
 import com.ssginc8.docto.global.error.exception.BusinessBaseException;
 import com.ssginc8.docto.global.error.exception.hospitalException.HospitalNotFoundException;
+import com.ssginc8.docto.global.error.exception.hospitalException.InvalidHospitalScheduleRequiredFieldsException;
+import com.ssginc8.docto.global.error.exception.hospitalException.InvalidHospitalScheduleTimeOrderException;
 import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFoundByDayException;
 import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotFoundException;
 import com.ssginc8.docto.global.error.exception.hospitalException.ScheduleNotInHospitalException;
 import com.ssginc8.docto.global.error.exception.userException.UserNotFoundException;
 import com.ssginc8.docto.hospital.dto.HospitalResponse;
+import com.ssginc8.docto.hospital.dto.HospitalScheduleRequest;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.hospital.entity.HospitalSchedule;
 import com.ssginc8.docto.hospital.entity.ProvidedService;
@@ -201,6 +204,17 @@ public class HospitalProvider {
 	@Transactional
 	public ProvidedService saveService(ProvidedService service) {
 		return providedServiceRepo.save(service);
+	}
+
+
+	public void validateHospitalScheduleFields(HospitalScheduleRequest req) {
+		if (req.getOpenTime() == null || req.getCloseTime() == null) {
+			throw new InvalidHospitalScheduleRequiredFieldsException();
+		}
+
+		if (!req.getOpenTime().isBefore(req.getCloseTime())) {
+			throw new InvalidHospitalScheduleTimeOrderException();
+		}
 	}
 }
 

@@ -449,6 +449,9 @@ public class HospitalServiceImpl implements HospitalService {
 		List<HospitalScheduleRequest> savedDto = new ArrayList<>();
 
 		for (HospitalScheduleRequest scheduleDTO : schedules) {
+
+			hospitalProvider.validateHospitalScheduleFields(scheduleDTO);
+
 			HospitalSchedule schedule = HospitalSchedule.create(
 				hospital,
 				scheduleDTO.getDayOfWeek(),
