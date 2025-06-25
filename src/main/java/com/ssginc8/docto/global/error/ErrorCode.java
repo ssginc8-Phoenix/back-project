@@ -78,7 +78,10 @@ public enum ErrorCode {
 	SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "H_002", "스케줄을 찾을 수 없습니다."),
 	SCHEDULE_NOT_IN_HOSPITAL(HttpStatus.BAD_REQUEST, "H_003", "해당 스케줄은 병원에 속하지 않습니다."),
 	SCHEDULE_NOT_FOUND_BY_DAY(HttpStatus.NOT_FOUND, "H_004", "해당 요일에 대한 병원 스케줄이 존재하지 않습니다."),
-  
+	INVALID_HOSPITAL_SCHEDULE_REQUIRED_FIELDS(HttpStatus.BAD_REQUEST, "H_005", "병원 스케줄의 오픈시간과 마감시간은 필수입니다."),
+	INVALID_HOSPITAL_SCHEDULE_TIME_ORDER(HttpStatus.BAD_REQUEST, "H_006", "병원 스케줄의 오픈시간은 마감시간보다 빨라야 합니다."),
+
+
 	// QNA 관련 에러(Q_)
 	QNA_NOT_FOUND(HttpStatus.NOT_FOUND, "Q_001", "Q&A 게시글이 없습니다."),
 
