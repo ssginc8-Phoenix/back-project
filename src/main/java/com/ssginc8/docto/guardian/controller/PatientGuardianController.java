@@ -10,6 +10,7 @@ import com.ssginc8.docto.guardian.dto.GuardianInviteRequest;
 import com.ssginc8.docto.guardian.dto.GuardianInviteResponse;
 import com.ssginc8.docto.guardian.dto.GuardianStatusRequest;
 import com.ssginc8.docto.guardian.dto.PatientSummaryResponse;
+import com.ssginc8.docto.guardian.dto.PendingInviteResponse;
 import com.ssginc8.docto.guardian.service.PatientGuardianService;
 import com.ssginc8.docto.user.service.UserServiceImpl;
 
@@ -38,6 +39,17 @@ public class PatientGuardianController {
 		@RequestBody GuardianStatusRequest request) {
 		guardianService.updateStatusByInviteCode(request.getInviteCode(), request.getStatus());
 		return ResponseEntity.ok().build();
+	}
+
+	/**
+	 * 환자별 “초대중” 보호자 목록 조회
+	 */
+	@GetMapping("/{patientId}/pending-invites")
+	public ResponseEntity<List<PendingInviteResponse>> getPendingInvites(
+		@PathVariable Long patientId
+	) {
+		List<PendingInviteResponse> list = guardianService.getPendingInvites(patientId);
+		return ResponseEntity.ok(list);
 	}
 
 	@DeleteMapping("/{userId}/patients/{patientId}")
