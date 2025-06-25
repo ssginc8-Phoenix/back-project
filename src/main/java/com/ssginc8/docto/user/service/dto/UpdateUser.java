@@ -5,8 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 public class UpdateUser {
+	@ToString
 	@Getter
 	@Setter
 	@NoArgsConstructor

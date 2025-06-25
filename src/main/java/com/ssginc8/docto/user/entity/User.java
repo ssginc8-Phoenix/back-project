@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.ssginc8.docto.file.entity.Category;
 import com.ssginc8.docto.file.entity.File;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
@@ -25,7 +26,6 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -188,13 +188,18 @@ public class User extends BaseTimeEntity {
 		}
 
 		if (Objects.nonNull(profileImage)) {
-			this.profileImage.updateFile(profileImage.getFileName(), profileImage.getOriginalName(),
-				profileImage.getUrl(),
-				profileImage.getBucketName(), profileImage.getFileSize(), profileImage.getFileType());
+			if (Objects.nonNull(this.profileImage)) {
+				this.profileImage.updateFile(profileImage.getFileName(), profileImage.getOriginalName(),
+					profileImage.getUrl(),
+					profileImage.getBucketName(), profileImage.getFileSize(), profileImage.getFileType());
+			} else {
+				this.profileImage = profileImage;
+			}
 		}
 	}
 
-	public static User createUser(String username, String password, String email, String loginType, String role, Boolean suspended, String uuid) {
+	public static User createUser(String username, String password, String email, String loginType, String role,
+		Boolean suspended, String uuid) {
 		User user = new User();
 		user.name = username;
 		user.password = password;
@@ -207,7 +212,6 @@ public class User extends BaseTimeEntity {
 		return user;
 	}
 
-
 	public void updatePhoneAndProfileImage(String phone, File profileImage) {
 		if (StringUtils.isNotBlank(phone)) {
 			this.phone = phone;
@@ -215,13 +219,16 @@ public class User extends BaseTimeEntity {
 		if (profileImage != null) {
 			this.profileImage = profileImage;
 		}
-  }
+	}
+
 	/**
 	 * 패널티 부여
 	 * @param value
 	 */
 	public void addPenalty(Long value) {
-		if (this.penalty == null) {this.penalty = 0L;}
+		if (this.penalty == null) {
+			this.penalty = 0L;
+		}
 		this.penalty += value;
 	}
 

@@ -148,7 +148,7 @@ public class UserApiController {
 	}
 
 	@PatchMapping("/users/me")
-	public ResponseEntity<Void> updateInfo(@RequestBody UpdateUser.Request request) {
+	public ResponseEntity<Void> updateInfo(UpdateUser.Request request) {
 		userService.updateInfo(request);
 
 		return ResponseEntity.noContent().build();
