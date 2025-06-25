@@ -135,7 +135,8 @@ public class PatientGuardianServiceImpl implements PatientGuardianService {
 				PatientSummaryResponse dto = PatientSummaryResponse.of(
 					patient.getPatientId(),
 					user.getName(),
-					decryptRRN(patient.getResidentRegistrationNumber())
+					decryptRRN(patient.getResidentRegistrationNumber()),
+					user.getAddress()
 				);
 				// 2) 프로필 이미지 URL 가져오기 (FileProvider)
 				Long fileId = user.getProfileImage() != null
