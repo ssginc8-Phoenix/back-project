@@ -13,15 +13,17 @@ public class UserInfo {
 		public String phone;
 		public String address;
 		public Role role;
+		public Boolean isSuspended;
 		public String profileImageUrl;
 
-		private Response(Long userId, String email, String name, String phone, String address, Role role, String profileImageUrl) {
+		private Response(Long userId, String email, String name, String phone, String address, Role role, Boolean isSuspended, String profileImageUrl) {
 			this.userId = userId;
 			this.email = email;
 			this.name = name;
 			this.phone = phone;
 			this.address = address;
 			this.role = role;
+			this.isSuspended = isSuspended;
 			this.profileImageUrl = profileImageUrl;
 		}
 
@@ -31,7 +33,7 @@ public class UserInfo {
 			}
 
 			return new Response(user.getUserId(), user.getEmail(), user.getName(), user.getPhone(), user.getAddress(), user.getRole(),
-				defaultProfileUrl);
+				user.getIsSuspended(), defaultProfileUrl);
 		}
 	}
 }
