@@ -32,6 +32,11 @@ public interface NotificationService {
 	void deleteReadNotifications();
 
 	/**
+	 * Appointment 생성 알림 전송 (병원 관리자)
+	 */
+	void notifyAppointmentRequested(Appointment appointment);
+
+	/**
 	 * Appointment 확정 알림 전송 (보호자)
 	 */
 	void notifyAppointmentConfirmed(Appointment appointment);

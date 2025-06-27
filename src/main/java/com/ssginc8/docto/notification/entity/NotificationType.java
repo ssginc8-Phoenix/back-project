@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum NotificationType {
 
+	APPOINTMENT_REQUESTED("예약 요청"),
 	APPOINTMENT_CONFIRMED("예약 확정"),
 	APPOINTMENT_CANCELED("예약 취소"),
-	APPOINTMENT_NOSHOW("예약 노쇼"),
+	APPOINTMENT_NO_SHOW("예약 노쇼"),
 	QNA_RESPONSE("QNA 답변"),
 	MEDICATION_ALERT("복용 알림"),
 	MEDICATION_MISSED("미복용 알림"),

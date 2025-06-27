@@ -31,6 +31,7 @@ import com.ssginc8.docto.doctor.provider.DoctorScheduleProvider;
 import com.ssginc8.docto.global.error.exception.appointmentException.IsSuspendedUserException;
 import com.ssginc8.docto.global.error.exception.appointmentException.NotCanceledException;
 import com.ssginc8.docto.global.error.exception.appointmentException.RoleNotFoundException;
+import com.ssginc8.docto.global.event.appointment.AppointmentRequestEvent;
 import com.ssginc8.docto.global.event.appointment.AppointmentStatusChangedEvent;
 import com.ssginc8.docto.guardian.entity.PatientGuardian;
 import com.ssginc8.docto.guardian.provider.PatientGuardianProvider;
@@ -210,6 +211,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 			qaPostService.createQaPost(qaPostCreateRequest);
 		}
+
+		applicationEventPublisher.publishEvent(new AppointmentRequestEvent(appointment));
 	}
 
 	/**
@@ -264,39 +267,51 @@ public class AppointmentServiceImpl implements AppointmentService {
 		);
 
 		appointmentProvider.save(newAppointment);
+		applicationEventPublisher.publishEvent(new AppointmentRequestEvent(newAppointment));
+
 		return AppointmentResponse.fromEntity(newAppointment, qaContent);
 	}
 
 	/**
 	 * 예약 취소
 	 */
+	@Transactional
 	public void cancelAppointment(Long appointmentId) {
+		// 1. 예약 조회
 		Appointment appointment = appointmentProvider.getAppointmentById(appointmentId);
-		User user = appointment.getPatientGuardian().getUser();
 
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime appointmentTime = appointment.getAppointmentTime();
-
-		// 예약 상태 확인
+		// 2. 예약 취소 가능 상태인지 확인
 		if (appointment.getStatus() != AppointmentStatus.REQUESTED &&
 			appointment.getStatus() != AppointmentStatus.CONFIRMED) {
 			throw new NotCanceledException();
 		}
 
-		// 상태 변경
-		appointment.changeStatus(AppointmentStatus.CANCELED);
+		// 3. User 엔티티 조회
+		User user = appointment.getPatientGuardian().getUser();
+
+		// 4. 현재 시간과 예약 시간 계산
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime appointmentTime = appointment.getAppointmentTime();
+
+		// 5. 패널티 부여 여부 판단 (예약 시간 1시간 이내 취소 시)
+		boolean isPenalty = now.isAfter(appointmentTime.minusHours(1));
+
+		// 6. 예약 상태 변경 및 패널티 부여 로직
+		if (isPenalty) {
+			user.addPenalty(1L); // User 엔티티의 addPenalty 메서드 호출
+
+			// 예약 상태를 NO_SHOW로 변경 (1시간 이내 취소 시)
+			appointment.changeStatus(AppointmentStatus.NO_SHOW);
+		} else {
+			// 1시간 이내 취소가 아닌 경우 CANCELED로 변경
+			appointment.changeStatus(AppointmentStatus.CANCELED);
+		}
+
+		// 7. 변경된 Appointment 엔티티 저장
 		appointmentProvider.save(appointment);
 
-		// 알림 이벤트 발행
-		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, false));
 
-		// 1시간 이내 취소 -> 패널티 부여
-		boolean isPenalty = now.isAfter(appointmentTime.minusHours(1));
-		if (isPenalty) {
-			user.addPenalty(1L);
-			appointment.changeStatus(AppointmentStatus.NO_SHOW);
-			appointmentProvider.save(appointment);
-		}
+		// 8. 알림 이벤트 발행
 		applicationEventPublisher.publishEvent(new AppointmentStatusChangedEvent(appointment, isPenalty));
 	}
 

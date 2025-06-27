@@ -26,7 +26,6 @@ import com.ssginc8.docto.notification.entity.NotificationType;
 import com.ssginc8.docto.notification.provider.NotificationProvider;
 import com.ssginc8.docto.patient.entity.Patient;
 import com.ssginc8.docto.patient.provider.PatientProvider;
-import com.ssginc8.docto.qna.entity.QaComment;
 import com.ssginc8.docto.qna.provider.CommentProvider;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
@@ -123,6 +122,18 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
+	 * Appointment 생성 알림 전송 (병원 관리자)
+	 */
+	@Override
+	public void notifyAppointmentRequested(Appointment appointment) {
+		User receiver = appointment.getHospital().getUser();	// 병원 관리자 User
+		String time = appointment.getAppointmentTime().format(DATE_FORMATTER);
+
+		String content = String.format("%s일 새로운 예약이 요청되었습니다. 승인해주세요.", time);
+		createNotification(receiver, NotificationType.APPOINTMENT_REQUESTED, content, appointment.getAppointmentId());
+	}
+
+	/**
 	 * Appointment 확정 알림 전송 (보호자)
 	 */
 	@Override
@@ -166,7 +177,7 @@ public class NotificationServiceImpl implements NotificationService {
 		String time = appointment.getAppointmentTime().format(DATE_FORMATTER);
 
 		String content = String.format("%s, %s의 %s님 예약이 노쇼 처리되어 패널티가 부과됩니다.", time, hospitalName, patientName);
-		createNotification(receiver, NotificationType.APPOINTMENT_NOSHOW, content, appointment.getAppointmentId());
+		createNotification(receiver, NotificationType.APPOINTMENT_NO_SHOW, content, appointment.getAppointmentId());
 	}
 
 	@Override
