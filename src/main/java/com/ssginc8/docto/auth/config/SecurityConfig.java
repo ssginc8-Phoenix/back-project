@@ -98,6 +98,7 @@ public class SecurityConfig {
 				/**
 				 * 의사 + 병원 관리자
 				 */
+				.requestMatchers(HttpMethod.GET, "/api/v1/hospitals/*/reviews").hasAnyRole("DOCTOR", "HOSPITAL_ADMIN")
 				.requestMatchers(HttpMethod.POST, "/api/v1/doctors/**").hasAnyRole("DOCTOR","HOSPITAL_ADMIN")
 
 				/**

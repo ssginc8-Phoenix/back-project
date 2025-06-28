@@ -33,7 +33,8 @@ public class ReviewSummaryServiceImpl implements ReviewSummaryService {
 
 		String prompt = """
             다음은 병원 리뷰 모음입니다.
-            리뷰를 모두 읽어보고 장점만 두 문장으로 요약해주세요.
+            리뷰를 모두 읽어보고 장점은 두 문장으로 요약해주고 단점은 개선사항으로 친절하게 안내해주세요.
+            자연스러운 문장 흐름으로 안내하고 이모지를 넣어서 꾸며주세요. "당신의 병원은" 으로 문장을 시작하며 말해주세요.
             ---
             %s
             """.formatted(String.join("", reviews.stream().limit(30).toList()));
