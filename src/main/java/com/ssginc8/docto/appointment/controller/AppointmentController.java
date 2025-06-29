@@ -163,8 +163,8 @@ public class AppointmentController {
 	}
 
 	/**
-	 * ✅ 예약 상세 내역 조회
-	 * URL: /api/v1/appointments/{appointmentId}
+	 * ✅ 예약 가능한 시간 슬롯 조회
+	 * URL: /api/v1/appointments/available-time-slots
 	 * Method: GET
 	 */
 	@GetMapping("/appointments/available-time-slots")
@@ -176,6 +176,7 @@ public class AppointmentController {
 		List<TimeSlotDto> slots = appointmentService.getAvailableTimeSlots(doctorId, patientId, date);
 		return ResponseEntity.ok(slots);
 	}
+
 	/**
 	 * ✅ 일일 진료 수 조회
 	 */
