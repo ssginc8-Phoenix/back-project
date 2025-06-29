@@ -90,6 +90,15 @@ public interface AppointmentRepo
 		"doctor.user",
 		"patientGuardian.patient.user"
 	})
+	Page<Appointment> findByDoctor_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
+		Long userId, LocalDateTime start, LocalDateTime end, Pageable pageable
+	);
+
+	@EntityGraph(attributePaths = {
+		"hospital.user",
+		"doctor.user",
+		"patientGuardian.patient.user"
+	})
 	Page<Appointment> findByHospital_User_UserIdOrderByAppointmentTimeAsc(Long userId, Pageable pageable);
 
 	@EntityGraph(attributePaths = {
@@ -190,6 +199,7 @@ public interface AppointmentRepo
 	Page<Appointment> findByHospital_User_UserIdAndAppointmentTimeBetweenAndStatusInOrderByAppointmentTimeAsc(
 		Long userId, LocalDateTime start, LocalDateTime end, List<AppointmentStatus> statuses, Pageable pageable
 	);
+
 
 	/**
 	 * Inactive 예약들을 위한 DESC

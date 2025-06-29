@@ -110,7 +110,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 				break;
 
 			case DOCTOR:
-				return appointmentProvider.getAppointmentsByDoctor(loginUser.getUserId(), pageable)
+				return appointmentProvider.getAppointmentsByDoctor(loginUser.getUserId(), pageable, date)
 					.map(AppointmentListResponse::fromEntity);
 
 			case HOSPITAL_ADMIN:
