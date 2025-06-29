@@ -43,10 +43,7 @@ public class DoctorResponse {
 		this.imageUrl = imageUrl;
 	}
 
-	
-
 	public static DoctorResponse from(Doctor doctor, String imageUrl) {
-
 		return new DoctorResponse(
 			doctor.getHospital().getHospitalId(),
 			doctor.getDoctorId(),
@@ -54,7 +51,7 @@ public class DoctorResponse {
 			doctor.getSpecialization().getDescription(),
 			doctor.getHospital().getName(),
 			doctor.getCapacityPerHalfHour(),
-	    doctor.getHospital().getAddress(),
+			doctor.getHospital().getAddress(),
 			doctor.getUser().getEmail(),
 			doctor.getUser().getPhone(),
 			imageUrl
