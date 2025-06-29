@@ -105,8 +105,18 @@ public class AppointmentProvider {
 	 * 의사의 Appointment 조회
 	 */
 	@Transactional(readOnly = true)
-	public Page<Appointment> getAppointmentsByDoctor(Long userId, Pageable pageable) {
-		return appointmentRepo.findByDoctor_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
+	public Page<Appointment> getAppointmentsByDoctor(Long userId, Pageable pageable, LocalDate date) {
+		if (date != null) {
+			LocalDateTime startOfDay = date.atStartOfDay();
+			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+			return appointmentRepo.findByDoctor_User_UserIdAndAppointmentTimeBetweenOrderByAppointmentTimeAsc(
+				userId, startOfDay, endOfDay, pageable
+			);
+		} else {
+			return appointmentRepo.findByDoctor_User_UserIdOrderByAppointmentTimeAsc(userId, pageable);
+		}
+
 	}
 
 	/**

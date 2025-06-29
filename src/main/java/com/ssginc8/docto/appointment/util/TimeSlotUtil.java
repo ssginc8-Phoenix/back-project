@@ -28,15 +28,22 @@ public class TimeSlotUtil {
 
 		LocalDateTime start = baseDate.with(schedule.getStartTime());
 		LocalDateTime end = baseDate.with(schedule.getEndTime());
-		LocalDateTime lunchStart = baseDate.with(schedule.getLunchStart());
-		LocalDateTime lunchEnd = baseDate.with(schedule.getLunchEnd());
+
+		// 점심시간 NULL 일수도 있기때문에 다음과 같이 처리 (예 : 토요일, 일요일 주말 단축 근무 등)
+		LocalDateTime lunchStart = null;
+		LocalDateTime lunchEnd = null;
+
+		if(schedule.getLunchStart() != null && schedule.getLunchEnd() != null) {
+			lunchStart = baseDate.with(schedule.getLunchStart());
+			lunchEnd = baseDate.with(schedule.getLunchEnd());
+		}
 
 		Long maxCapacity = doctor.getCapacityPerHalfHour();
 
 		while (start.isBefore(end)) {
 			LocalDateTime slotEnd = start.plusMinutes(30);
 
-			if (slotEnd.isAfter(lunchStart) && start.isBefore(lunchEnd)) {
+			if (lunchStart != null && lunchEnd != null && slotEnd.isAfter(lunchStart) && start.isBefore(lunchEnd)) {
 				start = lunchEnd;
 				continue;
 			}
