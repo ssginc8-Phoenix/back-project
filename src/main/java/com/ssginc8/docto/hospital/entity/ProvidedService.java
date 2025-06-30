@@ -12,10 +12,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Table(name = "tbl_provided_service")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+
 public class ProvidedService {
 
 	@Id
@@ -28,4 +30,25 @@ public class ProvidedService {
 
 	@Column(nullable = false)
 	private String serviceName;
+
+
+
+	public ProvidedService(String serviceName, Hospital hospital) {
+		this.serviceName = serviceName;
+		this.hospital = hospital;
+
+	}
+
+	public static ProvidedService create(String serviceName, Hospital hospital) {
+		return new ProvidedService(serviceName, hospital);
+	}
+
+	public String getName() {
+		return this.serviceName;
+	}
+
+
+	public Long getId() {
+		return this.providedServiceId;
+	}
 }

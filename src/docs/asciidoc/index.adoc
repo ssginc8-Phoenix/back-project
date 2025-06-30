@@ -6,6 +6,293 @@ Author: 불4조
 :sectnums:
 :icons: font
 
+== 유저
+=== 내 정보 조회
+
+로그인된 유저만 사용 가능
+
+쿠키에 `accessToken`, `refreshToken` 을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/get-my-info-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/get-my-info-test/response-fields.adoc[]
+include::{snippets}/user-api-controller-test/get-my-info-test/http-response.adoc[]
+
+=== 이메일 중복 확인
+
+이메일 중복 여부를 확인하는 API
+
+중복된 이메일이면 예외가 발생하고, 사용 가능한 이메일이면 200 OK를 반환
+
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/query-parameters.adoc[]
+include::{snippets}/user-api-controller-test/check-email-duplicate-test/http-response.adoc[]
+
+=== 유저 리스트 조회
+
+역할(`role`)을 기준으로 필터링된 유저 리스트를 페이지네이션 형태로 조회하는 API
+
+역할을 안주는 경우 모든 유저 리스트를 조회
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/get-users-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/query-parameters.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/get-users-test/response-fields.adoc[]
+
+=== 이메일 회원 가입
+
+프로필 이미지는 선택적으로 업로드 가능
+
+프로필 이미지가 없는 경우 해당 필드는 빼고 요청 보내기
+
+include::{snippets}/user-api-controller-test/email-signup-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/request-parts.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/form-parameters.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/email-signup-test/response-fields.adoc[]
+
+=== 소셜 회원가입
+
+소셜 로그인 후 추가 정보를 입력하여 회원가입을 완료하는 API
+
+필수로 전화번호와 역할을 입력하며, 선택적으로 프로필 이미지를 첨부 가능
+
+
+=== 의사 리스트 등록
+
+여러 명의 의사를 한 번에 등록하는 API
+
+병원 관리자만 접근 가능
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/register-doctor-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/register-doctor-test/response-fields.adoc[]
+
+=== 로그인
+
+이메일과 비밀번호를 통해 로그인을 진행하고, 성공 시 Access/Refresh 토큰을 쿠키로 내려주는 API
+
+include::{snippets}/user-api-controller-test/login-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/login-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/login-test/http-response.adoc[]
+include::{snippets}/user-api-controller-test/login-test/response-cookies.adoc[]
+
+
+=== 이메일 인증 코드 발송
+
+입력한 이메일 주소로 인증 코드를 발송하는 API
+
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/send-email-verification-code-test/http-response.adoc[]
+
+=== 이메일 인증 코드 확인
+
+이메일로 발송된 인증 코드를 입력하여 인증을 완료하는 API
+
+=== 비밀번호 재설정
+
+인증된 사용자가 새 비밀번호로 비밀번호를 재설정하는 AP
+
+include::{snippets}/user-api-controller-test/reset-password-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/reset-password-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/reset-password-test/http-response.adoc[]
+
+=== 비밀번호 확인
+
+인증된 사용자가 자신의 비밀번호를 확인하는 API
+사용자는 자신의 userId와 비밀번호를 입력해야하며, 서버는 비밀번호가 맞는지 검증한다.
+
+include::{snippets}/user-api-controller-test/check-password-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/check-password-test/request-fields.adoc[]
+include::{snippets}/user-api-controller-test/check-password-test/http-response.adoc[]
+
+=== 회원 정보 수정
+
+회원이 자신의 정보를 수정하는 API
+
+프로필 이미지 수정은 선택 사항
+
+모든 요청 필드는 Multipart/Form-Data 형식으로 전송
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/update-user-info-test/http-request.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/request-parts.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/form-parameters.adoc[]
+include::{snippets}/user-api-controller-test/update-user-info-test/http-response.adoc[]
+
+=== 회원 탈퇴
+
+현재 로그인한 사용자의 계정을 삭제
+
+요청 시 ACCESS_TOKEN 쿠키가 필요하며, 성공 시 응답은 HTTP 204(No Content)
+
+쿠키에 `accessToken`, `refreshToken`을 포함시켜야 함.
+
+include::{snippets}/user-api-controller-test/delete-account-test/request-cookies.adoc[]
+include::{snippets}/user-api-controller-test/delete-account-test/http-response.adoc[]
+
+== 환자
+
+=== 환자 등록
+
+include::{snippets}/patient-controller-test/create-patient/http-request.adoc[]
+include::{snippets}/patient-controller-test/create-patient/request-fields.adoc[]
+include::{snippets}/patient-controller-test/create-patient/http-response.adoc[]
+
+=== 환자 전체 조회
+
+include::{snippets}/patient-controller-test/get-all-patients/http-request.adoc[]
+include::{snippets}/patient-controller-test/get-all-patients/response-fields.adoc[]
+include::{snippets}/patient-controller-test/get-all-patients/http-response.adoc[]
+
+=== 환자 삭제
+
+include::{snippets}/patient-controller-test/delete-patient/http-request.adoc[]
+include::{snippets}/patient-controller-test/delete-patient/path-parameters.adoc[]
+include::{snippets}/patient-controller-test/delete-patient/http-response.adoc[]
+
+=== 보호자 초대
+
+include::{snippets}/patient-controller-test/invite-guardian/http-request.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/path-parameters.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/request-fields.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/response-fields.adoc[]
+include::{snippets}/patient-controller-test/invite-guardian/http-response.adoc[]
+
+== 보호자
+
+=== 보호자 권한 요청 수락/거절
+보호자가 환자와의 연결 요청을 수락하거나 거절하는 API 입니다.
+
+include::{snippets}/guardian-controller-test/respond-to-guardian-request/http-request.adoc[]
+include::{snippets}/guardian-controller-test/respond-to-guardian-request/request-fields.adoc[]
+include::{snippets}/guardian-controller-test/respond-to-guardian-request/http-response.adoc[]
+
+=== 보호자-환자 매핑 해제
+보호자가 환자와의 연결을 해제하는 API 입니다.
+
+include::{snippets}/guardian-controller-test/delete-guardian-mapping/http-request.adoc[]
+include::{snippets}/guardian-controller-test/delete-guardian-mapping/path-parameters.adoc[]
+include::{snippets}/guardian-controller-test/delete-guardian-mapping/http-response.adoc[]
+
+=== 보호자가 가진 환자 목록 조회
+수락한 환자 목록을 조회하는 API 입니다.
+
+include::{snippets}/guardian-controller-test/get-all-accepted-patients/http-request.adoc[]
+include::{snippets}/guardian-controller-test/get-all-accepted-patients/http-response.adoc[]
+
+
+== 병원
+=== 병원 상세 조회
+include::{snippets}/hospital-controller-test/get-hospital-by-id/curl-request.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-by-id/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-by-id/response-body.adoc[]
+
+
+=== 병원 등록
+include::{snippets}/hospital-controller-test/save-hospital-test/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-test/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-test/http-response.adoc[]
+
+
+=== 병원 정보 수정
+include::{snippets}/hospital-controller-test/update-hospital/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital/http-response.adoc[]
+
+=== 병원 삭제
+include::{snippets}/hospital-controller-test/delete-hospital/http-request.adoc[]
+include::{snippets}/hospital-controller-test/delete-hospital/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/delete-hospital/http-response.adoc[]
+
+=== 병원 리스트 조회
+include::{snippets}/hospital-controller-test/get-all-hospitals/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-all-hospitals/query-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-all-hospitals/http-response.adoc[]
+
+=== 병원 영업시간 조회
+include::{snippets}/hospital-controller-test/get-schedules/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-schedules/http-response.adoc[]
+
+=== 병원 영업시간 등록
+include::{snippets}/hospital-controller-test/save-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-schedule/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-schedule/http-response.adoc[]
+
+=== 병원 영업시간 삭제
+include::{snippets}/hospital-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/delete-schedule/http-response.adoc[]
+
+=== 병원 영업시간 수정
+include::{snippets}/hospital-controller-test/update-schedule/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-schedule/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-schedule/http-response.adoc[]
+
+=== 병원 웨이팅 등록
+include::{snippets}/hospital-controller-test/save-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/http-response.adoc[]
+include::{snippets}/hospital-controller-test/save-hospital-waiting/response-fields.adoc[]
+
+=== 병원 웨이팅 조회
+include::{snippets}/hospital-controller-test/get-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-waiting/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/get-hospital-waiting/http-response.adoc[]
+
+=== 병원 웨이팅 수정
+include::{snippets}/hospital-controller-test/update-hospital-waiting/http-request.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/path-parameters.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/request-fields.adoc[]
+include::{snippets}/hospital-controller-test/update-hospital-waiting/http-response.adoc[]
+
+=== 병원 리뷰 조회
+include::{snippets}/hospital-controller-test/get-all-reviews/http-request.adoc[]
+include::{snippets}/hospital-controller-test/get-all-reviews/http-response.adoc[]
+
+== 의사 등록
+include::{snippets}/doctor-controller-test/save-doctor-test/request-body.adoc[]
+include::{snippets}/doctor-controller-test/save-doctor-test/request-fields.adoc[]
+include::{snippets}/doctor-controller-test/save-doctor-test/response-body.adoc[]
+
+
+== 의사 전체 조회
+include::{snippets}/doctor-controller-test/get-all-doctors-test/httpie-request.adoc[]
+include::{snippets}/doctor-controller-test/get-all-doctors-test/query-parameters.adoc[]
+include::{snippets}/doctor-controller-test/get-all-doctors-test/http-response.adoc[]
+
+== 병원 의사 조회
+include::{snippets}/doctor-controller-test/get-doctor-by-hospital-test/http-request.adoc[]
+include::{snippets}/doctor-controller-test/get-doctor-by-hospital-test/query-parameters.adoc[]
+include::{snippets}/doctor-controller-test/get-doctor-by-hospital-test/http-response.adoc[]
+
+== 의사 영업시간 등록
+include::{snippets}/doctor-controller-test/save-doctor-schedule/http-request.adoc[]
+include::{snippets}/doctor-controller-test/save-doctor-schedule/request-fields.adoc[]
+include::{snippets}/doctor-controller-test/save-doctor-schedule/http-response.adoc[]
+
+== 의사 영업시간 조회
+include::{snippets}/doctor-controller-test/get-doctor-schedule/http-request.adoc[]
+include::{snippets}/doctor-controller-test/get-doctor-schedule/path-parameters.adoc[]
+include::{snippets}/doctor-controller-test/get-doctor-schedule/http-response.adoc[]
+
+== 의사 영업시간 수정
+include::{snippets}/doctor-controller-test/update-doctor-schedule/http-request.adoc[]
+include::{snippets}/doctor-controller-test/update-doctor-schedule/path-parameters.adoc[]
+include::{snippets}/doctor-controller-test/update-doctor-schedule/request-fields.adoc[]
+include::{snippets}/doctor-controller-test/update-doctor-schedule/http-response.adoc[]
+
+== 의사 영업시간 삭제
+include::{snippets}/doctor-controller-test/delete-doctor-schedule/http-request.adoc[]
+include::{snippets}/doctor-controller-test/delete-doctor-schedule/http-response.adoc[]
+
+
 == 예약
 === 예약 요청
 
@@ -34,6 +321,138 @@ include::{snippets}/appointment-controller-test/reschedule-appointment/http-requ
 include::{snippets}/appointment-controller-test/reschedule-appointment/path-parameters.adoc[]
 include::{snippets}/appointment-controller-test/reschedule-appointment/request-fields.adoc[]
 include::{snippets}/appointment-controller-test/reschedule-appointment/http-response.adoc[]
+
+== 리뷰
+
+=== 리뷰 생성
+include::{snippets}/review-controller-test/review-create/http-request.adoc[]
+include::{snippets}/review-controller-test/review-create/request-fields.adoc[]
+include::{snippets}/review-controller-test/review-create/http-response.adoc[]
+
+=== 내가 쓴 리뷰 조회
+include::{snippets}/review-controller-test/get-my-reviews/http-request.adoc[]
+include::{snippets}/review-controller-test/get-my-reviews/http-response.adoc[]
+
+=== 병원에서 리뷰 조회
+include::{snippets}/review-controller-test/get-all-reviews/http-request.adoc[]
+include::{snippets}/review-controller-test/get-all-reviews/http-response.adoc[]
+
+=== 리뷰 수정
+include::{snippets}/review-controller-test/review-update/http-request.adoc[]
+include::{snippets}/review-controller-test/review-update/request-fields.adoc[]
+include::{snippets}/review-controller-test/review-update/http-response.adoc[]
+
+
+=== 리뷰 삭제
+include::{snippets}/review-controller-test/review-delete/http-request.adoc[]
+include::{snippets}/review-controller-test/review-delete/path-parameters.adoc[]
+include::{snippets}/review-controller-test/review-delete/http-response.adoc[]
+
+=== 리뷰 신고
+include::{snippets}/review-controller-test/report-review/http-request.adoc[]
+include::{snippets}/review-controller-test/report-review/http-response.adoc[]
+
+== 복약
+
+=== 복약 스케줄 등록
+
+복약 스케줄을 등록하는 API.
+
+include::{snippets}/medication-controller-test/register-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/register-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/register-medication/http-response.adoc[]
+
+=== 복약 로그 조회
+
+로그인된 사용자의 복약 로그를 조회하는 API.
+
+- 쿠키에 `accessToken`, `refreshToken`을 포함해야 함.
+
+include::{snippets}/medication-controller-test/get-medication-logs/http-request.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/http-response.adoc[]
+include::{snippets}/medication-controller-test/get-medication-logs/response-fields.adoc[]
+
+=== 복약 완료 처리
+
+특정 복약 스케줄을 완료(TAKEN) 처리하는 API.
+
+include::{snippets}/medication-controller-test/complete-medication/http-request.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/request-fields.adoc[]
+include::{snippets}/medication-controller-test/complete-medication/http-response.adoc[]
+
+=== 복약 시간 수정
+
+특정 복약 스케줄의 복약 시간을 수정하는 API.
+
+include::{snippets}/medication-controller-test/update-medication-time/http-request.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/request-fields.adoc[]
+include::{snippets}/medication-controller-test/update-medication-time/http-response.adoc[]
+
+=== 복약 스케줄 삭제
+
+특정 복약 스케줄을 삭제하는 API.
+
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-request.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/path-parameters.adoc[]
+include::{snippets}/medication-controller-test/delete-medication-schedule/http-response.adoc[]
+
+
+== QNA
+=== 문의글 생성
+include::{snippets}/qna-controller-test/create-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/request-fields.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/create-qa-post/response-fields.adoc[]
+
+=== 문의글 상세 조회
+include::{snippets}/qna-controller-test/get-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/get-qa-post/response-fields.adoc[]
+
+=== 문의글 수정
+include::{snippets}/qna-controller-test/update-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/request-fields.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/http-response.adoc[]
+include::{snippets}/qna-controller-test/update-qa-post/response-fields.adoc[]
+
+=== 문의글 삭제
+include::{snippets}/qna-controller-test/delete-qa-post/http-request.adoc[]
+include::{snippets}/qna-controller-test/delete-qa-post/path-parameters.adoc[]
+include::{snippets}/qna-controller-test/delete-qa-post/http-response.adoc[]
+
+== Comment
+=== 답변 생성
+include::{snippets}/comment-controller-test/create-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/request-fields.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/create-qa-comment/response-fields.adoc[]
+
+=== 답변 리스트 조회
+include::{snippets}/comment-controller-test/get-qa-comments/http-request.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/http-response.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comments/response-fields.adoc[]
+
+=== 답변 단건 조회
+include::{snippets}/comment-controller-test/get-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/get-qa-comment/response-fields.adoc[]
+
+=== 답변 수정
+include::{snippets}/comment-controller-test/update-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/request-fields.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/http-response.adoc[]
+include::{snippets}/comment-controller-test/update-qa-comment/response-fields.adoc[]
+
+=== 답변 삭제
+include::{snippets}/comment-controller-test/delete-qa-comment/http-request.adoc[]
+include::{snippets}/comment-controller-test/delete-qa-comment/path-parameters.adoc[]
+include::{snippets}/comment-controller-test/delete-qa-comment/http-response.adoc[]
 
 == CS
 
@@ -79,3 +498,4 @@ include::{snippets}/cs-controller-test/get-messages/http-request.adoc[]
 include::{snippets}/cs-controller-test/get-messages/path-parameters.adoc[]
 include::{snippets}/cs-controller-test/get-messages/response-fields.adoc[]
 include::{snippets}/cs-controller-test/get-messages/http-response.adoc[]
+=======

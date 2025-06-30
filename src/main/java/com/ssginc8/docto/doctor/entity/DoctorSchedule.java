@@ -2,7 +2,9 @@ package com.ssginc8.docto.doctor.entity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
+import com.ssginc8.docto.doctor.dto.DoctorScheduleRequest;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -38,14 +40,48 @@ public class DoctorSchedule extends BaseTimeEntity {
 	private DayOfWeek dayOfWeek;
 
 	@Column(nullable = false)
-	private LocalDateTime startTime;
+	private LocalTime startTime;
 
 	@Column(nullable = false)
-	private LocalDateTime endTime;
+	private LocalTime endTime;
 
-	@Column(nullable = false)
-	private LocalDateTime lunchStart;
+	@Column(nullable = true)
+	private LocalTime lunchStart;
 
-	@Column(nullable = false)
-	private LocalDateTime lunchEnd;
+	@Column(nullable = true)
+	private LocalTime lunchEnd;
+
+	public DoctorSchedule(Doctor doctor, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, LocalTime lunchStart, LocalTime lunchEnd) {
+		this.doctor = doctor;
+		this.dayOfWeek = dayOfWeek;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.lunchStart = lunchStart;
+		this.lunchEnd = lunchEnd;
+
+	}
+
+	public static DoctorSchedule create(
+
+		Doctor doctor,
+		DayOfWeek dayOfWeek,
+		LocalTime startTime,
+		LocalTime endTime,
+		LocalTime lunchStart,
+		LocalTime lunchEnd) {
+		return new DoctorSchedule(doctor, dayOfWeek, startTime, endTime, lunchStart, lunchEnd);
+	}
+	public void updateDoctorSchedule(
+		DayOfWeek dayOfWeek,
+		LocalTime startTime,
+		LocalTime endTime,
+		LocalTime lunchStart,
+		LocalTime lunchEnd) {
+
+		this.dayOfWeek = dayOfWeek;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.lunchStart = lunchStart;
+		this.lunchEnd = lunchEnd;
+	}
 }

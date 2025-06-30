@@ -1,8 +1,13 @@
 package com.ssginc8.docto.doctor.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.ssginc8.docto.doctor.dto.DoctorUpdateRequest;
 import com.ssginc8.docto.global.base.BaseTimeEntity;
+import com.ssginc8.docto.global.error.exception.doctorException.NegativeCapacityException;
 import com.ssginc8.docto.hospital.entity.Hospital;
 import com.ssginc8.docto.user.entity.User;
+import com.ssginc8.docto.user.repo.UserRepo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_doctor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicUpdate
 public class Doctor extends BaseTimeEntity {
 
 	@Id
@@ -41,4 +47,28 @@ public class Doctor extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Specialization specialization;
+
+	@Column(nullable = false)
+	private Long capacityPerHalfHour;
+
+	private Long fileId;
+
+	public Doctor(Hospital hospital, Specialization specialization, User user) {
+		this.hospital = hospital;
+		this.specialization = specialization;
+		this.user = user;
+		this.capacityPerHalfHour = 0L;
+	}
+
+	public static Doctor create(Hospital hospital, Specialization specialization, User user) {
+		return new Doctor(hospital, specialization, user);
+	}
+
+	public void changeCapacityPerHalfHour(Long capacityPerHalfHour) {
+		if (capacityPerHalfHour < 0) {
+			throw new NegativeCapacityException();
+		}
+
+		this.capacityPerHalfHour = capacityPerHalfHour;
+	}
 }

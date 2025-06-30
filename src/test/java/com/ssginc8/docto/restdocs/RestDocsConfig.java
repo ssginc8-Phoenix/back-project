@@ -21,7 +21,7 @@ public class RestDocsConfig {
 
 	public static Attributes.Attribute field(
 		final String key,
-		final String value){
-		return new Attributes.Attribute(key,value);
+		final String value) {
+		return new Attributes.Attribute(key, value);
 	}
 }
