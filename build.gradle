@@ -98,6 +98,10 @@ dependencies {
     // 🔹 FCM Push 알림
     implementation 'com.google.firebase:firebase-admin:9.5.0'
 
+    // 🔹 Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+
 }
 
 tasks.named('test') {
