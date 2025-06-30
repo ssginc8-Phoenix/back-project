@@ -18,6 +18,8 @@ import com.ssginc8.docto.cs.entity.CsMessage;
 import com.ssginc8.docto.cs.entity.CsRoom;
 import com.ssginc8.docto.cs.entity.Status;
 import com.ssginc8.docto.cs.provider.CsProvider;
+import com.ssginc8.docto.kafka.dto.KafkaCsMessage;
+import com.ssginc8.docto.kafka.service.KafkaProducerService;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 
@@ -29,6 +31,7 @@ public class CsServiceImpl implements CsService {
 
 	private final CsProvider csProvider;
 	private final UserProvider userProvider;
+	private final KafkaProducerService kafkaProducerService;
 
 	// ✅ 관리자용 CS 채팅방 리스트 조회
 	@Transactional
@@ -99,16 +102,17 @@ public class CsServiceImpl implements CsService {
 	}
 
 	@Override
-	public Long createMessage(Long csRoomId, CsMessageRequest request) {
-		CsRoom csRoom = csProvider.findById(csRoomId);
+	public void createMessage(Long csRoomId, CsMessageRequest request) {
 		User user = userProvider.getUserById(request.getUserId());
 
-		CsMessage message = CsMessage.create(
-			csRoom,
-			user.getUserId(),
-			request.getContent()
-		);
+		KafkaCsMessage messageDto = KafkaCsMessage.builder()
+			.csRoomId(csRoomId)
+			.userId(user.getUserId())
+			.content(request.getContent())
+			.createdAt(LocalDateTime.now())
+			.messageType("TEXT")
+			.build();
 
-		return csProvider.save(message);
+		kafkaProducerService.sendMessage(messageDto);
 	}
 }

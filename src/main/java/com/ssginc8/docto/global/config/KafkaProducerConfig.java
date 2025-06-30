@@ -3,15 +3,25 @@ package com.ssginc8.docto.global.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import com.ssginc8.docto.kafka.dto.KafkaCsMessage;
 
+@EnableKafka
 @Configuration
 public class KafkaProducerConfig {
 
@@ -22,18 +32,32 @@ public class KafkaProducerConfig {
 	 * 		byte array로 변환하는 데 사용하는 직렬화 메커니즘을 설정
 	 */
 
-	@Bean
-	public ProducerFactory<String, Object> producerFactory() {
-		Map<String, Object> config = new HashMap<>();
-		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+	@Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers;
 
-		return new DefaultKafkaProducerFactory<>(config);
+	@Value("${spring.kafka.consumer.group-id}")
+	private String groupId;
+
+	@Bean
+	public ConsumerFactory<String, KafkaCsMessage> consumerFactory() {
+		Map<String, Object> props = new HashMap<>();
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+		props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ssginc8.docto.kafka.dto.*");
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");    // 컨슈머 시작 시 오프셋 설정
+
+		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
+			new JsonDeserializer<>(KafkaCsMessage.class, false));
 	}
 
 	@Bean
-	public KafkaTemplate<String, Object> kafkaTemplate() {
-		return new KafkaTemplate<>(producerFactory());
+	public ConcurrentKafkaListenerContainerFactory<String, KafkaCsMessage> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, KafkaCsMessage> factory =
+			new ConcurrentKafkaListenerContainerFactory<>();
+
+		factory.setConsumerFactory(consumerFactory());
+		return factory;
 	}
 }

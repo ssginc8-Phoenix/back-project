@@ -22,7 +22,6 @@ import com.ssginc8.docto.cs.dto.CsMessageRequest;
 import com.ssginc8.docto.cs.dto.CsMessageResponse;
 import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
-import com.ssginc8.docto.cs.dto.UpdateStatusRequest;
 import com.ssginc8.docto.cs.repo.CsMessageRepo;
 import com.ssginc8.docto.cs.service.CsService;
 
@@ -88,8 +87,8 @@ public class CsController {
 	@PatchMapping("/csrooms/{csRoomId}/status")
 	public ResponseEntity<Void> updateCsRoomStatus(
 		@PathVariable Long csRoomId,
-		@RequestBody UpdateStatusRequest request) {
-		csService.updateCsRoomStatus(csRoomId, request.getStatus());
+		@RequestBody String status) {
+		csService.updateCsRoomStatus(csRoomId, status);
 
 		return ResponseEntity.noContent().build();
 	}
@@ -125,8 +124,9 @@ public class CsController {
 	 *	Method: POST
 	 */
 	@PostMapping("/csrooms/{csRoomId}/messages")
-	public ResponseEntity<Long> createMessage(@PathVariable Long csRoomId, @RequestBody CsMessageRequest request) {
+	public ResponseEntity<Void> createMessage(@PathVariable Long csRoomId, @RequestBody CsMessageRequest request) {
+		csService.createMessage(csRoomId, request);
 
-		return ResponseEntity.ok(csService.createMessage(csRoomId, request));
+		return ResponseEntity.noContent().build();
 	}
 }
