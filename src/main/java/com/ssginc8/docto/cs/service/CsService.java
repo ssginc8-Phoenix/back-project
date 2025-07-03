@@ -29,5 +29,5 @@ public interface CsService {
 
 	List<CsMessageResponse> getMessages(Long csRoomId, LocalDateTime before, int size);
 
-	Long createMessage(Long csRoomId, CsMessageRequest request);
+	void createMessage(Long csRoomId, Long userId, String content);
 }

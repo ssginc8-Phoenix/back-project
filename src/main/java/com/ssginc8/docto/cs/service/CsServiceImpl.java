@@ -18,6 +18,8 @@ import com.ssginc8.docto.cs.entity.CsMessage;
 import com.ssginc8.docto.cs.entity.CsRoom;
 import com.ssginc8.docto.cs.entity.Status;
 import com.ssginc8.docto.cs.provider.CsProvider;
+import com.ssginc8.docto.kafka.dto.KafkaCsMessage;
+import com.ssginc8.docto.kafka.service.KafkaProducerService;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.provider.UserProvider;
 
@@ -29,6 +31,7 @@ public class CsServiceImpl implements CsService {
 
 	private final CsProvider csProvider;
 	private final UserProvider userProvider;
+	private final KafkaProducerService kafkaProducerService;
 
 	// ✅ 관리자용 CS 채팅방 리스트 조회
 	@Transactional
@@ -90,8 +93,6 @@ public class CsServiceImpl implements CsService {
 
 		List<CsMessage> messages = csProvider.getMessagesBefore(csRoomId, before, size);
 
-		// 카카오톡 처럼 최신 메시지가 아래에 오도록 역순 정렬
-		Collections.reverse(messages);
 
 		return messages.stream()
 			.map(CsMessageResponse::from)
@@ -99,16 +100,17 @@ public class CsServiceImpl implements CsService {
 	}
 
 	@Override
-	public Long createMessage(Long csRoomId, CsMessageRequest request) {
-		CsRoom csRoom = csProvider.findById(csRoomId);
-		User user = userProvider.getUserById(request.getUserId());
+	public void createMessage(Long csRoomId, Long userId, String content) {
+		User user = userProvider.getUserById(userId);
 
-		CsMessage message = CsMessage.create(
-			csRoom,
-			user.getUserId(),
-			request.getContent()
-		);
+		KafkaCsMessage messageDto = KafkaCsMessage.builder()
+			.csRoomId(csRoomId)
+			.userId(user.getUserId())
+			.content(content)
+			.createdAt(LocalDateTime.now())
+			.messageType("TEXT")
+			.build();
 
-		return csProvider.save(message);
+		kafkaProducerService.sendMessage(messageDto);
 	}
 }
