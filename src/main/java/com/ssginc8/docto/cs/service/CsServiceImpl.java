@@ -93,8 +93,6 @@ public class CsServiceImpl implements CsService {
 
 		List<CsMessage> messages = csProvider.getMessagesBefore(csRoomId, before, size);
 
-		// 카카오톡 처럼 최신 메시지가 아래에 오도록 역순 정렬
-		Collections.reverse(messages);
 
 		return messages.stream()
 			.map(CsMessageResponse::from)
@@ -102,13 +100,13 @@ public class CsServiceImpl implements CsService {
 	}
 
 	@Override
-	public void createMessage(Long csRoomId, CsMessageRequest request) {
-		User user = userProvider.getUserById(request.getUserId());
+	public void createMessage(Long csRoomId, Long userId, String content) {
+		User user = userProvider.getUserById(userId);
 
 		KafkaCsMessage messageDto = KafkaCsMessage.builder()
 			.csRoomId(csRoomId)
 			.userId(user.getUserId())
-			.content(request.getContent())
+			.content(content)
 			.createdAt(LocalDateTime.now())
 			.messageType("TEXT")
 			.build();

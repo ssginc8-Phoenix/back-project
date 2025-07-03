@@ -16,7 +16,7 @@ public interface CsMessageRepo extends JpaRepository<CsMessage, Long> {
 		+ "WHERE m.csRoom.csRoomId = :csRoomId "
 		+ "AND m.createdAt < :before "
 		+ "AND m.csRoom.deletedAt IS NULL "
-		+ "ORDER BY m.createdAt ASC")  // 오래된 순 → 이후 reverse
+		+ "ORDER BY m.createdAt DESC")  // 오래된 순 → 이후 reverse
 	List<CsMessage> findCsMessageBefore(
 		@Param("csRoomId") Long csRoomId,
 		@Param("before") LocalDateTime before,

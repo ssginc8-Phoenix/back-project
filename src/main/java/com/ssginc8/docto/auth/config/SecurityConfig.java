@@ -78,7 +78,9 @@ public class SecurityConfig {
 				 */
 				.requestMatchers(
 					"/api/v1/users/me",
-					"/api/v1/reviews/*/report", "/api/v1/csrooms/**",
+					"/api/v1/reviews/*/report",
+					"/api/v1/csrooms/**",
+					"/ws-chat/**",
 					"/api/v1/users/check-password"
 				).authenticated()
 
