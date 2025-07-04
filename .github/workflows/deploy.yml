@@ -1,29 +1,32 @@
-name: SpringBoot CI/CD
+name: SpringBoot Docto CI/CD Pipeline
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
 
 jobs:
   build:
-    name: Build and Archive JAR (Gradle)
+    name: Build Archive
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 소스코드 체크아웃
-      - name: Checkout source code
-        uses: actions/checkout@v4
+      # 1. 코드 체크아웃
+      - uses: actions/checkout@v4
 
       # 2. JDK 17 설정
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'corretto'
           java-version: '17'
 
-      # 3. Gradle 캐시 적용
+      - name: Set YML
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
+          find src
+
+      # 3. Gradle 캐싱
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
@@ -31,64 +34,50 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle
+          restore-keys: ${{ runner.os }}-gradle
 
-      # 4. application-prod.yml 복원
-      - name: Restore application-prod.yml from Secrets
-        run: |
-          echo "${{ secrets.PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
-
-      # 5. gradlew 권한 부여
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      # 6. Gradle 빌드
+      # 4. Gradle 빌드 (테스트 생략)
       - name: Build with Gradle
-        run: ./gradlew clean build -x test -x asciidoctor
+        run: ./gradlew clean build -x test
 
-      - name: Check application-prod.yml inside JAR
-        run: |
-          jar tf build/libs/docto.jar | grep application-prod.yml
-
-      # 7. 빌드된 JAR 확인
+      # 5. JAR 파일 확인 (디버깅용)
       - name: Find JAR
-        run: find ./build/libs -name "*.jar"
+        run: find . -name "*.jar"
 
-      # 8. 아티팩트 업로드
-      - name: Upload JAR as artifact
+      # 6. 빌드 결과물 업로드
+      - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: artifact
           path: build/libs/*.jar
 
   deploy:
-    name: Deploy to AWS Elastic Beanstalk
-    runs-on: ubuntu-latest
+    name: Deploy to Elastic Beanstalk
     needs: build
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. 아티팩트 다운로드
-      - name: Download built JAR
+      # 1. 이전 단계에서 생성한 아티팩트 다운로드
+      - name: Download JAR
         uses: actions/download-artifact@v4
         with:
           name: artifact
 
-      # 2. JAR 파일명 통일
-      - name: Rename downloaded JAR
+      # 2. 이름 변경 (Elastic Beanstalk에 업로드하기 위함)
+      - name: Rename JAR
         run: |
-          JAR_NAME=$(find . -name "*.jar" | head -n 1)
-          cp "$JAR_NAME" docto.jar
+          JAR_NAME=$(ls *.jar | head -n 1)
+          mv "$JAR_NAME" docto.jar
 
       # 3. Elastic Beanstalk에 배포
-      - name: Deploy to Elastic Beanstalk
+      - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: DoctoApp
           environment_name: DoctoApp-env-1
-          version_label: v-${{ github.run_number }}-${{ github.sha }}
           region: us-east-2
+          version_label: ${{ github.sha }}
           deployment_package: docto.jar
           use_existing_version_if_available: true
