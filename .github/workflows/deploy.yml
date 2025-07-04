@@ -48,7 +48,7 @@ jobs:
 
       - name: ✅ Check if application-prod.yml is included in JAR
         run: |
-          jar tf build/libs/docto-0.0.1-SNAPSHOT.jar | grep application-prod.yml || echo "❌ prod 설정 누락됨"
+          jar tf "$JAR_NAME" | grep application-prod.yml || echo "❌ prod 설정 누락됨"
 
       # 5. JAR 파일 확인 (디버깅용)
       - name: Find JAR
