@@ -47,6 +47,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test -x asciidoctor
 
+      - name: Check application-prod.yml inside JAR
+        run: |
+          jar tf build/libs/docto.jar | grep application-prod.yml
+
       # 7. 빌드된 JAR 확인
       - name: Find JAR
         run: find ./build/libs -name "*.jar"
