@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and Archive JAR
+    name: Build and Archive JAR (Gradle)
     runs-on: ubuntu-latest
 
     steps:
@@ -23,33 +23,40 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # 3. Maven 캐시 적용
-      - name: Cache Maven dependencies
+      # 3. Gradle 캐시 적용
+      - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
 
-      # 4. application-prod.yml 복원 (Secrets에서 base64로)
+      # 4. application-prod.yml 복원
       - name: Restore application-prod.yml from Secrets
         run: |
           echo "${{ secrets.PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
 
-      # 5. Maven 빌드
-      - name: Build with Maven
-        run: mvn -B clean package -DskipTests
+      # 5. gradlew 권한 부여
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
-      # 6. 빌드된 JAR 파일 이름 확인
+      # 6. Gradle 빌드
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      # 7. 빌드된 JAR 확인
       - name: Find JAR
-        run: find ./target -name "*.jar"
+        run: find ./build/libs -name "*.jar"
 
-      # 7. 아티팩트 업로드 (다음 job에서 사용)
+      # 8. 아티팩트 업로드
       - name: Upload JAR as artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact
-          path: ./target/*.jar
+          path: build/libs/*.jar
 
   deploy:
     name: Deploy to AWS Elastic Beanstalk
@@ -63,7 +70,7 @@ jobs:
         with:
           name: artifact
 
-      # 2. JAR 파일명 통일 (Beanstalk에 올릴 이름)
+      # 2. JAR 파일명 통일
       - name: Rename downloaded JAR
         run: |
           JAR_NAME=$(find . -name "*.jar" | head -n 1)
@@ -78,6 +85,6 @@ jobs:
           application_name: DoctoProject
           environment_name: DoctoProject-env
           version_label: ${{ github.sha }}
-          region: us-east-2b
+          region: us-east-2
           deployment_package: docto.jar
           use_existing_version_if_available: true
