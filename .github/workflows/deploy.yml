@@ -84,7 +84,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: DoctoProject
           environment_name: DoctoProject-env
-          version_label: ${{ github.sha }}
+          version_label: v-${{ github.run_number }}-${{ github.sha }}
           region: us-east-2
           deployment_package: docto.jar
           use_existing_version_if_available: true
