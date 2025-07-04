@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DoctoApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(DoctoApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(DoctoApplication.class, args);
+	}
 }
