@@ -83,4 +83,4 @@ jobs:
           region: us-east-2
           version_label: ${{ github.sha }}
           deployment_package: docto.jar
-          use_existing_version_if_available: true
+          use_existing_version_if_available: false
