@@ -9,6 +9,8 @@ server:
 
 # 데이터베이스 설정
 spring:
+  profiles:
+    include: prod
   #JPA Config
   jpa:
     hibernate:
