@@ -46,12 +46,9 @@ jobs:
       - name: List jar files
         run: ls -al build/libs
 
-      - name: Rename jar to docto.jar
-        run: mv build/libs/*.jar build/libs/docto.jar
-
       - name: ✅ Check if application-prod.yml is included in JAR
         run: |
-          jar tf build/libs/docto.jar | grep application-prod.yml || echo "❌ prod 설정 누락됨"
+          jar tf build/libs/docto-0.0.1-SNAPSHOT.jar | grep application-prod.yml || echo "❌ prod 설정 누락됨"
 
       # 5. JAR 파일 확인 (디버깅용)
       - name: Find JAR
