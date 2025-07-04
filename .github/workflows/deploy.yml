@@ -45,7 +45,7 @@ jobs:
 
       # 6. Gradle 빌드
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build -x test -x asciidoctor
 
       # 7. 빌드된 JAR 확인
       - name: Find JAR
