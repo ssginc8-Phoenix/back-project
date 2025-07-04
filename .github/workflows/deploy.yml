@@ -54,6 +54,10 @@ jobs:
           name: artifact
           path: build/libs/*.jar
 
+      - name: Check if application-prod.yml is included in JAR
+        run: |
+          jar tf build/libs/docto.jar | grep application-prod.yml || echo "❌ prod 설정 누락됨"
+
   deploy:
     name: Deploy to Elastic Beanstalk
     needs: build
