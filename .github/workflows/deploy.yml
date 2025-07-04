@@ -1,0 +1,83 @@
+name: SpringBoot CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Archive JAR
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 소스코드 체크아웃
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 2. JDK 17 설정
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Maven 캐시 적용
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      # 4. application-prod.yml 복원 (Secrets에서 base64로)
+      - name: Restore application-prod.yml from Secrets
+        run: |
+          echo "${{ secrets.PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
+
+      # 5. Maven 빌드
+      - name: Build with Maven
+        run: mvn -B clean package -DskipTests
+
+      # 6. 빌드된 JAR 파일 이름 확인
+      - name: Find JAR
+        run: find ./target -name "*.jar"
+
+      # 7. 아티팩트 업로드 (다음 job에서 사용)
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: ./target/*.jar
+
+  deploy:
+    name: Deploy to AWS Elastic Beanstalk
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # 1. 아티팩트 다운로드
+      - name: Download built JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+
+      # 2. JAR 파일명 통일 (Beanstalk에 올릴 이름)
+      - name: Rename downloaded JAR
+        run: |
+          JAR_NAME=$(find . -name "*.jar" | head -n 1)
+          cp "$JAR_NAME" docto.jar
+
+      # 3. Elastic Beanstalk에 배포
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: DoctoProject
+          environment_name: DoctoProject-env
+          version_label: ${{ github.sha }}
+          region: us-east-2b
+          deployment_package: docto.jar
+          use_existing_version_if_available: true
