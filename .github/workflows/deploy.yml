@@ -36,8 +36,9 @@ jobs:
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_PROD_YML }}" > src/main/resources/application-prod.yml
 
-      - name: Build with Gradle
-        run: ./gradlew build -x test
+      - name: Build JAR without tests and asciidoctor
+        run: ./gradlew build -x test -x asciidoctor
+
 
       - name: Find JAR
         run: find build/libs -name "*.jar"
