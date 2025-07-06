@@ -34,7 +34,9 @@ jobs:
       - name: Generate application-prod.yml
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_YML }}" > src/main/resources/application-prod.yml
+          cat <<EOF > src/main/resources/application-prod.yml
+          ${{ secrets.APPLICATION_PROD_YML }}
+          EOF
 
       - name: Build JAR without tests and asciidoctor
         run: ./gradlew build -x test -x asciidoctor
