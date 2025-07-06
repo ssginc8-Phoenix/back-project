@@ -66,7 +66,7 @@ public class SecurityConfig {
 					"/api/v1/auth/**", "/api/v1/users/register", "/api/v1/users/social", "/api/v1/users/doctors",
 					"/api/v1/users/check-email", "/api/v1/users/email/find",
 					"/api/v1/users/password-reset", "/api/v1/users/email/verify-code/send",
-					"/api/v1/users/email/verify-code/confirm", "/api/v1/auth/session/provider-id"
+					"/api/v1/users/email/verify-code/confirm", "/api/v1/auth/session/provider-id", "/"
 				).permitAll()
 
 				.requestMatchers(
