@@ -22,4 +22,18 @@ public interface CsMessageRepo extends JpaRepository<CsMessage, Long> {
 		@Param("before") LocalDateTime before,
 		Pageable pageable
 	);
+
+	@Query("""
+      SELECT m
+      FROM CsMessage m
+      WHERE m.csRoom.csRoomId IN :roomIds
+        AND m.createdAt < :before
+      ORDER BY m.createdAt DESC
+    """)
+	List<CsMessage> findMessagesByRoomIdsBefore(
+		@Param("roomIds") List<Long> roomIds,
+		@Param("before") LocalDateTime before,
+		Pageable pageable
+	);
+
 }
