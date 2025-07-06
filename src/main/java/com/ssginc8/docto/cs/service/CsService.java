@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.ssginc8.docto.cs.dto.CsMessageRequest;
 import com.ssginc8.docto.cs.dto.CsMessageResponse;
+import com.ssginc8.docto.cs.dto.CsNoteRequest;
+import com.ssginc8.docto.cs.dto.CsNoteResponse;
 import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
 
@@ -29,5 +31,11 @@ public interface CsService {
 
 	List<CsMessageResponse> getMessages(Long csRoomId, LocalDateTime before, int size);
 
-	void createMessage(Long csRoomId, Long userId, String content);
+	CsMessageResponse createMessage(Long csRoomId, Long userId, String content);
+
+	List<CsMessageResponse> getMessagesByCustomer(Long customerId, LocalDateTime before, int size);
+
+	CsNoteResponse saveNote(Long csRoomId, CsNoteRequest request);
+
+	Page<CsNoteResponse> getNotes(Long csRoomId, Pageable pageable);
 }
