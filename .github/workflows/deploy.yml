@@ -1,0 +1,93 @@
+name: SpringBoot Docto CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    name: Build Archive
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 코드 체크아웃
+      - uses: actions/checkout@v4
+
+      # 2. JDK 17 설정
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Set YML
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
+          find src
+
+      # 3. Gradle 캐싱
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      # 4. Gradle 빌드 (테스트 생략)
+      - name: Give execute permission to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test -x asciidoctor
+
+      - name: List jar files
+        run: ls -al build/libs
+
+      - name: ✅ Check if application-prod.yml is included in JAR
+        run: |
+          jar tf "$JAR_NAME" | grep application-prod.yml || echo "❌ prod 설정 누락됨"
+
+      # 5. JAR 파일 확인 (디버깅용)
+      - name: Find JAR
+        run: find . -name "*.jar"
+
+      # 6. 빌드 결과물 업로드
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: build/libs/*.jar
+
+  deploy:
+    name: Deploy to Elastic Beanstalk
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 이전 단계에서 생성한 아티팩트 다운로드
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+
+      # 2. 이름 변경 (Elastic Beanstalk에 업로드하기 위함)
+      - name: Rename JAR
+        run: |
+          JAR_NAME=$(ls *.jar | head -n 1)
+          mv "$JAR_NAME" docto.jar
+
+      # 3. Elastic Beanstalk에 배포
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: DoctoApp
+          environment_name: DoctoApp-env
+          region: us-east-2
+          version_label: ${{ github.sha }}
+          deployment_package: docto.jar
+          use_existing_version_if_available: false

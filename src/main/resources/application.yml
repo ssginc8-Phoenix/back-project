@@ -5,7 +5,7 @@ app:
 
 # 서버 설정
 server:
-  port: 8080
+  port: 5000
 
 # 데이터베이스 설정
 spring:
@@ -45,7 +45,7 @@ spring:
 
   ai:
     openai:
-      api-key:  ${OPENAI_API_KEY}
+      api-key: {OPEN_API_KEY}
     chat:
       model: gpt-3.5-turbo
 
