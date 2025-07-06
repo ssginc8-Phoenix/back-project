@@ -118,8 +118,6 @@ public class UserApiController {
 			cookieUtil.createCookie(TokenType.REFRESH_TOKEN.getTokenType(), loginResponse.getRefreshToken(),
 				loginResponse.getRefreshTokenCookieMaxAge()));
 
-		log.info("잘 넣었음......");
-
 		return ResponseEntity.ok("로그인 성공");
 	}
 
