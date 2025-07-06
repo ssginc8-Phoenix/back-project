@@ -22,7 +22,6 @@ public class CsRoom extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cs_room_id")
 	private Long csRoomId;
 
 	@Column(nullable = false)
