@@ -74,5 +74,5 @@ jobs:
           environment_name: Docto-env
           version_label: ${{ github.SHA }}
           region: us-east-2
-          deployment_package: docto.jar
+          deployment_package: docto-0.0.1-SNAPSHOT.jar
           timeout: 120
