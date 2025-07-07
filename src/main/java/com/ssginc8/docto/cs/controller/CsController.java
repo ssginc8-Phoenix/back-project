@@ -1,6 +1,8 @@
 package com.ssginc8.docto.cs.controller;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.context.event.EventListener;
@@ -120,11 +122,17 @@ public class CsController {
 	@GetMapping("/csrooms/{csRoomId}/messages")
 	public ResponseEntity<List<CsMessageResponse>> getMessages(
 		@PathVariable Long csRoomId,
-		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime before,
+		@RequestParam(required = false)
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+		OffsetDateTime before,
 		@RequestParam(defaultValue = "20") int size) {
 
-		List<CsMessageResponse> messages = csService.getMessages(csRoomId, before, size);
+		// OffsetDateTime을 LocalDateTime으로 변환 (서버 로컬 타임존 기준)
+		LocalDateTime cutoff = (before != null)
+			? before.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+			: LocalDateTime.now();
 
+		List<CsMessageResponse> messages = csService.getMessages(csRoomId, cutoff, size);
 		return ResponseEntity.ok(messages);
 	}
 
