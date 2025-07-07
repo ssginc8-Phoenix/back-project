@@ -47,7 +47,9 @@ public class CsServiceImpl implements CsService {
 			return CsRoomResponse.fromEntity(
 				csRoom,
 				customer.getName(),
-				customer.getProfileUrl()
+				customer.getProfileUrl(),
+				csRoom.getStatus()
+
 			);
 		});
 	}
@@ -57,15 +59,30 @@ public class CsServiceImpl implements CsService {
 	@Override
 	public CsRoomResponse findById(Long csRoomId) {
 		CsRoom room = csProvider.findById(csRoomId);
+
+		// 고객 정보
 		User customer = userProvider.getUserById(room.getCustomerId());
-		// 생성자 파라미터 순서: name, csRoomId, customerId, agentId, avatarUrl, status
+
+		// 상담사 정보 (agentId 가 있을 때만 조회)
+		Long agentId = room.getAgentId();
+		String agentName = null;
+		String agentAvatarUrl = null;
+		if (agentId != null) {
+			User agent = userProvider.getUserById(agentId);
+			agentName      = agent.getName();
+			agentAvatarUrl = agent.getProfileUrl();
+		}
+
+		// DTO 생성자: (customerName, csRoomId, customerId, agentId, customerAvatarUrl, status, agentName, agentAvatarUrl)
 		return new CsRoomResponse(
 			customer.getName(),
 			room.getCsRoomId(),
 			room.getCustomerId(),
-			room.getAgentId(),
-			customer.getProfileUrl(),  // 여기에 avatar URL 추가
-			room.getStatus()
+			agentId,
+			customer.getProfileUrl(),
+			room.getStatus(),
+			agentName,
+			agentAvatarUrl
 		);
 	}
 
@@ -142,13 +159,14 @@ public class CsServiceImpl implements CsService {
 		kafkaProducerService.sendMessage(messageDto);
 
 		// 3) DTO 반환 (ID는 컨슈머 저장 후에 알 수 있으니 null 처리)
-		return new CsMessageResponse(
-			null,
-			messageDto.getUserId(),
-			messageDto.getContent(),
-			messageDto.getCreatedAt(),
-			messageDto.getCsRoomId()
-		);
+		return CsMessageResponse.builder()
+			.csMessageId(null)
+			.userId(messageDto.getUserId())
+			.content(messageDto.getContent())
+			.createdAt(messageDto.getCreatedAt())
+			.csRoomId(messageDto.getCsRoomId())
+			.system(false)    // 일반 메시지는 system=false
+			.build();
 	}
 
 	@Override
