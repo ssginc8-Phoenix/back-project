@@ -63,4 +63,8 @@ public class UserProvider {
 	public User save(User user) {
 		return userRepo.save(user);
 	}
+
+	public Optional<User> findByUuid(String userUuid) {
+		return userRepo.findByUuid(userUuid);
+	}
 }

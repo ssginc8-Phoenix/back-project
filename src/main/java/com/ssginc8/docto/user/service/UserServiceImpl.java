@@ -335,4 +335,12 @@ public class UserServiceImpl implements UserService {
 
 		return userProvider.loadUserByUuid(uuid);
 	}
+
+	@Override
+	public User findByUuid(String userUuid) {
+		return userProvider.findByUuid(userUuid)
+			.orElseThrow(() -> new IllegalArgumentException(
+				"존재하지 않는 유저입니다. uuid=" + userUuid
+			));
+	}
 }
