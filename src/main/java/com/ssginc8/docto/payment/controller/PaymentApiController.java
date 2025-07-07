@@ -47,7 +47,7 @@ public class PaymentApiController {
 
 	/**
 	 * ✅ 결제 정보 확인
-	 * URL: /api/v1/payments/init
+	 * URL: /api/v1/payments/confirm
 	 * Method: POST
 	 */
 	@PostMapping("/payments/confirm")
