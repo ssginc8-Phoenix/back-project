@@ -49,4 +49,6 @@ public interface UserService {
 	void deleteAccount();
 
 	public User getUserFromUuid();
+
+	User findByUuid(String userUuid);
 }

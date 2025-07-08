@@ -1,13 +1,17 @@
 package com.ssginc8.docto.cs.controller;
 
+import java.security.Principal;
+
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import com.ssginc8.docto.cs.dto.CsMessageRequest;
+import com.ssginc8.docto.cs.dto.CsMessageResponse;
 import com.ssginc8.docto.cs.service.CsService;
 import com.ssginc8.docto.user.entity.User;
 import com.ssginc8.docto.user.service.UserService;
@@ -22,25 +26,44 @@ public class WebSocketChatController {
 
 	private final CsService csService;
 	private final UserService userService;
+	private final SimpMessagingTemplate messagingTemplate;
 
 	/**
 	 * 클라이언트가 /app/chat.sendMessage 로 메세지를 보낼 때
 	 */
 	@MessageMapping("/chat.sendMessage")
-	public void sendMessage(@Payload CsMessageRequest chatMessage) {
-		// 1. JWT 토큰에서 현재 로그인한 사용자의 정보를 가져옴
-		User user = userService.getUserFromUuid();
-
-		// 2. CsMessageRequest에 csRoomId가 포함되어 있는지 확인
-		if (chatMessage.getCsRoomId() == null) {
+	public void sendMessage(
+		@Payload CsMessageRequest chatMessage,
+		Principal principal
+	) {
+		// 1) 로그인 사용자 조회
+		String userUuid = principal.getName();
+		User user = userService.findByUuid(userUuid);
+		Long csRoomId = chatMessage.getCsRoomId();
+		if (csRoomId == null) {
 			log.error("CsRoomId is null in CsMessageRequest for user {}", user.getUserId());
 			return;
 		}
+		// 3) DB에 메시지 저장하고, 응답 DTO를 받음
+		CsMessageResponse saved = csService.createMessage(
+			csRoomId,
+			user.getUserId(),
+			chatMessage.getContent()
+		);
 
-		csService.createMessage(chatMessage.getCsRoomId(), user.getUserId(), chatMessage.getContent());
+		log.info("Message saved for csRoomId: {}, userId: {}, content: {}",
+			saved.getCsRoomId(), saved.getUserId(), saved.getContent());
+		// 4) system=true 로 새 인스턴스 생성
+		CsMessageResponse withSystem = saved.toBuilder()
+			.system(chatMessage.isSystem())
+			.build();
 
-		log.info("Message received for csRoomId: {}, userId: {}, content: {}",
-			chatMessage.getCsRoomId(), user.getUserId(), chatMessage.getContent());
+		// 4) 해당 룸을 구독 중인 클라이언트에게 브로드캐스트
+		messagingTemplate.convertAndSend(
+			"/topic/rooms/" + csRoomId,
+			withSystem
+		);
+
 	}
 
 	/**

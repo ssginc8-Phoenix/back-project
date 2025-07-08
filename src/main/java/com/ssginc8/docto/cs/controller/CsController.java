@@ -1,12 +1,17 @@
 package com.ssginc8.docto.cs.controller;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssginc8.docto.cs.dto.AssignAgentRequest;
 import com.ssginc8.docto.cs.dto.CsMessageResponse;
+import com.ssginc8.docto.cs.dto.CsNoteRequest;
+import com.ssginc8.docto.cs.dto.CsNoteResponse;
 import com.ssginc8.docto.cs.dto.CsRoomCreateRequest;
 import com.ssginc8.docto.cs.dto.CsRoomResponse;
 import com.ssginc8.docto.cs.service.CsService;
@@ -115,11 +122,48 @@ public class CsController {
 	@GetMapping("/csrooms/{csRoomId}/messages")
 	public ResponseEntity<List<CsMessageResponse>> getMessages(
 		@PathVariable Long csRoomId,
-		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime before,
+		@RequestParam(required = false)
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+		OffsetDateTime before,
 		@RequestParam(defaultValue = "20") int size) {
 
-		List<CsMessageResponse> messages = csService.getMessages(csRoomId, before, size);
+		// OffsetDateTime을 LocalDateTime으로 변환 (서버 로컬 타임존 기준)
+		LocalDateTime cutoff = (before != null)
+			? before.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+			: LocalDateTime.now();
 
+		List<CsMessageResponse> messages = csService.getMessages(csRoomId, cutoff, size);
 		return ResponseEntity.ok(messages);
+	}
+
+	@GetMapping("/csrooms/messages")
+	public ResponseEntity<List<CsMessageResponse>> getMessagesByCustomer(
+		@RequestParam Long customerId,
+		@RequestParam(required = false)
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime before,
+		@RequestParam(defaultValue = "20") int size
+	) {
+		List<CsMessageResponse> messages = csService.getMessagesByCustomer(customerId, before, size);
+		return ResponseEntity.ok(messages);
+	}
+
+	@PostMapping("/csrooms/{csRoomId}/notes")
+	public ResponseEntity<CsNoteResponse> saveNote(
+		@PathVariable Long csRoomId,
+		@RequestBody CsNoteRequest request
+	) {
+		CsNoteResponse response = csService.saveNote(csRoomId, request);
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.body(response);
+	}
+
+	@GetMapping("/csrooms/{csRoomId}/notes")
+	public ResponseEntity<Page<CsNoteResponse>> getNotes(
+		@PathVariable Long csRoomId,
+		@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+	) {
+		Page<CsNoteResponse> responses = csService.getNotes(csRoomId, pageable);
+		return ResponseEntity.ok(responses);
 	}
 }
