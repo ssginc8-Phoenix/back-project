@@ -93,7 +93,9 @@ public class SecurityConfig {
 				.authenticated()
 
 
-
+				.requestMatchers(HttpMethod.GET, "/api/v1/admin/insurance/documents/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/v1/admin/insurance/documents/**").permitAll()
+				.requestMatchers(HttpMethod.PATCH, "/api/v1/admin/insurance/documents/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/v1/appointments/*/payment-request").hasRole("HOSPITAL_ADMIN")
 				.requestMatchers(HttpMethod.PATCH, "/api/v1/doctors/**").hasRole("DOCTOR")
 
