@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssginc8.docto.file.entity.File;
-import com.ssginc8.docto.file.repository.FileRepo;
+import com.ssginc8.docto.file.repository.FileRepository;
 import com.ssginc8.docto.global.error.exception.fileException.FileNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -20,10 +20,10 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Component
 public class FileProvider {
-	private final FileRepo fileRepo;
+	private final FileRepository fileRepository;
 
 	public File saveFile(File file) {
-		return fileRepo.save(file);
+		return fileRepository.save(file);
 	}
 
   /**
@@ -36,7 +36,7 @@ public class FileProvider {
 			return null;
 		}
 		// repository에 선언된 getFileUrlById(@Param("fileId") Long) 호출
-		String url = fileRepo.getFileUrlById(fileId);
+		String url = fileRepository.getFileUrlById(fileId);
 		if (url == null || url.isBlank()) {
 			// 해당 ID로 저장된 파일을 찾을 수 없을 때 예외 던짐
 			throw new FileNotFoundException();
@@ -50,14 +50,14 @@ public class FileProvider {
 		}
 
 	
-		return fileRepo.getFileUrlsByIds(fileIds)
+		return fileRepository.getFileUrlsByIds(fileIds)
 			.stream()
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 	}
 
 	public File getFileById(Long fileId) {
-		return fileRepo.findById(fileId)
+		return fileRepository.findById(fileId)
 			.orElseThrow(() -> new EntityNotFoundException("File not found: " + fileId));
 	}
 
@@ -65,11 +65,11 @@ public class FileProvider {
 		if (fileIds == null || fileIds.isEmpty()) {
 			return Collections.emptyList();
 		}
-		return fileRepo.findAllById(fileIds);
+		return fileRepository.findAllById(fileIds);
 	}
 
 	@Transactional
 	public void deleteFileById(Long fileId) {
-		fileRepo.deleteById(fileId);
+		fileRepository.deleteById(fileId);
 	}
 }
